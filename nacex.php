@@ -956,7 +956,7 @@ class nacex extends CarrierModule
                 // Fallback a cookie
                 var cookieDatos = getCookie('opc_shop_datos');
                 if(cookieDatos) {
-                    rellenarNacexShop(decodeURIComponent(cookieDatos), id_cart);
+                    rellenarNacexShop(cookieDatos, id_cart);
                     return true;
                 }
             }
@@ -1338,7 +1338,7 @@ class nacex extends CarrierModule
 
             // Modalidad OPC
             if (isset($_COOKIE['opc_id_cart']) && isset($_COOKIE['opc_shop_datos']) && $_COOKIE['opc_id_cart'] == $id_cart) {
-                $shop_datos = urldecode($_COOKIE['opc_shop_datos']);
+                $shop_datos = $_COOKIE['opc_shop_datos'];
                 // Borramos las dos cookies estableciendo fecha de caducidad en el pasado
                 setcookie('opc_shop_datos', '', time() - 3600);
                 setcookie('opc_id_cart', '', time() - 3600);
@@ -2014,7 +2014,7 @@ class nacex extends CarrierModule
             //$shop_address = nacexDAO::getDatosCartNacexShop($params['cart']->id);
 
             if (isset($_COOKIE['opc_id_cart']) && isset($_COOKIE['opc_shop_datos']) && $_COOKIE['opc_id_cart'] == $id_cart) {
-                $shop_datos = urldecode($_COOKIE['opc_shop_datos']);
+                $shop_datos = $_COOKIE['opc_shop_datos'];
             } elseif (!empty($query['ncx'])) {
                 $shop_datos = $query['ncx'];
             }
