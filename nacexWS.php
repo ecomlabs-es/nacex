@@ -420,28 +420,14 @@ class nacexWS {
             $prodref = str_replace(';', ',', $producto['product_reference']);
         }
 
-        //Variables NacexShop --------------------------------------------------------------------------------------------------------
-        $ncxshop = null;
-        $array_shop_data = [];
-        $is_nxshop = false;
-
-        $shop_codigo = '';
-        $shop_alias = '';
-        $shop_nombre = '';
-        $shop_direccion = '';
-
-        if ($datospedido[0]['ncx'] != '1' && nacexDTO::isNacexShopCarrier($datospedido[0]['id_carrier'])) {
-            $is_nxshop = true;
-            $array_shop_data = explode('|', $datospedido[0]['ncx']);
-            if (isset($array_shop_data)) {
-                $shop_codigo = isset($array_shop_data[0]) ? $array_shop_data[0] : '';
-                $shop_alias = isset($array_shop_data[1]) ? $array_shop_data[1] : '';
-                $shop_nombre = isset($array_shop_data[2]) ? $array_shop_data[2] : '';
-                $shop_direccion = isset($array_shop_data[3]) ? $array_shop_data[3] : '';
-            }
-            $ncxshop = '<arrayOfString_3>shop_codigo=' . $shop_codigo . '</arrayOfString_3>';
-        }
-        //Variables NacexShop --------------------------------------------------------------------------------------------------------
+        //Variables NacexShop
+        $shopData = self::resolveNacexShopData($datospedido);
+        $is_nxshop = $shopData['is_nxshop'];
+        $shop_codigo = $shopData['shop_codigo'];
+        $shop_alias = $shopData['shop_alias'];
+        $shop_nombre = $shopData['shop_nombre'];
+        $shop_direccion = $shopData['shop_direccion'];
+        $ncxshop = $shopData['ncxshop_xml'];
 
         // Si es NacexShop la dirección sólo tiene que ser la 1, porque la otra es meramente informativa
         //Preparamos la dirección para sanearla
@@ -843,28 +829,14 @@ class nacexWS {
             $prodref = str_replace(';', ',', $producto['product_reference']);
         }
 
-        //Variables NacexShop --------------------------------------------------------------------------------------------------------
-        $ncxshop = null;
-        $array_shop_data = [];
-        $is_nxshop = false;
-
-        $shop_codigo = '';
-        $shop_alias = '';
-        $shop_nombre = '';
-        $shop_direccion = '';
-
-        if ($datospedido[0]['ncx'] != '1' && nacexDTO::isNacexShopCarrier($datospedido[0]['id_carrier'])) {
-            $is_nxshop = true;
-            $array_shop_data = explode('|', $datospedido[0]['ncx']);
-            if (isset($array_shop_data)) {
-                $shop_codigo = isset($array_shop_data[0]) ? $array_shop_data[0] : '';
-                $shop_alias = isset($array_shop_data[1]) ? $array_shop_data[1] : '';
-                $shop_nombre = isset($array_shop_data[2]) ? $array_shop_data[2] : '';
-                $shop_direccion = isset($array_shop_data[3]) ? $array_shop_data[3] : '';
-            }
-            $ncxshop = '<arrayOfString_3>shop_codigo=' . $shop_codigo . '</arrayOfString_3>';
-        }
-        //Variables NacexShop --------------------------------------------------------------------------------------------------------
+        //Variables NacexShop
+        $shopData = self::resolveNacexShopData($datospedido);
+        $is_nxshop = $shopData['is_nxshop'];
+        $shop_codigo = $shopData['shop_codigo'];
+        $shop_alias = $shopData['shop_alias'];
+        $shop_nombre = $shopData['shop_nombre'];
+        $shop_direccion = $shopData['shop_direccion'];
+        $ncxshop = $shopData['ncxshop_xml'];
 
         // Si es NacexShop la dirección sólo tiene que ser la 1, porque la otra es meramente informativa
         //Preparamos la dirección para sanearla
@@ -1629,6 +1601,45 @@ class nacexWS {
         }
         return $postResult;
     }
+    /**
+     * Resuelve las variables NacexShop a partir de los datos del pedido.
+     * Si ncx solo contiene el código del punto, busca los datos completos en el fichero CSV.
+     */
+    private static function resolveNacexShopData($datospedido)
+    {
+        $result = [
+            'is_nxshop' => false,
+            'shop_codigo' => '',
+            'shop_alias' => '',
+            'shop_nombre' => '',
+            'shop_direccion' => '',
+            'ncxshop_xml' => null,
+        ];
+
+        if ($datospedido[0]['ncx'] != '1' && nacexDTO::isNacexShopCarrier($datospedido[0]['id_carrier'])) {
+            $result['is_nxshop'] = true;
+            $ncx = $datospedido[0]['ncx'];
+            $parts = explode('|', $ncx);
+
+            // Si solo tenemos el código, buscar datos completos en el fichero CSV
+            if (count($parts) < 4) {
+                $ROnacexshop = new nacexshop();
+                $data = $ROnacexshop->getFileData($parts[0], true);
+                if (!empty($data[0])) {
+                    $parts = explode('|', nacexutils::toUtf8($data[0]));
+                }
+            }
+
+            $result['shop_codigo'] = isset($parts[0]) ? $parts[0] : '';
+            $result['shop_alias'] = isset($parts[1]) ? $parts[1] : '';
+            $result['shop_nombre'] = isset($parts[2]) ? $parts[2] : '';
+            $result['shop_direccion'] = isset($parts[3]) ? $parts[3] : '';
+            $result['ncxshop_xml'] = '<arrayOfString_3>shop_codigo=' . $result['shop_codigo'] . '</arrayOfString_3>';
+        }
+
+        return $result;
+    }
+
     public static function getSystemInfo() {
         $env = PHP_OS;
         $env .= ';' . phpversion();
