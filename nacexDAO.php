@@ -748,14 +748,24 @@ class nacexDAO
         nacexutils::writeNacexLog('-----');
         nacexutils::writeNacexLog('INI setNacexShopAddressinBD :: id_order: ' . $id_order . '|id_cart: ' . $id_cart . '|id_address: ' . $id_address . '|id_customer: ' . $id_customer . '|shop_datos: ' . $shop_datos);
 
-        if (sizeof(explode('|', $shop_datos)) == 1) {
-            // Busco los datos en el archivo droppoints
+        $shop_parts = explode('|', $shop_datos);
+        // Si faltan campos esenciales (dirección, CP, ciudad), buscamos los datos completos en el fichero droppoints
+        if (count($shop_parts) < 6 || empty($shop_parts[4]) || empty($shop_parts[5])) {
+            $shop_codigo = $shop_parts[0];
             $ROnacexshop = new nacexshop();
-            $data = $ROnacexshop->getFileData($shop_datos, true);
-            $shop_datos = $data[0];
+            $data = $ROnacexshop->getFileData($shop_codigo, true);
+            if (!empty($data[0])) {
+                $shop_datos = $data[0];
+            }
         }
         $array_shop_data = nacexutils::explodeShopData($shop_datos);
         $array_address = nacexDAO::getAddressById($id_address);
+
+        // Validar que tenemos los campos mínimos para crear una dirección
+        if (empty($array_shop_data['shop_poblacion']) || empty($array_shop_data['shop_cp'])) {
+            nacexutils::writeNacexLog('setNacexShopAddressinBD :: ERROR - Datos del punto incompletos, no se puede crear la dirección');
+            return;
+        }
 
         nacexutils::provincia($array_shop_data['shop_cp'], $prov);
         $provincia = State::getIdByName($prov);
