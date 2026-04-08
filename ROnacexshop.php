@@ -148,7 +148,8 @@ class nacexshop
         // Cache del contenido del CSV en memoria para evitar releer en cada busqueda
         if (!isset(self::$fileContentsCache[$file])) {
             $raw = file_get_contents($file);
-            self::$fileContentsCache[$file] = $raw !== false ? trim($raw) : '';
+            // toUtf8 por retrocompatibilidad con archivos CSV descargados antes del fix de codificación
+            self::$fileContentsCache[$file] = $raw !== false ? nacexutils::toUtf8(trim($raw)) : '';
         }
         $contents = self::$fileContentsCache[$file];
 
@@ -315,9 +316,9 @@ class nacexshop
                 if (empty($fichero)) { continue; }
                 $lines = file($fichero[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
                 foreach ($lines as $csvLine) {
+                    $csvLine = nacexutils::toUtf8($csvLine);
                     $line2 = explode('|', $csvLine);
                     if (isset($line2[1]) && $line2[1] == $ag[12]) {
-                        //$_agencias[$i] = $_agencias[$i] . "~" . $line2[2];
                         $_agencias[$i] = $_agencias[$i] . '~' . $line2[2];
                         break;
                     }
@@ -343,7 +344,7 @@ class nacexshop
 
         $tienda = ($agencia) ? $this->searchFile($shop_codigo, $file[0], false)[0] : $this->searchFile($shop_codigo, $file[0], true)[0];
 
-        $contents = file_get_contents($file[0]);
+        $contents = nacexutils::toUtf8(file_get_contents($file[0]));
 
         // Cogemos el alias de la tienda ( codigo|ALIAS-xx|... )
         $alias = explode('-', explode('|', $tienda[0])[1])[0];
