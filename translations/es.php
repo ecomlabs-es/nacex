@@ -471,3 +471,4 @@ $_MODULE['<{nacex}prestashop>nacex_0958d29ee70424f3d6240e59fa3fe068'] = 'Si est�
 $_MODULE['<{nacex}prestashop>nacex_7b42fb599c6e91af28d4c22cc39f2998'] = 'Habilitar Mostrar Empresa';
 $_MODULE['<{nacex}prestashop>nacex_0958d29ee70424f3d6240e59fa3fe068'] = 'Si está habilitado, el pedido que genera el envío utilizará los 2 campos de observación para agregar el nombre de la empresa de la dirección de envío del pedido.';
 $_MODULE['<{nacex}prestashop>nacex_7b42fb599c6e91af28d4c22cc39f2998'] = 'Habilitar Mostrar Empresa';
+$_MODULE['<{nacex}prestashop>nacexview_c8f6af4b62825ac2290b6b6b48acb475'] = 'No es posible modificar la expedición';
