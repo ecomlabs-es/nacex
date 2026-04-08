@@ -394,18 +394,17 @@ class nacexWS {
         //Miramos si hay que informar del seguro
         if ((isset($nacexImpSeg) && $nacexImpSeg != '')) {
             $xml_seg = '<arrayOfString_3>tip_seg=' . $nacexTipSeg . '</arrayOfString_3>';
-            $xml_seg .= '<arrayOfString_3>seg=' . number_format(str_replace(',', '.', str_replace('.', '', $nacexImpSeg)), 2, '.', '') . '</arrayOfString_3>';
+            $xml_seg .= '<arrayOfString_3>seg=' . number_format((float)str_replace(',', '.', str_replace('.', '', $nacexImpSeg)), 2, '.', '') . '</arrayOfString_3>';
         }
 
         // Peso del pedido
         //$peso = Tools::getValue('NACEX_PESO', 'C') == "F" ? str_replace(",", ".", str_replace(".", "", Configuration::get("NACEX_PESO_NUMERO"))) : 0;
-        $peso = Configuration::get('NACEX_PESO') == 'F' ? Configuration::get('NACEX_PESO_NUMERO') : 0;
+        $peso = Configuration::get('NACEX_PESO') == 'F' ? (float)str_replace(',', '.', Configuration::get('NACEX_PESO_NUMERO')) : 0.0;
         if ($peso == 0) {
             foreach ($productospedido as $producto) {
                 $peso += floatval($producto['product_quantity'] * $producto['product_weight']);
             } }
-        $peso = max(1, $peso);
-        // Añadimos línea para reemplazar las comas decimales por puntos por si acaso
+        $peso = max(1.0, (float)$peso);
         $peso = number_format($peso, 2, '.', '');
 
         // bultos del pedido, se recupera del formulario del usuario para permitir modificaciones
@@ -819,18 +818,17 @@ class nacexWS {
         //Miramos si hay que informar del seguro
         if ((isset($nacexImpSeg) && $nacexImpSeg != '')) {
             $xml_seg = '<arrayOfString_3>tip_seg=' . $nacexTipSeg . '</arrayOfString_3>';
-            $xml_seg .= '<arrayOfString_3>seg=' . number_format(str_replace(',', '.', str_replace('.', '', $nacexImpSeg)), 2, '.', '') . '</arrayOfString_3>';
+            $xml_seg .= '<arrayOfString_3>seg=' . number_format((float)str_replace(',', '.', str_replace('.', '', $nacexImpSeg)), 2, '.', '') . '</arrayOfString_3>';
         }
 
         // Peso del pedido
         //$peso = Tools::getValue('NACEX_PESO', 'C') == "F" ? str_replace(",", ".", str_replace(".", "", Configuration::get("NACEX_PESO_NUMERO"))) : 0;
-        $peso = Configuration::get('NACEX_PESO') == 'F' ? Configuration::get('NACEX_PESO_NUMERO') : 0;
+        $peso = Configuration::get('NACEX_PESO') == 'F' ? (float)str_replace(',', '.', Configuration::get('NACEX_PESO_NUMERO')) : 0.0;
         if ($peso == 0) {
             foreach ($productospedido as $producto) {
                 $peso += floatval($producto['product_quantity'] * $producto['product_weight']);
             } }
-        $peso = max(1, $peso);
-        // Añadimos línea para reemplazar las comas decimales por puntos por si acaso
+        $peso = max(1.0, (float)$peso);
         $peso = number_format($peso, 2, '.', '');
 
         // bultos del pedido, se recupera del formulario del usuario para permitir modificaciones
@@ -1217,8 +1215,7 @@ class nacexWS {
                 $valor += floatval($producto['total_price_tax_incl']);
                 $q_r .= ' ** ' . $producto['product_quantity'] . ' # ' . $prodref;
             } }
-        $peso = max(1, $peso);
-        // Añadimos línea para reemplazar las comas decimales por puntos por si acaso
+        $peso = max(1.0, (float)$peso);
         $peso = number_format($peso, 2, '.', '');
 
         /*foreach ($productospedido as $producto) {
@@ -1285,7 +1282,7 @@ class nacexWS {
             $xml_seg = '<arrayOfString_3>tip_seg=' . $nacexTipSeg . '</arrayOfString_3>';
             $nacexImpSeg = str_replace('.', '', $nacexImpSeg);
             $nacexImpSeg = str_replace(',', '.', $nacexImpSeg);
-            $importe = number_format($nacexImpSeg, 2, '.', '');
+            $importe = number_format((float)$nacexImpSeg, 2, '.', '');
             $xml_seg .= '<arrayOfString_3>seg=' . $importe . '</arrayOfString_3>';
         }
         //ENVIO CON SEGURO -----------------------------------------------------------------------------------------------------
