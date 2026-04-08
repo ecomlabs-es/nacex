@@ -547,8 +547,6 @@ class nacex extends CarrierModule
 
         if (@$this->context->controller->php_self == 'order' || @$this->context->controller->controller_name == 'AdminOrders' ||
             (@$this->context->controller->page_name == 'module-supercheckout-supercheckout' && $isOpcEnabled)) {
-            //          echo '<script type="text/javascript" src="'._MODULE_DIR_ . 'nacex/js/jquery.showModalDialog.js"></script>';
-            $html .= '<script type="text/javascript" src="' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/js/jquery.cluetip.js"></script>';
             $html .= '<script type="text/javascript" src="' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/js/nacex.js"></script>';
             $html .= '<script type="text/javascript" src="' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/js/nacex_shop_cart.js"></script>';
             //          echo '<script type="text/javascript" src="'._PS_BASE_URL_.__PS_BASE_URI__ . 'modules/nacex/js/thickbox.js"></script>';
