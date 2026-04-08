@@ -54,15 +54,17 @@ function seleccionadoNacexShop(tipo, txt, _url, opc) {
     var shopcp = $('#nxshop_cp').val();
     var shopp = $('#nxshop_poblacion').val();
     var shoppr = $('#nxshop_provincia').val();
-    //var shopt = $('#nxshop_telefono').val();
-
 
     let opc_shop_datos = shopc.trim() + '|' + shopa.trim() + '|' + shopn.trim() + '|' + shopd.trim() + '|' + shopcp.trim() + '|' + shopp.trim() + '|' + shoppr.trim();
     document.getElementById('shop_datos').value = opc_shop_datos;
     document.cookie = 'opc_id_cart=' + id_cart;
-    //document.cookie = 'opc_shop_datos=' + shopc + '|' + shopa + '|' + shopn + '|' + shopd + '|' + shopcp + '|' + shopp + '|' + shoppr + '|' + shopt;
-    //document.cookie = 'opc_shop_datos=' + opc_shop_datos;
     document.cookie = 'opc_shop_datos=' + shopc.trim();
+
+    // Guardar en localStorage para persistir entre pasos del checkout
+    try {
+        localStorage.setItem('nacex_shop_datos', txt);
+        localStorage.setItem('nacex_shop_cart', id_cart);
+    } catch (e) {}
 
     if (opc !== false) $('#' + opc).prop('disabled', false);
     else document.getElementById("btnfinalizar").focus();
@@ -71,6 +73,20 @@ function seleccionadoNacexShop(tipo, txt, _url, opc) {
 function ClearShop(_url) {
     $('#nxshop').val('');
     unsetDatosSession(_url);
+    try {
+        localStorage.removeItem('nacex_shop_datos');
+        localStorage.removeItem('nacex_shop_cart');
+    } catch (e) {}
+}
+
+function restaurarNacexShop() {
+    try {
+        var datos = localStorage.getItem('nacex_shop_datos');
+        var cart = localStorage.getItem('nacex_shop_cart');
+        if (datos && cart && typeof id_cart !== 'undefined' && cart == id_cart) {
+            rellenarNacexShop(datos);
+        }
+    } catch (e) {}
 }
 
 function rellenarNacexShop(txt, idCart = 0) {

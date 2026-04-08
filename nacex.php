@@ -943,12 +943,24 @@ class nacex extends CarrierModule
         });
         
         function checkSelectedPoint() {
-                    
             let nxShopCodigo = $(\"#nxshop_codigo\");
-            if(getCookie('opc_shop_datos') && nxShopCodigo.val() === '') {
-                rellenarNacexShop(getCookie('opc_shop_datos'), id_cart);
-                return true;
-            } else return false;
+            if(nxShopCodigo.length && nxShopCodigo.val() === '') {
+                try {
+                    var datos = localStorage.getItem('nacex_shop_datos');
+                    var cart = localStorage.getItem('nacex_shop_cart');
+                    if(datos && cart == id_cart) {
+                        rellenarNacexShop(datos, id_cart);
+                        return true;
+                    }
+                } catch(e) {}
+                // Fallback a cookie
+                var cookieDatos = getCookie('opc_shop_datos');
+                if(cookieDatos) {
+                    rellenarNacexShop(cookieDatos, id_cart);
+                    return true;
+                }
+            }
+            return false;
         }
             
         function GetShop(carrier_sel, opc = false) {
@@ -1364,6 +1376,9 @@ class nacex extends CarrierModule
             unset($_COOKIE['selected_carrier']);
             $this->context->cookie->__unset('selected_carrier');
         }
+
+        // Limpiar localStorage del punto NacexShop seleccionado
+        $this->_html .= '<script>try{localStorage.removeItem("nacex_shop_datos");localStorage.removeItem("nacex_shop_cart");}catch(e){}</script>';
 
         isset($params['order']->id) ? nacexutils::writeNacexLog('FIN hookOrderConfirmation :: id_order: ' . $params['order']->id) : nacexutils::writeNacexLog('FIN hookOrderConfirmation :: id_order: NULL!!');
 
