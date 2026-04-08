@@ -72,6 +72,7 @@ function seleccionadoNacexShop(tipo, txt, _url, opc) {
 
 function ClearShop(_url) {
     $('#nxshop').val('');
+    $('#nacexshopChosen, #nacexshopChosenTitle').hide();
     unsetDatosSession(_url);
     try {
         localStorage.removeItem('nacex_shop_datos');
@@ -113,6 +114,9 @@ function rellenarNacexShop(txt, idCart = 0) {
     $('#nxshop_cp').val(datos[4]);
     $('#nxshop_poblacion').val(datos[5]);
     $('#nxshop_provincia').val(datos[6]);
+
+    // Mostrar la tabla y el título solo cuando hay datos
+    $('#nacexshopChosen, #nacexshopChosenTitle').show();
     //$('#nxshop_telefono').val(datos[7]);
     //}
 }

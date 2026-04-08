@@ -1265,8 +1265,8 @@ class nacex extends CarrierModule
                 if ($customopc == 0) { $customopc = (isset($this->context->controller->module->conf_prefix) && @$this->context->controller->module->conf_prefix == 'opc_') ? 1 : 0; }
 
                 $this->_html .= "<br>
-                             <h3 style='color:#ff5100;'>" . $this->l('Selected NacexShop point') . "</h3>
-				<table align='center' id='nacexshopChosen'>
+                             <h3 style='color:#ff5100;display:none;' id='nacexshopChosenTitle'>" . $this->l('Selected NacexShop point') . "</h3>
+				<table align='center' id='nacexshopChosen' style='display:none;'>
 				<!--1085|0831-03|LIBRERíA OPERA|Major 7|08870|SITGES|BARCELONA|938942143-->
 				    <tr class='odd'><td>" . $this->l('Code') . ":</td><td><input id='nxshop_codigo' size='60' type='text'readonly/></td></tr>
 				    <tr><td>" . $this->l('Alias') . ":</td><td><input id='nxshop_alias' size='60' type='text' readonly/></td></tr>
