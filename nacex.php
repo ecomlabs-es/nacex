@@ -56,55 +56,14 @@ class nacex extends CarrierModule
         $ok &= $this->registerHook('actionCarrierUpdate');
         $ok &= $this->registerHook('displayBeforeCarrier');
         $ok &= $this->registerHook('displayOrderConfirmation');
-        //$ok &= $this->registerHook('orderDetailDisplayed');
         $ok &= $this->registerHook('displayOrderDetail');
         $ok &= $this->registerHook('displayPDFInvoice');
         $ok &= $this->registerHook('displayHeader');
         $ok &= $this->registerHook('displayBackOfficeHeader');
         $ok &= $this->registerHook('displayBeforeBodyClosingTag');
-
-        // Probamos a sobreescribir la dirección de envío ANTES de la página de confirmación (por tema de emails)
         $ok &= $this->registerHook('actionValidateOrder');
-
-        /** Nuevos Hooks a partir de PS1.7.7
-         *
-         * displayAdditionalCustomerAddressFields
-         * displayFooterCategory
-         * actionAdminAdminPreferencesControllerPostProcessBefore
-         * actionAdminLoginControllerBefore
-         * actionAdminLoginControllerLoginBefore
-         * actionAdminLoginControllerLoginAfter
-         * actionAdminLoginControllerForgotBefore
-         * actionAdminLoginControllerForgotAfter
-         * actionAdminLoginControllerResetBefore
-         * actionAdminLoginControllerResetAfter
-         *
-         * Incluso tenemos hooks nuevos en la pantalla de pedido:
-         *
-         * displayAdminOrderTabContent
-         * displayAdminOrderTabLink
-         * displayAdminOrderMain
-         * displayAdminOrderSide
-         * displayAdminOrderSideBottom
-         * displayAdminOrder
-         * displayAdminOrderTop
-         * actionGetAdminOrderButtons
-         **/
-
-        if (version_compare(_PS_VERSION_, '1.7.8', '>=')) {
-            //$ok &= $this->registerHook('displayAdminOrder');
-            nacexutils::writeNacexLog('Es Version superior a la 1.7.8');
-            $ok &= $this->registerHook('displayAdminOrderMainBottom');
-            // Para añadir la columna en el listado de pedidos
-            //$ok &= $this->registerHook('hookActionOrderGridDataModifier');
-            $ok &= $this->registerHook('actionOrderGridQueryBuilderModifier');
-            //$ok &= $this->registerHook('actionOrderGridDefinitionModifier');
-            //$ok &= $this->registerHook('ActionAdminOrdersListingQueryBuilderModifier');
-            //$ok &= $this->registerHook('hookActionOrderGridQueryBuilderModifier');
-        } else {
-            $ok &= $this->registerHook('adminOrder');
-            $ok &= $this->registerHook('ActionAdminOrdersListingFieldsModifier');
-        }
+        $ok &= $this->registerHook('displayAdminOrderMainBottom');
+        $ok &= $this->registerHook('actionOrderGridQueryBuilderModifier');
 
         /*
         * Hooks registrados
@@ -324,36 +283,6 @@ class nacex extends CarrierModule
     }
 
     /**
-     * The hook does wen charge order list if the version is earlier than 1.7.7.0
-     *
-     * @param array $params
-     */
-    public function hookActionAdminOrdersListingFieldsModifier($params)
-    {
-        nacexutils::writeNacexLog('INI hookActionAdminOrdersListingFieldsModifier :: ');
-
-        if (!isset($params['fields']['Nacex'])) {
-            $params['fields']['Nacex'] = [
-                'title' => 'Nacex',
-                'align' => 'text-center',
-                'callback' => 'callbackMethod',
-                'callback_object' => Module::getInstanceByName($this->name),
-                'filter_key' => 'oca!tracking_number',
-                'remove_onclick' => true
-            ];
-        }
-        if (isset($params['select'])) {
-            $params['select'] .= ', oca.tracking_number AS tracking_number';
-            //$params['select'] .= ", ca.name AS carrier_name";
-        }
-        if (isset($params['join'])) {
-            $params['join'] .= 'LEFT JOIN `' . _DB_PREFIX_ . 'order_carrier` oca ON (a.`id_order` = oca.`id_order`)';
-        }
-
-        nacexutils::writeNacexLog('FIN hookActionAdminOrdersListingFieldsModifier :: ');
-    }
-
-    /**
      * Esta función Utiliza el Params de Prestashop y el Builder que se ejecuta en ciertos Hooks
      * para actualizar el estado de las expediciones y el estado de los pedidos a los pedidos de la pagina actual de pedidos.
      *
@@ -366,7 +295,9 @@ class nacex extends CarrierModule
         $query_builder = $params['search_query_builder'];
 
         if ($query_builder instanceof \Doctrine\DBAL\Query\QueryBuilder) {
-            $orders = $query_builder->execute()->fetchAll();
+            // executeQuery() para Doctrine DBAL 3.x+ (PS9), execute() para DBAL 2.x (PS 1.7.8/PS8)
+            $result = method_exists($query_builder, 'executeQuery') ? $query_builder->executeQuery() : $query_builder->execute();
+            $orders = method_exists($result, 'fetchAllAssociative') ? $result->fetchAllAssociative() : $result->fetchAll();
 
             if (!empty($orders)) {
                 foreach ($orders as $order) {
@@ -390,47 +321,11 @@ class nacex extends CarrierModule
         nacexutils::writeNacexLog('FIN checkOrderListData');
     }
 
-    // Con esta función alteramos el grid el controlador que le indiquemos (en este caso es ORDER)
-    /*public function hookActionOrderGridDefinitionModifier(array $params)
-    {
-        $definition = $params['definition'];
-        $translator = $this->getTranslator();
-
-        $definition
-            ->getColumns()
-            ->addAfter(
-                'osname',
-                (new DataColumn('nacex'))
-                    ->setName($translator->trans('Nacex', [], 'Modules.nacex'))
-                    ->setOptions([
-                        'field' => 'nacex',
-                        'clickable' => false
-                    ])
-            );
-    }*/
-
-    // Función que altera las consultas a la BBDD
     public function hookActionOrderGridQueryBuilderModifier(array $params)
     {
         nacexutils::writeNacexLog('---------');
         nacexutils::writeNacexLog('INI hookActionOrderGridQueryBuilderModifier :: ');
-
         $this->checkOrderListData($params);
-        //        $searchQueryBuilder = $params['search_query_builder'];
-        //
-        //        // El campo as X debe coincidir con el nombre de la nueva columna que se indica en el GridDefinitionModifier
-        ////        $searchQueryBuilder->addSelect('o.id_carrier as nacex')
-        ////            //->from(_DB_PREFIX_.'orders o')
-        ////        ;
-        //
-        //        //$searchQueryBuilder->addSelect('GROUP_CONCAT(nex.ag_cod_num_exp) as nacex')
-        //        $searchQueryBuilder->addSelect('nex.ag_cod_num_exp as nacex')
-        //            ->from(_DB_PREFIX_ . 'nacex_expediciones')
-        //            ->leftJoin('o', _DB_PREFIX_ . 'nacex_expediciones', 'nex', 'o.id_order = nex.id_envio_order')
-        //            //->leftJoin('nex', _DB_PREFIX_ . 'orders', 'ord', 'ord.id_order = nex.id_envio_order')
-        //            //->rightJoin('nex', _DB_PREFIX_ . 'orders', 'ord', 'ord.id_order = nex.id_envio_order')
-        //            ->addGroupBy('o.id_order')//->groupBy('o.id_order');
-        //$searchQueryBuilder->leftJoin('a', '`' . _DB_PREFIX_ . 'order_carrier`', 'oca',  '(a.`id_order` = oca.`id_order`)');
         nacexutils::writeNacexLog('FIN hookActionOrderGridQueryBuilderModifier :: ');
         nacexutils::writeNacexLog('---------');
     }
@@ -1271,25 +1166,6 @@ class nacex extends CarrierModule
         return $this->_html;
     }
 
-    /* Catch product returns and substract loyalty points */
-    public function hookOrderReturn($params)
-    {}
-
-    /* Hook display on shopping cart summary */
-    public function hookShoppingCart($params)
-    {}
-
-    /* Hook called when a new order is created */
-    public function hookNewOrder($params)
-    {}
-
-    /* Hook called when an order change its status */
-    public function hookUpdateOrderStatus($params)
-    {}
-
-    public function hookDisplayPDFInvoice($params)
-    {}
-
     public function hookDisplayBeforeCarrier($params)
     {
         nacexutils::writeNacexLog('---' . $this->context->controller->php_self);
@@ -1494,7 +1370,7 @@ class nacex extends CarrierModule
         nacexutils::writeNacexLog('----');
     }
 
-    public function hookAdminOrder($params, $ver177 = false)
+    private function renderAdminOrder($params, $ver177 = false)
     {
         nacexutils::writeNacexLog('---' . $this->context->controller->php_self);
         nacexutils::writeNacexLog('INI hookAdminOrder :: id_order: ' . $params['id_order']);
@@ -2072,11 +1948,9 @@ class nacex extends CarrierModule
         return nacex::calculoTarifa($params, $this->id_carrier);
     }
 
-    /** Nuevos hooks PS1.7.7 **/
-    //public function hookdisplayAdminOrder($params)
     public function hookdisplayAdminOrderMainBottom($params)
     {
-        return $this->hookAdminOrder($params, true);
+        return $this->renderAdminOrder($params, true);
     }
 
     public function hookactionValidateOrder($params)
