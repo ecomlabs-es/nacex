@@ -118,10 +118,11 @@ class CPuntoNacexShop
             'SELECT ncx FROM ' . _DB_PREFIX_ . 'cart WHERE id_cart = ' . $idCart
         );
 
-        // Guardamos solo el ID del punto para poder recuperar los datos mas tarde
+        // Guardamos los datos completos del punto en cart.ncx
         if (!empty($query)) {
+            $shopData = $datos[0] . '|' . $datos[1] . '|' . $datos[2] . '|' . $datos[3] . '|' . $datos[4] . '|' . $datos[5] . '|' . $datos[6];
             Db::getInstance()->execute(
-                'UPDATE ' . _DB_PREFIX_ . 'cart SET ncx = \'' . pSQL($datos[0]) . '\' WHERE id_cart = ' . $idCart
+                'UPDATE ' . _DB_PREFIX_ . 'cart SET ncx = \'' . pSQL($shopData) . '\' WHERE id_cart = ' . $idCart
             );
         }
     }

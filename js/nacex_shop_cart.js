@@ -58,7 +58,7 @@ function seleccionadoNacexShop(tipo, txt, _url, opc) {
     let opc_shop_datos = shopc.trim() + '|' + shopa.trim() + '|' + shopn.trim() + '|' + shopd.trim() + '|' + shopcp.trim() + '|' + shopp.trim() + '|' + shoppr.trim();
     document.getElementById('shop_datos').value = opc_shop_datos;
     document.cookie = 'opc_id_cart=' + id_cart;
-    document.cookie = 'opc_shop_datos=' + shopc.trim();
+    document.cookie = 'opc_shop_datos=' + encodeURIComponent(opc_shop_datos);
 
     // Guardar en localStorage para persistir entre pasos del checkout
     try {
