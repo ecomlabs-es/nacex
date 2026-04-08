@@ -754,11 +754,7 @@ class nacex extends CarrierModule
             }
         //}
 
-        // Para el OPC no hace falta cargar el jquery, si no, sí que hace falta cargarlo
-        if ($customopc == 0) {
-            $html .= "<script type='text/javascript' src='" . _MODULE_DIR_ . "nacex/js/jquery-3.3.1.min.js'></script>"; }
-
-        $html .= "<script>                
+        $html .= "<script>
                 var id_cart = '" . $id_cart . "';                    
                 var isGuest = '" . $isGuest . "';
                 var href_opc = '';                    
