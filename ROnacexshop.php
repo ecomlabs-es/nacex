@@ -119,6 +119,8 @@ class nacexshop
             $hoy = date('Ymd');
             $fileName = "droppoints_$hoy.csv";
 
+            // Convertir a UTF-8 al guardar para evitar problemas de codificación
+            $report = nacexutils::toUtf8($report);
             file_put_contents($this->pluginPath . $fileName, $report);
             //file_put_contents($my_save_dir . $fileName, $report);
 
@@ -146,7 +148,7 @@ class nacexshop
         // Cache del contenido del CSV en memoria para evitar releer en cada busqueda
         if (!isset(self::$fileContentsCache[$file])) {
             $raw = file_get_contents($file);
-            self::$fileContentsCache[$file] = $raw !== false ? nacexutils::toUtf8(trim($raw)) : '';
+            self::$fileContentsCache[$file] = $raw !== false ? trim($raw) : '';
         }
         $contents = self::$fileContentsCache[$file];
 
@@ -316,7 +318,7 @@ class nacexshop
                     $line2 = explode('|', $csvLine);
                     if (isset($line2[1]) && $line2[1] == $ag[12]) {
                         //$_agencias[$i] = $_agencias[$i] . "~" . $line2[2];
-                        $_agencias[$i] = $_agencias[$i] . '~' . nacexutils::toUtf8($line2[2]);
+                        $_agencias[$i] = $_agencias[$i] . '~' . $line2[2];
                         break;
                     }
                 }
@@ -342,8 +344,6 @@ class nacexshop
         $tienda = ($agencia) ? $this->searchFile($shop_codigo, $file[0], false)[0] : $this->searchFile($shop_codigo, $file[0], true)[0];
 
         $contents = file_get_contents($file[0]);
-        // Codificamos los caracteres correctamente
-        $contents = nacexutils::toUtf8($contents);
 
         // Cogemos el alias de la tienda ( codigo|ALIAS-xx|... )
         $alias = explode('-', explode('|', $tienda[0])[1])[0];
