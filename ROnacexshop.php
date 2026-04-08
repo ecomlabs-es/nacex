@@ -176,7 +176,15 @@ class nacexshop
     {
         // Número de puntos shop que se mostrarán cuando haya un error de WS
         $numResultados = 15;
+
+        // Asegurar que el fichero existe (descargarlo si no)
+        $this->checkFileDate();
+
         $file = glob($this->pluginPath . 'droppoint*.csv');
+        if (empty($file)) {
+            nacexutils::writeNacexLog('getFileData :: ERROR - No existe fichero de puntos NacexShop');
+            return false;
+        }
 
         // La conexión WS funciona correctamente
         if ($isConnection) {
