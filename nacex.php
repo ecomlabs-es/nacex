@@ -1569,6 +1569,19 @@ class nacex extends CarrierModule
      */
     public function getContent()
     {
+        // Actualizar nombre del tab con la versión actual
+        $tabId = (int)Tab::getIdFromClassName('AdminNacex');
+        if ($tabId) {
+            $tab = new Tab($tabId);
+            $expectedName = 'Nacex  V.' . nacexutils::nacexVersion;
+            if (isset($tab->name[$this->context->language->id]) && $tab->name[$this->context->language->id] !== $expectedName) {
+                foreach (Language::getLanguages(false) as $lang) {
+                    $tab->name[$lang['id_lang']] = $expectedName;
+                }
+                $tab->update();
+            }
+        }
+
         $this->_html .= '<h2>NACEX</h2>';
         if (! empty($_POST) and Tools::isSubmit('submitSave')) {
             $this->_postValidation();
