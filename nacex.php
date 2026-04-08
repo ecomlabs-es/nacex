@@ -661,7 +661,7 @@ class nacex extends CarrierModule
                                     document.getElementById('div_table_nacex_shop').style.display = 'none';
                                 }
                             }
-                        }    
+                        }
                    });
                 }
             });
@@ -796,8 +796,9 @@ class nacex extends CarrierModule
             var codigo_postal_entrega = '';
             var opc_idBoton = '" . Configuration::get('NACEX_OPC_ID_BOTON') . "';
         
-        $(function() {
-            
+        document.addEventListener('DOMContentLoaded', function() {
+        var $ = jQuery;
+
             if(customopc == 0) {
                 
                 try{//PS1.7.3
