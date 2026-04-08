@@ -24,10 +24,15 @@ Corregir updateOrderStatus: inicializar variable $estadoEncontrado
 Corregir hash_form: actualizar siempre al regenerar
 Corregir datos incompletos del shop al crear dirección
 Actualizar nombre del tab automáticamente con la versión actual
+Corregir SQL injection en LBnewService.php (pSQL en queries de servicios)
+Proteger endpoint COnewServices.php con verificación de admin y Tools::getValue()
+Validar código postal en COnxShop.php con Validate::isPostCode()
+Corregir charset de COnxShop.php de iso-8859-1 a utf-8
 Eliminar código muerto: nacex_loader.php (WooCommerce), nacexcontrolversion.php, jquery.cluetip.js
+Eliminar código muerto: ConsultasBD.php, FuncionesWS.php, NacexLog.php (duplicados de nacexDAO/nacexWS/nacexutils)
 Eliminar librerías duplicadas: lib/jquery-barcode, lib/jquery-printelement, lib/js-md5, lib/jquery-validate
 Eliminar jQuery 3.3.1 bundled (PrestaShop ya lo incluye)
-Eliminar carpeta includes/ sin uso
+Eliminar carpeta includes/ sin uso, logo.gif sin uso
 Limpiar JavaScript: eliminar async:false innecesario, código comentado, selectores redundantes
 Añadir tests unitarios con PHPUnit
 Añadir análisis estático con PHPStan
