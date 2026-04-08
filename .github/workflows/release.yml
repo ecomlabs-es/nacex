@@ -33,11 +33,16 @@ jobs:
           mkdir -p /tmp/build/${MODULE_NAME}
           rsync -a --exclude='.git' \
                    --exclude='.github' \
+                   --exclude='.gitignore' \
                    --exclude='tests' \
                    --exclude='.php-cs-fixer.dist.php' \
+                   --exclude='.php-cs-fixer.cache' \
                    --exclude='.phpunit.result.cache' \
                    --exclude='phpunit.xml.dist' \
                    --exclude='phpstan.neon' \
+                   --exclude='composer.json' \
+                   --exclude='composer.lock' \
+                   --exclude='README.md' \
                    --exclude='log' \
                    ./ /tmp/build/${MODULE_NAME}/
           cd /tmp/build
