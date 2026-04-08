@@ -1777,13 +1777,11 @@ class nacexDAO
 
     private static function updateOrderStatus($orderId, $configOrderStatus, $estadoNoCambia)
     {
-        $new_history = new OrderHistory();
-        $new_history->id_order = (int)$orderId;
-
-        $order = new Order($orderId);
+        $order = new Order((int)$orderId);
         $OrderStatusActual = $order->getCurrentState();
 
-        // Obtener el listado de estados del pedido y comprobar que no se cambie si ya existia ese estado anteriormente:
+        // Obtener el listado de estados del pedido y comprobar que no se cambie si ya existía ese estado anteriormente
+        $estadoEncontrado = false;
         $estados = $order->getHistory($order->id_lang);
         foreach ($estados as $estado) {
             if ($estado['id_order_state'] == (int)$configOrderStatus) {
@@ -1791,19 +1789,18 @@ class nacexDAO
                 break;
             }
         }
-        $noCambiarEstado = (!in_array($OrderStatusActual, explode('|', $estadoNoCambia))) ? false : true;
 
-        if (!$estadoEncontrado) {
-            if ($OrderStatusActual != $configOrderStatus && !$noCambiarEstado) {
-                nacexutils::writeNacexLog('updateOrderStatus :: Estado actual del pedido: ' . $OrderStatusActual);
-                nacexutils::writeNacexLog('updateOrderStatus :: Cambia el estado a ' . (int)$configOrderStatus . ' ya que es diferente al actual');
-                $new_history->changeIdOrderState((int)$configOrderStatus, (int)($orderId));
+        $estadosNoCambiar = $estadoNoCambia ? explode('|', $estadoNoCambia) : [];
+        $noCambiarEstado = in_array($OrderStatusActual, $estadosNoCambiar);
 
-                //$new_history->add(true);
-                /* Envío de emails al actualizar el pedido */
-                $new_history->addWithemail(); // Para enviar el email
-                $new_history->save();
-            }
+        if (!$estadoEncontrado && $OrderStatusActual != $configOrderStatus && !$noCambiarEstado) {
+            nacexutils::writeNacexLog('updateOrderStatus :: Estado actual del pedido: ' . $OrderStatusActual);
+            nacexutils::writeNacexLog('updateOrderStatus :: Cambia el estado a ' . (int)$configOrderStatus . ' ya que es diferente al actual');
+
+            $new_history = new OrderHistory();
+            $new_history->id_order = (int)$orderId;
+            $new_history->changeIdOrderState((int)$configOrderStatus, (int)$orderId);
+            $new_history->addWithemail();
         }
     }
 
