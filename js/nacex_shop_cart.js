@@ -14,6 +14,7 @@ function setDatosSession(txt, _url, id_cart) {
         type: 'POST',
         url: _url + 'modules/nacex/CPuntoNacexShop.php',
         data: 'txt=' + txt + '&cart=' + id_cart + '&metodo_nacex=setSession',
+        async: false,
         success: function () {
             console.log('NACEX LOG - SETDATOSSESSION - SUCCESS');
         }
@@ -25,6 +26,7 @@ function getDatosSession(_url) {
         type: 'POST',
         url: _url + 'modules/nacex/CPuntoNacexShop.php',
         data: 'metodo_nacex=getSession',
+        async: false,
         success: function (msg) {
             console.log('NACEX LOG - GETDATOSSESSION - SUCCESS');
             rellenarNacexShop(msg);
