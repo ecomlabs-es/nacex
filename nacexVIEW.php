@@ -970,7 +970,7 @@ class nacexVIEW
                 $estado_exp = 'PENDIENTE';
             } else { $html_fieldset_body_estado = '<div style="width:auto" class="alert error"><p>' . $respuestaGetEstadoExpedicion[0] . ' ' . $respuestaGetEstadoExpedicion[2] . '</p></div>'; }
         } else {
-            $URLSHOWEXPEDICION = 'https://www.nacex.es/seguimientoDetalle.do?estado&internacional&externo';
+            $URLSHOWEXPEDICION = 'https://www.nacex.es/seguimientoDetalle.do?estado&internacional&externo=1';
             $agencia_albaran = $datosexpedicion['ag_cod_num_exp'];
             $array = explode('/', $agencia_albaran);
             $agencia = $array[0];
