@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="Nacex" width="200">
+  <img src="images/logos/NACEX_logo.svg" alt="Nacex" width="250">
 </p>
 
 <h1 align="center">Nacex - Módulo PrestaShop</h1>
