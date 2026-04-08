@@ -377,7 +377,7 @@ class nacexWS {
 				JOIN ' . _DB_PREFIX_ . 'customer AS u
 				JOIN ' . _DB_PREFIX_ . 'address a
 				JOIN ' . _DB_PREFIX_ . 'country AS z
-				WHERE o.id_order = "' . $id_pedido . '"
+				WHERE o.id_order = ' . (int)$id_pedido . '
 				AND u.id_customer = o.id_customer
 				AND a.id_address = o.id_address_delivery
 				AND a.id_country = z.id_country'
@@ -385,7 +385,7 @@ class nacexWS {
         nacexutils::writeNacexLog('putExpedicionDev :: obtenidos datos pedido BD id_order: ' . $datos[0]['id_order'] . ' | module: ' . $datos[0]['module'] . ' | total_paid_real: ' . $datos[0]['total_paid_real'] . ' | email: ' . $datos[0]['email'] . ' | firstname: ' . $datos[0]['firstname'] . ' | lastname ' . $datos[0]['lastname'] . ' | address1: ' . $datos[0]['address1'] . ' | postcode: ' . $datos[0]['postcode'] . ' | city: ' . $datos[0]['city'] . ' | phone: ' . $datos[0]['phone'] . ' | phone_mobile: ' . $datos[0]['phone_mobile'] . ' | iso_code: ' . $datos[0]['iso_code']);
 
         //Obtenemos más detalles del pedido, como el peso y las referencias
-        $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference FROM ' . _DB_PREFIX_ . 'order_detail where id_order = "' . $id_pedido . '"');
+        $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference FROM ' . _DB_PREFIX_ . 'order_detail WHERE id_order = ' . (int)$id_pedido);
 
         //Miramos si hay que informar del retorno
         $xml_ret = (isset($nacexRet) && $nacexRet == 'SI') ? '<arrayOfString_3>ret=S</arrayOfString_3>' : '';
@@ -802,7 +802,7 @@ class nacexWS {
 				JOIN ' . _DB_PREFIX_ . 'customer AS u
 				JOIN ' . _DB_PREFIX_ . 'address a
 				JOIN ' . _DB_PREFIX_ . 'country AS z
-				WHERE o.id_order = "' . $id_pedido . '"
+				WHERE o.id_order = ' . (int)$id_pedido . '
 				AND u.id_customer = o.id_customer
 				AND a.id_address = o.id_address_delivery
 				AND a.id_country = z.id_country'
@@ -810,7 +810,7 @@ class nacexWS {
         nacexutils::writeNacexLog('putExpedicion :: obtenidos datos pedido BD id_order: ' . $datos[0]['id_order'] . ' | module: ' . $datos[0]['module'] . ' | total_paid_real: ' . $datos[0]['total_paid_real'] . ' | email: ' . $datos[0]['email'] . ' | firstname: ' . $datos[0]['firstname'] . ' | lastname ' . $datos[0]['lastname'] . ' | address1: ' . $datos[0]['address1'] . ' | postcode: ' . $datos[0]['postcode'] . ' | city: ' . $datos[0]['city'] . ' | phone: ' . $datos[0]['phone'] . ' | phone_mobile: ' . $datos[0]['phone_mobile'] . ' | iso_code: ' . $datos[0]['iso_code']);
 
         //Obtenemos más detalles del pedido, como el peso y las referencias
-        $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference FROM ' . _DB_PREFIX_ . 'order_detail where id_order = "' . $id_pedido . '"');
+        $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference FROM ' . _DB_PREFIX_ . 'order_detail WHERE id_order = ' . (int)$id_pedido);
 
         //Miramos si hay que informar del retorno
         $xml_ret = (isset($nacexRet) && $nacexRet == 'SI') ? '<arrayOfString_3>ret=S</arrayOfString_3>' : '';
@@ -1200,9 +1200,9 @@ class nacexWS {
         $instrucciones = '';
 
         //Obtenemos m�s detalles del pedido, como el peso y las referencias
-        $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference, total_price_tax_incl 
+        $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference, total_price_tax_incl
 																										FROM ' . _DB_PREFIX_ . 'order_detail
-																										where id_order = "' . $id_pedido . '"');
+																										WHERE id_order = ' . (int)$id_pedido);
         $peso = 0;
         $bultos = 0;
         $valor = 0;

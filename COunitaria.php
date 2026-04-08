@@ -10,19 +10,20 @@ $_resultcodresponse = [];
 $_header = VIunitaria::cabecera();
 
 // Añadimos la URL de admin con el token, que siempre se lo pasaremos
-if (isset($_GET['oToken'])) { $_resultcodresponse = router($_GET['oToken']); } else { $_resultcodresponse = router($_POST['oToken']); }
+$oToken = Tools::getValue('oToken');
+$_resultcodresponse = $oToken ? router($oToken) : [];
 
 //IF WE GET RESPONSE FROM SEARCH OR CABECERA ELSE FROM PUTEXPEDICION
-if ((!$_resultcodresponse) || (isset($_resultcodresponse[0]['cod_response']) || ($_GET['method'] == 'unitaria'))) {
-    array_push($_response, ['cod_response' => $_resultcodresponse[0]['cod_response'],
+if ((!$_resultcodresponse) || (isset($_resultcodresponse[0]['cod_response']) || (Tools::getValue('method') == 'unitaria'))) {
+    $_response[] = [
+        'cod_response' => $_resultcodresponse[0]['cod_response'],
         'header' => $_header,
         'result' => $_resultcodresponse[0]['result']
-    ]);
+    ];
     echo json_encode($_response);
 } else {
     $viunit = new VIunitaria();
-    $id_pedido = (isset($_POST['id_pedido'])) ? $_POST['id_pedido'] : $_GET['id_pedido'];
-    $oToken = (isset($_POST['oToken'])) ? $_POST['oToken'] : $_GET['oToken'];
+    $id_pedido = (int)Tools::getValue('id_pedido');
     echo $viunit->printTable($id_pedido, $oToken);
 }
 

@@ -10,12 +10,16 @@ class HashTest extends TestCase
     {
         $_SESSION = [];
         $_POST = [];
+        $_GET = [];
+        Tools::reset();
     }
 
     protected function tearDown(): void
     {
         $_SESSION = [];
         $_POST = [];
+        $_GET = [];
+        Tools::reset();
     }
 
     public function testHashFormDevuelveUnEntero(): void
@@ -44,8 +48,9 @@ class HashTest extends TestCase
 
     public function testHashFormActualizaHashParaMismoOrderId(): void
     {
-        $rand1 = hash::hash_form('100');
-        $_POST['order_id'] = '100';
+        hash::hash_form('100');
+        // Simular que se envió el form con order_id=100
+        Tools::set('order_id', '100');
         $rand2 = hash::hash_form('100');
 
         $this->assertCount(1, $_SESSION['rand']);
@@ -55,8 +60,9 @@ class HashTest extends TestCase
     public function testValidateHashDevuelveTrueConDatosCorrectos(): void
     {
         $rand = hash::hash_form('100');
-        $_POST['order_id'] = '100';
-        $_POST['hash'] = $rand;
+        // Tools::getValue() lee de $_POST y $_GET
+        Tools::set('order_id', '100');
+        Tools::set('hash', (string)$rand);
 
         $hashObj = new hash();
         $this->assertTrue($hashObj->validate_hash());
@@ -65,8 +71,8 @@ class HashTest extends TestCase
     public function testValidateHashDevuelveFalseConHashIncorrecto(): void
     {
         hash::hash_form('100');
-        $_POST['order_id'] = '100';
-        $_POST['hash'] = 'hash_incorrecto';
+        Tools::set('order_id', '100');
+        Tools::set('hash', 'hash_incorrecto');
 
         $hashObj = new hash();
         $this->assertFalse($hashObj->validate_hash());
@@ -74,17 +80,29 @@ class HashTest extends TestCase
 
     public function testValidateHashDevuelveFalseSinSesion(): void
     {
-        $_POST['order_id'] = '100';
-        $_POST['hash'] = '12345';
+        Tools::set('order_id', '100');
+        Tools::set('hash', '12345');
 
         $hashObj = new hash();
-        // Tras el fix, ya no lanza error con sesion vacia
         $this->assertFalse($hashObj->validate_hash());
     }
 
     public function testValidateHashDevuelveFalseSinPost(): void
     {
         hash::hash_form('100');
+
+        $hashObj = new hash();
+        $this->assertFalse($hashObj->validate_hash());
+    }
+
+    public function testValidateHashNoCruzaParesDeDistintosOrders(): void
+    {
+        $rand1 = hash::hash_form('100');
+        $rand2 = hash::hash_form('200');
+
+        // Intentar usar hash del order 100 con order_id 200
+        Tools::set('order_id', '200');
+        Tools::set('hash', (string)$rand1);
 
         $hashObj = new hash();
         $this->assertFalse($hashObj->validate_hash());

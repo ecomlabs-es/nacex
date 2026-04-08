@@ -995,7 +995,7 @@ class nacex extends CarrierModule
         if (in_array($id_carrier, $array_transportistas_f)) {
             $transportistas_f_piped = str_replace($id_carrier, $params['carrier']->id, $transportistas_f_piped);
             Configuration::updateValue('NACEX_ID_TRANSPORTISTAS_F', $transportistas_f_piped);
-            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET ncx="nacex" WHERE id_carrier = "' . $params['carrier']->id . '"');
+            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET ncx="nacex" WHERE id_carrier = ' . (int)$params['carrier']->id);
             nacexutils::writeNacexLog('hookupdateCarrier :: actualizado campo [ncx = nacex] del carrier');
         }
 
@@ -1004,7 +1004,7 @@ class nacex extends CarrierModule
         if (in_array($id_carrier, $array_transportistas_nxshop_f)) {
             $transportistas_nxshop_f_piped = str_replace($id_carrier, $params['carrier']->id, $transportistas_nxshop_f_piped);
             Configuration::updateValue('NACEX_ID_TRANSPORTISTAS_NXSHOP_F', $transportistas_nxshop_f_piped);
-            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET ncx="nacexshop" WHERE id_carrier = "' . $params['carrier']->id . '"');
+            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET ncx="nacexshop" WHERE id_carrier = ' . (int)$params['carrier']->id);
             nacexutils::writeNacexLog('hookupdateCarrier :: actualizado campo [ncx = nacexshop] del carrier');
         }
 
@@ -1013,14 +1013,14 @@ class nacex extends CarrierModule
         if (in_array($id_carrier, $array_transportistas_nxint_f)) {
             $transportistas_nxint_f_piped = str_replace($id_carrier, $params['carrier']->id, $transportistas_nxint_f_piped);
             Configuration::updateValue('NACEX_ID_TRANSPORTISTAS_NXINT_F', $transportistas_nxint_f_piped);
-            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET ncx="nacexint" WHERE id_carrier = "' . $params['carrier']->id . '"');
+            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET ncx="nacexint" WHERE id_carrier = ' . (int)$params['carrier']->id);
             nacexutils::writeNacexLog('hookupdateCarrier :: actualizado campo [ncx = nacexint] del carrier');
         }
 
         // Por Ãºltimo, actualizamos el campo de tip_serv apra no perder el servicio al que hace referencia el carrier
-        $tip_serv_ant = Db::getInstance()->executeS('SELECT tip_serv,ncx FROM ' . _DB_PREFIX_ . 'carrier c WHERE c.id_carrier = "' . $id_carrier . '"');
-        nacexutils::writeNacexLog('hookupdateCarrier :: realizando ' . 'UPDATE ' . _DB_PREFIX_ . 'carrier SET tip_serv="' . $tip_serv_ant[0]['tip_serv'] . '",ncx="' . $tip_serv_ant[0]['ncx'] . '" WHERE id_carrier = "' . $params['carrier']->id . '"');
-        Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET tip_serv="' . $tip_serv_ant[0]['tip_serv'] . '",ncx="' . $tip_serv_ant[0]['ncx'] . '" WHERE id_carrier = "' . $params['carrier']->id . '"');
+        $tip_serv_ant = Db::getInstance()->executeS('SELECT tip_serv,ncx FROM ' . _DB_PREFIX_ . 'carrier c WHERE c.id_carrier = ' . (int)$id_carrier);
+        nacexutils::writeNacexLog('hookupdateCarrier :: realizando UPDATE carrier SET tip_serv=' . $tip_serv_ant[0]['tip_serv'] . ',ncx=' . $tip_serv_ant[0]['ncx'] . ' WHERE id_carrier = ' . (int)$params['carrier']->id);
+        Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET tip_serv="' . pSQL($tip_serv_ant[0]['tip_serv']) . '",ncx="' . pSQL($tip_serv_ant[0]['ncx']) . '" WHERE id_carrier = ' . (int)$params['carrier']->id);
 
         nacexutils::writeNacexLog('FIN hookupdateCarrier :: id_carrier: ' . $params['id_carrier']);
         nacexutils::writeNacexLog('---');
@@ -1318,7 +1318,7 @@ class nacex extends CarrierModule
         // $nacex_carrier = null;
 
         if ($nacexDTO->isNacexCarrier($carrier)) {
-            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET ncx="1"	WHERE id_cart = "' . $id_cart . '"');
+            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET ncx="1" WHERE id_cart = ' . (int)$id_cart);
             nacexutils::writeNacexLog('hookOrderConfirmation :: actualizado campo nacex [ncx=1] de la tabla cart.');
         } elseif ($nacexDTO->isNacexShopCarrier($carrier)) {
             nacexutils::writeNacexLog('hookOrderConfirmation :: isNacexShopCarrier');
@@ -1331,10 +1331,10 @@ class nacex extends CarrierModule
                 setcookie('opc_shop_datos', '', time() - 3600);
                 setcookie('opc_id_cart', '', time() - 3600);
 
-                Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET ncx="' . $shop_datos . '" WHERE id_cart = "' . $id_cart . '"');
+                Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET ncx="' . pSQL($shop_datos) . '" WHERE id_cart = ' . (int)$id_cart);
                 nacexutils::writeNacexLog('hookOrderConfirmation :: actualizado campo nacex [ncx=' . $shop_datos . '] de la tabla cart.');
             } else {
-                $ret = Db::getInstance()->executeS('SELECT ncx FROM ' . _DB_PREFIX_ . 'cart WHERE id_cart = "' . $id_cart . '"');
+                $ret = Db::getInstance()->executeS('SELECT ncx FROM ' . _DB_PREFIX_ . 'cart WHERE id_cart = ' . (int)$id_cart);
                 $shop_datos = $ret[0]['ncx'];
                 nacexutils::writeNacexLog('hookOrderConfirmation :: shop_datos obtenidos -' . $shop_datos);
             }
@@ -1423,16 +1423,13 @@ class nacex extends CarrierModule
                     $datospedido[0]['ncx'] = implode('|', $shop_address);
 
                     nacexDAO::setNacexShopAddressinBD($id_order, $datospedido[0]['id_cart'], $datospedido[0]['id_address_delivery'], $datospedido[0]['id_customer'], implode('|', $shop_address));
-                } elseif (isset($_POST['cpPointsChoices']) && $_POST['cpPointsChoices'] !== '') {
+                } elseif (Tools::getValue('cpPointsChoices') !== false && Tools::getValue('cpPointsChoices') !== '') {
 
                     require_once(dirname(__FILE__) . '/VInacexshop.php');
                     $vi_nacex_shop = new VInacexshop();
                     $prov = '';
 
-                    $cpPointsChoices = $_POST['cpPointsChoices'];
-
-                    // Eliminamos variable de POST
-                    unset($_POST['cpPointsChoices']);
+                    $cpPointsChoices = Tools::getValue('cpPointsChoices');
 
                     // Buscar la tienda de ese id
                     $shopPointSelected = $_nacex_shop->getShopByCode($cpPointsChoices, true)[0];
@@ -1493,7 +1490,7 @@ class nacex extends CarrierModule
             }
             //}
 
-            $arraydatos = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'nacex_expediciones where id_envio_order = "' . $id_order . '" order by fecha_alta asc ');
+            $arraydatos = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'nacex_expediciones WHERE id_envio_order = ' . (int)$id_order . ' ORDER BY fecha_alta ASC');
 
             $lastElement = end($arraydatos);
 

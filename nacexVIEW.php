@@ -81,8 +81,8 @@ class nacexVIEW
 
         $html .= '</script>
 				<script>
-					var cli_tlf = "' . substr($cliente_tlf, 0, 50) . '";
-					var cli_email = "' . substr($cliente_email, 0, 50) . '";
+					var cli_tlf = "' . addslashes(substr($cliente_tlf, 0, 50)) . '";
+					var cli_email = "' . addslashes(substr($cliente_email, 0, 50)) . '";
 					function setprealerta(tipo){
 						if(tipo==="N"){
 							document.getElementById("nacex_pre1").readOnly=true;	
@@ -346,7 +346,7 @@ class nacexVIEW
         $numproductos = 0;
         $valor = 0;
 
-        $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference, total_price_tax_incl FROM ' . _DB_PREFIX_ . 'order_detail where id_order = "' . $id_order . '"');
+        $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference, total_price_tax_incl FROM ' . _DB_PREFIX_ . 'order_detail WHERE id_order = ' . (int)$id_order);
 
         foreach ($productospedido as $producto) {
             $numproductos += $producto['product_quantity'];
@@ -418,9 +418,9 @@ class nacexVIEW
         $tieneCampoEmpresa = strpos($campoEmpresa, '|');
         if ($tieneCampoEmpresa === false){
             if ($campoEmpresa !== $campoEmpresaInvoice){
-                $campoEmpresafinal = $campoEmpresa . '|' . $campoEmpresaInvoice;
-                Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'address SET company="' . $campoEmpresafinal . '" WHERE id_address = "' . $id_address . '"');
-                $address->company = $campoEmpresafinal;
+                $campoEmpresafinal = pSQL($campoEmpresa . '|' . $campoEmpresaInvoice);
+                Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'address SET company="' . $campoEmpresafinal . '" WHERE id_address = ' . (int)$id_address);
+                $address->company = $campoEmpresa . '|' . $campoEmpresaInvoice;
                 $address->update();
 
             }
@@ -439,7 +439,7 @@ class nacexVIEW
 
         if ($inst_adi_cantyref) {
             //Obtenemos más detalles del pedido, como el peso y las referencias
-            $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference FROM ' . _DB_PREFIX_ . 'order_detail where id_order = "' . $id_order . '"');
+            $productospedido = Db::getInstance()->executeS('SELECT product_quantity, product_weight, product_reference FROM ' . _DB_PREFIX_ . 'order_detail WHERE id_order = ' . (int)$id_order);
             foreach ($productospedido as $producto) {
                 $prodref = str_replace(';', ',', $producto['product_reference']);
                 $instrucciones .= ' ** ' . $producto['product_quantity'] . ' # ' . $prodref;
@@ -501,7 +501,7 @@ class nacexVIEW
                                 }          
                             </script>
                                            
-					<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="generarExpedicion" onsubmit=\'return checkform();\'>';
+					<form action="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') . '" method="post" name="generarExpedicion" onsubmit=\'return checkform();\'>';
 
         //HASH TO AVOID F5.
 
@@ -1030,7 +1030,7 @@ class nacexVIEW
         if (is_null($estado_exp)) { $truckColor = 'orange'; } elseif ($estado_exp == 'ANULADA' || $estado_exp == 'BAJA') { $truckColor = 'red'; } elseif ($estado_exp == 'INCIDENCIA') { $truckColor = 'goldenrod'; } elseif ($estado_exp == 'OK') { $truckColor = 'green'; } else { $truckColor = 'orange'; }
 
         //$truckColor = is_null($estado_exp)?"orange": $estado_exp=="ANULADA"?"red":$estado_exp=="INCIDENCIA"?"goldenrod": $estado_exp= "OK"?"green": "orange";
-        $acc_active = isset($_POST['expe_codigo']) && $_POST['expe_codigo'] == $datosexpedicion['exp_cod'] ? 'display: block;' : 'display: none;';
+        $acc_active = Tools::getValue('expe_codigo') == $datosexpedicion['exp_cod'] ? 'display: block;' : 'display: none;';
 
         $nxcShop = new nacexshop();
         $codigo = $isShop ? $datosexpedicion['shop_codigo'] : $datosexpedicion['ent_cod'];
@@ -1134,7 +1134,7 @@ class nacexVIEW
         $html .= ' if (typeof confirmar !== "function") { function confirmar(msg){ return confirm(msg); } }
     		</script>';
 
-        $html .= '<form action="' . $_SERVER['REQUEST_URI'] . '" method="post">';
+        $html .= '<form action="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') . '" method="post">';
         $html .= '<input type="hidden" name="exp_cod" value="' . $expId . '" />';
 
         // cancel
