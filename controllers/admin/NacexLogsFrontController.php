@@ -1,4 +1,5 @@
 <?php
+
 class NacexLogsFrontController extends ModuleAdminController
 {
     public function __construct()
@@ -17,4 +18,3 @@ class NacexLogsFrontController extends ModuleAdminController
         $_controller->controller();
     }
 }
-?>

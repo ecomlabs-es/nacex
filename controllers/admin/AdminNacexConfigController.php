@@ -1,4 +1,5 @@
 <?php
+
 class AdminNacexConfigController extends ModuleAdminController
 {
     public function __construct()
@@ -10,8 +11,7 @@ class AdminNacexConfigController extends ModuleAdminController
     {
         $configure = $this->context->link->getAdminLink('AdminModules', false)
             .'&configure='.$this->module->name.'&tab_module='.$this->module->tab.'&module_name='.$this->module->name.'&token='.Tools::getAdminTokenLite('AdminModules');
-            Tools::redirectAdmin($configure);
-            die();
+        Tools::redirectAdmin($configure);
+        die();
     }
 }
-?>

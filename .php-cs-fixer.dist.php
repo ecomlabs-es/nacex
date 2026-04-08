@@ -22,6 +22,7 @@ $config = new PhpCsFixer\Config();
 
 return $config
     ->setRiskyAllowed(false)
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setRules([
         '@PSR12' => true,
 

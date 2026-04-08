@@ -88,4 +88,4 @@ jobs:
         run: composer install --no-interaction --prefer-dist
 
       - name: Run CS Fixer
-        run: PHP_CS_FIXER_IGNORE_ENV=1 composer lint:cs
+        run: composer lint:cs

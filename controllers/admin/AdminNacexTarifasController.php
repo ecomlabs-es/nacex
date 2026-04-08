@@ -1,4 +1,5 @@
 <?php
+
 class AdminNacexTarifasController extends ModuleAdminController
 {
     public function __construct()
@@ -15,4 +16,3 @@ class AdminNacexTarifasController extends ModuleAdminController
         die();
     }
 }
-?>
