@@ -1631,9 +1631,7 @@ class nacex extends CarrierModule
 
             $selectStd = $selectShp = $selectInt = [];
             foreach ($genericCarriers as $c) {
-                if ($c['ncx'] === 'nacexG') { $selectStd[] = $c; }
-                elseif ($c['ncx'] === 'nacexshopG') { $selectShp[] = $c; }
-                elseif ($c['ncx'] === 'nacexintG') { $selectInt[] = $c; }
+                if ($c['ncx'] === 'nacexG') { $selectStd[] = $c; } elseif ($c['ncx'] === 'nacexshopG') { $selectShp[] = $c; } elseif ($c['ncx'] === 'nacexintG') { $selectInt[] = $c; }
             }
 
             if (empty($genericCarriers)) {
