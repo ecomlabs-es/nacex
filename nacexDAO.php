@@ -757,13 +757,16 @@ class nacexDAO
             if (!empty($data[0])) {
                 $shop_datos = $data[0];
             }
+            nacexutils::writeNacexLog('setNacexShopAddressinBD :: datos recuperados del fichero: ' . $shop_datos);
         }
+        // Asegurar codificación UTF-8
+        $shop_datos = nacexutils::toUtf8($shop_datos);
         $array_shop_data = nacexutils::explodeShopData($shop_datos);
         $array_address = nacexDAO::getAddressById($id_address);
 
         // Validar que tenemos los campos mínimos para crear una dirección
         if (empty($array_shop_data['shop_poblacion']) || empty($array_shop_data['shop_cp'])) {
-            nacexutils::writeNacexLog('setNacexShopAddressinBD :: ERROR - Datos del punto incompletos, no se puede crear la dirección');
+            nacexutils::writeNacexLog('setNacexShopAddressinBD :: ERROR - Datos del punto incompletos: ' . print_r($array_shop_data, true));
             return;
         }
 
