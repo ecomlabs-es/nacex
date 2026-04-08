@@ -288,8 +288,8 @@ class nacex extends CarrierModule
      *
      * @param array $params
      */
-    public function checkOrderListData(array $params) {
-
+    public function checkOrderListData(array $params)
+    {
         nacexutils::writeNacexLog('INI checkOrderListData');
 
         $query_builder = $params['search_query_builder'];
@@ -300,19 +300,29 @@ class nacex extends CarrierModule
             $orders = method_exists($result, 'fetchAllAssociative') ? $result->fetchAllAssociative() : $result->fetchAll();
 
             if (!empty($orders)) {
-                foreach ($orders as $order) {
-                    $dataExpedition = nacexDAO::getDatosExpedicion($order['id_order']);
+                // Una sola query para todas las expediciones pendientes de los pedidos de la página
+                $orderIds = array_map('intval', array_column($orders, 'id_order'));
+                $allExpeditions = Db::getInstance()->executeS(
+                    'SELECT * FROM ' . _DB_PREFIX_ . 'nacex_expediciones
+                     WHERE id_envio_order IN (' . implode(',', $orderIds) . ')
+                     AND estado NOT IN ("OK","ENTREGADA","BAJA","ANULADA")'
+                );
 
-                    if (count($dataExpedition) !== 0) {
-                        foreach ($dataExpedition as $expedition) {
-                            //Update Expedition status
-                            if ($this->do_i_have_to_update_expedition_status($expedition)) {
-                                nacexutils::writeNacexLog('checkOrderListData :: ESTADOS');
-                                $this->update_expedition_status($expedition, $_estado);
+                if (!empty($allExpeditions)) {
+                    // Indexar current_state por id_order para updateOrderStatusInOrderList
+                    $orderStates = [];
+                    foreach ($orders as $order) {
+                        $orderStates[$order['id_order']] = $order['current_state'];
+                    }
 
-                                // Actualizamos el listado de pedidos actualizando todos los estados
-                                $this->updateOrderStatusInOrderList($order['id_order'], $_estado, $order['current_state']);
-                            }
+                    foreach ($allExpeditions as $expedition) {
+                        if ($this->do_i_have_to_update_expedition_status($expedition)) {
+                            nacexutils::writeNacexLog('checkOrderListData :: ESTADOS');
+                            $this->update_expedition_status($expedition, $_estado);
+
+                            $orderId = $expedition['id_envio_order'];
+                            $currentState = isset($orderStates[$orderId]) ? $orderStates[$orderId] : '';
+                            $this->updateOrderStatusInOrderList($orderId, $_estado, $currentState);
                         }
                     }
                 }
