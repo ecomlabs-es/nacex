@@ -118,8 +118,6 @@ Si te ha gustado este trabajo y te ha sido util, puedes invitarme a un cafe ;)
 
 [![PayPal](https://img.shields.io/badge/PayPal-Donar-blue?logo=paypal)](https://paypal.me/soyjosean)
 
-O directamente via PayPal a **info@ecomlabs.es**
-
 ## Licencia
 
 Academic Free License (AFL 3.0)
