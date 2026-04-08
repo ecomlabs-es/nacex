@@ -257,50 +257,68 @@ class nacexDTO {
 
     }
 
+    private static $carrierCache = [];
+
+    /**
+     * Obtiene los datos del carrier y los cachea por request.
+     * Una sola query por id_carrier independientemente de cuántas veces se llame.
+     */
+    private static function getCarrierData($id_carrier)
+    {
+        $id = (int)$id_carrier;
+        if (!isset(self::$carrierCache[$id])) {
+            $result = Db::getInstance()->executeS(
+                'SELECT * FROM ' . _DB_PREFIX_ . 'carrier WHERE id_carrier = ' . $id
+            );
+            self::$carrierCache[$id] = isset($result[0]) ? $result[0] : false;
+        }
+        return self::$carrierCache[$id];
+    }
+
     public static function isNacexCarrier($id_carrier)
     {
-        $datoscarrier = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'carrier c WHERE c.id_carrier = "' . $id_carrier . '" AND ncx IN ("nacex","nacexG")');
+        $carrier = self::getCarrierData($id_carrier);
 
-        if (isset($datoscarrier) && isset($datoscarrier[0])) {
-            nacexutils::writeNacexLog('isNacexCarrier :: [' . $id_carrier . '] => ' . ($datoscarrier[0]['external_module_name'] == 'nacex' && ($datoscarrier[0]['ncx'] == 'nacex' || $datoscarrier[0]['ncx'] == 'nacexG')));
-            return $datoscarrier[0];
-        } else {
-            nacexutils::writeNacexLog('isNacexCarrier :: [' . $id_carrier . '] => false');
-            return false;
+        if ($carrier && in_array($carrier['ncx'], ['nacex', 'nacexG'])) {
+            nacexutils::writeNacexLog('isNacexCarrier :: [' . $id_carrier . '] => true');
+            return $carrier;
         }
+
+        nacexutils::writeNacexLog('isNacexCarrier :: [' . $id_carrier . '] => false');
+        return false;
     }
 
     public static function isNacexShopCarrier($id_carrier)
     {
-        $datoscarrier = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'carrier c WHERE c.id_carrier = "' . $id_carrier . '" AND ncx IN ("nacexshop","nacexshopG")');
+        $carrier = self::getCarrierData($id_carrier);
+
+        if ($carrier && in_array($carrier['ncx'], ['nacexshop', 'nacexshopG'])) {
+            nacexutils::writeNacexLog('isNacexShopCarrier :: [' . $id_carrier . '] => true');
+            return $carrier;
+        }
 
         // Comprobamos si los módulos externos se encuentran entre los shop
         $externalCarriers = explode('|', Configuration::get('NACEXSHOP_EXTERNAL_MODULES'));
-
-        if (isset($datoscarrier) && isset($datoscarrier[0])) {
-            nacexutils::writeNacexLog('isNacexShopCarrier :: [' . $id_carrier . '] => ' . (($datoscarrier[0]['ncx'] == 'nacexshop' || $datoscarrier[0]['ncx'] == 'nacexshopG')));
-            return $datoscarrier[0];
-        } elseif (in_array($id_carrier, $externalCarriers)) {
+        if (in_array($id_carrier, $externalCarriers)) {
             nacexutils::writeNacexLog('isNacexShopCarrier :: external[' . $id_carrier . '] => true');
-            $car = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'carrier c WHERE c.id_carrier = "' . $id_carrier . '"');
-            //return new Carrier($id_carrier);
-            return $car[0];
-        } else {
-            nacexutils::writeNacexLog('isNacexShopCarrier :: [' . $id_carrier . '] => false');
-            return false;
+            return $carrier ?: false;
         }
+
+        nacexutils::writeNacexLog('isNacexShopCarrier :: [' . $id_carrier . '] => false');
+        return false;
     }
 
-    public static function isNacexIntCarrier($id_carrier) {
-        $datoscarrier = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'carrier c WHERE c.id_carrier = "' . $id_carrier . '" AND ncx IN ("nacexint","nacexintG")');
+    public static function isNacexIntCarrier($id_carrier)
+    {
+        $carrier = self::getCarrierData($id_carrier);
 
-        if (isset($datoscarrier) && isset($datoscarrier[0])) {
-            nacexutils::writeNacexLog('isNacexIntCarrier :: [' . $id_carrier . '] => ' . ($datoscarrier[0]['external_module_name'] == 'nacex' && ($datoscarrier[0]['ncx'] == 'nacexint' || $datoscarrier[0]['ncx'] == 'nacexintG')));
-            return $datoscarrier[0];
-        } else {
-            nacexutils::writeNacexLog('isNacexIntCarrier :: [' . $id_carrier . '] => false');
-            return false;
+        if ($carrier && in_array($carrier['ncx'], ['nacexint', 'nacexintG'])) {
+            nacexutils::writeNacexLog('isNacexIntCarrier :: [' . $id_carrier . '] => true');
+            return $carrier;
         }
+
+        nacexutils::writeNacexLog('isNacexIntCarrier :: [' . $id_carrier . '] => false');
+        return false;
     }
 
     public static function getNacexIdCarrier() {
