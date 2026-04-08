@@ -5,9 +5,9 @@ class hash
     public static function hash_form($order_id)
     {
         $rand = rand();
-        $push_data = array('HASH' => $rand, 'ORDER_ID' => $order_id);
+        $push_data = ['HASH' => $rand, 'ORDER_ID' => $order_id];
         if (!isset($_SESSION['rand'])) {
-            $_SESSION['rand'] = array($push_data);
+            $_SESSION['rand'] = [$push_data];
         } else {
             $valor_id = array_column($_SESSION['rand'], 'ORDER_ID');
             if (in_array($order_id, $valor_id)) {
@@ -25,8 +25,8 @@ class hash
 
     public function validate_hash()
     {
-        $valor_id = array();
-        $valor_hash = array();
+        $valor_id = [];
+        $valor_hash = [];
 
         if (isset($_SESSION['rand'])) {
             $valor_id = array_column($_SESSION['rand'], 'ORDER_ID');

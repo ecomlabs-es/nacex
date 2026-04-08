@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @deprecated Clase sin implementación real. No se usa activamente.
  * Pendiente de eliminar.

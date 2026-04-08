@@ -1,4 +1,5 @@
 <?php
+
 class AdminNacexZonasController extends ModuleAdminController
 {
     public function __construct()
@@ -15,4 +16,3 @@ class AdminNacexZonasController extends ModuleAdminController
         die();
     }
 }
-?>

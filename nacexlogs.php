@@ -1,4 +1,5 @@
 <?php
+
 //20180620 mexpositop
 include_once dirname(__FILE__) .'/nacexutils.php';
 include_once dirname(__FILE__) .'/nacexDAO.php';
@@ -6,7 +7,7 @@ include_once dirname(__FILE__) .'/nacexDTO.php';
 include_once dirname(__FILE__) .'/nacexVIEW.php';
 include_once dirname(__FILE__) .'/nacexWS.php';
 
-if (Configuration::get('NACEX_SHOW_ERRORS') == "SI") {
+if (Configuration::get('NACEX_SHOW_ERRORS') == 'SI') {
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
 } else {
@@ -15,7 +16,6 @@ if (Configuration::get('NACEX_SHOW_ERRORS') == "SI") {
 }
 
 class nacexlogs extends AdminController {
-
     private $_html = '';
     public function __construct()
     {
@@ -28,7 +28,7 @@ class nacexlogs extends AdminController {
         $this->bootstrap = true;
 
     }
-    
+
     public function setMedia($isNewTheme = false)
     {
         parent::setMedia();

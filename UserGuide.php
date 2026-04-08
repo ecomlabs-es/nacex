@@ -5,11 +5,11 @@
 class UserGuide
 {
     //const USER_GUIDE_FILENAME = 'Manual_NXPrestashop_';
-    const USER_GUIDE_FILENAME = 'Manual_NXPrestashop';
+    public const USER_GUIDE_FILENAME = 'Manual_NXPrestashop';
     protected $_version;
 
     public function __construct() {
-//        $this->_version = new CheckVersion();
+        //        $this->_version = new CheckVersion();
     }
 
     /*public function getUserGuideURL() {
@@ -22,9 +22,9 @@ class UserGuide
         return $html;
     }*/
 
-//    private function getLocale() {
-//        global $cookie;
-//        $lang = Language::getIsoById( (int)$cookie->id_lang );
-//        return $lang == 'es' ? 'ES' : 'EN';
-//    }
+    //    private function getLocale() {
+    //        global $cookie;
+    //        $lang = Language::getIsoById( (int)$cookie->id_lang );
+    //        return $lang == 'es' ? 'ES' : 'EN';
+    //    }
 }

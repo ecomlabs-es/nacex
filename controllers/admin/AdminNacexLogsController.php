@@ -11,7 +11,7 @@ class AdminNacexLogsController extends ModuleAdminController
 
     public function setMedia($isNewTheme = false)
     {
-        $this->addCSS(_MODULE_DIR_ . 'nacex/css/nacex.css', 'all', NULL, true);
+        $this->addCSS(_MODULE_DIR_ . 'nacex/css/nacex.css', 'all', null, true);
         $this->context->controller->addJS(_MODULE_DIR_ . 'nacex/js/nacexlogs.js');
         parent::setMedia();
     }
@@ -44,4 +44,3 @@ class AdminNacexLogsController extends ModuleAdminController
         $this->context->smarty->assign('content', $this->_html);
     }
 }
-?>

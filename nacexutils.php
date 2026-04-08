@@ -1,15 +1,15 @@
 <?php
+
 /*
  * Config
  */
 //require_once __DIR__ . '/../../config/defines.inc.php';
 require_once dirname(__FILE__) . '/../../config/defines.inc.php';
 
-
 class nacexutils
 {
-    const nacexVersion = '2.5.0';
-    const _moduleName = 'nacex';
+    public const nacexVersion = '2.5.0';
+    public const _moduleName = 'nacex';
 
     public static function getModuleName()
     {
@@ -38,12 +38,12 @@ class nacexutils
 
     public static function normalizarDecimales($val, $numdecs, $sepdec, $sepmil, $noprintifzero, $noprintifcerodec) {
 
-        if ($noprintifzero && (!isset($val) || $val == "0")) {
-            return "";
+        if ($noprintifzero && (!isset($val) || $val == '0')) {
+            return '';
         } else {
             if ($noprintifcerodec){
                 return $val;
-            }else{
+            } else {
                 return number_format($val, $numdecs, $sepdec, $sepmil);
             }
         }
@@ -51,28 +51,27 @@ class nacexutils
 
     public static function getDatosListado($id_pedido) {
 
-        $datoslistado = array();
+        $datoslistado = [];
 
-        $datoslistado["id_order"] = $id_pedido;
-        $datoslistado["nom_ent"] = null;
-        $datoslistado["tel_ent"] = null;
-        $datoslistado["dir_ent"] = null;
-        $datoslistado["pob_ent"] = null;
-        $datoslistado["cp_ent"] = null;
-        $datoslistado["tel_ent"] = null;
-        $datoslistado["email_ent"] = null;
-        $datoslistado["pais_ent"] = null;
+        $datoslistado['id_order'] = $id_pedido;
+        $datoslistado['nom_ent'] = null;
+        $datoslistado['tel_ent'] = null;
+        $datoslistado['dir_ent'] = null;
+        $datoslistado['pob_ent'] = null;
+        $datoslistado['cp_ent'] = null;
+        $datoslistado['tel_ent'] = null;
+        $datoslistado['email_ent'] = null;
+        $datoslistado['pais_ent'] = null;
 
-        $datoslistado["peso"] = 1;
-        $datoslistado["bultos"] = 1;
+        $datoslistado['peso'] = 1;
+        $datoslistado['bultos'] = 1;
 
-        $datoslistado["importe"] = 0;
-        $datoslistado["ree"] = 0;
-
+        $datoslistado['importe'] = 0;
+        $datoslistado['ree'] = 0;
 
         //Datos relacionados al pedido
         $datos = Db::getInstance()->executeS(
-                'SELECT o.id_order,o.module,u.email,a.firstname,
+            'SELECT o.id_order,o.module,u.email,a.firstname,
 				a.lastname,a.address1,a.postcode,a.city,a.phone,a.phone_mobile,z.iso_code,
 				case when o.total_paid_real > 0 
 					then o.total_paid_real
@@ -91,60 +90,59 @@ class nacexutils
 
         //Detalles del pedido
         $productospedido = Db::getInstance()->executeS(
-                'SELECT product_quantity, product_weight FROM ' . _DB_PREFIX_ . 'order_detail
-				where id_order = "' . $id_pedido . '"');
+            'SELECT product_quantity, product_weight FROM ' . _DB_PREFIX_ . 'order_detail
+				where id_order = "' . $id_pedido . '"'
+        );
 
         //Detalle de la expedicion
         $datosexpedicion = nacexDAO::getDatosExpedicion($id_pedido);
 
         foreach ($productospedido as $producto) {
-            $datoslistado["peso"] += floatval($producto['product_quantity'] * $producto['product_weight']);
-            $datoslistado["bultos"] += $producto['product_quantity'];
+            $datoslistado['peso'] += floatval($producto['product_quantity'] * $producto['product_weight']);
+            $datoslistado['bultos'] += $producto['product_quantity'];
         }
-        if ($datoslistado["peso"] < 1) {
-            $datoslistado["peso"] = 1;
+        if ($datoslistado['peso'] < 1) {
+            $datoslistado['peso'] = 1;
         }
-        if ($datoslistado["bultos"] < 1) {
-            $datoslistado["bultos"] = 1;
+        if ($datoslistado['bultos'] < 1) {
+            $datoslistado['bultos'] = 1;
         }
-
 
         //Obtenemos el importe total del pedido
-        $datoslistado["importe"] = $datos[0]['total_paid_real'];
+        $datoslistado['importe'] = $datos[0]['total_paid_real'];
 
         //Datos del comprador (entrega)
-        $datoslistado["nom_ent"] = $datos[0]['firstname'] . ' ' . $datos[0]['lastname'];
-        $datoslistado["dir_ent"] = $datos[0]['address1'];
-        $datoslistado["pob_ent"] = $datos[0]['city'];
-        $datoslistado["cp_ent"] = $datos[0]['postcode'];
+        $datoslistado['nom_ent'] = $datos[0]['firstname'] . ' ' . $datos[0]['lastname'];
+        $datoslistado['dir_ent'] = $datos[0]['address1'];
+        $datoslistado['pob_ent'] = $datos[0]['city'];
+        $datoslistado['cp_ent'] = $datos[0]['postcode'];
 
         //$nacex_cod_provincia_destinatario= $dir_pedido->getRegion();
-        $tlf = "";
-        if (isset($datos[0]['phone']) && $datos[0]['phone'] != "") {
+        $tlf = '';
+        if (isset($datos[0]['phone']) && $datos[0]['phone'] != '') {
             $tlf = $datos[0]['phone'];
-            if (isset($datos[0]['phone_mobile']) && $datos[0]['phone_mobile'] != "") {
-                $tlf = $tlf . "/";
+            if (isset($datos[0]['phone_mobile']) && $datos[0]['phone_mobile'] != '') {
+                $tlf = $tlf . '/';
             }
         }
         if (isset($datos[0]['phone_mobile'])) {
             $tlf = $tlf . $datos[0]['phone_mobile'];
         }
-        $datoslistado["tel_ent"] = $tlf;
-        $datoslistado["email_ent"] = $datos[0]['email'];
-        $datoslistado["pais_ent"] = $datos[0]['iso_code'];
-
+        $datoslistado['tel_ent'] = $tlf;
+        $datoslistado['email_ent'] = $datos[0]['email'];
+        $datoslistado['pais_ent'] = $datos[0]['iso_code'];
 
         //HAY QUE CONTROLAR SI EL COMPRADOR A ELEGIDO CONTRA REEMBOLSO
-       // $array_modsree = array();
-        $array_modsree = explode("|", Configuration::get('NACEX_MODULOS_REEMBOLSO'));
+        // $array_modsree = array();
+        $array_modsree = explode('|', Configuration::get('NACEX_MODULOS_REEMBOLSO'));
 
         $metodo_pago = strtolower($datos[0]['module']);
 
         if (in_array($metodo_pago, $array_modsree) || strpos($metodo_pago, 'cashondelivery') !== false) {
             if (isset($datosexpedicion) && $datosexpedicion[0]['imp_ree'] != 0) {
-                $datoslistado["ree"] = floatval($datosexpedicion[0]['imp_ree']);
+                $datoslistado['ree'] = floatval($datosexpedicion[0]['imp_ree']);
             } else {
-                $datoslistado["ree"] = floatval($datos[0]['total_paid_real']);
+                $datoslistado['ree'] = floatval($datos[0]['total_paid_real']);
             }
         }
 
@@ -154,71 +152,70 @@ class nacexutils
     public static function markSelectedOption($option_field_name, $config_name, $val) {
         if ($config_name != null && $config_name != '') {
             if (Tools::getValue($option_field_name, Configuration::get($config_name)) == $val) {
-                return "selected=\"selected\"";
+                return 'selected="selected"';
             }
         }
-        return "";
+        return '';
     }
 
     public static function markSelectedFrontendOption($option_field_name, $valuef, $val) {
         if ($valuef != null && $valuef != '') {
             if (Tools::getValue($option_field_name, $valuef) == $val) {
-                return "selected=\"selected\"";
+                return 'selected="selected"';
             }
         }
-        return "";
+        return '';
     }
 
     public static function markCheckedOption($option_field_name, $config_name, $val) {
         if ($config_name != null && $config_name != '') {
             if (Tools::getValue($option_field_name, Configuration::get($config_name)) == $val) {
-                return "checked=\"checked\"";
+                return 'checked="checked"';
             }
         }
-        return "";
+        return '';
     }
 
     public static function markSelectedMultiOption($array_multi_option_field_name, $config_name, $sep, $val) {
 
-        $results = Tools::getValue($array_multi_option_field_name, NULL);
+        $results = Tools::getValue($array_multi_option_field_name, null);
         if (!isset($results)) {
             $results = explode($sep, Configuration::get($config_name));
         }
 
         for ($i = 0; $i < count($results); $i++) {
             if ($results[$i] == $val){
-                return "selected=\"selected\"";
+                return 'selected="selected"';
             }
         }
-        return "";
+        return '';
     }
 
     public static function markCheckedCheckBoxes($array_multi_option_field_name, $config_name, $sep, $val) {
 
-        $results = Tools::getValue($array_multi_option_field_name, NULL);
+        $results = Tools::getValue($array_multi_option_field_name, null);
         if (isset($results)) {
-            
+
         } else {
             $results = explode($sep, Configuration::get($config_name));
         }
         for ($i = 0; $i < count($results); $i++) {
-            if ($results[$i] == $val)
-                return "checked";
+            if ($results[$i] == $val) {
+                return 'checked'; }
         }
-        return "";
+        return '';
     }
-
 
     public static function isNacexGenericCarrier($id_carrier) {
         $datoscarrier = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'carrier c WHERE c.id_carrier = "' . $id_carrier . '"');
 
         if (isset($datoscarrier) && isset($datoscarrier[0])) {
-            nacexutils::writeNacexLog("isNacexGenericCarrier :: [" . $id_carrier . "] => true");
+            nacexutils::writeNacexLog('isNacexGenericCarrier :: [' . $id_carrier . '] => true');
             return (
-                $datoscarrier[0]['ncx'] == "nacexG" || $datoscarrier[0]['ncx'] == "nacexshopG" || $datoscarrier[0]['ncx'] == "nacexintG"
+                $datoscarrier[0]['ncx'] == 'nacexG' || $datoscarrier[0]['ncx'] == 'nacexshopG' || $datoscarrier[0]['ncx'] == 'nacexintG'
             );
         } else {
-            nacexutils::writeNacexLog("isNacexGenericCarrier :: [" . $id_carrier . "] => false");
+            nacexutils::writeNacexLog('isNacexGenericCarrier :: [' . $id_carrier . '] => false');
             return false;
         }
     }
@@ -229,13 +226,13 @@ class nacexutils
         $etPrint = Configuration::get('NACEX_PRINT_ET');
         $nacexWSusername = Configuration::get('NACEX_WSUSERNAME');
         $nacexWSpassword = Configuration::get('NACEX_WSPASSWORD');
-        $parametros = "user=" . $nacexWSusername . "&pass=" . $nacexWSpassword . "&model=" . $modelPrint . "&et=" . $etPrint . "&ref=" . getReferenciaGeneral() . $id_pedido;
+        $parametros = 'user=' . $nacexWSusername . '&pass=' . $nacexWSpassword . '&model=' . $modelPrint . '&et=' . $etPrint . '&ref=' . getReferenciaGeneral() . $id_pedido;
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $urlPrint . "?" . $parametros);
-          /**parche mexpositop 20171222**/
-     //  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        
+        curl_setopt($ch, CURLOPT_URL, $urlPrint . '?' . $parametros);
+        /**parche mexpositop 20171222**/
+        //  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
         $postResult = curl_exec($ch);
         curl_close($ch);
     }
@@ -244,14 +241,14 @@ class nacexutils
 
         // "key1=value1|key2=value2|...|keyN=valueN"
 
-        $mapa = array();
+        $mapa = [];
 
-        $pares = explode("|", $cambios);
+        $pares = explode('|', $cambios);
 
         for ($i = 0; $i < count($pares); $i++) {
             $par = $pares[$i];
             if (strlen($par)) {
-                $kv = explode("=", $par);
+                $kv = explode('=', $par);
                 $k = $kv[0];
                 $v = $kv[1];
                 $mapa[$k] = $v;
@@ -262,10 +259,10 @@ class nacexutils
 
     public static function cutupString($str, $cutLength, $numCuts) {
 
-        $text = preg_replace("/[\r\n]+/", "", $str);
+        $text = preg_replace("/[\r\n]+/", '', $str);
 
-        $ret = array();
-       // $lastIndex = 0;
+        $ret = [];
+        // $lastIndex = 0;
 
         for ($i = 0; $i < $numCuts; $i++) {
             $ret[$i] = substr($text, 0, $cutLength);
@@ -274,10 +271,10 @@ class nacexutils
         return $ret;
     }
 
-    public static function getReferenciaGeneral()   {
-        return Configuration::get('NACEX_REF_PERS') == "SI" ? 
-                    Configuration::get('NACEX_REF_PERS_PREFIJO'):
-                    nacexDTO::$PREFIJO_REFERENCIA;       
+    public static function getReferenciaGeneral() {
+        return Configuration::get('NACEX_REF_PERS') == 'SI' ?
+                    Configuration::get('NACEX_REF_PERS_PREFIJO') :
+                    nacexDTO::$PREFIJO_REFERENCIA;
     }
 
     public static function showAppletImpresion() {
@@ -317,16 +314,16 @@ class nacexutils
         return $html;
     }
 
-    function getToken($tab) {
+    public function getToken($tab) {
         global $cookie;
         return Tools::getAdminToken($tab . (int) Tab::getIdFromClassName($tab) . (int) $cookie->id_employee);
     }
 
     public static function changeAddressIfNacexShop($datospedido) {
-        nacexutils::writeNacexLog("----");
-        nacexutils::writeNacexLog("INI changeAddressIfNacexShop :: id_order:" . $datospedido["id_order"]);
+        nacexutils::writeNacexLog('----');
+        nacexutils::writeNacexLog('INI changeAddressIfNacexShop :: id_order:' . $datospedido['id_order']);
 
-        $array_address_invoice = nacexDAO::getAddressInvoiceByOrder($datospedido["id_order"]);
+        $array_address_invoice = nacexDAO::getAddressInvoiceByOrder($datospedido['id_order']);
 
         //nacexutils::writeNacexLog("changeAddressIfNacexShop :: array_address_invoice:" . print_r($array_address_invoice[0]));
 
@@ -338,29 +335,29 @@ class nacexutils
 						var legend = $(fieldset).find('legend');																		
 						$(legend).html('Dirección de Entrega Nacex!Shop');
 						$(fieldset).addClass('bg_nacexshop').prepend(legend);	
-						$(fieldset).append('<hr/><span><i>Att: " . $array_address_invoice[0]["firstname"] . " " . $array_address_invoice[0]["lastname"] . "</i></span>');
+						$(fieldset).append('<hr/><span><i>Att: " . $array_address_invoice[0]['firstname'] . ' ' . $array_address_invoice[0]['lastname'] . "</i></span>');
 						$('a[href^=\'?tab=AdminAddresses&id_address\']:eq(0)').css('display', 'none');						
 					});
 			      </script>";
-            nacexutils::writeNacexLog("changeAddressIfNacexShop :: insertada informacion de direccion nacexshop");
+            nacexutils::writeNacexLog('changeAddressIfNacexShop :: insertada informacion de direccion nacexshop');
         }
-        nacexutils::writeNacexLog("FIN changeAddressIfNacexShop :: id_order:" . $datospedido["id_order"]);
-        nacexutils::writeNacexLog("----");
+        nacexutils::writeNacexLog('FIN changeAddressIfNacexShop :: id_order:' . $datospedido['id_order']);
+        nacexutils::writeNacexLog('----');
     }
 
     public static function print_messages(&$_response, $tipo, $texto)
     {
-        $_clase = array(
+        $_clase = [
             'ERROR' => "<div class='bootstrap' style='margin-top:10px'><div class='alert alert-danger error' style='width:auto;border-radius: 5px !important'>",
             'INFO' => "<div class='bootstrap' style='margin-top:10px'><div class='alert alert-info alert' style='width:auto;border-radius: 5px !important'>",
             'WARNING' => "<div class='bootstrap' style='margin-top:10px'><div class='alert alert-warning warning' style='width:auto;border-radius: 5px !important'>",
             'SUCCESS' => "<div class='bootstrap' style='margin-top:10px'><div class='alert alert-success conf' style='width:auto;border-radius: 5px !important'>",
             'MESSAGE' => "<p class='tip'>"
-        );
+        ];
 
         $_response = $_clase[$tipo];
         $_response .= '<strong>' . $texto . '</strong><br>';
-        if ($tipo != "MESSAGE") {
+        if ($tipo != 'MESSAGE') {
             $_response .= '</div></div>';
         } else {
             $_response .= '</p>';
@@ -369,9 +366,9 @@ class nacexutils
 
     public static function explodeShopData($shop_data)
     {
-        $ret = array();
+        $ret = [];
 
-        $array_shop_data = isset($shop_data) ? explode("|", $shop_data) : null;
+        $array_shop_data = isset($shop_data) ? explode('|', $shop_data) : null;
         $ret['shop_codigo'] = isset($array_shop_data[0]) ? trim($array_shop_data[0]) : null;
         $ret['shop_alias'] = isset($array_shop_data[1]) ? trim($array_shop_data[1]) : null;
         $ret['shop_nombre'] = isset($array_shop_data[2]) ? trim($array_shop_data[2]) : null;
@@ -383,7 +380,7 @@ class nacexutils
     }
 
     public static function writeNacexLog($txt) {
-        if (Configuration::get('NACEX_SAVE_LOG') == "SI") {
+        if (Configuration::get('NACEX_SAVE_LOG') == 'SI') {
             $logDir = _PS_MODULE_DIR_ . 'nacex' . DIRECTORY_SEPARATOR . 'log' . DIRECTORY_SEPARATOR;
             $logname = $logDir . 'nacex_' . date('Ymd') . '.log';
 
@@ -395,56 +392,56 @@ class nacexutils
         }
     }
 
-    public static function arrayFlatten($array) { 
-        $flattern = array(); 
-        foreach ($array as $key => $value){ 
-            $new_key = array_keys($value); 
-            $flattern[] = $value[$new_key[0]]; 
-        } 
-        return $flattern; 
-}
+    public static function arrayFlatten($array) {
+        $flattern = [];
+        foreach ($array as $key => $value){
+            $new_key = array_keys($value);
+            $flattern[] = $value[$new_key[0]];
+        }
+        return $flattern;
+    }
 
-//-----------NACEXLOGS-----------------------------
-    public function delete_file ($_file = "*"){
+    //-----------NACEXLOGS-----------------------------
+    public function delete_file($_file = '*') {
         require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'VInacexlogs.php');
         $nacex = new nacex();
         $_path = $this->path_directory_log();
         $_path .= DIRECTORY_SEPARATOR . $_file;
-        if ($_file != "*"){
+        if ($_file != '*'){
             if (unlink($_path)){
-                return VInacexlogs::response_delete($nacex->l('The file') . " " . $_file . " " . $nacex->l('it\'s been removed'));
-            }else{
+                return VInacexlogs::response_delete($nacex->l('The file') . ' ' . $_file . ' ' . $nacex->l('it\'s been removed'));
+            } else {
                 return VInacexlogs::response_delete($nacex->l('Couldn\'t remove the file') . " '" . $_file . "'");
             }
-        }else{
+        } else {
             $_files = glob($_path);
-            foreach($_files as $_file){ // iterate files
-                if(is_file($_file))
-                    unlink($_file); // delete file
+            foreach ($_files as $_file){ // iterate files
+                if (is_file($_file)) {
+                    unlink($_file); } // delete file
             }
             return VInacexlogs::response_delete($nacex->l('All files deleted'));
         }
     }
-    public function read_file ($_file){
+    public function read_file($_file) {
         require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'VInacexlogs.php');
         $nacex = new nacex();
         $_path = $this->path_directory_log();
         $_path .= DIRECTORY_SEPARATOR . $_file;
         $_html = VInacexlogs::content_file_title($_file);
-        if ($_file = fopen($_path,"r")){
+        if ($_file = fopen($_path, 'r')){
             while (!feof($_file)) {
                 $_line = fgets($_file);
-                $_html.=VInacexlogs::content_file($_line);
+                $_html .= VInacexlogs::content_file($_line);
             }
-        }else{
-            return VInacexlogs::response_open($nacex->l('Couldn\'t open the file') . " " . $_GET['file']);
+        } else {
+            return VInacexlogs::response_open($nacex->l('Couldn\'t open the file') . ' ' . $_GET['file']);
         }
         return $_html;
     }
-    public function content_directory (){
+    public function content_directory() {
         require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'VInacexlogs.php');
         $nacex = new nacex();
-        $_html = "";
+        $_html = '';
         $_path = $this->path_directory_log();
         $_files = scandir($_path);
         if (sizeof($_files) > 2) {
@@ -461,7 +458,7 @@ class nacexutils
             rsort($_files);
 
             foreach ($_files as $index => $_file) {
-                if ($_file != "." && $_file != "..") {
+                if ($_file != '.' && $_file != '..') {
                     $_html .= VInacexlogs::content_directory($_file, $this->path_directory_log(), $index);
                 }
             }
@@ -485,13 +482,13 @@ class nacexutils
         $modulosPagoExtra = ['codwfeeplus'];
         $modules = Module::getModulesInstalled();
 
-        $extraModules = array();
+        $extraModules = [];
         foreach ($modulosPagoExtra as $mpe) {
             $search = array_search($mpe, array_column($modules, 'name')); // Se comprueba que existe
             $isIncluded = array_search($mpe, array_column($paymentModules, 'name')); // Ya está incluido
 
-            if ($search !== false && $isIncluded === false)
-                $extraModules[] = $modules[$search];
+            if ($search !== false && $isIncluded === false) {
+                $extraModules[] = $modules[$search]; }
         }
 
         // Juntamos los métodos de pago con los módulos que pueden estar dando problemas con los pagos
@@ -560,7 +557,7 @@ class nacexutils
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, 'base64=' . $base64);
-// Receive server response ...
+        // Receive server response ...
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $server_output = curl_exec($ch);
@@ -637,7 +634,7 @@ class nacexutils
         return null;
     }
 
-    private static $enabledModulesCache = array();
+    private static $enabledModulesCache = [];
 
     /**
      * Comprobamos si hay habilitados módulos
@@ -662,4 +659,3 @@ class nacexutils
         return $result;
     }
 }
-

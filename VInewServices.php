@@ -63,7 +63,7 @@ class VInewServices
             foreach ($nacexDTO->getNewServices($tipo) as $serv => $value) {
                 $html .= '<option value="' . $serv . '">' . $serv . $nacexDTO->getServSeparador() . nacexutils::toUtf8($value) . '</option>';
             }
-        } else $html .= ' disabled><option selected disabled>No hay servicios creados</option>';
+        } else { $html .= ' disabled><option selected disabled>No hay servicios creados</option>'; }
         $html .= '</select>
 				</div>
 																	
@@ -85,7 +85,7 @@ class VInewServices
             foreach ($nacexDTO->getNewServices($tipo) as $serv => $value) {
                 $html .= '<option value="' . $serv . '" onclick="toEditData(\'' . $serv . ';' . $value . ';' . $tipo . '\');$(\'#editForm' . $tipo . 'Service\').show();">' . $serv . $nacexDTO->getServSeparador() . nacexutils::toUtf8($value) . '</option>';
             }
-        } else $html .= ' disabled><option selected disabled>No hay servicios creados</option>';
+        } else { $html .= ' disabled><option selected disabled>No hay servicios creados</option>'; }
         $html .= '</select>
 				</div>
 			

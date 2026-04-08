@@ -1,4 +1,5 @@
 <?php
+
 //SET ENVIRONMENT
 include dirname(__FILE__) . '/../../config/config.inc.php';
 include dirname(__FILE__) . '/../../init.php';
@@ -21,11 +22,11 @@ switch ($method) {
         $_router->read($file);
         break;
     default:
-        $_response = array();
-        $_response[] = array(
+        $_response = [];
+        $_response[] = [
             'cod_response' => '404',
             'header' => '',
             'result' => '<center><h1>Error: Method not found</h1></center>'
-        );
+        ];
         echo json_encode($_response);
 }

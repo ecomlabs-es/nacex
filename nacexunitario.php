@@ -1,4 +1,5 @@
 <?php
+
 //20180620 mexpositop
 include_once dirname(__FILE__) . '/nacexutils.php';
 include_once dirname(__FILE__) . '/nacex.php';
@@ -7,7 +8,7 @@ include_once dirname(__FILE__) .'/nacexDTO.php';
 include_once dirname(__FILE__) .'/nacexVIEW.php';
 include_once dirname(__FILE__) .'/nacexWS.php';
 
-if (Configuration::get('NACEX_SHOW_ERRORS') == "SI") {
+if (Configuration::get('NACEX_SHOW_ERRORS') == 'SI') {
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
 } else {
@@ -16,7 +17,6 @@ if (Configuration::get('NACEX_SHOW_ERRORS') == "SI") {
 }
 
 class nacexunitario extends AdminController {
-
     private $_html = '';
     private $nacex;
     public function __construct()
@@ -36,22 +36,21 @@ class nacexunitario extends AdminController {
 
     public function setMedia($isNewTheme = false)
     {
-        $this->addCSS(_MODULE_DIR_ . 'nacex/css/nacex.css', 'all', NULL, true);
+        $this->addCSS(_MODULE_DIR_ . 'nacex/css/nacex.css', 'all', null, true);
         $this->context->controller->addJS(_MODULE_DIR_ . 'nacex/js/unitaria.js');
         $this->context->controller->addJS(_MODULE_DIR_ . 'nacex/js/nacex.js');
         parent::setMedia();
     }
 
-
     public function initContent()
     {
         $url = $this->context->link->getAdminLink('AdminOrders', true);
-//LOAD VARIABLES, LIBRARIES JS AND GET_UNITARIA
+        //LOAD VARIABLES, LIBRARIES JS AND GET_UNITARIA
         $nacex_impseg = configuration::get('NACEX_DEFAULT_IMP_SEG');
 
         /** Añadir icono para imprimir una expedición concreta **/
         $etiquetaURL = Configuration::get('NACEX_WS_URL');
-        $etiquetaURL .= substr($etiquetaURL, -1) != '/' ? "/" : "";
+        $etiquetaURL .= substr($etiquetaURL, -1) != '/' ? '/' : '';
 
         $nacexDTO = new NacexDTO();
         $controller = $nacexDTO->getPath() . 'CambioEstadoPedido.php';
@@ -124,38 +123,38 @@ class nacexunitario extends AdminController {
                                 x = x.trim();
                                                         
                                 if ( (document.getElementById(\"nacex_contenido\").value) == \"OTROS\" && (x == \"\") ){
-                                    alert(\"" . $this->nacex->l('The Content description field is required') . "\");
-                                    setTimeout(function(){document.getElementById(\"nacex_descripcion_contenido\").focus();}, 2);
-                                    document.getElementById(\"nacex_descripcion_contenido\").value =\"\";
+                                    alert(\"" . $this->nacex->l('The Content description field is required') . '");
+                                    setTimeout(function(){document.getElementById("nacex_descripcion_contenido").focus();}, 2);
+                                    document.getElementById("nacex_descripcion_contenido").value ="";
                                 }else{
-                                    document.getElementById(\"nacex_descripcion_contenido\").value = x;
+                                    document.getElementById("nacex_descripcion_contenido").value = x;
                                 }
                 		    }
                 		}      	
 					function setprealerta(tipo){
-						if(tipo === \"N\"){
-							document.getElementById(\"nacex_pre1\").disabled=true;	
-							document.getElementById(\"nacex_pre1\").value = \"\";
+						if(tipo === "N"){
+							document.getElementById("nacex_pre1").disabled=true;	
+							document.getElementById("nacex_pre1").value = "";
 							deshabilitamodosprealerta();
-						}else if(tipo === \"S\" && cli_tlf !== \"\"){
-							document.getElementById(\"nacex_pre1\").disabled=false;	
-							document.getElementById(\"nacex_pre1\").value = document.getElementById(\"cli_tlf\").value;
-							document.getElementById(\"nacex_pre1\").focus();
+						}else if(tipo === "S" && cli_tlf !== ""){
+							document.getElementById("nacex_pre1").disabled=false;	
+							document.getElementById("nacex_pre1").value = document.getElementById("cli_tlf").value;
+							document.getElementById("nacex_pre1").focus();
 							habilitamodosprealerta();
-						}else if(tipo === \"E\"){
-							document.getElementById(\"nacex_pre1\").disabled=false;	
-							document.getElementById(\"nacex_pre1\").value = document.getElementById(\"cli_email\").value;
-							document.getElementById(\"nacex_pre1\").focus();
+						}else if(tipo === "E"){
+							document.getElementById("nacex_pre1").disabled=false;	
+							document.getElementById("nacex_pre1").value = document.getElementById("cli_email").value;
+							document.getElementById("nacex_pre1").focus();
 							habilitamodosprealerta();
 						}
 					}
 					function setprealertaplus(tipo){
-						if(eval(document.getElementById(\"nacex_pre1_plus\"))){
-							if(tipo===\"S\" || tipo===\"R\"){
-								document.getElementById(\"nacex_pre1_plus\").value = \"\";
-								document.getElementById(\"nacex_pre1_plus\").disabled = true;
-							}else if(tipo === \"P\" || tipo ===\"E\"){
-								document.getElementById(\"nacex_pre1_plus\").value = \"" . Configuration::get('NACEX_PREAL_PLUS_TXT') . "\";
+						if(eval(document.getElementById("nacex_pre1_plus"))){
+							if(tipo==="S" || tipo==="R"){
+								document.getElementById("nacex_pre1_plus").value = "";
+								document.getElementById("nacex_pre1_plus").disabled = true;
+							}else if(tipo === "P" || tipo ==="E"){
+								document.getElementById("nacex_pre1_plus").value = "' . Configuration::get('NACEX_PREAL_PLUS_TXT') . "\";
 								document.getElementById(\"nacex_pre1_plus\").disabled = false;
 								document.getElementById(\"nacex_pre1_plus\").focus();
 							}
@@ -245,6 +244,5 @@ class nacexunitario extends AdminController {
         ";
         $this->context->smarty->assign('content', $this->_html);
     }
-
 
 }

@@ -1,4 +1,5 @@
 <?php
+
 include _PS_MODULE_DIR_ . 'nacex/nacexDTO.php';
 include _PS_MODULE_DIR_ . 'nacex/nacexFeedback.php';
 
@@ -32,14 +33,14 @@ class AdminNacexFeedbackController extends ModuleAdminController
 
     public function setMedia($isNewTheme = false)
     {
-        $this->addCSS(_MODULE_DIR_ . 'nacex/css/nacex-rss.css', 'all', NULL, true);
-        $this->addCSS(_MODULE_DIR_ . 'nacex/css/nacex.css', 'all', NULL, true);
+        $this->addCSS(_MODULE_DIR_ . 'nacex/css/nacex-rss.css', 'all', null, true);
+        $this->addCSS(_MODULE_DIR_ . 'nacex/css/nacex.css', 'all', null, true);
         parent::setMedia();
     }
 
     public function initContent()
     {
-        $this->context->smarty->assign(array(
+        $this->context->smarty->assign([
             'module_root' => _MODULE_DIR_ . 'nacex',
             'ncx_logo200url' => $this->ncx_logo200url,
             'filepath' => $this->filpath,
@@ -47,7 +48,7 @@ class AdminNacexFeedbackController extends ModuleAdminController
             'ndto' => $this->ndto,
             'fb' => $this->fb,
             'loader_img' => _MODULE_DIR_ . 'nacex/images/loading.gif'
-        ));
+        ]);
 
         $this->setTemplate('feedback.tpl');
 
@@ -55,4 +56,3 @@ class AdminNacexFeedbackController extends ModuleAdminController
 
     }
 }
-?>

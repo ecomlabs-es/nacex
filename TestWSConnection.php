@@ -2,29 +2,28 @@
 include_once dirname(__FILE__) . '/nacexWS.php';
 
 session_start();
-$dataResponse = array();
+$dataResponse = [];
 $resultado = nacexWS::ws_checkConnection();
 
 if ($resultado) {
     if (is_array($resultado)) {
         if ($resultado[0] == '500ERROR') {
-            echo "<div class=\"bootstrap\" style=\"margin-top:10px\"><div class=\"alert alert-danger error\" style=\"width:auto\">Problemas de conexión con WS</div></div>";
+            echo '<div class="bootstrap" style="margin-top:10px"><div class="alert alert-danger error" style="width:auto">Problemas de conexión con WS</div></div>';
         } elseif ($resultado[0] != 'ERROR') {
-            echo "<div class=\"bootstrap\" style=\"margin-top:10px\"><div class=\"alert alert-success conf\" style=\"width:auto\">¡Conexi&oacute;n con Webservice correcta!</div></div>";
+            echo '<div class="bootstrap" style="margin-top:10px"><div class="alert alert-success conf" style="width:auto">¡Conexi&oacute;n con Webservice correcta!</div></div>';
         } else {
-            echo "<div class=\"bootstrap\" style=\"margin-top:10px\"><div class=\"alert alert-danger error\" style=\"width:auto\">Usuario o contraseña incorrectos</div></div>";
+            echo '<div class="bootstrap" style="margin-top:10px"><div class="alert alert-danger error" style="width:auto">Usuario o contraseña incorrectos</div></div>';
         }
     } else {
         if (!strpos($resultado, 'HTTP Status 500')) {
-            echo "<div class=\"bootstrap\" style=\"margin-top:10px\"><div class=\"alert alert-success conf\" style=\"width:auto\">¡Conexi&oacute;n con Webservice correcta!</div></div>";
+            echo '<div class="bootstrap" style="margin-top:10px"><div class="alert alert-success conf" style="width:auto">¡Conexi&oacute;n con Webservice correcta!</div></div>';
         } else {
-            echo "<div class=\"bootstrap\" style=\"margin-top:10px\"><div class=\"alert alert-danger error\" style=\"width:auto\">Usuario o contraseña incorrectos</div></div>";
+            echo '<div class="bootstrap" style="margin-top:10px"><div class="alert alert-danger error" style="width:auto">Usuario o contraseña incorrectos</div></div>';
         }
     }
 } else {
-    echo "<div class=\"bootstrap\" style=\"margin-top:10px\"><div class=\"alert alert-danger error\" style=\"width:auto\">Error obteniendo respuesta del Webservice de Nacex.</div></div>";
+    echo '<div class="bootstrap" style="margin-top:10px"><div class="alert alert-danger error" style="width:auto">Error obteniendo respuesta del Webservice de Nacex.</div></div>';
 }
-
 
 /** Antes del control de WS sin conexión **/
 //	session_start();

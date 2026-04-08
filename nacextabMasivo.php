@@ -1,4 +1,5 @@
 <?php
+
 //20180620 mexpositop
 include_once dirname(__FILE__) . '/nacexutils.php';
 include_once dirname(__FILE__) . '/nacexDAO.php';
@@ -7,7 +8,7 @@ include_once dirname(__FILE__) . '/nacexVIEW.php';
 include_once dirname(__FILE__) . '/nacexWS.php';
 include_once dirname(__FILE__) . '/nacex.php';
 
-if (Configuration::get('NACEX_SHOW_ERRORS') == "SI") {
+if (Configuration::get('NACEX_SHOW_ERRORS') == 'SI') {
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
 } else {
@@ -52,21 +53,21 @@ class nacextabMasivo extends AdminController
     }*/
 
     public function initContent() {
-        $accion = Tools::getValue("accion", "");
+        $accion = Tools::getValue('accion', '');
         $html = '';
         $this->_html .= "<form id='nacex_filtro_masivo' name='nacex_filtro_masivo' method='post'>";
 
         $this->getFiltrosMasivos();
 
-        if ($accion == "generar") {
+        if ($accion == 'generar') {
             $html = $this->generarExpediciones();
             $html .= $this->_html;
             $this->_html = $html;
             $this->getListadoPedidos();
-        } elseif ($accion == "buscar")
-            $this->getListadoPedidos();
+        } elseif ($accion == 'buscar') {
+            $this->getListadoPedidos(); }
 
-        $this->_html .= "</form>";
+        $this->_html .= '</form>';
 
         //return $this->_html;
         $this->context->smarty->assign('content', $this->_html);
@@ -75,25 +76,25 @@ class nacextabMasivo extends AdminController
     public function getFiltrosMasivos() {
 
         global $cookie;
-        $host = "";
+        $host = '';
 
-        $webtext = $this->nacex->l("Go to Nacex web");
-        $webdir = "https://www.nacex.es";
-        $webimg = _MODULE_DIR_ . "nacex/images/logos/NACEX_logo.svg";
+        $webtext = $this->nacex->l('Go to Nacex web');
+        $webdir = 'https://www.nacex.es';
+        $webimg = _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg';
 
         $desde = date('Y-m-d H:i:s');
         $hasta = $desde;
         $hoy_desde = date('Y-m-d') . ' 00:00:00';
         $hoy_hasta = date('Y-m-d') . ' 23:59:59';
-        $ayer_desde = date("Y-m-d", strtotime("-1 day")) . ' 00:00:00';
-        $ayer_hasta = date("Y-m-d", strtotime("-1 day")) . ' 23:59:59';
-        $estasemana_desde = date('Y-m-d', time() + ( 1 - date('w')) * 24 * 3600) . ' 00:00:00';
-        $estasemana_hasta = date('Y-m-d', time() + ( 7 - date('w')) * 24 * 3600) . ' 23:59:59';
-        $timestamp_ultimodomingo = strtotime("last Sunday");
-        $semanapasada_desde = date("Y-m-d", $timestamp_ultimodomingo - 6 * 24 * 3600) . ' 00:00:00';
-        $semanapasada_hasta = date("Y-m-d", $timestamp_ultimodomingo) . ' 23:59:59';
-        $estemes_desde = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") - date("d") + 1, date("Y"))) . ' 00:00:00';
-        $estemes_hasta = date("Y-m-d", mktime(0, 0, 0, date("m") + 1, date("d") - date("d"), date("Y"))) . ' 23:59:59';
+        $ayer_desde = date('Y-m-d', strtotime('-1 day')) . ' 00:00:00';
+        $ayer_hasta = date('Y-m-d', strtotime('-1 day')) . ' 23:59:59';
+        $estasemana_desde = date('Y-m-d', time() + (1 - date('w')) * 24 * 3600) . ' 00:00:00';
+        $estasemana_hasta = date('Y-m-d', time() + (7 - date('w')) * 24 * 3600) . ' 23:59:59';
+        $timestamp_ultimodomingo = strtotime('last Sunday');
+        $semanapasada_desde = date('Y-m-d', $timestamp_ultimodomingo - 6 * 24 * 3600) . ' 00:00:00';
+        $semanapasada_hasta = date('Y-m-d', $timestamp_ultimodomingo) . ' 23:59:59';
+        $estemes_desde = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - date('d') + 1, date('Y'))) . ' 00:00:00';
+        $estemes_hasta = date('Y-m-d', mktime(0, 0, 0, date('m') + 1, date('d') - date('d'), date('Y'))) . ' 23:59:59';
 
         $usr = Configuration::get('NACEX_WSUSERNAME');
         $pass = Configuration::get('NACEX_WSPASSWORD');
@@ -101,14 +102,14 @@ class nacextabMasivo extends AdminController
         $eti = Configuration::get('NACEX_PRINT_ET');
 
         //Recogemos las variables del formulario para inicializar los filtros
-        $fecha_desde = Tools::getValue("date_from") == '' ? $desde : Tools::getValue("date_from");
-        $fecha_hasta = Tools::getValue("date_to") == '' ? $hasta : Tools::getValue("date_to");
-        $estado_pedido = Tools::getValue("ncx_estado") == '' ? -1 : Tools::getValue("ncx_estado");
+        $fecha_desde = Tools::getValue('date_from') == '' ? $desde : Tools::getValue('date_from');
+        $fecha_hasta = Tools::getValue('date_to') == '' ? $hasta : Tools::getValue('date_to');
+        $estado_pedido = Tools::getValue('ncx_estado') == '' ? -1 : Tools::getValue('ncx_estado');
 
         if (!Tools::getValue('ncx_carrier_sel')) {
             $carriers_seleccionados = [];
         } else {
-            $carriers_seleccionados = count(Tools::getValue('ncx_carrier_sel')) > 0 ? Tools::getValue('ncx_carrier_sel') : array();
+            $carriers_seleccionados = count(Tools::getValue('ncx_carrier_sel')) > 0 ? Tools::getValue('ncx_carrier_sel') : [];
         }
         $statuses = OrderState::getOrderStates((int)($cookie->id_lang));
 
@@ -117,9 +118,9 @@ class nacextabMasivo extends AdminController
         $carriers = $this->getOrdersCarriers();
 
         //Si no permitimos generar expediciones de transportistas externos, no mostramos carriers externos
-        if (Configuration::get('NACEX_FORCE_GENFORM') == "NO") {
-            foreach ($carriers as $key => $carrier)
-                if (strpos($carrier['ncx'], "nacex") === false) unset($carriers[$key]);
+        if (Configuration::get('NACEX_FORCE_GENFORM') == 'NO') {
+            foreach ($carriers as $key => $carrier) {
+                if (strpos($carrier['ncx'], 'nacex') === false) { unset($carriers[$key]); } }
         }
 
         $this->_html .= "<div class='subheader'>
@@ -152,11 +153,11 @@ class nacextabMasivo extends AdminController
 			<td rowspan='2'><br>
 			<b>" . $this->nacex->l('Order status') . ": </b>
 			<select id='ncx_estado' name='ncx_estado' style='width:175px'>
-                        <option value='-1'>" . $this->nacex->l('All') . "</option>";
+                        <option value='-1'>" . $this->nacex->l('All') . '</option>';
         foreach ($statuses as $status) {
             $this->_html .= $status['id_order_state'] == $estado_pedido ?
-                "<option value='" . $status['id_order_state'] . "' selected>" . $status['name'] . "</option>" :
-                "<option value='" . $status['id_order_state'] . "'>" . $status['name'] . "</option>";
+                "<option value='" . $status['id_order_state'] . "' selected>" . $status['name'] . '</option>' :
+                "<option value='" . $status['id_order_state'] . "'>" . $status['name'] . '</option>';
         }
         /** Quitar tabla de alternar-transportistas y cambiar estilos del <div> **/
         $this->_html .= "</select>
@@ -174,16 +175,16 @@ class nacextabMasivo extends AdminController
             //Si vienen carriers en la variable $carriers_seleccionados marcamos los que haya en el array $carriers_seleccionados
             foreach ($carriers as $carrier) {
                 $this->_html .= in_array($carrier['id_carrier'], $carriers_seleccionados) ?
-                    "<option value='" . $carrier['id_carrier'] . "' selected>" . $carrier['name'] . "</option>" :
-                    "<option value='" . $carrier['id_carrier'] . "'>" . $carrier['name'] . "</option>";
+                    "<option value='" . $carrier['id_carrier'] . "' selected>" . $carrier['name'] . '</option>' :
+                    "<option value='" . $carrier['id_carrier'] . "'>" . $carrier['name'] . '</option>';
             }
         } else {
             //Si no vienen carriers en la variable $carriers_seleccionados los marcamos todos por defecto
-            foreach ($carriers as $carrier)
-                $this->_html .= "<option value='" . $carrier['id_carrier'] . "'>" . $carrier['name'] . "</option>";
+            foreach ($carriers as $carrier) {
+                $this->_html .= "<option value='" . $carrier['id_carrier'] . "'>" . $carrier['name'] . '</option>'; }
         }
 
-        $this->_html .= "</select>";
+        $this->_html .= '</select>';
         $this->_html .= "<br /><input type='button' id='select_all_carriers' name='select_all_carriers' class='ncx_button' value='" . $this->nacex->l('Select all') . "'>";
 
         $this->_html .= "</div>											
@@ -346,7 +347,6 @@ class nacextabMasivo extends AdminController
         $padresConsulta = Db::getInstance()->executeS('SELECT id_carrier,id_reference FROM ' . _DB_PREFIX_ . 'carrier ORDER BY id_carrier');
         $hijosSinPadreConsulta = Db::getInstance()->executeS('SELECT id_carrier,id_reference FROM ' . _DB_PREFIX_ . 'carrier WHERE id_reference NOT IN (SELECT id_carrier FROM ps_carrier) ORDER BY id_carrier');
 
-
         for ($i = 0; $i < count($padresConsulta); $i++) {
             // Cogemos las keys porque como se van a ir borrando elementos del array, para localizar la nueva posición de los valores
             $keysPadresConsulta = array_keys($padresConsulta);
@@ -354,17 +354,17 @@ class nacextabMasivo extends AdminController
             $hijos = array_keys(array_column($padresConsulta, 'id_reference'), $padresConsulta[$keysPadresConsulta[$i]]['id_carrier']);
             if (count($hijos) < 2) {// Si es 1 (siempre encontrará resultado)
                 //if(isset($hijos[0])) $padres[$padresConsulta[$i]['id_carrier']] = $padresConsulta[$hijos[0]]['id_carrier'];
-                if (isset($hijos[0])) $padres[$padresConsulta[$keysPadresConsulta[$i]]['id_carrier']] = $padresConsulta[$keysPadresConsulta[$hijos[0]]]['id_carrier'];
+                if (isset($hijos[0])) { $padres[$padresConsulta[$keysPadresConsulta[$i]]['id_carrier']] = $padresConsulta[$keysPadresConsulta[$hijos[0]]]['id_carrier']; }
             } else {
                 foreach ($hijos as $hijo) {
                     $valueHijos[] = $padresConsulta[$keysPadresConsulta[$hijo]]['id_carrier'];
 
                     // Si no es el "padre", eliminamos del array
-                    if ($hijo != $i) unset($padresConsulta[$keysPadresConsulta[$hijo]]);
+                    if ($hijo != $i) { unset($padresConsulta[$keysPadresConsulta[$hijo]]); }
                 }
                 $valueHijos = array_reverse($valueHijos);
                 $padres[$valueHijos[0]] = implode(',', $valueHijos);
-                $valueHijos = array();
+                $valueHijos = [];
             }
         }
 
@@ -373,12 +373,12 @@ class nacextabMasivo extends AdminController
          **/
         foreach ($hijosSinPadreConsulta as $arrayhijo) {
             foreach ($arrayhijo as $key => $idhijo) {
-                if ($key == "id_carrier") {
+                if ($key == 'id_carrier') {
                     if (!in_array($idhijo, $hijoshuer)) {
                         array_push($hijoshuer, $idhijo);
                     }
                 }
-                if ($key == "id_reference") {
+                if ($key == 'id_reference') {
                     if (!in_array($idhijo, $padresDesaparecidos)) {
                         array_push($padresDesaparecidos, $idhijo);
                     }
@@ -391,61 +391,60 @@ class nacextabMasivo extends AdminController
                     c.firstname, c.lastname, c.email, e.ref,e.agcli, e.fecha_alta, e.fecha_baja, e.ref, e.exp_cod, 
                     e.ag_cod_num_exp, e.serv_cod, e.serv, ca.name as carrier_name,ca.tip_serv as carrier_serv_id, ca.ncx, o.id_carrier,
                     p.iso_code, e.estado
-		from " . _DB_PREFIX_ . "orders o left join " . _DB_PREFIX_ . "customer c on (o.id_customer = c.id_customer)
-                    left join " . _DB_PREFIX_ . "carrier ca on (o.id_carrier = ca.id_carrier)
-                    left join " . _DB_PREFIX_ . "order_state os on (o.current_state = os.id_order_state)
-                    left join " . _DB_PREFIX_ . "order_state_lang osl on (o.current_state = osl.id_order_state and osl.id_lang = '" . (int)$id_lang . "')
-                    left join " . _DB_PREFIX_ . "nacex_expediciones e on (o.id_order = e.id_envio_order and e.fecha_baja is null)
-                    left join " . _DB_PREFIX_ . "address a on (o.id_address_invoice= a.id_address )
-                    left join " . _DB_PREFIX_ . "country p on (p.id_country= a.id_country )
-                where 1=1 ";
+		from " . _DB_PREFIX_ . 'orders o left join ' . _DB_PREFIX_ . 'customer c on (o.id_customer = c.id_customer)
+                    left join ' . _DB_PREFIX_ . 'carrier ca on (o.id_carrier = ca.id_carrier)
+                    left join ' . _DB_PREFIX_ . 'order_state os on (o.current_state = os.id_order_state)
+                    left join ' . _DB_PREFIX_ . "order_state_lang osl on (o.current_state = osl.id_order_state and osl.id_lang = '" . (int)$id_lang . "')
+                    left join " . _DB_PREFIX_ . 'nacex_expediciones e on (o.id_order = e.id_envio_order and e.fecha_baja is null)
+                    left join ' . _DB_PREFIX_ . 'address a on (o.id_address_invoice= a.id_address )
+                    left join ' . _DB_PREFIX_ . 'country p on (p.id_country= a.id_country )
+                where 1=1 ';
 
-        $fecha_desde = Tools::getValue("date_from");
+        $fecha_desde = Tools::getValue('date_from');
         if (empty($fecha_desde)) {
             $errors[] = $this->nacex->l('You must report the date From');
         } else {
             $sql .= " and o.date_add >= '" . $fecha_desde . "'";
         }
 
-        $fecha_hasta = Tools::getValue("date_to");
+        $fecha_hasta = Tools::getValue('date_to');
         if (empty($fecha_hasta)) {
             $errors[] = $this->nacex->l('You must report the date To');
         } else {
             $sql .= " and o.date_add < '" . $fecha_hasta . "'";
         }
 
-        $estado_pedido = Tools::getValue("ncx_estado");
+        $estado_pedido = Tools::getValue('ncx_estado');
         if (empty($estado_pedido)) {
             $errors[] = $this->nacex->l('You must report the order status');
-        } else if ($estado_pedido != -1) {
+        } elseif ($estado_pedido != -1) {
             //solo añadimos la condicion con el estado de pedido !=-1 ya que el estado -1 es todos los estados.
             //Modo de compatibilidad con versiones de prestashop 1.4.x
-            $sql .= " and o.current_state = " . $estado_pedido;
+            $sql .= ' and o.current_state = ' . $estado_pedido;
         }
 
-        $carriers = Tools::getValue("ncx_carrier_sel");
+        $carriers = Tools::getValue('ncx_carrier_sel');
         if (!(empty($carriers) || count($carriers) <= 0)) {
-            $carrier_ids = "";
+            $carrier_ids = '';
             foreach ($carriers as $carrier) {
                 /** Asignar carriers **/
-                if (isset($padres[$carrier]) && $padres[$carrier])
-                    $carrier_ids .= $padres[$carrier] . ',';
-                else { // Buscamos el texto que corresponde al carrier y devolvemos la key (id) del actual
-                    $id_car = array_keys(preg_grep("/.*,?$carrier,?.*/", $padres));
-                    if (count($id_car) < 2 && isset($id_car[0])) {
-                        $id_car = $id_car[0];
-                        $carrier_ids .= $padres[$id_car] . ',';
-                    } else {
-                        foreach ($id_car as $id => $val) {
-                            $index = explode(',', $padres[$val]);
-                            if (in_array($carrier, $index)) {
-                                $id_car = $id_car[$id];
-                                $carrier_ids .= $padres[$id_car] . ',';
-                                break;
+                if (isset($padres[$carrier]) && $padres[$carrier]) {
+                    $carrier_ids .= $padres[$carrier] . ','; } else { // Buscamos el texto que corresponde al carrier y devolvemos la key (id) del actual
+                        $id_car = array_keys(preg_grep("/.*,?$carrier,?.*/", $padres));
+                        if (count($id_car) < 2 && isset($id_car[0])) {
+                            $id_car = $id_car[0];
+                            $carrier_ids .= $padres[$id_car] . ',';
+                        } else {
+                            foreach ($id_car as $id => $val) {
+                                $index = explode(',', $padres[$val]);
+                                if (in_array($carrier, $index)) {
+                                    $id_car = $id_car[$id];
+                                    $carrier_ids .= $padres[$id_car] . ',';
+                                    break;
+                                }
                             }
                         }
                     }
-                }
             }
 
             // Quitamos el último , del string
@@ -473,15 +472,15 @@ class nacextabMasivo extends AdminController
 
             // Volvemos a crear un string con los elementos del array que nos han quedado
             $carrier_ids = implode(',', $array_carrier_ids);
-            $sql .= " and o.id_carrier in (" . $carrier_ids . ") ";
+            $sql .= ' and o.id_carrier in (' . $carrier_ids . ') ';
             //$sql .= " and o.id_carrier in (" . substr($carrier_ids, 0, strlen($carrier_ids)-1) . ") ";
         }
 
         if (isset($errors) && count($errors) > 0) {
-            $this->_html .=$this->mostrarErrores($errors);
+            $this->_html .= $this->mostrarErrores($errors);
         } else {
 
-            $sql .= " order by id_order ";
+            $sql .= ' order by id_order ';
 
             $expediciones = Db::getInstance()->executeS($sql);
 
@@ -489,9 +488,9 @@ class nacextabMasivo extends AdminController
         }
     }
 
-    public function getTablaDatosListado($datos = array()) {
+    public function getTablaDatosListado($datos = []) {
 
-        $tabla = "";
+        $tabla = '';
         $hay_registros = 0;
 
         $nacexDTO = new nacexDTO();
@@ -510,8 +509,8 @@ class nacextabMasivo extends AdminController
         } else {
             $tabla .= "<td colspan='12'>
                             <p class='alert alert-info'>
-                            " . $this->nacex->l('There is a problem with Nacex Web Service connection and some functionality may be affected, as well as <strong>some expedition status</strong>. Please, wait few minutes until connextion will be restored. We apologize for the inconvenients') . "
-                            </p>";
+                            " . $this->nacex->l('There is a problem with Nacex Web Service connection and some functionality may be affected, as well as <strong>some expedition status</strong>. Please, wait few minutes until connextion will be restored. We apologize for the inconvenients') . '
+                            </p>';
         }
         $tabla .= "</td>
             </tr>
@@ -540,15 +539,15 @@ class nacextabMasivo extends AdminController
                 </th>
                 <th class='center'>" . $this->nacex->l('Carriers') . "</th>
                 <th class='center'>" . $this->nacex->l('Service') . "</th> 
-                <th class='center'>" . $this->nacex->l('Exp. status') . "</th>
+                <th class='center'>" . $this->nacex->l('Exp. status') . '</th>
             </tr>
         </thead>
-        <tbody>";
+        <tbody>';
 
         if (!$datos || count($datos) <= 0) {
             $tabla .= " <tr style='height: 50px;' class='row_hover'>
-		        <td class='center' colspan='12'>" . $this->nacex->l('No data found') . "</td>
-		    </tr>";
+		        <td class='center' colspan='12'>" . $this->nacex->l('No data found') . '</td>
+		    </tr>';
         } else {
             $hay_registros = 1;
 
@@ -567,58 +566,57 @@ class nacextabMasivo extends AdminController
 
                 $imgncx = "<img src='../modules/nacex/images/nosent.png' alt='" . $this->nacex->l('Expedition to document') . "' title='" . $this->nacex->l('Expedition to document') . "'/>";
 
-
                 if (!empty($value['ag_cod_num_exp']) && $value['estado'] != 'ANULADA') {
-                    $imgncx = "<img src='../modules/nacex/images/sent.png' alt='" . $this->nacex->l('Documented expedition') . " - (" . $value['ag_cod_num_exp'] . ")' title='" . $this->nacex->l('Documented expedition') . " - (" . $value['ag_cod_num_exp'] . ")'/>";
+                    $imgncx = "<img src='../modules/nacex/images/sent.png' alt='" . $this->nacex->l('Documented expedition') . ' - (' . $value['ag_cod_num_exp'] . ")' title='" . $this->nacex->l('Documented expedition') . ' - (' . $value['ag_cod_num_exp'] . ")'/>";
                 }
                 $link = Context::getContext()->link->getAdminLink('AdminOrders');
 
-                $zona = "NAC";
+                $zona = 'NAC';
                 $servicios_shop = array_keys($nacexDTO->getServiciosNacexShop());
-                if (in_array($value['carrier_serv_id'], $servicios_shop)) $zona = "SHP";
+                if (in_array($value['carrier_serv_id'], $servicios_shop)) { $zona = 'SHP'; }
                 if (!empty($value['iso_code'])) {
                     if ($value['iso_code'] != 'ES' && $value['iso_code'] != 'PT' && $value['iso_code'] != 'AD') {
-                        $zona = "INT";
+                        $zona = 'INT';
                     }
                 }
 
                 $tabla .= " <tr style='height: 35px;' class='row_hover'>
 			<td class='left'>";
-                if ($value['ag_cod_num_exp'] == "" || $value['estado'] == 'ANULADA') {
-                    $tabla .= "<input class='noborderNacex' type='checkbox' value='" . $value['id_order'] . "|" . $value['exp_cod'] . "|" . $value['ncx'] . "' name='idPedidoBox[]' onclick='ambito(this,\"" . $zona . "\");'>";
+                if ($value['ag_cod_num_exp'] == '' || $value['estado'] == 'ANULADA') {
+                    $tabla .= "<input class='noborderNacex' type='checkbox' value='" . $value['id_order'] . '|' . $value['exp_cod'] . '|' . $value['ncx'] . "' name='idPedidoBox[]' onclick='ambito(this,\"" . $zona . "\");'>";
                 }
-                $tabla .="</td>
-			<td class='left'><a href='"   . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['id_order'] . "</a></td>
-			<td class='left'><a href='"   . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\"><span class='color_field' style='background-color:" . $value['color'] . ";color:white'>" . $value['status_name'] . "</span></a></td>
-			<td class='left'><a href='"   . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['date_add'] . "</a></td>
-			<td class='left'><a href='"   . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['firstname'] . "&nbsp;" . $value['lastname'] . "</a></td>
-			<td class='left'><a href='" . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['email'] . "</a></td>
-			<td class='left'><a href='" . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $phone . "</a></td>
-			<td class='left'><a href='" . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['ref'] . "</a></td>
+                $tabla .= "</td>
+			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['id_order'] . "</a></td>
+			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\"><span class='color_field' style='background-color:" . $value['color'] . ";color:white'>" . $value['status_name'] . "</span></a></td>
+			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['date_add'] . "</a></td>
+			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['firstname'] . '&nbsp;' . $value['lastname'] . "</a></td>
+			<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['email'] . "</a></td>
+			<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $phone . "</a></td>
+			<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['ref'] . "</a></td>
 			<td class='left'>";
-                if ($value['ag_cod_num_exp'] != "" && $value['estado'] != 'ANULADA') {
-                    $tabla .= "<input class='noborderNacex' type='checkbox' value='" . $value['id_order'] . "|" . $value['exp_cod'] . "' name='idPedidoBoxPrint[]' onclick='ambito(this,\"" . $zona . "\");'>";
+                if ($value['ag_cod_num_exp'] != '' && $value['estado'] != 'ANULADA') {
+                    $tabla .= "<input class='noborderNacex' type='checkbox' value='" . $value['id_order'] . '|' . $value['exp_cod'] . "' name='idPedidoBoxPrint[]' onclick='ambito(this,\"" . $zona . "\");'>";
                 }
                 $tabla .= "
-                <a href='" . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none" . ($value['estado'] == "ANULADA" ? ';color:red;' : ";") . " \">" . $value['ag_cod_num_exp'] . "</a></td>";
+                <a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none" . ($value['estado'] == 'ANULADA' ? ';color:red;' : ';') . ' ">' . $value['ag_cod_num_exp'] . '</a></td>';
 
-                if ($value['ncx'] == "nacexshop" || $value['ncx'] == "nacexshopG") {
+                if ($value['ncx'] == 'nacexshop' || $value['ncx'] == 'nacexshopG') {
                     $iso_code = Language::getIsoById(nacexutils::getCurrentLang());
                     $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEXshop_sostenible_' . $iso_code . '.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" style="width: 50px;" />';
                 } else {
                     $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" style="width: 50px;" />';
                 }
 
-                $tabla .= "<td class='left'><a href='" . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $img_servicio . "</a></td>
-            <td class='center'><a href='" . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['serv'] . "</a></td>
-            <td class='center'><a href='" . $link . "&id_order=" . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $imgncx . "&nbsp;<img src='../img/admin/details.gif' alt='" . $this->nacex->l('See order detail') . "' title='" . $this->nacex->l('See order detail') . "'/></a></span></td>									 
+                $tabla .= "<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $img_servicio . "</a></td>
+            <td class='center'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['serv'] . "</a></td>
+            <td class='center'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $imgncx . "&nbsp;<img src='../img/admin/details.gif' alt='" . $this->nacex->l('See order detail') . "' title='" . $this->nacex->l('See order detail') . "'/></a></span></td>									 
 			</tr>";
             }
         }
 
-        $tabla .= "
+        $tabla .= '
 			</tbody>
-			</table>";
+			</table>';
 
         if ($hay_registros) {
             $tabla .= $this->showDatosForm();
@@ -708,15 +706,15 @@ class nacextabMasivo extends AdminController
 
     private function showDatosForm() {
 
-        $html = "";
+        $html = '';
         $nacexDTO = new nacexDTO();
 
         $nacex_impseg = (Tools::getValue('nacex_imp_seg') ? Tools::getValue('nacex_imp_seg') : Configuration::get('NACEX_DEFAULT_IMP_SEG'));
-        $modo_f = (Configuration::get("NACEX_SERV_BACK_OR_FRONT") == "F");
+        $modo_f = (Configuration::get('NACEX_SERV_BACK_OR_FRONT') == 'F');
 
-        $att = "";
-        $cliente_tlf = "";
-        $cliente_email = "";
+        $att = '';
+        $cliente_tlf = '';
+        $cliente_email = '';
 
         $html .= '<script>
             var cli_tlf = "' . substr($cliente_tlf, 0, 50) . '";
@@ -783,22 +781,22 @@ class nacextabMasivo extends AdminController
 		';
 
         //SELECTOR DE AGENCIAS Y CLIENTES ----------------------------------------------------------------------------
-        $array_agclis = array();
-        $array_agclis = explode(",", Configuration::get('NACEX_AGCLI'));
-        $select_agcli = "";
+        $array_agclis = [];
+        $array_agclis = explode(',', Configuration::get('NACEX_AGCLI'));
+        $select_agcli = '';
         for ($i = 0; $i < count($array_agclis); $i++) {
-            $select_agcli = $select_agcli . "<option " . nacexutils::markSelectedOption("nacex_agcli", "NACEX_AGCLI", trim($array_agclis[$i])) . " value='" . trim($array_agclis[$i]) . "'>" . trim($array_agclis[$i]) . "</option>";
+            $select_agcli = $select_agcli . '<option ' . nacexutils::markSelectedOption('nacex_agcli', 'NACEX_AGCLI', trim($array_agclis[$i])) . " value='" . trim($array_agclis[$i]) . "'>" . trim($array_agclis[$i]) . '</option>';
         }
 
         //SELECTOR DE SERVICIOS DISPONIBLES ----------------------------------------------------------------------------
-        $num_serv = "";
+        $num_serv = '';
         $modo_f_con_b = false;
         $array_servicios = null;
         $def_serv = Configuration::get('NACEX_DEFAULT_TIP_SER');
         $opt_serv = explode('|', Configuration::get('NACEX_AVAILABLE_TIP_SER'));
         $array_servicios = $nacexDTO->getServiciosNacex();
         $num_serv = $def_serv;
-        $select_serv = "";
+        $select_serv = '';
 
         $shop_def_serv = Configuration::get('NACEX_DEFAULT_TIP_NXSHOP_SER');
         $shop_opt_serv = explode('|', Configuration::get('NACEX_AVAILABLE_TIP_NXSHOP_SER'));
@@ -814,69 +812,68 @@ class nacextabMasivo extends AdminController
             $select_serv = $select_serv . "<optgroup label='" . $this->nacex->l('National: available services') . "' id='opt_serv_nac'>";
         }
         for ($i = 0; $i < count($opt_serv); $i++) {
-            $select_serv = $select_serv . "<option " . nacexutils::markSelectedOption("nacex_tip_ser", "NACEX_DEFAULT_TIP_SER", $opt_serv[$i]) . " value='" . $opt_serv[$i] . "'>" . $opt_serv[$i] . " - " . $array_servicios[$opt_serv[$i]]["nombre"] . "</option>";
+            $select_serv = $select_serv . '<option ' . nacexutils::markSelectedOption('nacex_tip_ser', 'NACEX_DEFAULT_TIP_SER', $opt_serv[$i]) . " value='" . $opt_serv[$i] . "'>" . $opt_serv[$i] . ' - ' . $array_servicios[$opt_serv[$i]]['nombre'] . '</option>';
         }
         if (!$modo_f_con_b && $modo_f && !in_array($num_serv, $opt_serv)) {
-            $select_serv = $select_serv . "<option selected='selected' value='" . $num_serv . "'>" . $num_serv . " - " . @$array_servicios[$num_serv]["nombre"] . "</option>";
+            $select_serv = $select_serv . "<option selected='selected' value='" . $num_serv . "'>" . $num_serv . ' - ' . @$array_servicios[$num_serv]['nombre'] . '</option>';
         }
 
         if (isset($shop_opt_serv)) {
             $select_serv = $select_serv . "<optgroup label='" . $this->nacex->l('NacexShop: available services') . "' id='opt_serv_nac'>";
         }
         for ($i = 0; $i < count($shop_opt_serv); $i++) {
-            $select_serv = $select_serv . "<option " . nacexutils::markSelectedOption("nacex_tip_ser", "NACEX_DEFAULT_TIP_SER", $shop_opt_serv[$i]) . " value='" . $shop_opt_serv[$i] . "'>" . $shop_opt_serv[$i] . " - " . $array_servicios_shop[$shop_opt_serv[$i]]["nombre"] . "</option>";
+            $select_serv = $select_serv . '<option ' . nacexutils::markSelectedOption('nacex_tip_ser', 'NACEX_DEFAULT_TIP_SER', $shop_opt_serv[$i]) . " value='" . $shop_opt_serv[$i] . "'>" . $shop_opt_serv[$i] . ' - ' . $array_servicios_shop[$shop_opt_serv[$i]]['nombre'] . '</option>';
         }
         if (!$modo_f_con_b && $modo_f && !in_array($num_shop_serv, $shop_opt_serv)) {
-            $select_serv = $select_serv . "<option selected='selected' value='" . $num_shop_serv . "'>" . $num_shop_serv . " - " . @$array_servicios_shop[$num_shop_serv]["nombre"] . "</option>";
+            $select_serv = $select_serv . "<option selected='selected' value='" . $num_shop_serv . "'>" . $num_shop_serv . ' - ' . @$array_servicios_shop[$num_shop_serv]['nombre'] . '</option>';
         }
 
         if (isset($opt_serv_int)) {
             $select_serv = $select_serv . "<optgroup label='" . $this->nacex->l('International: available services') . "' id='opt_serv_int'>";
             for ($i = 0; $i < count($opt_serv_int); $i++) {
-                $select_serv = $select_serv . "<option " . nacexutils::markSelectedOption("nacex_tip_ser", "NACEX_DEFAULT_TIP_SER_INT", $opt_serv_int[$i]) . " value='" . $opt_serv_int[$i] . "'>" . $opt_serv_int[$i] . " - " . $array_servicios_int[$opt_serv_int[$i]]["nombre"] . "</option>";
+                $select_serv = $select_serv . '<option ' . nacexutils::markSelectedOption('nacex_tip_ser', 'NACEX_DEFAULT_TIP_SER_INT', $opt_serv_int[$i]) . " value='" . $opt_serv_int[$i] . "'>" . $opt_serv_int[$i] . ' - ' . $array_servicios_int[$opt_serv_int[$i]]['nombre'] . '</option>';
             }
         }
 
         if (isset($opt_serv)) {
-            $select_serv = $select_serv . "</optgroup>";
+            $select_serv = $select_serv . '</optgroup>';
         }
 
         //SELECTOR TIPOS DE SEGURO ----------------------------------------------------------------------------
-        $select_tipseg = "";
+        $select_tipseg = '';
         $array_seguros = $nacexDTO->getSeguros();
         foreach ($array_seguros as $seg => $value) {
-            $segname = $value["nombre"];
-            $select_tipseg.= "<option " . nacexutils::markSelectedFrontendOption("nacex_tip_seg", Configuration::get('NACEX_DEFAULT_TIP_SEG'), $seg) . " value='" . $seg . "'>" . $segname . "</option>";
+            $segname = $value['nombre'];
+            $select_tipseg .= '<option ' . nacexutils::markSelectedFrontendOption('nacex_tip_seg', Configuration::get('NACEX_DEFAULT_TIP_SEG'), $seg) . " value='" . $seg . "'>" . $segname . '</option>';
         }
 
         //SELECTOR DEPARTAMENTOS ----------------------------------------------------------------------------
-        $departamentos = Configuration::get("NACEX_DEPARTAMENTOS");
-        $select_dpt = "";
+        $departamentos = Configuration::get('NACEX_DEPARTAMENTOS');
+        $select_dpt = '';
         if ($departamentos) {
-            $array_dept = explode(",", $departamentos);
+            $array_dept = explode(',', $departamentos);
             $deptdef = $array_dept[0];
             foreach ($array_dept as $dpt) {
-                $select_dpt.= "<option " . nacexutils::markSelectedFrontendOption("nacex_departamentos", $array_dept[0], $dpt) . " value='" . $dpt . "'>" . $dpt . "</option>";
+                $select_dpt .= '<option ' . nacexutils::markSelectedFrontendOption('nacex_departamentos', $array_dept[0], $dpt) . " value='" . $dpt . "'>" . $dpt . '</option>';
             }
         }
 
         //CALCULAMOS EL NUMERO DE BULTOS POR DEFECTO
         //Al tener más de un pedido, sólo actualizamos el número de bultos si está configurado como Fijo, sino, por defecto 1
-        $numbultos= max (1, (Configuration::get ( 'NACEX_BULTOS' ) == "F"? Tools::getValue ( "nacex_bul", Configuration::get ( 'NACEX_BULTOS_NUMERO' ) ):1) );
+        $numbultos = max(1, (Configuration::get('NACEX_BULTOS') == 'F' ? Tools::getValue('nacex_bul', Configuration::get('NACEX_BULTOS_NUMERO')) : 1));
 
         //INSTRUCCIONES ADICIONALES CUSTOMIZADAS----------------------------------------------------------------------------------------
-        $instrucciones = "";
-        $inst_adi_pers = (Configuration::get("NACEX_INST_PERS") == "SI");
-        $inst_adi_val = Configuration::get("NACEX_CUSTOM_INST_ADI");
-        $inst_adi_cantyref = (Configuration::get("NACEX_INS_ADI_Q_R") == "SI");
+        $instrucciones = '';
+        $inst_adi_pers = (Configuration::get('NACEX_INST_PERS') == 'SI');
+        $inst_adi_val = Configuration::get('NACEX_CUSTOM_INST_ADI');
+        $inst_adi_cantyref = (Configuration::get('NACEX_INS_ADI_Q_R') == 'SI');
 
         // Cogemos también las observaciones
         $obs_def = '';
 
-        if($inst_adi_pers) {
-            $obs_def = Configuration::get("NACEX_CUSTOM_OBS");
+        if ($inst_adi_pers) {
+            $obs_def = Configuration::get('NACEX_CUSTOM_OBS');
         }
-
 
         // Lo tengo que hacer vía JS por pedido seleccionado
         /*if ($inst_adi_cantyref) {
@@ -890,12 +887,11 @@ class nacextabMasivo extends AdminController
         }*/
         $instrucciones .= $inst_adi_val;
 
-        $texto_instrucciones = Tools::getValue("inst_adi", $instrucciones);
-
+        $texto_instrucciones = Tools::getValue('inst_adi', $instrucciones);
 
         $html .= '
             <!-- Botón para volver arriba y poder pulsar el botón de generar expedición más fácilmente -->
-            <a onclick="topFunction()" id="nacexToTop" title="' . $this->nacex->l("Go to top") . '" style=""><i class="arrow up"></i></a>
+            <a onclick="topFunction()" id="nacexToTop" title="' . $this->nacex->l('Go to top') . '" style=""><i class="arrow up"></i></a>
             
             <script>
                 /* Funcionalidad toTop de Masivos */
@@ -923,14 +919,14 @@ class nacextabMasivo extends AdminController
 		    <div class="accordion panel">
                 <span class="panel-heading">
 					<i class="icon-truck"></i>
-					' . $this->nacex->l("Document shipments") . '
+					' . $this->nacex->l('Document shipments') . '
 				</span>	
 				
             <div align="center" id="ncx_boxinfo_masivo">	
             <div id="ncx_info_exp" style="width: 800px;">
 		<fieldset class="diana">
-		<legend><p>' . $this->nacex->l("You must fill in the following fields in order to generate the expeditions properly") . '</p>
-		<p>' . $this->nacex->l("These parameters will be applied automatically to all expeditions to generate") . '</p></legend>
+		<legend><p>' . $this->nacex->l('You must fill in the following fields in order to generate the expeditions properly') . '</p>
+		<p>' . $this->nacex->l('These parameters will be applied automatically to all expeditions to generate') . '</p></legend>
 		<div class="inlineSuperior">
 		    <strong>' . $this->nacex->l('Agency/Customer') . ':</strong> 								
             <select name="nacex_agcli" size="1">' . $select_agcli . '</select>																																											
@@ -1078,32 +1074,32 @@ class nacextabMasivo extends AdminController
 		</tr>
 		<tr>
 		<td style="width:20%;vertical-align:top;text-align:left">
-            <input type="radio" name="nacex_tip_cob" value="O" ' . nacexutils::markCheckedOption("nacex_tip_cob", "NACEX_TIP_COB", 'O') . '/><label style="float: inherit;">O - P. Origen</label><br>  
-            <input type="radio" name="nacex_tip_cob" value="D" ' . nacexutils::markCheckedOption("nacex_tip_cob", "NACEX_TIP_COB", 'D') . '/><label style="float: inherit;">D - P. Destino</label><br>
-            <input type="radio" name="nacex_tip_cob" value="T" ' . nacexutils::markCheckedOption("nacex_tip_cob", "NACEX_TIP_COB", 'T') . '/><label style="float: inherit;">T - P. Tercera</label> 
+            <input type="radio" name="nacex_tip_cob" value="O" ' . nacexutils::markCheckedOption('nacex_tip_cob', 'NACEX_TIP_COB', 'O') . '/><label style="float: inherit;">O - P. Origen</label><br>  
+            <input type="radio" name="nacex_tip_cob" value="D" ' . nacexutils::markCheckedOption('nacex_tip_cob', 'NACEX_TIP_COB', 'D') . '/><label style="float: inherit;">D - P. Destino</label><br>
+            <input type="radio" name="nacex_tip_cob" value="T" ' . nacexutils::markCheckedOption('nacex_tip_cob', 'NACEX_TIP_COB', 'T') . '/><label style="float: inherit;">T - P. Tercera</label> 
 		</td>
 		<td style="width:20%;vertical-align:top;text-align:left">
-            <input type="radio" name="nacex_tip_ree" value="O" ' . nacexutils::markCheckedOption("nacex_tip_ree", "NACEX_TIP_REE", 'O') . '/><label style="float: inherit;">O - R. Origen</label> <br>  
-            <input type="radio" name="nacex_tip_ree" value="D" ' . nacexutils::markCheckedOption("nacex_tip_ree", "NACEX_TIP_REE", 'D') . '/><label style="float: inherit;">D - R. Destino</label> <br>
-            <input type="radio" name="nacex_tip_ree" value="T" ' . nacexutils::markCheckedOption("nacex_tip_ree", "NACEX_TIP_REE", 'T') . '/><label style="float: inherit;">T - R. Tercera</label>  
+            <input type="radio" name="nacex_tip_ree" value="O" ' . nacexutils::markCheckedOption('nacex_tip_ree', 'NACEX_TIP_REE', 'O') . '/><label style="float: inherit;">O - R. Origen</label> <br>  
+            <input type="radio" name="nacex_tip_ree" value="D" ' . nacexutils::markCheckedOption('nacex_tip_ree', 'NACEX_TIP_REE', 'D') . '/><label style="float: inherit;">D - R. Destino</label> <br>
+            <input type="radio" name="nacex_tip_ree" value="T" ' . nacexutils::markCheckedOption('nacex_tip_ree', 'NACEX_TIP_REE', 'T') . '/><label style="float: inherit;">T - R. Tercera</label>  
 		</td>
 		<td style="width:20%;vertical-align:top;text-align:left">
-            <input type="radio" name="nacex_tip_env" value="0" ' . nacexutils::markCheckedOption("nacex_tip_env", "NACEX_TIP_ENV", '0') . '/><label style="float: inherit;">0 - DOCS</label> <br>
-            <input type="radio" name="nacex_tip_env" value="1" ' . nacexutils::markCheckedOption("nacex_tip_env", "NACEX_TIP_ENV", '1') . '/><label style="float: inherit;">1 - BAG</label> <br>
-            <input type="radio" name="nacex_tip_env" value="2" ' . nacexutils::markCheckedOption("nacex_tip_env", "NACEX_TIP_ENV", '2') . '/><label style="float: inherit;">2 - PAQ</label> <br> 		
-            <input type="radio" name="nacex_tip_env" value="M" ' . nacexutils::markCheckedOption("nacex_tip_env_INT", "NACEX_TIP_ENV_INT", 'M') . '/><label style="float: inherit;">M - Muestras</label> <br>
-            <input type="radio" name="nacex_tip_env" value="D" ' . nacexutils::markCheckedOption("nacex_tip_env_INT", "NACEX_TIP_ENV_INT", 'D') . '/><label style="float: inherit;">D - Documentos</label> <br>
+            <input type="radio" name="nacex_tip_env" value="0" ' . nacexutils::markCheckedOption('nacex_tip_env', 'NACEX_TIP_ENV', '0') . '/><label style="float: inherit;">0 - DOCS</label> <br>
+            <input type="radio" name="nacex_tip_env" value="1" ' . nacexutils::markCheckedOption('nacex_tip_env', 'NACEX_TIP_ENV', '1') . '/><label style="float: inherit;">1 - BAG</label> <br>
+            <input type="radio" name="nacex_tip_env" value="2" ' . nacexutils::markCheckedOption('nacex_tip_env', 'NACEX_TIP_ENV', '2') . '/><label style="float: inherit;">2 - PAQ</label> <br> 		
+            <input type="radio" name="nacex_tip_env" value="M" ' . nacexutils::markCheckedOption('nacex_tip_env_INT', 'NACEX_TIP_ENV_INT', 'M') . '/><label style="float: inherit;">M - Muestras</label> <br>
+            <input type="radio" name="nacex_tip_env" value="D" ' . nacexutils::markCheckedOption('nacex_tip_env_INT', 'NACEX_TIP_ENV_INT', 'D') . '/><label style="float: inherit;">D - Documentos</label> <br>
 		</td>
 		<td style="width:20%;vertical-align:top;text-align:left">
-            <input type="radio" name="nacex_ret" value="NO" ' . nacexutils::markCheckedOption("nacex_ret", "NACEX_RET", 'NO') . '/><label style="float: inherit;">' . $this->nacex->l('No') . '</label> <br>
-            <input type="radio" name="nacex_ret" value="SI" ' . nacexutils::markCheckedOption("nacex_ret", "NACEX_RET", 'SI') . '/><label style="float: inherit;">' . $this->nacex->l('Yes') . '</label> 
+            <input type="radio" name="nacex_ret" value="NO" ' . nacexutils::markCheckedOption('nacex_ret', 'NACEX_RET', 'NO') . '/><label style="float: inherit;">' . $this->nacex->l('No') . '</label> <br>
+            <input type="radio" name="nacex_ret" value="SI" ' . nacexutils::markCheckedOption('nacex_ret', 'NACEX_RET', 'SI') . '/><label style="float: inherit;">' . $this->nacex->l('Yes') . '</label> 
 		</td>
 		<td style="width:20%;vertical-align:top;text-align:left">
             <select name="nacex_tip_seg" size="1" onchange="checkTipoSeguro(this.value);">' . $select_tipseg . '</select>
             <br><br>
             <b>' . $this->nacex->l('Insured amount') . ':</b>
             <br>
-            <input type="text" id="nacex_imp_seg" name="nacex_imp_seg" value="' . $nacex_impseg . '" style="width:50px" length=1 maxlength="35" ' . ($nacex_impseg == "" ? 'disabled="disabled"' : '') . '/>&euro;									
+            <input type="text" id="nacex_imp_seg" name="nacex_imp_seg" value="' . $nacex_impseg . '" style="width:50px" length=1 maxlength="35" ' . ($nacex_impseg == '' ? 'disabled="disabled"' : '') . '/>&euro;									
 		</td>
 		</tr>
 		</table>
@@ -1114,16 +1110,16 @@ class nacextabMasivo extends AdminController
 		<tr>
 		<td>
 		<b>' . $this->nacex->l('Prealert') . ': </b><br>
-            <input type="radio" name="nacex_tip_pre1" value="N" ' . nacexutils::markCheckedOption("nacex_tip_pre1", "NACEX_TIP_PREAL", 'N') . ' onclick="setprealerta(&quot;N&quot;);"  checked="true"/>N - No
-            <input type="radio" name="nacex_tip_pre1" value="S" ' . nacexutils::markCheckedOption("nacex_tip_pre1", "NACEX_TIP_PREAL", 'S') . ' onclick="setprealerta(&quot;S&quot;);" />S - SMS
-            <input type="radio" name="nacex_tip_pre1" value="E" ' . nacexutils::markCheckedOption("nacex_tip_pre1", "NACEX_TIP_PREAL", 'E') . ' onclick="setprealerta(&quot;E&quot;);" />E - Email
+            <input type="radio" name="nacex_tip_pre1" value="N" ' . nacexutils::markCheckedOption('nacex_tip_pre1', 'NACEX_TIP_PREAL', 'N') . ' onclick="setprealerta(&quot;N&quot;);"  checked="true"/>N - No
+            <input type="radio" name="nacex_tip_pre1" value="S" ' . nacexutils::markCheckedOption('nacex_tip_pre1', 'NACEX_TIP_PREAL', 'S') . ' onclick="setprealerta(&quot;S&quot;);" />S - SMS
+            <input type="radio" name="nacex_tip_pre1" value="E" ' . nacexutils::markCheckedOption('nacex_tip_pre1', 'NACEX_TIP_PREAL', 'E') . ' onclick="setprealerta(&quot;E&quot;);" />E - Email
 		</td>
 		<td>
 		<b>' . $this->nacex->l('Prealert mode') . ':</b><br>
-            <input type="radio" name="nacex_mod_pre1" value="S" ' . nacexutils::markCheckedOption("nacex_mod_pre1", "NACEX_MOD_PREAL", 'S') . ' onclick="setprealertaplus(&quot;S&quot;);"  />S - Standard
-            <input type="radio" name="nacex_mod_pre1" value="P" ' . nacexutils::markCheckedOption("nacex_mod_pre1", "NACEX_MOD_PREAL", 'P') . ' onclick="setprealertaplus(&quot;P&quot;);"  />P - Plus
-            <input type="radio" name="nacex_mod_pre1" value="R" ' . nacexutils::markCheckedOption("nacex_mod_pre1", "NACEX_MOD_PREAL", 'R') . ' onclick="setprealertaplus(&quot;R&quot;);"  />R - Reparto							
-            <input type="radio" name="nacex_mod_pre1" value="E" ' . nacexutils::markCheckedOption("nacex_mod_pre1", "NACEX_MOD_PREAL", 'E') . ' onclick="setprealertaplus(&quot;E&quot;);"  />E - Reparto Plus
+            <input type="radio" name="nacex_mod_pre1" value="S" ' . nacexutils::markCheckedOption('nacex_mod_pre1', 'NACEX_MOD_PREAL', 'S') . ' onclick="setprealertaplus(&quot;S&quot;);"  />S - Standard
+            <input type="radio" name="nacex_mod_pre1" value="P" ' . nacexutils::markCheckedOption('nacex_mod_pre1', 'NACEX_MOD_PREAL', 'P') . ' onclick="setprealertaplus(&quot;P&quot;);"  />P - Plus
+            <input type="radio" name="nacex_mod_pre1" value="R" ' . nacexutils::markCheckedOption('nacex_mod_pre1', 'NACEX_MOD_PREAL', 'R') . ' onclick="setprealertaplus(&quot;R&quot;);"  />R - Reparto							
+            <input type="radio" name="nacex_mod_pre1" value="E" ' . nacexutils::markCheckedOption('nacex_mod_pre1', 'NACEX_MOD_PREAL', 'E') . ' onclick="setprealertaplus(&quot;E&quot;);"  />E - Reparto Plus
 		</td>
 		</tr>
 		<tr>
@@ -1146,7 +1142,7 @@ class nacextabMasivo extends AdminController
         $html .= '<select id="nacex_contenido" name="nacex_contenido" value="' . Tools::getValue('nacex_contenido', '') . '" style="width:375px" length=1 maxlength="38">';
         $contenidos = $nacexDTO->getContenidos();
         foreach ($contenidos as $cont) {
-            $html .= '	<option ' . nacexutils::markSelectedOption("nacex_contenido", "NACEX_DEFAULT_CONTENIDO", $cont) . ' value="' . $cont . '">' . $cont . '</option>';
+            $html .= '	<option ' . nacexutils::markSelectedOption('nacex_contenido', 'NACEX_DEFAULT_CONTENIDO', $cont) . ' value="' . $cont . '">' . $cont . '</option>';
         }
         $html .= '</select><br>';
 
@@ -1171,12 +1167,12 @@ class nacextabMasivo extends AdminController
 			</div>
 			</div>
 			</div> <!-- accordion -->';
-        if (Tools::getValue("nacex_tip_pre1", Configuration::get('NACEX_TIP_PREAL')) == "S") {
-            $html .= '<script type="text/javascript">checkTipoPrealerta("S");checkModoPrealerta("' . Tools::getValue("nacex_mod_pre1", Configuration::get('NACEX_MOD_PREAL')) . '");</script>';
-        } else if (Tools::getValue("nacex_tip_pre1", Configuration::get('NACEX_TIP_PREAL')) == "E") {
-            $html .= '<script type="text/javascript">checkTipoPrealerta("E");checkModoPrealerta("' . Tools::getValue("nacex_mod_pre1", Configuration::get('NACEX_MOD_PREAL')) . '");</script>';
+        if (Tools::getValue('nacex_tip_pre1', Configuration::get('NACEX_TIP_PREAL')) == 'S') {
+            $html .= '<script type="text/javascript">checkTipoPrealerta("S");checkModoPrealerta("' . Tools::getValue('nacex_mod_pre1', Configuration::get('NACEX_MOD_PREAL')) . '");</script>';
+        } elseif (Tools::getValue('nacex_tip_pre1', Configuration::get('NACEX_TIP_PREAL')) == 'E') {
+            $html .= '<script type="text/javascript">checkTipoPrealerta("E");checkModoPrealerta("' . Tools::getValue('nacex_mod_pre1', Configuration::get('NACEX_MOD_PREAL')) . '");</script>';
         } else {
-            $html .= '<script type="text/javascript">checkTipoPrealerta("N");checkModoPrealerta("' . Tools::getValue("nacex_mod_pre1", Configuration::get('NACEX_MOD_PREAL')) . '");</script>';
+            $html .= '<script type="text/javascript">checkTipoPrealerta("N");checkModoPrealerta("' . Tools::getValue('nacex_mod_pre1', Configuration::get('NACEX_MOD_PREAL')) . '");</script>';
         }
         $html .= "<script type=\"text/javascript\">checkTipoSeguro('" . Tools::getValue('nacex_tip_seg', Configuration::get('NACEX_DEFAULT_TIP_SEG')) . "');</script>";
 
@@ -1187,75 +1183,73 @@ class nacextabMasivo extends AdminController
     private function getOrdersCarriers() {
         $query = 'SELECT DISTINCT id_carrier FROM ' . _DB_PREFIX_ . 'orders';
         $carriersOrder = '';
-        foreach (Db::getInstance()->executeS($query) as $co)
-            $carriersOrder .= $co['id_carrier'] . ',';
+        foreach (Db::getInstance()->executeS($query) as $co) {
+            $carriersOrder .= $co['id_carrier'] . ','; }
 
         $carriersOrder = substr($carriersOrder, 0, -1);
-        $query = "SELECT * FROM " . _DB_PREFIX_ . "carrier WHERE id_carrier IN ($carriersOrder)";
+        $query = 'SELECT * FROM ' . _DB_PREFIX_ . "carrier WHERE id_carrier IN ($carriersOrder)";
         return Db::getInstance()->executeS($query);
 
     }
 
     private function generarExpediciones() {
 
-        $html = "";
+        $html = '';
 
-        $pedidos = Tools::getValue("idPedidoBox");
+        $pedidos = Tools::getValue('idPedidoBox');
         if (!$pedidos || empty($pedidos) || count($pedidos) <= 0) {
             $errors[] = $this->nacex->l('You must select the orders you want to generate');
         }
 
-        $nacex_agencia = "";
-        $nacex_cliente = "";
-        $nacex_agcli = Tools::getValue("nacex_agcli");
+        $nacex_agencia = '';
+        $nacex_cliente = '';
+        $nacex_agcli = Tools::getValue('nacex_agcli');
         if (!$nacex_agcli || empty($nacex_agcli)) {
             $errors[] = $this->nacex->l('Wrong agency and/or customer selected');
         } else {
-            $nacex_agcli = explode("/", $nacex_agcli);
+            $nacex_agcli = explode('/', $nacex_agcli);
             $nacex_agencia = $nacex_agcli[0];
             $nacex_cliente = $nacex_agcli[1];
         }
 
-        $nacex_tip_ser = Tools::getValue("nacex_tip_ser");
+        $nacex_tip_ser = Tools::getValue('nacex_tip_ser');
         if (!$nacex_tip_ser || empty($nacex_tip_ser)) {
             $errors[] = $this->nacex->l('Wrong service type');
         }
 
-        $nacex_bul = Tools::getValue("nacex_bul", 1);
-        $nacex_tip_cob = Tools::getValue("nacex_tip_cob",Configuration::get("NACEX_TIP_COB"));
-        $nacex_tip_ree = Tools::getValue("nacex_tip_ree",Configuration::get("NACEX_TIP_REE"));
-        $nacex_tip_env = Tools::getValue("nacex_tip_env",Configuration::get("NACEX_TIP_ENV"));
-        $nacex_tip_env_int = Tools::getValue("nacex_tip_env_int", Configuration::get("NACEX_TIP_ENV_INT"));
-        $nacex_ret = Tools::getValue("nacex_ret", Configuration::get("NACEX_RET"));
-        $nacex_tip_seg = Tools::getValue("nacex_tip_seg",  Configuration::get("NACEX_DEFAULT_TIP_SEG"));
-        $nacex_imp_seg= Tools::getValue("nacex_imp_seg", 0);
-        $nacex_tip_pre1 = Tools::getValue("nacex_tip_pre1", "N");
-        $nacex_mod_pre1 = Tools::getValue("nacex_mod_pre1","");
-        $nacex_pre1_plus = Tools::getValue("nacex_pre1_plus","");
-        $obs1 = substr(Tools::getValue("obs", ""), 0, 38);
-        $obs2 = substr(Tools::getValue("obs", ""), 38, 38);
-
+        $nacex_bul = Tools::getValue('nacex_bul', 1);
+        $nacex_tip_cob = Tools::getValue('nacex_tip_cob', Configuration::get('NACEX_TIP_COB'));
+        $nacex_tip_ree = Tools::getValue('nacex_tip_ree', Configuration::get('NACEX_TIP_REE'));
+        $nacex_tip_env = Tools::getValue('nacex_tip_env', Configuration::get('NACEX_TIP_ENV'));
+        $nacex_tip_env_int = Tools::getValue('nacex_tip_env_int', Configuration::get('NACEX_TIP_ENV_INT'));
+        $nacex_ret = Tools::getValue('nacex_ret', Configuration::get('NACEX_RET'));
+        $nacex_tip_seg = Tools::getValue('nacex_tip_seg', Configuration::get('NACEX_DEFAULT_TIP_SEG'));
+        $nacex_imp_seg = Tools::getValue('nacex_imp_seg', 0);
+        $nacex_tip_pre1 = Tools::getValue('nacex_tip_pre1', 'N');
+        $nacex_mod_pre1 = Tools::getValue('nacex_mod_pre1', '');
+        $nacex_pre1_plus = Tools::getValue('nacex_pre1_plus', '');
+        $obs1 = substr(Tools::getValue('obs', ''), 0, 38);
+        $obs2 = substr(Tools::getValue('obs', ''), 38, 38);
 
         //Instrucciones adicionales
-        $inst_adi = Tools::getValue("inst_adi");
+        $inst_adi = Tools::getValue('inst_adi');
 
-        $data = array("nacex_agencia" => $nacex_agencia,
-            "nacex_cliente" => $nacex_cliente,
-            "nacex_tip_ser" => $nacex_tip_ser,
-            "nacex_bul" => $nacex_bul,
-            "nacex_tip_cob" => $nacex_tip_cob,
-            "nacex_tip_ree" => $nacex_tip_ree,
-            "nacex_tip_env" => $nacex_tip_env,
-            "nacex_ret" => $nacex_ret,
-            "nacex_tip_seg" => $nacex_tip_seg,
-            "nacex_imp_seg" => $nacex_imp_seg,
-            "nacex_tip_pre1" => $nacex_tip_pre1,
-            "nacex_mod_pre1" => $nacex_mod_pre1,
-            "nacex_pre1_plus" => $nacex_pre1_plus,
-            "obs1" => $obs1,
-            "obs2" => $obs2,
-            "inst_adi" => $inst_adi);
-
+        $data = ['nacex_agencia' => $nacex_agencia,
+            'nacex_cliente' => $nacex_cliente,
+            'nacex_tip_ser' => $nacex_tip_ser,
+            'nacex_bul' => $nacex_bul,
+            'nacex_tip_cob' => $nacex_tip_cob,
+            'nacex_tip_ree' => $nacex_tip_ree,
+            'nacex_tip_env' => $nacex_tip_env,
+            'nacex_ret' => $nacex_ret,
+            'nacex_tip_seg' => $nacex_tip_seg,
+            'nacex_imp_seg' => $nacex_imp_seg,
+            'nacex_tip_pre1' => $nacex_tip_pre1,
+            'nacex_mod_pre1' => $nacex_mod_pre1,
+            'nacex_pre1_plus' => $nacex_pre1_plus,
+            'obs1' => $obs1,
+            'obs2' => $obs2,
+            'inst_adi' => $inst_adi];
 
         if (!empty($errors) && count($errors) > 0) {
             $html = nacexVIEW::mostrarErrores($errors);
@@ -1264,7 +1258,7 @@ class nacextabMasivo extends AdminController
 
             foreach ($pedidos as $pedido) {
 
-                $infocheckbox = explode("|", $pedido);
+                $infocheckbox = explode('|', $pedido);
                 $pedido = $infocheckbox[0];
                 $expe_codigo = $infocheckbox[1];
 
@@ -1273,9 +1267,9 @@ class nacextabMasivo extends AdminController
                 if (empty($expe_codigo) || $expedicion[0]['estado'] == 'ANULADA') {
                     $response = nacexWS::putExpedicionMasivo($pedido, $data);
 
-                    if ($response['tipo'] == "ERROR") {
+                    if ($response['tipo'] == 'ERROR') {
                         $errors[] = $response['msg'];
-                    } else if ($response['tipo'] == "SUCCESS") {
+                    } elseif ($response['tipo'] == 'SUCCESS') {
                         $success[] = $response['msg'];
                     }
                 }
@@ -1294,10 +1288,10 @@ class nacextabMasivo extends AdminController
 
     private function ws_getInfoEnvio($expe_codigo) {
 
-        $dataResponse = array();
+        $dataResponse = [];
         //Datos de configuración
         $urlNacex = Configuration::get('NACEX_WS_URL');
-        $URL = $urlNacex . "/soap";
+        $URL = $urlNacex . '/soap';
         $nacexWSusername = Configuration::get('NACEX_WSUSERNAME');
         $nacexWSpassword = Configuration::get('NACEX_WSPASSWORD');
 
@@ -1316,33 +1310,32 @@ class nacextabMasivo extends AdminController
 		</soapenv:Envelope>';
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_FORBID_REUSE, TRUE);
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
         curl_setopt($ch, CURLOPT_URL, $URL);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $XML);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type: text/xml; charset=utf-8"));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: text/xml; charset=utf-8']);
 
         /**parche mexpositop 20171222**/
         // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $postResult = curl_exec($ch);
 
-
         if (curl_errno($ch)) {
             $error = $this->language->get('error_ws_connect');
             $this->model_shipping_nacex->error($error);
         }
-        $xml = new  SimpleXMLElement($postResult);// mexpositop 20171128
+        $xml = new SimpleXMLElement($postResult);// mexpositop 20171128
         //simplexml_load_string($postResult, NULL, NULL, "https://www.w3.org/2003/05/soap-envelope");
-        $xml->registerXPathNamespace("ns0", "urn:soap/types");
+        $xml->registerXPathNamespace('ns0', 'urn:soap/types');
         $resultado = $xml->xpath('//ns0:getInfoEnvioResponse/result');
 
-        if ($resultado[0] != "ERROR") {
+        if ($resultado[0] != 'ERROR') {
 
-            $dataResponse = array('expe_codigo' => $resultado[0],
+            $dataResponse = ['expe_codigo' => $resultado[0],
                 'del_ori' => $resultado[1],
                 'num_exp' => $resultado[2],
                 'del_cli' => $resultado[3],
@@ -1387,7 +1380,7 @@ class nacextabMasivo extends AdminController
                 'prealerta3' => $resultado[42],
                 'prealerta4' => $resultado[43],
                 'prealerta5' => $resultado[44],
-                'hist_estados' => $resultado[45]);
+                'hist_estados' => $resultado[45]];
         }
         return $dataResponse;
     }

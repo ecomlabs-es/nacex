@@ -1,4 +1,5 @@
 <?php
+
 class NacexUnitariaController extends ModuleAdminController
 {
     public function __construct()
@@ -17,4 +18,3 @@ class NacexUnitariaController extends ModuleAdminController
         $_controller->controller();
     }
 }
-?>

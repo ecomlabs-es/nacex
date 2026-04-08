@@ -2,11 +2,11 @@
 
 //header('Content-Type: text/html; charset=utf-8');
 // session_start(); mexpositop 20180201
-include_once dirname(__FILE__) . "/nacexWS.php";
-include_once dirname(__FILE__) . "/nacexVIEW.php";
-include_once dirname(__FILE__) . "/AdminConfig.php";
-include_once dirname(__FILE__) . "/nacexutils.php";
-include_once dirname(__FILE__) . "/nacexDAO.php";
+include_once dirname(__FILE__) . '/nacexWS.php';
+include_once dirname(__FILE__) . '/nacexVIEW.php';
+include_once dirname(__FILE__) . '/AdminConfig.php';
+include_once dirname(__FILE__) . '/nacexutils.php';
+include_once dirname(__FILE__) . '/nacexDAO.php';
 //include_once dirname(__FILE__) . "/nacexcontrolversion.php";
 
 /*
@@ -15,7 +15,7 @@ include_once dirname(__FILE__) . "/nacexDAO.php";
  */
 
 if (class_exists(Configuration::class)) {
-    if (Configuration::get('NACEX_SHOW_ERRORS') == "SI") {
+    if (Configuration::get('NACEX_SHOW_ERRORS') == 'SI') {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
     } else {
@@ -30,10 +30,9 @@ if (!defined('_PS_VERSION_')) {
 
 class nacex extends CarrierModule
 {
-
     protected $_html = '';
-    protected $_postErrors = array();
-    protected $_confErrors = array();
+    protected $_postErrors = [];
+    protected $_confErrors = [];
     //protected $_moduleName = 'nacex';
 
     private $storeURL;
@@ -51,7 +50,7 @@ class nacex extends CarrierModule
         //Creamos todos los transportistas (menos los genéricos)
         nacexDAO::setTransportistasFrontend();
 
-        if (Shop::isFeatureActive()) Shop::setContext(Shop::CONTEXT_ALL);
+        if (Shop::isFeatureActive()) { Shop::setContext(Shop::CONTEXT_ALL); }
 
         $ok = $this->installTab() && parent::install() ? true : false;
         $ok &= $this->registerHook('actionCarrierUpdate');
@@ -94,7 +93,7 @@ class nacex extends CarrierModule
 
         if (version_compare(_PS_VERSION_, '1.7.8', '>=')) {
             //$ok &= $this->registerHook('displayAdminOrder');
-            nacexutils::writeNacexLog("Es Version superior a la 1.7.8");
+            nacexutils::writeNacexLog('Es Version superior a la 1.7.8');
             $ok &= $this->registerHook('displayAdminOrderMainBottom');
             // Para añadir la columna en el listado de pedidos
             //$ok &= $this->registerHook('hookActionOrderGridDataModifier');
@@ -130,90 +129,90 @@ class nacex extends CarrierModule
 
     protected function deleteCarriers()
     {
-        nacexutils::writeNacexLog("----");
-        nacexutils::writeNacexLog("INI NACEX::deleteCarriers() ");
-        $query = "SELECT id_carrier from " . _DB_PREFIX_ . "carrier WHERE ncx LIKE 'nacex%'";
+        nacexutils::writeNacexLog('----');
+        nacexutils::writeNacexLog('INI NACEX::deleteCarriers() ');
+        $query = 'SELECT id_carrier from ' . _DB_PREFIX_ . "carrier WHERE ncx LIKE 'nacex%'";
         $result = Db::getInstance()->executeS($query);
         foreach ($result as $value) {
-            $query = "DELETE from " . _DB_PREFIX_ . "carrier WHERE id_carrier = " . $value['id_carrier'];
+            $query = 'DELETE from ' . _DB_PREFIX_ . 'carrier WHERE id_carrier = ' . $value['id_carrier'];
             if (!Db::getInstance()->execute($query)) {
-                nacexutils::writeNacexLog("DeleteCarriers :: Error al borrar Carriers.");
+                nacexutils::writeNacexLog('DeleteCarriers :: Error al borrar Carriers.');
                 return false;
             }
         }
-        nacexutils::writeNacexLog("FIN NACEX::deleteCarriers() ");
-        nacexutils::writeNacexLog("----");
-        return TRUE;
+        nacexutils::writeNacexLog('FIN NACEX::deleteCarriers() ');
+        nacexutils::writeNacexLog('----');
+        return true;
     }
 
     public function uninstall()
     {
-        nacexutils::writeNacexLog("----");
-        nacexutils::writeNacexLog("INI NACEX::uninstall() ");
-// Borramos TABs NACEX
+        nacexutils::writeNacexLog('----');
+        nacexutils::writeNacexLog('INI NACEX::uninstall() ');
+        // Borramos TABs NACEX
         /*Db::getInstance()->execute('DELETE FROM ' . _DB_PREFIX_ . 'tab WHERE module = "' . $this->_moduleName . '"');
         Db::getInstance()->execute('DELETE FROM ' . _DB_PREFIX_ . 'authorization_role WHERE slug like \'%NACEX%\'');
         Db::getInstance()->execute('DELETE FROM ' . _DB_PREFIX_ . 'tab_lang WHERE name like \'%NACEX%\'');*/
-// Borramos tablas, configuración y transportistas.
-        if (Configuration::get('NACEX_BORRAR_CONFIGURACION') == "SI") {
+        // Borramos tablas, configuración y transportistas.
+        if (Configuration::get('NACEX_BORRAR_CONFIGURACION') == 'SI') {
             nacexDAO::deleteNcxZones();
             $this->deleteCarriers();
             nacexDAO::DeleteTables();
             nacexDAO::DeleteConfiguration();
         }
 
-        if (!$this->uninstallTab() || !parent::uninstall())
-            return false;
+        if (!$this->uninstallTab() || !parent::uninstall()) {
+            return false; }
 
         // Limpiar si queda algún tab del módulo
         $delete = 'DELETE FROM ' . _DB_PREFIX_ . "tab WHERE module = 'nacex'";
         Db::getInstance()->execute($delete);
 
-        nacexutils::writeNacexLog("FIN NACEX::uninstall() ");
-        nacexutils::writeNacexLog("----");
+        nacexutils::writeNacexLog('FIN NACEX::uninstall() ');
+        nacexutils::writeNacexLog('----');
         return true;
     }
 
     public function installTab()
     {
-        $tabs = array(
-            array(
+        $tabs = [
+            [
                 'name' => $this->l('Configuration'),
                 'class_name' => 'AdminNacexConfig'
-            ),
-            array(
+            ],
+            [
                 'name' => $this->l('Customer support'),
                 'class_name' => 'AdminNacexFeedback'
-            ),
-            array(
+            ],
+            [
                 'name' => $this->l('Delivery notes listing'),
                 //'class_name' => 'AdminNacexListadoSalidas'
                 'class_name' => 'nacextab'
-            ),
-            array(
+            ],
+            [
                 'name' => $this->l('Massive expeditions'),
                 //'class_name' => 'AdminNacexMasivo'
                 'class_name' => 'nacextabMasivo'
-            ),
-            array(
+            ],
+            [
                 'name' => $this->l('Unitary search'),
                 //'class_name' => 'AdminNacexUnitario'
                 'class_name' => 'nacexunitario'
 
-            ),
-            array(
+            ],
+            [
                 'name' => $this->l('See logs'),
                 'class_name' => 'AdminNacexLogs'
-            ),
-            array(
+            ],
+            [
                 'name' => $this->l('Zone management'),
                 'class_name' => 'AdminNacexZonas'
-            ),
-            array(
+            ],
+            [
                 'name' => $this->l('Carrier management'),
                 'class_name' => 'AdminNacexTarifas'
-            )
-        );
+            ]
+        ];
 
         $languages = Language::getLanguages(false);
 
@@ -221,8 +220,8 @@ class nacex extends CarrierModule
         if (!(int)Tab::getIdFromClassName('AdminNacex')) {
             $parentTab = new Tab();
             $parentTab->active = 1;
-            $parentTab->class_name = "AdminNacex";
-            $parentTab->name = array();
+            $parentTab->class_name = 'AdminNacex';
+            $parentTab->name = [];
             foreach ($languages as $language) {
                 $parentTab->name[$language['id_lang']] = $this->l('Nacex  V.' . nacexutils::nacexVersion);
             }
@@ -246,7 +245,7 @@ class nacex extends CarrierModule
             $tab = new Tab($tabId);
             $tab->active = 1;
             $tab->class_name = $item['class_name'];
-            $tab->name = array();
+            $tab->name = [];
             foreach ($languages as $language) {
                 $tab->name[$language['id_lang']] = $this->l($item['name']);
             }
@@ -277,7 +276,7 @@ class nacex extends CarrierModule
         $this->version = nacexutils::nacexVersion;
         $this->author = 'Nacex';
         $this->need_instance = 0;
-        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
+        $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
         $this->bootstrap = true;
 
         parent::__construct();
@@ -286,7 +285,6 @@ class nacex extends CarrierModule
 
         $this->displayName = $this->l('Nacex module');
         $this->description = $this->l('Generate expeditions and print labels sending info to Nacex in only 1 click');
-
 
         $httpURL = Configuration::get('PS_SSL_ENABLED') ? 'https' : 'http';
         // Buscamos el http y lo reemplazamos por https o viceversa
@@ -317,7 +315,6 @@ class nacex extends CarrierModule
         }
     }
 
-
     public function hookDisplayBackOfficeHeader($params)
     {
 
@@ -333,27 +330,27 @@ class nacex extends CarrierModule
      */
     public function hookActionAdminOrdersListingFieldsModifier($params)
     {
-        nacexutils::writeNacexLog("INI hookActionAdminOrdersListingFieldsModifier :: ");
+        nacexutils::writeNacexLog('INI hookActionAdminOrdersListingFieldsModifier :: ');
 
         if (!isset($params['fields']['Nacex'])) {
-            $params['fields']['Nacex'] = array(
+            $params['fields']['Nacex'] = [
                 'title' => 'Nacex',
-                "align" => "text-center",
+                'align' => 'text-center',
                 'callback' => 'callbackMethod',
                 'callback_object' => Module::getInstanceByName($this->name),
-                "filter_key" => "oca!tracking_number",
+                'filter_key' => 'oca!tracking_number',
                 'remove_onclick' => true
-            );
+            ];
         }
         if (isset($params['select'])) {
-            $params['select'] .= ", oca.tracking_number AS tracking_number";
+            $params['select'] .= ', oca.tracking_number AS tracking_number';
             //$params['select'] .= ", ca.name AS carrier_name";
         }
         if (isset($params['join'])) {
             $params['join'] .= 'LEFT JOIN `' . _DB_PREFIX_ . 'order_carrier` oca ON (a.`id_order` = oca.`id_order`)';
         }
 
-        nacexutils::writeNacexLog("FIN hookActionAdminOrdersListingFieldsModifier :: ");
+        nacexutils::writeNacexLog('FIN hookActionAdminOrdersListingFieldsModifier :: ');
     }
 
     /**
@@ -362,9 +359,9 @@ class nacex extends CarrierModule
      *
      * @param array $params
      */
-    public function checkOrderListData(array $params){
+    public function checkOrderListData(array $params) {
 
-        nacexutils::writeNacexLog("INI checkOrderListData");
+        nacexutils::writeNacexLog('INI checkOrderListData');
 
         $query_builder = $params['search_query_builder'];
 
@@ -379,7 +376,7 @@ class nacex extends CarrierModule
                         foreach ($dataExpedition as $expedition) {
                             //Update Expedition status
                             if ($this->do_i_have_to_update_expedition_status($expedition)) {
-                                nacexutils::writeNacexLog("checkOrderListData :: ESTADOS");
+                                nacexutils::writeNacexLog('checkOrderListData :: ESTADOS');
                                 $this->update_expedition_status($expedition, $_estado);
 
                                 // Actualizamos el listado de pedidos actualizando todos los estados
@@ -390,7 +387,7 @@ class nacex extends CarrierModule
                 }
             }
         }
-        nacexutils::writeNacexLog("FIN checkOrderListData");
+        nacexutils::writeNacexLog('FIN checkOrderListData');
     }
 
     // Con esta función alteramos el grid el controlador que le indiquemos (en este caso es ORDER)
@@ -415,74 +412,72 @@ class nacex extends CarrierModule
     // Función que altera las consultas a la BBDD
     public function hookActionOrderGridQueryBuilderModifier(array $params)
     {
-        nacexutils::writeNacexLog("---------");
-        nacexutils::writeNacexLog("INI hookActionOrderGridQueryBuilderModifier :: ");
+        nacexutils::writeNacexLog('---------');
+        nacexutils::writeNacexLog('INI hookActionOrderGridQueryBuilderModifier :: ');
 
         $this->checkOrderListData($params);
-//        $searchQueryBuilder = $params['search_query_builder'];
-//
-//        // El campo as X debe coincidir con el nombre de la nueva columna que se indica en el GridDefinitionModifier
-////        $searchQueryBuilder->addSelect('o.id_carrier as nacex')
-////            //->from(_DB_PREFIX_.'orders o')
-////        ;
-//
-//        //$searchQueryBuilder->addSelect('GROUP_CONCAT(nex.ag_cod_num_exp) as nacex')
-//        $searchQueryBuilder->addSelect('nex.ag_cod_num_exp as nacex')
-//            ->from(_DB_PREFIX_ . 'nacex_expediciones')
-//            ->leftJoin('o', _DB_PREFIX_ . 'nacex_expediciones', 'nex', 'o.id_order = nex.id_envio_order')
-//            //->leftJoin('nex', _DB_PREFIX_ . 'orders', 'ord', 'ord.id_order = nex.id_envio_order')
-//            //->rightJoin('nex', _DB_PREFIX_ . 'orders', 'ord', 'ord.id_order = nex.id_envio_order')
-//            ->addGroupBy('o.id_order')//->groupBy('o.id_order');
+        //        $searchQueryBuilder = $params['search_query_builder'];
+        //
+        //        // El campo as X debe coincidir con el nombre de la nueva columna que se indica en el GridDefinitionModifier
+        ////        $searchQueryBuilder->addSelect('o.id_carrier as nacex')
+        ////            //->from(_DB_PREFIX_.'orders o')
+        ////        ;
+        //
+        //        //$searchQueryBuilder->addSelect('GROUP_CONCAT(nex.ag_cod_num_exp) as nacex')
+        //        $searchQueryBuilder->addSelect('nex.ag_cod_num_exp as nacex')
+        //            ->from(_DB_PREFIX_ . 'nacex_expediciones')
+        //            ->leftJoin('o', _DB_PREFIX_ . 'nacex_expediciones', 'nex', 'o.id_order = nex.id_envio_order')
+        //            //->leftJoin('nex', _DB_PREFIX_ . 'orders', 'ord', 'ord.id_order = nex.id_envio_order')
+        //            //->rightJoin('nex', _DB_PREFIX_ . 'orders', 'ord', 'ord.id_order = nex.id_envio_order')
+        //            ->addGroupBy('o.id_order')//->groupBy('o.id_order');
         //$searchQueryBuilder->leftJoin('a', '`' . _DB_PREFIX_ . 'order_carrier`', 'oca',  '(a.`id_order` = oca.`id_order`)');
-        nacexutils::writeNacexLog("FIN hookActionOrderGridQueryBuilderModifier :: ");
-        nacexutils::writeNacexLog("---------");
+        nacexutils::writeNacexLog('FIN hookActionOrderGridQueryBuilderModifier :: ');
+        nacexutils::writeNacexLog('---------');
     }
 
-
     //updateOrderStatusInOrderList para actualizar estados de pedido en el listado
-    private function updateOrderStatusInOrderList($id_order, $estado,$OrderStatusActual = "")
+    private function updateOrderStatusInOrderList($id_order, $estado, $OrderStatusActual = '')
     {
-        nacexutils::writeNacexLog("---------");
-        nacexutils::writeNacexLog("INI updateOrderStatusInOrderList :: ");
+        nacexutils::writeNacexLog('---------');
+        nacexutils::writeNacexLog('INI updateOrderStatusInOrderList :: ');
 
         // Miramos de actualizar el estado del pedido
         $tipo = '';    // Por defecto el estado es Documentado
-        if ($estado['estado'] == 'ANULADA') $tipo = 'c';
-        if ($estado['estado'] == 'OK') $tipo = 'o';
-        if ($estado['estado'] == 'TRANSITO') $tipo = 'd';
+        if ($estado['estado'] == 'ANULADA') { $tipo = 'c'; }
+        if ($estado['estado'] == 'OK') { $tipo = 'o'; }
+        if ($estado['estado'] == 'TRANSITO') { $tipo = 'd'; }
 
         /** Si tipo es vacío (estado expedición REPARTO) no se actualiza el estado (se supone que es el mismo que documentado **/
         /** Además, si el estado del pedido == al estado de imprimir de la configuración y la expedición no es OK ni ANULADA, tampoco se mirará **/
 
-        if ($OrderStatusActual === ""){
+        if ($OrderStatusActual === ''){
             $order = new Order($id_order);
             $OrderStatusActual = $order->getCurrentState();
         }
 
-
         if ($tipo != '') {
-            if (!($OrderStatusActual == Configuration::get('NACEX_CAMBIAR_ESTADO_IMPRIMIR') && ($estado['estado'] != 'OK' && $estado['estado'] != 'ANULADA') ) ) {
+            if (!($OrderStatusActual == Configuration::get('NACEX_CAMBIAR_ESTADO_IMPRIMIR') && ($estado['estado'] != 'OK' && $estado['estado'] != 'ANULADA'))) {
                 /** Cuando el pedido sea OK la primera vez entrará y lo cambiará, pero en la segunda no hará nada porque está el filtro en el
                  * cambio de estado del pedido */
 
                 nacexDAO::actualizaEstadoPedido($id_order, $tipo);
             }
         }
-        nacexutils::writeNacexLog("FIN updateOrderStatusInOrderList :: ");
-        nacexutils::writeNacexLog("---------");
+        nacexutils::writeNacexLog('FIN updateOrderStatusInOrderList :: ');
+        nacexutils::writeNacexLog('---------');
     }
 
     public function callbackMethod()
     {
-        nacexutils::writeNacexLog("INI callbackMethod :: ");
-        $_html = "";
-//GET ICON CREATE EXPEDITION
+        nacexutils::writeNacexLog('INI callbackMethod :: ');
+        $_html = '';
+        //GET ICON CREATE EXPEDITION
         $this->icon_create($_html);
-//GET EXPEDITIONS
+        //GET EXPEDITIONS
         $_expediciones = nacexDAO::getDatosExpedicion($this->smarty->smarty->tpl_vars['order']->value->id);
         if (sizeof($_expediciones) != 0) {
             foreach ($_expediciones as $_expedicion) {
-//UPDATE ORDER STATUS
+                //UPDATE ORDER STATUS
                 if ($this->do_i_have_to_update_expedition_status($_expedicion)) {
                     $this->update_expedition_status($_expedicion, $_estado);
                     // Actualizamos el estado del pedido
@@ -492,29 +487,29 @@ class nacex extends CarrierModule
                         return $_html;
                     }
                 }
-//GET ICON STATUS
-              $this->get_icon_status($_expedicion,$_html);
+                //GET ICON STATUS
+                $this->get_icon_status($_expedicion, $_html);
             }
-            $_html.='</p>';
-        }else{
-//GET TAG EXPEDITION NOT SAVED
+            $_html .= '</p>';
+        } else {
+            //GET TAG EXPEDITION NOT SAVED
             $this->expedition_not_saved($_html);
         }
         return $_html;
-       /*$this->tag_shipment_status($_expedicion['estado'],$_html);
-        $_html.='<input type="button" id="'.$this->smarty->smarty->tpl_vars['order']->value->id.'" value="Actualizar Estado">
+        /*$this->tag_shipment_status($_expedicion['estado'],$_html);
+         $_html.='<input type="button" id="'.$this->smarty->smarty->tpl_vars['order']->value->id.'" value="Actualizar Estado">
+                 <br>
+                 <br>';
+         $_html .= '<b><a href="http://www.nacex.es/seguimientoFormularioExterno.do?intcli=' . $_expedicion ["ag_cod_num_exp"] . '" target="_blank">' . $_expedicion ["ag_cod_num_exp"] . '</a></b>
                 <br>
-                <br>';
-        $_html .= '<b><a href="http://www.nacex.es/seguimientoFormularioExterno.do?intcli=' . $_expedicion ["ag_cod_num_exp"] . '" target="_blank">' . $_expedicion ["ag_cod_num_exp"] . '</a></b>
-               <br>
-               <br>';*/
+                <br>';*/
     }
-    private function expedition_not_saved(&$_html){
+    private function expedition_not_saved(&$_html) {
         $_html .= '<p class="label color_field" style="background-color:#ff5100;color:white">' . $this->l('NOT documented shipment') . '</p></p>';
     }
     private function icon_create(&$_html)
     {
-        $_url = $this->context->link->getAdminLink('nacexunitario', true) . "&id_pedido=" . $this->smarty->smarty->tpl_vars['order']->value->id;
+        $_url = $this->context->link->getAdminLink('nacexunitario', true) . '&id_pedido=' . $this->smarty->smarty->tpl_vars['order']->value->id;
         $_html = '<p>
                         <a href="' . $_url . '">
                             <img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/servicios/svg/nacex_servicio_26.svg height="15" width="15" title="' . $this->l('Document shipments') . '">
@@ -523,65 +518,69 @@ class nacex extends CarrierModule
 
     public function do_i_have_to_update_expedition_status($_expedicion)
     {
-        nacexutils::writeNacexLog("do_i_have_to_update_expedition_status :: ¿Actualizamos estado de las expediciones en el listado de pedidos?");
+        nacexutils::writeNacexLog('do_i_have_to_update_expedition_status :: ¿Actualizamos estado de las expediciones en el listado de pedidos?');
         switch ($_expedicion['estado']) {
-            case "INCIDENCIA EXPEDICION":
-//15 MINUTES AGO
+            case 'INCIDENCIA EXPEDICION':
+                //15 MINUTES AGO
                 if (($this->diff_time(strtotime($_expedicion['fecha_estado']))) > 900000) {
-                    nacexutils::writeNacexLog("INCIDENCIA EXPEDICION :: TRUE - Hemos mirado hace 15 minutos");
+                    nacexutils::writeNacexLog('INCIDENCIA EXPEDICION :: TRUE - Hemos mirado hace 15 minutos');
                     return true;
                 } else {
-                    nacexutils::writeNacexLog("INCIDENCIA EXPEDICION :: FALSE - No ha pasado el tiempo estipulado desde la última consulta");
+                    nacexutils::writeNacexLog('INCIDENCIA EXPEDICION :: FALSE - No ha pasado el tiempo estipulado desde la última consulta');
                     return false;
                 }
-            case "TRANSITO":
-//DAY AGO
+                // no break
+            case 'TRANSITO':
+                //DAY AGO
                 //if (($this->diff_time(strtotime($_expedicion['fecha_estado']))) > 86400000) {
                 //nacexutils::writeNacexLog("TRANSITO :: TRUE - Hemos mirado hace 1 día");
                 if (($this->diff_time(strtotime($_expedicion['fecha_estado']))) > 28800000) {
-                    nacexutils::writeNacexLog("TRANSITO :: TRUE - Hemos mirado hace 8 horas");
+                    nacexutils::writeNacexLog('TRANSITO :: TRUE - Hemos mirado hace 8 horas');
                     return true;
                 } else {
-                    nacexutils::writeNacexLog("TRANSITO :: FALSE - No ha pasado el tiempo estipulado desde la última consulta");
+                    nacexutils::writeNacexLog('TRANSITO :: FALSE - No ha pasado el tiempo estipulado desde la última consulta');
                     return false;
                 }
-            case "REPARTO":
-//60 MINUTES AGO
+                // no break
+            case 'REPARTO':
+                //60 MINUTES AGO
                 if (($this->diff_time(strtotime($_expedicion['fecha_estado']))) > 3600000) {
-                    nacexutils::writeNacexLog("REPARTO :: TRUE - Hemos mirado hace 60 minutos");
+                    nacexutils::writeNacexLog('REPARTO :: TRUE - Hemos mirado hace 60 minutos');
                     return true;
                 } else {
-                    nacexutils::writeNacexLog("REPARTO :: FALSE - No ha pasado el tiempo estipulado desde la última consulta");
+                    nacexutils::writeNacexLog('REPARTO :: FALSE - No ha pasado el tiempo estipulado desde la última consulta');
                     return false;
                 }
-            case "PENDIENTE":
-//60 MINUTES AGO
+                // no break
+            case 'PENDIENTE':
+                //60 MINUTES AGO
                 if (($this->diff_time(strtotime($_expedicion['fecha_estado']))) > 3600000) {
-                    nacexutils::writeNacexLog("PENDIENTE :: TRUE - Hemos mirado hace 60 minutos");
+                    nacexutils::writeNacexLog('PENDIENTE :: TRUE - Hemos mirado hace 60 minutos');
                     return true;
                 } else {
-                    nacexutils::writeNacexLog("PENDIENTE :: FALSE - No ha pasado el tiempo estipulado desde la última consulta");
+                    nacexutils::writeNacexLog('PENDIENTE :: FALSE - No ha pasado el tiempo estipulado desde la última consulta');
                     return false;
                 }
+                // no break
             default:
-                nacexutils::writeNacexLog("DEFAULT :: FALSE - El estado de la expedición " . $_expedicion['exp_cod'] . " es " . $_expedicion['estado']);
+                nacexutils::writeNacexLog('DEFAULT :: FALSE - El estado de la expedición ' . $_expedicion['exp_cod'] . ' es ' . $_expedicion['estado']);
                 return false;
         }
     }
-    private function diff_time ($_date_expedicion){
+    private function diff_time($_date_expedicion) {
         return abs($_date_expedicion * 1000 - strtotime(date('Y/m/d h:i:s')) * 1000);
     }
-    private function update_expedition_status($_expedicion,&$_estado){
-        $_estado=nacexWS::ws_getEstadoExpedicion($_expedicion);
+    private function update_expedition_status($_expedicion, &$_estado) {
+        $_estado = nacexWS::ws_getEstadoExpedicion($_expedicion);
     }
-    private function analyze_result_update_expedition_status( $_estado,$_expedicion,&$_html )
+    private function analyze_result_update_expedition_status($_estado, $_expedicion, &$_html)
     {
         //$_result_ws=nacexWS::treatmentXML($_estado,"getEstadoExpedicion");
-        if (isset($_estado[0]) && $_estado[0] == "ERROR") {
+        if (isset($_estado[0]) && $_estado[0] == 'ERROR') {
             $_html .= '<span class="label color_field" style="background-color:#E10018;color:white">' . $this->l('Error in') . ': ' . $_expedicion['ag_cod_num_exp'] . '  | ' . $this->l('Error detail') . ': ' . $_estado[1] . '</span>';
             $_html .= '</p>';
             return false;
-        } elseif ($_estado == "ERROR") {
+        } elseif ($_estado == 'ERROR') {
             $_html .= '<span class="label color_field" style="background-color:#E10018;color:white">' . $this->l('Error in') . ': ' . $_expedicion['ag_cod_num_exp'] . '  | ' . $this->l('Error detail') . ': ' . $_estado[1] . '</span>';
             $_html .= '</p>';
             return false;
@@ -590,46 +589,46 @@ class nacex extends CarrierModule
             return true;
         }
     }
-    private function get_icon_status ($_expedicion,&$_html){
+    private function get_icon_status($_expedicion, &$_html) {
         switch ($_expedicion['estado']) {
-            case "BAJA":
-            case "ANULADA":
+            case 'BAJA':
+            case 'ANULADA':
                 $_html .= '&nbsp<img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/cancelled.png height="15" width="15" title="' . $this->l('Expedition') . ':  ' . $_expedicion['ag_cod_num_exp'] . ' ' . $this->l('Cancelled') . '">';
                 break;
-            case "INCIDENCIA EXPEDICION":
+            case 'INCIDENCIA EXPEDICION':
                 $_html .= '&nbsp<img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/error.gif height="15" width="15" title="' . $this->l('Expedition') . ':  ' . $_expedicion['ag_cod_num_exp'] . ' ' . $this->l('in faulty') . '">';
-                $this->tracking_link($_html, $_expedicion ["ag_cod_num_exp"]);
+                $this->tracking_link($_html, $_expedicion ['ag_cod_num_exp']);
                 break;
-            case "TRANSITO":
+            case 'TRANSITO':
 
                 // Miramos que no haya ningún problema con las etiquetas
                 $modelPrint = Configuration::get('NACEX_PRINT_MODEL');
-                $canPrint = nacexWS::checkGetEtiqueta($modelPrint, $_expedicion["exp_cod"]);
+                $canPrint = nacexWS::checkGetEtiqueta($modelPrint, $_expedicion['exp_cod']);
                 $gestionAgencia = nacexDAO::getGestionAgencia($_expedicion, $canPrint);
 
                 // Si se puede imprmir porque no hay ningún error
                 if (!$gestionAgencia && $canPrint) {
-                    $_html .= '&nbsp<img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/print_icon.png height="15" width="15" onclick="ionaPrint([' . $_expedicion["id_envio_order"] . ',' . $_expedicion["exp_cod"] . ']);" title="' . $this->l('Print expedition') . ':  ' . $_expedicion['ag_cod_num_exp'] . '.">';
-                    $this->tracking_link($_html, $_expedicion ["ag_cod_num_exp"]);
+                    $_html .= '&nbsp<img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/print_icon.png height="15" width="15" onclick="ionaPrint([' . $_expedicion['id_envio_order'] . ',' . $_expedicion['exp_cod'] . ']);" title="' . $this->l('Print expedition') . ':  ' . $_expedicion['ag_cod_num_exp'] . '.">';
+                    $this->tracking_link($_html, $_expedicion ['ag_cod_num_exp']);
                     $_html .= nacexVIEW::showIoNA();
                 } else {
-                    $_html .= '&nbsp<img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/nosent.png height="15" width="15" title="' . $this->l('Expedition') . ':  ' . $_expedicion['ag_cod_num_exp'] . ' ' . $this->l("Cannot be modified") . '">';
+                    $_html .= '&nbsp<img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/nosent.png height="15" width="15" title="' . $this->l('Expedition') . ':  ' . $_expedicion['ag_cod_num_exp'] . ' ' . $this->l('Cannot be modified') . '">';
                 }
                 break;
-            case "REPARTO":
+            case 'REPARTO':
                 $_html .= '&nbsp<img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/sent.png height="15" width="15" title="' . $this->l('Expedition') . ':  ' . $_expedicion['ag_cod_num_exp'] . ' ' . $this->l('in distribution') . '">';
-                $this->tracking_link($_html, $_expedicion ["ag_cod_num_exp"]);
+                $this->tracking_link($_html, $_expedicion ['ag_cod_num_exp']);
                 break;
-            case "SOL SIN OK":
-            case "OK":
+            case 'SOL SIN OK':
+            case 'OK':
                 $_html .= '&nbsp<img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/checked.gif height="15" width="15" title="' . $this->l('Expedition') . ':  ' . $_expedicion['ag_cod_num_exp'] . ' ' . $this->l('delivered') . '">';
-                $this->tracking_link($_html, $_expedicion ["ag_cod_num_exp"]);
+                $this->tracking_link($_html, $_expedicion ['ag_cod_num_exp']);
                 break;
             default:
                 $_html .= '&nbsp<img src=' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/images/nosent.png height="15" width="15" title="' . $this->l('Expedition') . ':  ' . $_expedicion['ag_cod_num_exp'] . ' ' . $this->l('Pending') . '">';
         }
     }
-    private function tracking_link (&$_html,$_cod_expedition){
+    private function tracking_link(&$_html, $_cod_expedition) {
         $_html .= '&nbsp;<strong><a href="' . nacexDTO::$url_seguimiento . '/seguimientoFormularioExterno.do?intcli=' . $_cod_expedition . '" target="_blank">' . $_cod_expedition . '</a></strong>';
     }
 
@@ -638,16 +637,16 @@ class nacex extends CarrierModule
         $html = '';
 
         // Revisamos si está instalado y habilitado el módulo OPC "Supercheckout"
-        $opc_modules = ["supercheckout"];
+        $opc_modules = ['supercheckout'];
         $isOpcEnabled = nacexutils::checkEnabledModule($opc_modules);
 
         if (@$this->context->controller->php_self == 'order' || @$this->context->controller->controller_name == 'AdminOrders' ||
             (@$this->context->controller->page_name == 'module-supercheckout-supercheckout' && $isOpcEnabled)) {
-//          echo '<script type="text/javascript" src="'._MODULE_DIR_ . 'nacex/js/jquery.showModalDialog.js"></script>';
+            //          echo '<script type="text/javascript" src="'._MODULE_DIR_ . 'nacex/js/jquery.showModalDialog.js"></script>';
             $html .= '<script type="text/javascript" src="' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/js/jquery.cluetip.js"></script>';
             $html .= '<script type="text/javascript" src="' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/js/nacex.js"></script>';
             $html .= '<script type="text/javascript" src="' . $this->storeURL . __PS_BASE_URI__ . 'modules/nacex/js/nacex_shop_cart.js"></script>';
-//          echo '<script type="text/javascript" src="'._PS_BASE_URL_.__PS_BASE_URI__ . 'modules/nacex/js/thickbox.js"></script>';
+            //          echo '<script type="text/javascript" src="'._PS_BASE_URL_.__PS_BASE_URI__ . 'modules/nacex/js/thickbox.js"></script>';
         }
 
         /*****/
@@ -657,17 +656,16 @@ class nacex extends CarrierModule
             // Miramos si el módulo activo es el "The Checkout"
             if ($customopc == 0) {
 
-                if (!$isOpcEnabled && @$this->context->controller->php_self == 'order')
-                    $customopc = @$this->context->controller->module->conf_prefix == 'opc_' ? 1 : 0;
-                else {
-                    // Miramos si hay activo un OPC que no se ha detectado mediante estos métodos
-                    $customopc = $isOpcEnabled ? 1 : 0;
-                }
+                if (!$isOpcEnabled && @$this->context->controller->php_self == 'order') {
+                    $customopc = @$this->context->controller->module->conf_prefix == 'opc_' ? 1 : 0; } else {
+                        // Miramos si hay activo un OPC que no se ha detectado mediante estos métodos
+                        $customopc = $isOpcEnabled ? 1 : 0;
+                    }
             }
 
             $html .= "<script>
             var customopc = '" . $customopc . "';
-            var opc_idBoton = '" . Configuration::get("NACEX_OPC_ID_BOTON") . "';
+            var opc_idBoton = '" . Configuration::get('NACEX_OPC_ID_BOTON') . "';
             var isIE = /*@cc_on!@*/false || !!document.documentMode;
             
             $(document).ready(function(){
@@ -777,44 +775,44 @@ class nacex extends CarrierModule
     {
         $html = '';
         $nacexDTO = new nacexDTO();
-        $pagina = $_SERVER["REQUEST_URI"];
+        $pagina = $_SERVER['REQUEST_URI'];
 
         if (!strpos($pagina, 'order-opc')) {
 
-            nacexutils::writeNacexLog("hookBeforeCarrier :: Obteniendo datos direccion en modalidad 5 pasos");
+            nacexutils::writeNacexLog('hookBeforeCarrier :: Obteniendo datos direccion en modalidad 5 pasos');
 
             if ($params['cart']->id_address_delivery) {
                 $tools_id_address = $params['cart']->id_address_delivery;
 
                 try {
-                    $datosdireccion = Db::getInstance()->executeS("SELECT a.firstname,a.lastname,a.address1,a.postcode,a.city,a.phone,a.phone_mobile
-    							FROM " . _DB_PREFIX_ . "address a
-    							WHERE a.id_address = " . $tools_id_address);
+                    $datosdireccion = Db::getInstance()->executeS('SELECT a.firstname,a.lastname,a.address1,a.postcode,a.city,a.phone,a.phone_mobile
+    							FROM ' . _DB_PREFIX_ . 'address a
+    							WHERE a.id_address = ' . $tools_id_address);
                     $cp = $datosdireccion[0]['postcode'];
-                    nacexutils::writeNacexLog("hookBeforeCarrier :: Capturado CP del cliente (" . $cp . ")");
+                    nacexutils::writeNacexLog('hookBeforeCarrier :: Capturado CP del cliente (' . $cp . ')');
                 } catch (Exception $e) {
                 }
             }
         }
 
-        $array_nxshop_id_carriers = array();
-        $array_id_carriers = array();
-        $array_nxint_id_carriers = array();
+        $array_nxshop_id_carriers = [];
+        $array_id_carriers = [];
+        $array_nxint_id_carriers = [];
 
         $cart = $params['cart'];
         $carriersList = $cart->getDeliveryOptionList();
         $carriers = array_keys($carriersList[array_keys($carriersList)[0]]);
 
         foreach ($carriers as $key => $value) {
-            $id = str_replace(",", "", $value);
+            $id = str_replace(',', '', $value);
             if ($nacexDTO->isNacexCarrier($id)) {
-                nacexutils::writeNacexLog("loadNacexCarriers :: ES Estándar");
+                nacexutils::writeNacexLog('loadNacexCarriers :: ES Estándar');
                 array_push($array_id_carriers, intval($value));
             } elseif ($nacexDTO->isNacexShopCarrier($id)) {
-                nacexutils::writeNacexLog("loadNacexCarriers :: ES NacexShop");
+                nacexutils::writeNacexLog('loadNacexCarriers :: ES NacexShop');
                 array_push($array_nxshop_id_carriers, intval($value));
             } elseif ($nacexDTO->isNacexIntCarrier($id)) {
-                nacexutils::writeNacexLog("loadNacexCarriers :: ES Internacional");
+                nacexutils::writeNacexLog('loadNacexCarriers :: ES Internacional');
                 array_push($array_nxint_id_carriers, intval($value));
             }
         }
@@ -828,13 +826,13 @@ class nacex extends CarrierModule
         $id_ncxshop_carrier = $nacexDTO->getNacexShopIdCarrier();
         $isNacexShopCarrier = $nacexDTO->isNacexShopCarrier($id_carrier);
         $id_ncxint_carrier = $nacexDTO->getNacexIntIdCarrier();
-        $tipoOrder = strpos($this->context->controller->php_self, "order-opc") == false ? "true" : "false";
+        $tipoOrder = strpos($this->context->controller->php_self, 'order-opc') == false ? 'true' : 'false';
         $isGuest = $cart->isGuestCartByCartId($cart->id) ? 'true' : 'false';
 
         // Miramos si hay un OPC de terceros instalado
 
         // Revisamos si está instalado y habilitado el módulo OPC "Supercheckout"
-        $opc_modules = ["supercheckout"];
+        $opc_modules = ['supercheckout'];
         $isOpcEnabled = nacexutils::checkEnabledModule($opc_modules);
 
         // Tipo de Checkout. Es para la extensión "One Page Checkout PrestaShop" de 'PresTeamShop'
@@ -843,9 +841,8 @@ class nacex extends CarrierModule
         // Miramos si el módulo activo es el "The Checkout"
         //if ($customopc == 0) {
 
-            if (!$isOpcEnabled && @$this->context->controller->php_self == 'order')
-                $customopc = (isset($this->context->controller->module->conf_prefix) && @$this->context->controller->module->conf_prefix == 'opc_') ? 1 : $customopc;
-            elseif (@$this->context->controller->page_name == 'module-supercheckout-supercheckout') {
+        if (!$isOpcEnabled && @$this->context->controller->php_self == 'order') {
+            $customopc = (isset($this->context->controller->module->conf_prefix) && @$this->context->controller->module->conf_prefix == 'opc_') ? 1 : $customopc; } elseif (@$this->context->controller->page_name == 'module-supercheckout-supercheckout') {
                 // Miramos si hay activo un OPC que no se ha detectado mediante estos métodos
                 $customopc = 1;
             } else {
@@ -855,50 +852,50 @@ class nacex extends CarrierModule
         //}
 
         // Para el OPC no hace falta cargar el jquery, si no, sí que hace falta cargarlo
-        if ($customopc == 0)
-            $html .= "<script type='text/javascript' src='" . _MODULE_DIR_ . "nacex/js/jquery-3.3.1.min.js'></script>";
+        if ($customopc == 0) {
+            $html .= "<script type='text/javascript' src='" . _MODULE_DIR_ . "nacex/js/jquery-3.3.1.min.js'></script>"; }
 
         $html .= "<script>                
                 var id_cart = '" . $id_cart . "';                    
                 var isGuest = '" . $isGuest . "';
                 var href_opc = '';                    
-                var agencias_clientes  = '" . Configuration::get("NACEX_AGCLI") . "';                   
+                var agencias_clientes  = '" . Configuration::get('NACEX_AGCLI') . "';                   
                 var api_mapa  = '" . Configuration::get('NACEX_GOOGLE_API') . "';                   
                 var num_nxs = " . $num_nxs . "
                 var ncx_carrier = '" . $id_ncx_carrier . "';
                 var nxids = new Array();
             ";
 
-        for ($i = 0; $i < $num_nxs; $i++) $html .= "nxids['" . $array_id_carriers[$i] . "']=1;
-            ";
+        for ($i = 0; $i < $num_nxs; $i++) { $html .= "nxids['" . $array_id_carriers[$i] . "']=1;
+            "; }
 
-        $html .= "
-            var num_nxshops = " . $num_nxshops . "
+        $html .= '
+            var num_nxshops = ' . $num_nxshops . "
             var ncxshop_carrier = '" . $id_ncxshop_carrier . "';
             var nxshopids = new Array();
             ";
 
-        for ($i = 0; $i < $num_nxshops; $i++) $html .= "nxshopids['" . $array_nxshop_id_carriers[$i] . "']=1;
-            ";
+        for ($i = 0; $i < $num_nxshops; $i++) { $html .= "nxshopids['" . $array_nxshop_id_carriers[$i] . "']=1;
+            "; }
 
-        $html .= "
-            var num_nxint = " . $num_nxint . "
+        $html .= '
+            var num_nxint = ' . $num_nxint . "
             var ncxint_carrier = '" . $id_ncxint_carrier . "';
             var nxintids = new Array();
             ";
 
-        for ($i = 0; $i < $num_nxint; $i++) $html .= "nxintids['" . $array_nxint_id_carriers[$i] . "']=1;
-            ";
+        for ($i = 0; $i < $num_nxint; $i++) { $html .= "nxintids['" . $array_nxint_id_carriers[$i] . "']=1;
+            "; }
 
-        $html .= "  
+        $html .= '  
             var carrierNacexshop = 0;
             
-            var currentCarrier = " . $id_carrier . ";
+            var currentCarrier = ' . $id_carrier . ";
             var customopc = '" . $customopc . "';
             var isOpcEnabled = '" . $isOpcEnabled . "';
-            var opc_idDivGeneral = '" . Configuration::get("NACEX_OPC_ID_DIVGENERAL") . "';
+            var opc_idDivGeneral = '" . Configuration::get('NACEX_OPC_ID_DIVGENERAL') . "';
             var codigo_postal_entrega = '';
-            var opc_idBoton = '" . Configuration::get("NACEX_OPC_ID_BOTON") . "';
+            var opc_idBoton = '" . Configuration::get('NACEX_OPC_ID_BOTON') . "';
         
         $(function() {
             
@@ -1079,8 +1076,8 @@ class nacex extends CarrierModule
      */
     public function hookActionCarrierUpdate($params)
     {
-        nacexutils::writeNacexLog("---" . $this->context->controller->php_self);
-        nacexutils::writeNacexLog("INI hookupdateCarrier :: id_carrier: " . $params['id_carrier']);
+        nacexutils::writeNacexLog('---' . $this->context->controller->php_self);
+        nacexutils::writeNacexLog('INI hookupdateCarrier :: id_carrier: ' . $params['id_carrier']);
 
         // Actualiza ID de transportista en Configuración cuando éstos han sido actualizados.
         // Al modificarse, éstos aumentan su ID. Este algoritmo sólo guardará la nueva ID si sólo difiere en -1
@@ -1097,41 +1094,41 @@ class nacex extends CarrierModule
             Configuration::updateValue('TRANSPORTISTA_NACEXINT', $params['carrier']->id);
         }
 
-        $transportistas_f_piped = Configuration::get("NACEX_ID_TRANSPORTISTAS_F");
-        $array_transportistas_f = explode("|", $transportistas_f_piped);
+        $transportistas_f_piped = Configuration::get('NACEX_ID_TRANSPORTISTAS_F');
+        $array_transportistas_f = explode('|', $transportistas_f_piped);
 
         if (in_array($id_carrier, $array_transportistas_f)) {
             $transportistas_f_piped = str_replace($id_carrier, $params['carrier']->id, $transportistas_f_piped);
             Configuration::updateValue('NACEX_ID_TRANSPORTISTAS_F', $transportistas_f_piped);
             Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET ncx="nacex" WHERE id_carrier = "' . $params['carrier']->id . '"');
-            nacexutils::writeNacexLog("hookupdateCarrier :: actualizado campo [ncx = nacex] del carrier");
+            nacexutils::writeNacexLog('hookupdateCarrier :: actualizado campo [ncx = nacex] del carrier');
         }
 
-        $transportistas_nxshop_f_piped = Configuration::get("NACEX_ID_TRANSPORTISTAS_NXSHOP_F");
-        $array_transportistas_nxshop_f = explode("|", $transportistas_nxshop_f_piped);
+        $transportistas_nxshop_f_piped = Configuration::get('NACEX_ID_TRANSPORTISTAS_NXSHOP_F');
+        $array_transportistas_nxshop_f = explode('|', $transportistas_nxshop_f_piped);
         if (in_array($id_carrier, $array_transportistas_nxshop_f)) {
             $transportistas_nxshop_f_piped = str_replace($id_carrier, $params['carrier']->id, $transportistas_nxshop_f_piped);
             Configuration::updateValue('NACEX_ID_TRANSPORTISTAS_NXSHOP_F', $transportistas_nxshop_f_piped);
             Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET ncx="nacexshop" WHERE id_carrier = "' . $params['carrier']->id . '"');
-            nacexutils::writeNacexLog("hookupdateCarrier :: actualizado campo [ncx = nacexshop] del carrier");
+            nacexutils::writeNacexLog('hookupdateCarrier :: actualizado campo [ncx = nacexshop] del carrier');
         }
 
-        $transportistas_nxint_f_piped = Configuration::get("NACEX_ID_TRANSPORTISTAS_NXINT_F");
-        $array_transportistas_nxint_f = explode("|", $transportistas_nxint_f_piped);
+        $transportistas_nxint_f_piped = Configuration::get('NACEX_ID_TRANSPORTISTAS_NXINT_F');
+        $array_transportistas_nxint_f = explode('|', $transportistas_nxint_f_piped);
         if (in_array($id_carrier, $array_transportistas_nxint_f)) {
             $transportistas_nxint_f_piped = str_replace($id_carrier, $params['carrier']->id, $transportistas_nxint_f_piped);
             Configuration::updateValue('NACEX_ID_TRANSPORTISTAS_NXINT_F', $transportistas_nxint_f_piped);
             Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET ncx="nacexint" WHERE id_carrier = "' . $params['carrier']->id . '"');
-            nacexutils::writeNacexLog("hookupdateCarrier :: actualizado campo [ncx = nacexint] del carrier");
+            nacexutils::writeNacexLog('hookupdateCarrier :: actualizado campo [ncx = nacexint] del carrier');
         }
 
         // Por Ãºltimo, actualizamos el campo de tip_serv apra no perder el servicio al que hace referencia el carrier
         $tip_serv_ant = Db::getInstance()->executeS('SELECT tip_serv,ncx FROM ' . _DB_PREFIX_ . 'carrier c WHERE c.id_carrier = "' . $id_carrier . '"');
-        nacexutils::writeNacexLog("hookupdateCarrier :: realizando " . 'UPDATE ' . _DB_PREFIX_ . 'carrier SET tip_serv="' . $tip_serv_ant[0]["tip_serv"] . '",ncx="' . $tip_serv_ant[0]["ncx"] . '" WHERE id_carrier = "' . $params['carrier']->id . '"');
-        Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET tip_serv="' . $tip_serv_ant[0]["tip_serv"] . '",ncx="' . $tip_serv_ant[0]["ncx"] . '" WHERE id_carrier = "' . $params['carrier']->id . '"');
+        nacexutils::writeNacexLog('hookupdateCarrier :: realizando ' . 'UPDATE ' . _DB_PREFIX_ . 'carrier SET tip_serv="' . $tip_serv_ant[0]['tip_serv'] . '",ncx="' . $tip_serv_ant[0]['ncx'] . '" WHERE id_carrier = "' . $params['carrier']->id . '"');
+        Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier SET tip_serv="' . $tip_serv_ant[0]['tip_serv'] . '",ncx="' . $tip_serv_ant[0]['ncx'] . '" WHERE id_carrier = "' . $params['carrier']->id . '"');
 
-        nacexutils::writeNacexLog("FIN hookupdateCarrier :: id_carrier: " . $params['id_carrier']);
-        nacexutils::writeNacexLog("---");
+        nacexutils::writeNacexLog('FIN hookupdateCarrier :: id_carrier: ' . $params['id_carrier']);
+        nacexutils::writeNacexLog('---');
     }
 
     public function hookDisplayOrderDetail($params)
@@ -1142,8 +1139,8 @@ class nacex extends CarrierModule
         $id_carrier = (int)$params['order']->id_carrier;
         $id_cart = (int)$params['order']->id_cart;
         $datosexpedicion = nacexDAO::getDatosExpedicionNacex($id_order);
-        $expe_codigo = $var_html = "";
-        $ver_estado = Configuration::get('NACEX_SHOW_F_EXPE_STATE') == "SI";
+        $expe_codigo = $var_html = '';
+        $ver_estado = Configuration::get('NACEX_SHOW_F_EXPE_STATE') == 'SI';
         $isShop = $nacexDTO->isNacexShopCarrier($id_carrier);
 
         $this->context->controller->registerStylesheet(
@@ -1155,11 +1152,11 @@ class nacex extends CarrierModule
             ]
         );
 
-        $logoImg = "NACEX_logo.svg";
+        $logoImg = 'NACEX_logo.svg';
 
         if ($isShop) {
             // Codigo|Alias|Nombre|Direccion|CP|Poblacion|Provincia|Telefono
-            nacexutils::writeNacexLog("hookOrderDetailDisplayed :: obteniendo datos nacex shop");
+            nacexutils::writeNacexLog('hookOrderDetailDisplayed :: obteniendo datos nacex shop');
 
             /*
                 $datosnacexshop = nacexDAO::getDatosCartNacexShop($id_cart);
@@ -1173,16 +1170,16 @@ class nacex extends CarrierModule
             $logoImg = 'NACEXshop_sostenible_' . $iso_code . '.svg';
         }
 
-        $logo = "<img src='" . _MODULE_DIR_ . "nacex/images/logos/" . $logoImg . "' alt='Logo' />";
+        $logo = "<img src='" . _MODULE_DIR_ . 'nacex/images/logos/' . $logoImg . "' alt='Logo' />";
         $var_html .= "<ul class='estado_expedicion'>" . $logo;
 
         if ($ver_estado) {
 
             /** Añadir condición si está habilitado la generación de expediciones para transportistas externos **/
-            $externos = Configuration::get('NACEX_FORCE_GENFORM') == "SI";
+            $externos = Configuration::get('NACEX_FORCE_GENFORM') == 'SI';
 
             if ((($nacexDTO->isNacexCarrier($id_carrier) || $nacexDTO->isNacexShopCarrier($id_carrier) || $nacexDTO->isNacexIntCarrier($id_carrier) || $externos))
-                && ((!empty($datosexpedicion)) && (isset($datosexpedicion[0]["exp_cod"])))) {
+                && ((!empty($datosexpedicion)) && (isset($datosexpedicion[0]['exp_cod'])))) {
 
                 // Cache WS frontend: solo llamar si la ultima actualizacion fue hace mas de 5 minutos
                 $estadosFinales = ['OK', 'ENTREGADA', 'BAJA', 'ANULADA'];
@@ -1196,7 +1193,7 @@ class nacex extends CarrierModule
                     if ($lastUpdate !== false && (time() - $lastUpdate) < 300) {
                         $respuestaGetEstadoExpedicion = $datosexpedicion[0];
                         $wsCache = true;
-                        nacexutils::writeNacexLog("hookOrderDetailDisplayed :: usando cache BD (actualizado hace " . (time() - $lastUpdate) . "s)");
+                        nacexutils::writeNacexLog('hookOrderDetailDisplayed :: usando cache BD (actualizado hace ' . (time() - $lastUpdate) . 's)');
                     }
                 }
 
@@ -1204,61 +1201,61 @@ class nacex extends CarrierModule
                     $respuestaGetEstadoExpedicion = nacexWS::ws_getEstadoExpedicion($datosexpedicion[0], true);
                 }
 
-                nacexutils::writeNacexLog("hookOrderDetailDisplayed :: estado_code:" . (isset($respuestaGetEstadoExpedicion["estado_code"]) ? $respuestaGetEstadoExpedicion["estado_code"] : 'N/A'));
-                nacexutils::writeNacexLog("hookOrderDetailDisplayed :: estado:" . (isset($respuestaGetEstadoExpedicion["estado"]) ? $respuestaGetEstadoExpedicion["estado"] : 'N/A'));
-                if ($respuestaGetEstadoExpedicion["estado_code"] == 4 || $respuestaGetEstadoExpedicion["estado"] == 'OK' || $datosexpedicion['estado'] == 'ENTREGADA') {
+                nacexutils::writeNacexLog('hookOrderDetailDisplayed :: estado_code:' . (isset($respuestaGetEstadoExpedicion['estado_code']) ? $respuestaGetEstadoExpedicion['estado_code'] : 'N/A'));
+                nacexutils::writeNacexLog('hookOrderDetailDisplayed :: estado:' . (isset($respuestaGetEstadoExpedicion['estado']) ? $respuestaGetEstadoExpedicion['estado'] : 'N/A'));
+                if ($respuestaGetEstadoExpedicion['estado_code'] == 4 || $respuestaGetEstadoExpedicion['estado'] == 'OK' || $datosexpedicion['estado'] == 'ENTREGADA') {
                     /*** Cambio de estado al pedido al documentar expedición ***/
-                    nacexutils::writeNacexLog("hookOrderDetailDisplayed :: Cambiamos el estado del pedido");
+                    nacexutils::writeNacexLog('hookOrderDetailDisplayed :: Cambiamos el estado del pedido');
                     nacexDAO::actualizaEstadoPedido($id_order, 'o');
 
                     // Si está entregada, no hagas consulta a la BBDD
-                    $fecha = explode(' ', $datosexpedicion["fecha_alta"])[0];
-                    $hora = explode(' ', $datosexpedicion["fecha_alta"])[1];
+                    $fecha = explode(' ', $datosexpedicion['fecha_alta'])[0];
+                    $hora = explode(' ', $datosexpedicion['fecha_alta'])[1];
 
                     $var_html .= "
-                            <h3 class='ncx_checked'>" . $this->l('Expedition status') . "</h3>
-                            <p><strong>" . $this->l('Date') . ":</strong> " . $fecha . "</p>
-                            <p><strong>" . $this->l('Hour') . ":</strong> " . $hora . "</p>
-                            <p><strong>" . $this->l('Status') . ":</strong> " . $datosexpedicion["estado"] . "</p>";
+                            <h3 class='ncx_checked'>" . $this->l('Expedition status') . '</h3>
+                            <p><strong>' . $this->l('Date') . ':</strong> ' . $fecha . '</p>
+                            <p><strong>' . $this->l('Hour') . ':</strong> ' . $hora . '</p>
+                            <p><strong>' . $this->l('Status') . ':</strong> ' . $datosexpedicion['estado'] . '</p>';
                 } else { // Asegurarse del valor cuando la expedición se ha entregado
 
                     $claseNcx = $cuerpo = '';
-                    $botonSeguimientoPedido = "<input class='ncx_button' type='button' style='text-align: center;' onclick=window.open(" . "'" . "https://www.nacex.es/seguimientoFormularioExterno.do?intcli=" . $datosexpedicion[0]['ag_cod_num_exp'] . "&intcliv=c" . "'" . "); value='Seguimiento' />";
+                    $botonSeguimientoPedido = "<input class='ncx_button' type='button' style='text-align: center;' onclick=window.open(" . "'" . 'https://www.nacex.es/seguimientoFormularioExterno.do?intcli=' . $datosexpedicion[0]['ag_cod_num_exp'] . '&intcliv=c' . "'" . "); value='Seguimiento' />";
 
                     if (isset($respuestaGetEstadoExpedicion) && is_array($respuestaGetEstadoExpedicion)) {
-                        if (isset($respuestaGetEstadoExpedicion[0]) && $respuestaGetEstadoExpedicion[0] == "ERROR") {
-                            if (isset($respuestaGetEstadoExpedicion[2]) && $respuestaGetEstadoExpedicion[2] == "5611") {
-                                $cuerpo = "<p align='center'><strong><em>" . nacexutils::toUtf8($this->l('Pending integration')) . "</em></strong></p>";
+                        if (isset($respuestaGetEstadoExpedicion[0]) && $respuestaGetEstadoExpedicion[0] == 'ERROR') {
+                            if (isset($respuestaGetEstadoExpedicion[2]) && $respuestaGetEstadoExpedicion[2] == '5611') {
+                                $cuerpo = "<p align='center'><strong><em>" . nacexutils::toUtf8($this->l('Pending integration')) . '</em></strong></p>';
                                 $claseNcx = 'ncx_pending';
                             } else {
-                                $cuerpo = "<p>" . $respuestaGetEstadoExpedicion[0] . " " . $respuestaGetEstadoExpedicion[2] . "</p>";
+                                $cuerpo = '<p>' . $respuestaGetEstadoExpedicion[0] . ' ' . $respuestaGetEstadoExpedicion[2] . '</p>';
                                 $claseNcx = 'ncx_error';
                             }
                         } else {
-                            $cuerpo = "
-                                <p><strong>" . $this->l('Date') . ":</strong> " . $respuestaGetEstadoExpedicion["fecha"] . "</p>
-                                <p><strong>" . $this->l('Hour') . ":</strong> " . $respuestaGetEstadoExpedicion["hora"] . "</p>
-                                <p><strong>" . $this->l('Obs.') . ":</strong> " . $respuestaGetEstadoExpedicion["observaciones"] . "</p>
-                                <p><strong>" . $this->l('Status') . ":</strong> " . $respuestaGetEstadoExpedicion["estado"] . "</p>
-                                " . $botonSeguimientoPedido;
+                            $cuerpo = '
+                                <p><strong>' . $this->l('Date') . ':</strong> ' . $respuestaGetEstadoExpedicion['fecha'] . '</p>
+                                <p><strong>' . $this->l('Hour') . ':</strong> ' . $respuestaGetEstadoExpedicion['hora'] . '</p>
+                                <p><strong>' . $this->l('Obs.') . ':</strong> ' . $respuestaGetEstadoExpedicion['observaciones'] . '</p>
+                                <p><strong>' . $this->l('Status') . ':</strong> ' . $respuestaGetEstadoExpedicion['estado'] . '</p>
+                                ' . $botonSeguimientoPedido;
                             $claseNcx = 'ncx_checked';
                         }
                     } else {
-                        $cuerpo = "<p align='center'><strong><em>" . $this->l('No data') . "</em></strong></p>";
+                        $cuerpo = "<p align='center'><strong><em>" . $this->l('No data') . '</em></strong></p>';
                         $claseNcx = 'ncx_question';
                     }
                 }
 
                 $var_html .= "
-                        <h3 class='" . $claseNcx . "'>" . $this->l('Expedition status') . "</h3>" .
+                        <h3 class='" . $claseNcx . "'>" . $this->l('Expedition status') . '</h3>' .
                     $cuerpo;
 
-            } else if (($nacexDTO->isNacexCarrier($id_carrier) || $nacexDTO->isNacexShopCarrier($id_carrier) || $externos)) {
+            } elseif (($nacexDTO->isNacexCarrier($id_carrier) || $nacexDTO->isNacexShopCarrier($id_carrier) || $externos)) {
                 $var_html .= "
-                        <h3 class='ncx_warning'>" . $this->l('Expedition status') . "</h3>
-                        <em>" . $this->l("Expedition pending on documenting") . "</em>";
+                        <h3 class='ncx_warning'>" . $this->l('Expedition status') . '</h3>
+                        <em>' . $this->l('Expedition pending on documenting') . '</em>';
             }
-            $var_html .= "</ul>";
+            $var_html .= '</ul>';
         }
 
         $this->_html .= '
@@ -1295,11 +1292,11 @@ class nacex extends CarrierModule
 
     public function hookDisplayBeforeCarrier($params)
     {
-        nacexutils::writeNacexLog("---" . $this->context->controller->php_self);
-        nacexutils::writeNacexLog("INI hookBeforeCarrier ::");
+        nacexutils::writeNacexLog('---' . $this->context->controller->php_self);
+        nacexutils::writeNacexLog('INI hookBeforeCarrier ::');
 
-        $logoservswidth = Configuration::get("NACEX_LOGOSERVS_WIDTH");
-        $logoservswidth .= isset($logoservswidth) && $logoservswidth != null && $logoservswidth != "" ? "px" : "auto";
+        $logoservswidth = Configuration::get('NACEX_LOGOSERVS_WIDTH');
+        $logoservswidth .= isset($logoservswidth) && $logoservswidth != null && $logoservswidth != '' ? 'px' : 'auto';
         require_once(dirname(__FILE__) . '/ROnacexshop.php');
         require_once(dirname(__FILE__) . '/nacexWS.php');
         $_nacex_shop = new nacexshop();
@@ -1309,13 +1306,13 @@ class nacex extends CarrierModule
 
         // Si hay una dirección insertada es cuando podemos acceder a las llamadas
         if ((int)$this->context->cart->id_address_delivery != 0) {
-//GET AGENCIA COORDENADAS
-            nacexutils::writeNacexLog("hookBeforeCarrier :: llamada a get_Agencia3");
+            //GET AGENCIA COORDENADAS
+            nacexutils::writeNacexLog('hookBeforeCarrier :: llamada a get_Agencia3');
             $addressDelivery = new Address((int)$this->context->cart->id_address_delivery);
-            if ($addressDelivery->postcode != "") {
+            if ($addressDelivery->postcode != '') {
 
                 $_coordenadas = $_ws->get_Agencia3($addressDelivery->postcode);
-                $_coordenadas = $_ws->treatmentXML($_coordenadas, "getAgencia3");
+                $_coordenadas = $_ws->treatmentXML($_coordenadas, 'getAgencia3');
 
                 /** Añadimos funcionalidad WS sin conexión **/
                 $conn = true;
@@ -1323,9 +1320,9 @@ class nacex extends CarrierModule
                     $_lat = floatval($_coordenadas[9]);
                     $_long = floatval($_coordenadas[10]);
                     //GET LIST OF NACEXSHOPS
-                    nacexutils::writeNacexLog("hookBeforeCarrier :: llamada a getPuntoEntregaGPS");
+                    nacexutils::writeNacexLog('hookBeforeCarrier :: llamada a getPuntoEntregaGPS');
                     $_agencias = $_ws->getPuntoEntregaGPS($_lat, $_long);
-                    $_agencias = $_ws->treatmentXML($_agencias, "getPuntoEntregaGPS");
+                    $_agencias = $_ws->treatmentXML($_agencias, 'getPuntoEntregaGPS');
                     //GET & ADD SHOP NAME
                     $_nacex_shop->add_nacex_shop_name($_agencias);
                 } else { // Si no hay conexión WS
@@ -1336,8 +1333,7 @@ class nacex extends CarrierModule
                     // Si no hay coordenadas de los mapas, coger por CP: comparar 5 cifras, 3 y 2 hasta que haga un mínimo de 10 puntos
                     $address = $add . ', ' . $cp . ', ' . $addressDelivery->city . ', ' . $prov . ', ' . $addressDelivery->country;
                     //$address = "$cp?region=$add[3]&geoit=JSON&streetname=$add[0]&cityname=$add[1]";
-                    if ($_nacex_shop->getMapsCoordinates($address, $lat, $lon)) $return = array($lat, $lon, $cp);
-                    else $return = array($cp);
+                    if ($_nacex_shop->getMapsCoordinates($address, $lat, $lon)) { $return = [$lat, $lon, $cp]; } else { $return = [$cp]; }
 
                     $_agencias = $_nacex_shop->getAgenciasTratadas($return);
                 }
@@ -1358,10 +1354,10 @@ class nacex extends CarrierModule
                 //First get the platform?
                 if (preg_match('/MSIE/i', $u_agent) && !preg_match('/Opera/i', $u_agent)) {
                     $bname = 'IE';
-                    $ub = "MSIE";
+                    $ub = 'MSIE';
                 } elseif (preg_match('/Trident/i', $u_agent)) {
                     $bname = 'IE';
-                    $ub = "MSIE";
+                    $ub = 'MSIE';
                 }
 
                 /*if (Configuration::get('NACEX_GOOGLE_API') != "" && is_null($bname)) {
@@ -1373,7 +1369,7 @@ class nacex extends CarrierModule
 
                 // Tipo de Checkout. Es para la extensión "One Page Checkout PrestaShop" de 'PresTeamShop'
                 $customopc = (isset($this->context->controller->opc) && @$this->context->controller->opc != null) ? 1 : 0;
-                if ($customopc == 0) $customopc = (isset($this->context->controller->module->conf_prefix) && @$this->context->controller->module->conf_prefix == 'opc_') ? 1 : 0;
+                if ($customopc == 0) { $customopc = (isset($this->context->controller->module->conf_prefix) && @$this->context->controller->module->conf_prefix == 'opc_') ? 1 : 0; }
 
                 $this->_html .= "<br>
                              <h3 style='color:#ff5100;'>" . $this->l('Selected NacexShop point') . "</h3>
@@ -1390,20 +1386,20 @@ class nacex extends CarrierModule
                 </table>";
 
                 // Añadimos botón de selección de punto
-                $this->_html .= "<div align=\"center\" style=\"clear: left;\">
-                    <input type=\"button\" align=\"center\" class=\"ncx_button inverse\" id=\"selectAnotherPoint\" value=\"" . $this->l('Seleccionar otro punto') . "\" onclick=\"GetShop('0')\">
+                $this->_html .= '<div align="center" style="clear: left;">
+                    <input type="button" align="center" class="ncx_button inverse" id="selectAnotherPoint" value="' . $this->l('Seleccionar otro punto') . "\" onclick=\"GetShop('0')\">
                 </div>";
-                $this->_html .= "</div>
+                $this->_html .= '</div>
 
              <br>
-			";
+			';
             }
 
-// <div id='dialog-confirm'></div>
+            // <div id='dialog-confirm'></div>
             //nacexutils::writeNacexLog("Llamamos al getOrderShippingCost ::");
             //$shipping_cost = $this->getOrderShippingCost($params, 0);
-            nacexutils::writeNacexLog("FIN hookBeforeCarrier ::");
-            nacexutils::writeNacexLog("----");
+            nacexutils::writeNacexLog('FIN hookBeforeCarrier ::');
+            nacexutils::writeNacexLog('----');
             return $this->_html;
         }
     }
@@ -1414,15 +1410,15 @@ class nacex extends CarrierModule
      */
     public function hookDisplayOrderConfirmation($params)
     {
-        nacexutils::writeNacexLog("---" . $this->context->controller->php_self);
-        nacexutils::writeNacexLog("INI hookOrderConfirmation ::");
+        nacexutils::writeNacexLog('---' . $this->context->controller->php_self);
+        nacexutils::writeNacexLog('INI hookOrderConfirmation ::');
 
-        isset($params['order']->id) ? nacexutils::writeNacexLog("INI hookOrderConfirmation :: id_order: " . $params['order']->id) : nacexutils::writeNacexLog("INI hookOrderConfirmation :: id_order: NULL !!");
+        isset($params['order']->id) ? nacexutils::writeNacexLog('INI hookOrderConfirmation :: id_order: ' . $params['order']->id) : nacexutils::writeNacexLog('INI hookOrderConfirmation :: id_order: NULL !!');
 
         // En los pagos con TPV pasa que el id_carrier del $params != al que guardamos en la cookie
         $carrier_activo = @unserialize($this->context->cookie->__get('carriers_nacex'));
         if (!is_array($carrier_activo)) {
-            $carrier_activo = array();
+            $carrier_activo = [];
         }
 
         // Cogemos el valor del carrier que el cliente ha seleccionado
@@ -1434,9 +1430,7 @@ class nacex extends CarrierModule
         // Revisamos cuál es el carrier seleccionado correcto
         $isCarrierActivo = (is_array($carrier_activo) && !is_null($orderCarrier) && in_array($orderCarrier, $carrier_activo));
 
-        if ($isCarrierActivo && $selected_carrier == $orderCarrier) $carrier = $orderCarrier;
-        elseif (!is_null($selected_carrier) && !empty($selected_carrier)) $carrier = $selected_carrier;
-        else $carrier = $orderCarrier;
+        if ($isCarrierActivo && $selected_carrier == $orderCarrier) { $carrier = $orderCarrier; } elseif (!is_null($selected_carrier) && !empty($selected_carrier)) { $carrier = $selected_carrier; } else { $carrier = $orderCarrier; }
 
         // global $cookie;
         $nacexDTO = new nacexDTO();
@@ -1449,10 +1443,10 @@ class nacex extends CarrierModule
 
         if ($nacexDTO->isNacexCarrier($carrier)) {
             Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET ncx="1"	WHERE id_cart = "' . $id_cart . '"');
-            nacexutils::writeNacexLog("hookOrderConfirmation :: actualizado campo nacex [ncx=1] de la tabla cart.");
-        } else if ($nacexDTO->isNacexShopCarrier($carrier)) {
-            nacexutils::writeNacexLog("hookOrderConfirmation :: isNacexShopCarrier");
-            $shop_datos = "";
+            nacexutils::writeNacexLog('hookOrderConfirmation :: actualizado campo nacex [ncx=1] de la tabla cart.');
+        } elseif ($nacexDTO->isNacexShopCarrier($carrier)) {
+            nacexutils::writeNacexLog('hookOrderConfirmation :: isNacexShopCarrier');
+            $shop_datos = '';
 
             // Modalidad OPC
             if (isset($_COOKIE['opc_id_cart']) && isset($_COOKIE['opc_shop_datos']) && $_COOKIE['opc_id_cart'] == $id_cart) {
@@ -1462,11 +1456,11 @@ class nacex extends CarrierModule
                 setcookie('opc_id_cart', '', time() - 3600);
 
                 Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET ncx="' . $shop_datos . '" WHERE id_cart = "' . $id_cart . '"');
-                nacexutils::writeNacexLog("hookOrderConfirmation :: actualizado campo nacex [ncx=" . $shop_datos . "] de la tabla cart.");
+                nacexutils::writeNacexLog('hookOrderConfirmation :: actualizado campo nacex [ncx=' . $shop_datos . '] de la tabla cart.');
             } else {
                 $ret = Db::getInstance()->executeS('SELECT ncx FROM ' . _DB_PREFIX_ . 'cart WHERE id_cart = "' . $id_cart . '"');
                 $shop_datos = $ret[0]['ncx'];
-                nacexutils::writeNacexLog("hookOrderConfirmation :: shop_datos obtenidos -" . $shop_datos);
+                nacexutils::writeNacexLog('hookOrderConfirmation :: shop_datos obtenidos -' . $shop_datos);
             }
 
             // --------------------------------------------------------------------------------------------
@@ -1475,7 +1469,7 @@ class nacex extends CarrierModule
         }
 
         /* Eliminamos los contenidos de la cookie para no hacer tantas llamadas a WS */
-        nacexutils::writeNacexLog("hookOrderConfirmation :: Eliminamos contenido de la cookie");
+        nacexutils::writeNacexLog('hookOrderConfirmation :: Eliminamos contenido de la cookie');
         foreach ($carrier_activo as $i => $val) {
             $this->context->cookie->__unset('checked_carrier_' . $val);
             $this->context->cookie->__unset('cp_nacex_' . $val);
@@ -1483,27 +1477,27 @@ class nacex extends CarrierModule
 
         $this->context->cookie->__unset('carriers_nacex');
 
-        if(isset($_COOKIE["opc_shop_datos"])){
-            setcookie("opc_shop_datos", "", time() - 3600, '/');
+        if (isset($_COOKIE['opc_shop_datos'])){
+            setcookie('opc_shop_datos', '', time() - 3600, '/');
             unset($_COOKIE['opc_shop_datos']);
-            $this->context->cookie->__unset("opc_shop_datos");
+            $this->context->cookie->__unset('opc_shop_datos');
         }
 
-        if(isset($_COOKIE['selected_carrier'])){
-            setcookie("selected_carrier", "", time() - 3600, '/');
+        if (isset($_COOKIE['selected_carrier'])){
+            setcookie('selected_carrier', '', time() - 3600, '/');
             unset($_COOKIE['selected_carrier']);
-            $this->context->cookie->__unset("selected_carrier");
+            $this->context->cookie->__unset('selected_carrier');
         }
 
-        isset($params['order']->id) ? nacexutils::writeNacexLog("FIN hookOrderConfirmation :: id_order: " . $params['order']->id) : nacexutils::writeNacexLog("FIN hookOrderConfirmation :: id_order: NULL!!");
+        isset($params['order']->id) ? nacexutils::writeNacexLog('FIN hookOrderConfirmation :: id_order: ' . $params['order']->id) : nacexutils::writeNacexLog('FIN hookOrderConfirmation :: id_order: NULL!!');
 
-        nacexutils::writeNacexLog("----");
+        nacexutils::writeNacexLog('----');
     }
 
     public function hookAdminOrder($params, $ver177 = false)
     {
-        nacexutils::writeNacexLog("---" . $this->context->controller->php_self);
-        nacexutils::writeNacexLog("INI hookAdminOrder :: id_order: " . $params['id_order']);
+        nacexutils::writeNacexLog('---' . $this->context->controller->php_self);
+        nacexutils::writeNacexLog('INI hookAdminOrder :: id_order: ' . $params['id_order']);
 
         require_once(dirname(__FILE__) . '/ROnacexshop.php');
         $_nacex_shop = new nacexshop();
@@ -1514,13 +1508,13 @@ class nacex extends CarrierModule
         $id_order = (int)$params['id_order'];
         $datospedido = nacexDAO::getDatosPedido($id_order);
 
-        $isNacex = $nacexDTO->isNacexCarrier($datospedido[0]["id_carrier"]);
-        $isShop = $nacexDTO->isNacexShopCarrier($datospedido[0]["id_carrier"]);
-        $isInt = $nacexDTO->isNacexIntCarrier($datospedido[0]["id_carrier"]);
+        $isNacex = $nacexDTO->isNacexCarrier($datospedido[0]['id_carrier']);
+        $isShop = $nacexDTO->isNacexShopCarrier($datospedido[0]['id_carrier']);
+        $isInt = $nacexDTO->isNacexIntCarrier($datospedido[0]['id_carrier']);
 
         // El transportista es de Nacex o por configuración ha elegido forzar mostrar formulario Generar Expedición
         //if ((isset($datospedido[0]['ncx']) && $datospedido[0]['ncx'] != "") || (isset($datospedido[0]['id_carrier']) && $datospedido[0]['id_carrier'] == nacexDTO::getNacexIdCarrier()) || nacexDTO::isNcxCarrier($datospedido[0]['id_carrier']) || Configuration::get('NACEX_FORCE_GENFORM') == "SI") {
-        if ((isset($datospedido[0]['ncx']) && $datospedido[0]['ncx'] != "") || Configuration::get('NACEX_FORCE_GENFORM') == "SI" ||
+        if ((isset($datospedido[0]['ncx']) && $datospedido[0]['ncx'] != '') || Configuration::get('NACEX_FORCE_GENFORM') == 'SI' ||
             ($isNacex || $isShop || $isInt)) {
             // La útlima línea es cuando el campo ncx del pedido está vacío, null o no existe (no lo podemos saber)
 
@@ -1547,7 +1541,7 @@ class nacex extends CarrierModule
                     $datospedido[0]['postcode'] = $shop_address['shop_cp'];
                     $datospedido[0]['city'] = $shop_address['shop_poblacion'];
 
-                    nacexutils::provincia($shop_address["shop_cp"], $prov);
+                    nacexutils::provincia($shop_address['shop_cp'], $prov);
                     $provincia = State::getIdByName($prov);
                     $datospedido[0]['id_state'] = $provincia;
                     $datospedido[0]['ncx'] = implode('|', $shop_address);
@@ -1591,8 +1585,8 @@ class nacex extends CarrierModule
             $solicitud = 0;
             //if (!empty($_POST)) {
             // Crear Expedición ** 1
-//CHECK HASH FORM
-            include_once dirname(__FILE__) . "/hash.php";
+            //CHECK HASH FORM
+            include_once dirname(__FILE__) . '/hash.php';
             $_validate_hash = new hash();
             $_resultado = $_validate_hash->validate_hash();
             if (Tools::isSubmit('submitputexpedicion') && $_resultado == true) {
@@ -1617,7 +1611,7 @@ class nacex extends CarrierModule
 
             // Cancelar Expedición ** 3
             if (Tools::isSubmit('submitcancelexpedicion')) {
-                nacexutils::writeNacexLog("hookAdminOrder :: Detectado submitcancelexpedicion para exp_cod: " . Tools::getValue('exp_cod'));
+                nacexutils::writeNacexLog('hookAdminOrder :: Detectado submitcancelexpedicion para exp_cod: ' . Tools::getValue('exp_cod'));
                 $this->_html = nacexWS::cancelExpedicion($id_order, Tools::getValue('exp_cod'));
                 $solicitud += 3;
             }
@@ -1638,8 +1632,6 @@ class nacex extends CarrierModule
                     $this->_html .= '</p>';
                 }
 
-
-
                 // Si el estado de la expedición es un OK (4), entonces cambiamos el estado del pedido.
                 // Teniendo en cuenta que no sea el estado final en el que debería estar
                 $order = new Order($id_order);
@@ -1647,10 +1639,10 @@ class nacex extends CarrierModule
                 $final_est = Configuration::get('NACEX_CAMBIAR_ESTADO_OK');
 
                 if (($final_est != '' && $est != $final_est) &&
-                    ($respuestaGetEstadoExpedicion["estado_code"] == 4 || $respuestaGetEstadoExpedicion["estado"] == 'OK' || $datos['estado'] == 'ENTREGADA')) {
+                    ($respuestaGetEstadoExpedicion['estado_code'] == 4 || $respuestaGetEstadoExpedicion['estado'] == 'OK' || $datos['estado'] == 'ENTREGADA')) {
 
                     /*** Cambio de estado al pedido al documentar expedición ***/
-                    nacexutils::writeNacexLog("hookAdminOrder :: Cambiamos el estado del pedido al estar en OK");
+                    nacexutils::writeNacexLog('hookAdminOrder :: Cambiamos el estado del pedido al estar en OK');
                     nacexDAO::actualizaEstadoPedido($id_order, 'o');
                 }
 
@@ -1671,8 +1663,8 @@ class nacex extends CarrierModule
                 </script>';
             */
         }
-        nacexutils::writeNacexLog("FIN hookAdminOrder :: id_order: " . $params['id_order']);
-        nacexutils::writeNacexLog("----");
+        nacexutils::writeNacexLog('FIN hookAdminOrder :: id_order: ' . $params['id_order']);
+        nacexutils::writeNacexLog('----');
 
         return $this->_html;
     }
@@ -1687,11 +1679,9 @@ class nacex extends CarrierModule
         $this->_html .= '<h2>NACEX</h2>';
         if (! empty($_POST) and Tools::isSubmit('submitSave')) {
             $this->_postValidation();
-            if (! sizeof($this->_postErrors))
-                $this->_postProcess();
-                else
-                    foreach ($this->_postErrors as $err)
-                        $this->_html .= '<div class="alert error"><img src="' . _PS_IMG_ . 'admin/forbbiden.gif" alt="nok" />&nbsp;' . $err . '</div>';
+            if (! sizeof($this->_postErrors)) {
+                $this->_postProcess(); } else { foreach ($this->_postErrors as $err) {
+                    $this->_html .= '<div class="alert error"><img src="' . _PS_IMG_ . 'admin/forbbiden.gif" alt="nok" />&nbsp;' . $err . '</div>'; } }
         }
         $this->_displayForm();
         return $this->_html;
@@ -1730,7 +1720,7 @@ class nacex extends CarrierModule
         $result = guardarConfiguracion();
 
         /** Añadimos el campo de provincia para que se pueda elegir en España **/
-        $format_address = Db::getInstance()->executeS("SELECT format FROM " . _DB_PREFIX_ . "address_format WHERE id_country = 6");
+        $format_address = Db::getInstance()->executeS('SELECT format FROM ' . _DB_PREFIX_ . 'address_format WHERE id_country = 6');
         if (strpos($format_address[0]['format'], 'State:name') === false) {
             $add_state = substr_replace($format_address[0]['format'], "State:name\r\n", strpos($format_address[0]['format'], 'Country:name'), 0);
             $update = 'UPDATE ' . _DB_PREFIX_ . "address_format SET format = '" . $add_state . "' WHERE id_country = 6;";
@@ -1749,7 +1739,7 @@ class nacex extends CarrierModule
                 nacexDAO::setTransportistasBackend($selectStd, $selectShp, $selectInt);
             }
 
-            Configuration::get('NACEX_SERV_BACK_OR_FRONT') == 'B' ? nacexDAO::activarServicios() : nacexDAO::activarServicios("frontend");
+            Configuration::get('NACEX_SERV_BACK_OR_FRONT') == 'B' ? nacexDAO::activarServicios() : nacexDAO::activarServicios('frontend');
             $this->_html .= $this->displayConfirmation($this->l('Configuration updated'));
         } elseif (!$result) {
             $this->_html .= $this->displayErrors($this->l('Configuration error'));
@@ -1760,15 +1750,14 @@ class nacex extends CarrierModule
     //getPackageShippingCost($params, $shipping_cost)
     public function getOrderShippingCost($params, $shipping_cost)
     {
-        nacexutils::writeNacexLog("----");
-        nacexutils::writeNacexLog("INI getOrderShippingCost :: ");
+        nacexutils::writeNacexLog('----');
+        nacexutils::writeNacexLog('INI getOrderShippingCost :: ');
 
         $id_carrier = $this->id_carrier; // no valido en 1.7 revisar _carriers
 
         // Guardamos el valor del carrier que el cliente ha seleccionado
         $selected_carrier = $params->id_carrier;
-        if (!$this->context->cookie->__isset('selected_carrier')) $this->context->cookie->__set('selected_carrier', $selected_carrier);
-        elseif ($this->context->cookie->__get('selected_carrier') != $selected_carrier) $this->context->cookie->__set('selected_carrier', $selected_carrier);
+        if (!$this->context->cookie->__isset('selected_carrier')) { $this->context->cookie->__set('selected_carrier', $selected_carrier); } elseif ($this->context->cookie->__get('selected_carrier') != $selected_carrier) { $this->context->cookie->__set('selected_carrier', $selected_carrier); }
 
         /* Miramos y guardamos el CP para ver si ha cambiado */
         $addr = new Address($params->id_address_delivery);
@@ -1794,34 +1783,31 @@ class nacex extends CarrierModule
                 $change_cp = $setNacex = $setTotal = false;
 
                 // Si está el total del pedido en la cookie y es diferente al actual, indicamos que se ha modificado el pedido
-                if (!$this->context->cookie->__isset('total_nacex_' . $id_carrier)) $this->context->cookie->__set('total_nacex_' . $id_carrier, $totalPedido);
-                elseif ($this->context->cookie->__get('total_nacex_' . $id_carrier) != $totalPedido) $setTotal = true;
+                if (!$this->context->cookie->__isset('total_nacex_' . $id_carrier)) { $this->context->cookie->__set('total_nacex_' . $id_carrier, $totalPedido); } elseif ($this->context->cookie->__get('total_nacex_' . $id_carrier) != $totalPedido) { $setTotal = true; }
 
                 if (!$this->context->cookie->__isset('cp_nacex_' . $id_carrier) && !is_null($cp_ent)) {
-                    nacexutils::writeNacexLog("isset cookie cp_nacex ::");
+                    nacexutils::writeNacexLog('isset cookie cp_nacex ::');
                     $cp_nacex = $addr->postcode;
                     //$this->context->cookie->__set('cp_nacex_' . $id_carrier, $cp_nacex[$id_carrier]);
                     $this->context->cookie->__set('cp_nacex_' . $id_carrier, $cp_nacex);
                     $this->context->cookie->write();
-                    nacexutils::writeNacexLog("seteada cookie ::");
+                    nacexutils::writeNacexLog('seteada cookie ::');
                     $setNacex = true; // Es el mismo CP pero es la primera ejecución
-                } else
-                    $cp_nacex[$id_carrier] = $this->context->cookie->__get('cp_nacex_' . $id_carrier);
+                } else { $cp_nacex[$id_carrier] = $this->context->cookie->__get('cp_nacex_' . $id_carrier); }
 
                 /* Creamos cookies para evitar llamadas masivas a WS */
-                $carrier_activo_cookie = !$this->context->cookie->__isset('carriers_nacex') ? array() : unserialize($this->context->cookie->__get('carriers_nacex'));
+                $carrier_activo_cookie = !$this->context->cookie->__isset('carriers_nacex') ? [] : unserialize($this->context->cookie->__get('carriers_nacex'));
                 //if (!empty($carrier_activo)) nacexutils::writeNacexLog("carrier_activo :: " . print_r($carrier_activo));
 
                 $carriersList = nacexDAO::getActiveCarriers();
-                $carrier_activo = array();
+                $carrier_activo = [];
 
                 foreach ($carriersList as $carr) {
-                    if (in_array($carr['id_carrier'], $carrier_activo_cookie)) array_push($carrier_activo, $carr['id_carrier']);
-                    else {
+                    if (in_array($carr['id_carrier'], $carrier_activo_cookie)) { array_push($carrier_activo, $carr['id_carrier']); } else {
                         // borrar los datos de la cookie referente a ese carrier
                         if ($this->context->cookie->exists('checked_carrier_' . $carr['id_carrier'])) {
                             $this->context->cookie->__unset('carriers_nacex' . $carr['id_carrier']);
-                            nacexutils::writeNacexLog("Cookie to delete :: " . 'carriers_nacex' . $carr['id_carrier']);
+                            nacexutils::writeNacexLog('Cookie to delete :: ' . 'carriers_nacex' . $carr['id_carrier']);
                         }
                     }
                 }
@@ -1832,7 +1818,7 @@ class nacex extends CarrierModule
                 }
 
                 // Comprobamos si el carrier ya se ha mirado antes
-                nacexutils::writeNacexLog("carrier ya se ha mirado antes??? :: " . $change_cp || $setNacex);
+                nacexutils::writeNacexLog('carrier ya se ha mirado antes??? :: ' . $change_cp || $setNacex);
                 if ($change_cp || $setNacex || $setTotal) {
 
                     if (!in_array($id_carrier, $carrier_activo) || $setTotal) { // No está entrando cuando cambia el CP porque ya tiene el carrier designado.
@@ -1847,17 +1833,17 @@ class nacex extends CarrierModule
                             $this->context->cookie->write();
                         }*/
 
-                        if (!$this->context->cookie->__isset('checked_carrier_' . $id_carrier)) $checked_carrier_value = false;
+                        if (!$this->context->cookie->__isset('checked_carrier_' . $id_carrier)) { $checked_carrier_value = false; }
                         $checked_carrier_value = $this->context->cookie->__get('checked_carrier_' . $id_carrier) !== null ? $this->context->cookie->__get('checked_carrier_' . $id_carrier) : $checked_carrier_value;
                         /* Fin de la declaración de las cookies */
 
-                        $nacex_mostrar_coste_0 = Configuration::get('NACEX_MOSTRAR_COSTE_0') == "SI";
+                        $nacex_mostrar_coste_0 = Configuration::get('NACEX_MOSTRAR_COSTE_0') == 'SI';
 
                         // Funcionalidad de calculo de tarifa
 
-                        nacexutils::writeNacexLog("llamamos a calculoTarifa :: ");
+                        nacexutils::writeNacexLog('llamamos a calculoTarifa :: ');
                         $shipping_cost = $this->calculoTarifa($params, $id_carrier);
-                        nacexutils::writeNacexLog("llamada a calculoTarifa :: ");
+                        nacexutils::writeNacexLog('llamada a calculoTarifa :: ');
 
                         // Cogemos los datos del producto por si tienen un gasto de manipulación propio configurado
                         $productos = $params->getProducts();
@@ -1875,17 +1861,16 @@ class nacex extends CarrierModule
                             $this->context->cookie->__set('checked_carrier_' . $id_carrier, $shipping_cost);
                             $this->context->cookie->write();
                         } else { // Como no entramos a ninguna condición, asignamos el precio
-                            nacexutils::writeNacexLog("getOrderShippingCost :: Recuperamos valor de la cookie");
-                            $shipping_cost = number_format($this->context->cookie->__get('checked_carrier_' . $id_carrier), 2, ".", "");
+                            nacexutils::writeNacexLog('getOrderShippingCost :: Recuperamos valor de la cookie');
+                            $shipping_cost = number_format($this->context->cookie->__get('checked_carrier_' . $id_carrier), 2, '.', '');
                         }
 
-
-                        nacexutils::writeNacexLog("shipping_cost :: " . $shipping_cost);
-                        nacexutils::writeNacexLog("nacex_mostrar_coste_0 :: " . $nacex_mostrar_coste_0);
+                        nacexutils::writeNacexLog('shipping_cost :: ' . $shipping_cost);
+                        nacexutils::writeNacexLog('nacex_mostrar_coste_0 :: ' . $nacex_mostrar_coste_0);
 
                         // Comprobamos si hay que mostrar los transportistas con coste 0 €
                         if (!$nacex_mostrar_coste_0 && $shipping_cost <= 0) {
-                            nacexutils::writeNacexLog("getOrderShippingCost :: Carrier descartado debido coste 0 Euros(Carrier:" . $id_carrier . " => " . $shipping_cost . " Euros");
+                            nacexutils::writeNacexLog('getOrderShippingCost :: Carrier descartado debido coste 0 Euros(Carrier:' . $id_carrier . ' => ' . $shipping_cost . ' Euros');
                             return false;
                         }/* else {
                             return $shipping_cost;
@@ -1895,61 +1880,61 @@ class nacex extends CarrierModule
                     /*nacexutils::writeNacexLog("COGEMOS EL CONTENIDO DE LA COOKIE :: ");
                     return $this->context->cookie->__get('checked_carrier_' . $id_carrier);*/
 
-                    nacexutils::writeNacexLog("COGEMOS EL CONTENIDO DE LA COOKIE :: ");
+                    nacexutils::writeNacexLog('COGEMOS EL CONTENIDO DE LA COOKIE :: ');
                     $shipping_cost = $this->context->cookie->__get('checked_carrier_' . $id_carrier);
-//                    return $shipping_cost;
+                    //                    return $shipping_cost;
                 }
             }
         } else {
-            nacexutils::writeNacexLog("ESTAMOS EN EL MOMENTO EN QUE LA PÁGINA ES NULL :: ");
-            nacexutils::writeNacexLog("COGEMOS EL CONTENIDO DE LA COOKIE :: ");
+            nacexutils::writeNacexLog('ESTAMOS EN EL MOMENTO EN QUE LA PÁGINA ES NULL :: ');
+            nacexutils::writeNacexLog('COGEMOS EL CONTENIDO DE LA COOKIE :: ');
             $shipping_cost = $this->context->cookie->__get('checked_carrier_' . $id_carrier);
 
             // Esto se hace para que vuelva a calcular en el coste de envio si la cookie de PS se pierde
-            if(!isset($shipping_cost) || empty($shipping_cost) || $shipping_cost == ''){
-                nacexutils::writeNacexLog("llamamos a calculoTarifa :: ");
+            if (!isset($shipping_cost) || empty($shipping_cost) || $shipping_cost == ''){
+                nacexutils::writeNacexLog('llamamos a calculoTarifa :: ');
 
                 $shipping_cost = $this->calculoTarifa($params, $id_carrier);
 
-                nacexutils::writeNacexLog("llamada a calculoTarifa :: ");
+                nacexutils::writeNacexLog('llamada a calculoTarifa :: ');
             }
-//            return $shipping_cost;
+            //            return $shipping_cost;
         }
 
-        nacexutils::writeNacexLog("FIN getOrderShippingCost :: ");
-        nacexutils::writeNacexLog("----");
+        nacexutils::writeNacexLog('FIN getOrderShippingCost :: ');
+        nacexutils::writeNacexLog('----');
         $params->id_carrier = $selected_carrier;
-        nacexutils::writeNacexLog("Retornamos el shipping_cost :: " . $shipping_cost);
+        nacexutils::writeNacexLog('Retornamos el shipping_cost :: ' . $shipping_cost);
         return (float)$shipping_cost;
     }
 
     private function calculoTarifa($params, $id_carrier)
     {
-        nacexutils::writeNacexLog("--------");
-        nacexutils::writeNacexLog("INI calculoTarifa :: ");
+        nacexutils::writeNacexLog('--------');
+        nacexutils::writeNacexLog('INI calculoTarifa :: ');
         $nacexDTO = new nacexDTO();
 
         $carrier = nacexDAO::getCarrierById($id_carrier);
-        $aplicar_gastos_manipulacion = Configuration::get("NACEX_GASTOS_MANIPULACION") == "SI";
-        $gastos_manipulacion_val = Configuration::get("NACEX_GASTOS_MANIPULACION_VAL");
+        $aplicar_gastos_manipulacion = Configuration::get('NACEX_GASTOS_MANIPULACION') == 'SI';
+        $gastos_manipulacion_val = Configuration::get('NACEX_GASTOS_MANIPULACION_VAL');
 
         //$calcular_ws_importe = Configuration::get('NACEX_WS_IMPORTE');
         /* Importes Nacex Estándar */
         $calculo_importe_nacex = Configuration::get('NACEX_CALCULO_IMPORTE_STD');
-        $importe_fijo_nacex_valor = floatval(str_replace(",", ".", Configuration::get('NACEX_IMP_FIJO_VAL')));
-        $nacex_importe_min_grat = Configuration::get('NACEX_IMP_MIN_GRAT') == "SI";
+        $importe_fijo_nacex_valor = floatval(str_replace(',', '.', Configuration::get('NACEX_IMP_FIJO_VAL')));
+        $nacex_importe_min_grat = Configuration::get('NACEX_IMP_MIN_GRAT') == 'SI';
         $nacex_importe_min_grat_val = Configuration::get('NACEX_IMP_MIN_GRAT_VAL');
 
         /* Importes NacexShop */
         $calculo_importe_nacexshop = Configuration::get('NACEX_CALCULO_IMPORTE_SHP');
-        $importe_fijo_nacexshop_valor = floatval(str_replace(",", ".", Configuration::get('NACEXSHOP_IMP_FIJO_VAL')));
-        $nacexshop_importe_min_grat = Configuration::get('NACEXSHOP_IMP_MIN_GRAT') == "SI";
+        $importe_fijo_nacexshop_valor = floatval(str_replace(',', '.', Configuration::get('NACEXSHOP_IMP_FIJO_VAL')));
+        $nacexshop_importe_min_grat = Configuration::get('NACEXSHOP_IMP_MIN_GRAT') == 'SI';
         $nacexshop_importe_min_grat_val = Configuration::get('NACEXSHOP_IMP_MIN_GRAT_VAL');
 
         /* Importes Internacional */
         $calculo_importe_nacexint = Configuration::get('NACEX_CALCULO_IMPORTE_INT');
-        $importe_fijo_nacexint_valor = floatval(str_replace(",", ".", Configuration::get('NACEXINT_IMP_FIJO_VAL')));
-        $nacexint_importe_min_grat = Configuration::get('NACEXINT_IMP_MIN_GRAT') == "SI";
+        $importe_fijo_nacexint_valor = floatval(str_replace(',', '.', Configuration::get('NACEXINT_IMP_FIJO_VAL')));
+        $nacexint_importe_min_grat = Configuration::get('NACEXINT_IMP_MIN_GRAT') == 'SI';
         $nacexint_importe_min_grat_val = Configuration::get('NACEXINT_IMP_MIN_GRAT_VAL');
 
         $total = (Configuration::get('NACEX_COBRO_PORTES') == 'D') ? $params->getOrderTotal(true, Cart::BOTH_WITHOUT_SHIPPING) : $this->getSubtotalWithTaxes(false);
@@ -1958,101 +1943,98 @@ class nacex extends CarrierModule
         if ($nacexDTO->isNacexCarrier($id_carrier)) {
 
             // Miramos si tiene definido un importe fijo
-            if ($calculo_importe_nacex == "flat_rate") {
-                $shipping_cost = number_format($importe_fijo_nacex_valor, 2, ".", "");
-                nacexutils::writeNacexLog("getOrderShippingCost :: Transportista con importe fijo (Carrier:" . $id_carrier . " => " . $shipping_cost . " euros");
+            if ($calculo_importe_nacex == 'flat_rate') {
+                $shipping_cost = number_format($importe_fijo_nacex_valor, 2, '.', '');
+                nacexutils::writeNacexLog('getOrderShippingCost :: Transportista con importe fijo (Carrier:' . $id_carrier . ' => ' . $shipping_cost . ' euros');
 
                 // Si no tiene importe fijo, miramos si hay que calcular el precio mediante WS
-            } elseif ($calculo_importe_nacex == "web_service") {
+            } elseif ($calculo_importe_nacex == 'web_service') {
                 nacexutils::writeNacexLog("llamamos a getImporteWebservice para el carrier Estándar $id_carrier");
                 $shipping_cost = nacexDAO::getImporteWebservice($params, $id_carrier);
             } else {
                 // Si no, se aplican las rates especificadas en cada método
                 $carrierTemp = new Carrier($id_carrier);
                 $tipoCalculoRate = $carrierTemp->getShippingMethod();
-                if ($tipoCalculoRate == 1) // En función del peso
-                    $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByWeight($params->getTotalWeight(), Address::getZoneById($params->id_address_delivery)), 2), 2);
-                else // == 2 => En función del precio
-                    $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByPrice($total, Address::getZoneById($params->id_address_delivery)), 2), 2);
+                if ($tipoCalculoRate == 1) { // En función del peso
+                    $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByWeight($params->getTotalWeight(), Address::getZoneById($params->id_address_delivery)), 2), 2); } else { // == 2 => En función del precio
+                        $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByPrice($total, Address::getZoneById($params->id_address_delivery)), 2), 2); }
             }
 
             // Sólo en el caso de calcular el importe por webservice añadimos gastos de manipulacion (si es necesario)
             if ($aplicar_gastos_manipulacion) {
                 $shipping_cost += $gastos_manipulacion_val;
-                nacexutils::writeNacexLog("getOrderShippingCost :: Aplicamos gastos de manipulacion (Carrier:" . $id_carrier . " => +" . $gastos_manipulacion_val . " euros ");
+                nacexutils::writeNacexLog('getOrderShippingCost :: Aplicamos gastos de manipulacion (Carrier:' . $id_carrier . ' => +' . $gastos_manipulacion_val . ' euros ');
             }
 
             // Miramos si el transportista es gratuito dado el 'importe minimo gratiuto'
             if ($nacex_importe_min_grat && $total >= (float)$nacex_importe_min_grat_val) {
                 $shipping_cost = 0;
-                nacexutils::writeNacexLog("getOrderShippingCost :: Transportista gratuito dado el importe min. grat.(Carrier:" . $id_carrier . " => 0 euros");
+                nacexutils::writeNacexLog('getOrderShippingCost :: Transportista gratuito dado el importe min. grat.(Carrier:' . $id_carrier . ' => 0 euros');
             }
         } elseif ($nacexDTO->isNacexShopCarrier($id_carrier)) {
 
             // Miramos si tiene definido un importe fijo
-            if ($calculo_importe_nacexshop == "flat_rate") {
-                $shipping_cost = number_format($importe_fijo_nacexshop_valor, 2, ".", "");
-                nacexutils::writeNacexLog("getOrderShippingCost :: Transportista con importe fijo (Carrier:" . $id_carrier . " => " . $shipping_cost . " euros ");
+            if ($calculo_importe_nacexshop == 'flat_rate') {
+                $shipping_cost = number_format($importe_fijo_nacexshop_valor, 2, '.', '');
+                nacexutils::writeNacexLog('getOrderShippingCost :: Transportista con importe fijo (Carrier:' . $id_carrier . ' => ' . $shipping_cost . ' euros ');
 
                 // Si no tiene importe fijo, miramos si hay que calcular el precio mediante WS
-            } elseif ($calculo_importe_nacexshop == "web_service") {
+            } elseif ($calculo_importe_nacexshop == 'web_service') {
                 nacexutils::writeNacexLog("llamamos a getImporteWebservice para el carrier Shop $id_carrier");
                 $shipping_cost = nacexDAO::getImporteWebservice($params, $id_carrier);
             } else {
                 // Si no, se aplican las rates especificadas en cada método
                 $carrierTemp = new Carrier($id_carrier);
                 $tipoCalculoRate = $carrierTemp->getShippingMethod();
-                if ($tipoCalculoRate == 1) // En función del peso
-                    $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByWeight($params->getTotalWeight(), Address::getZoneById($params->id_address_delivery)), 2), 2);
-                else // == 2 => En función del precio
-                    $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByPrice($total, Address::getZoneById($params->id_address_delivery)), 2), 2);
+                if ($tipoCalculoRate == 1) { // En función del peso
+                    $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByWeight($params->getTotalWeight(), Address::getZoneById($params->id_address_delivery)), 2), 2); } else { // == 2 => En función del precio
+                        $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByPrice($total, Address::getZoneById($params->id_address_delivery)), 2), 2); }
             }
 
             // Sólo en el caso de calcular el importe por webservice añadimos gastos de manipulacion (si es necesario)
             if ($aplicar_gastos_manipulacion) {
                 $shipping_cost += $gastos_manipulacion_val;
-                nacexutils::writeNacexLog("getOrderShippingCost :: Aplicamos gastos de manipulacion (Carrier:" . $id_carrier . " => +" . $gastos_manipulacion_val . " euros ");
+                nacexutils::writeNacexLog('getOrderShippingCost :: Aplicamos gastos de manipulacion (Carrier:' . $id_carrier . ' => +' . $gastos_manipulacion_val . ' euros ');
             }
 
             // Miramos si el transportista es gratuito dado el 'importe minimo gratuito'
             if ($nacexshop_importe_min_grat && $total >= $nacexshop_importe_min_grat_val) {
                 $shipping_cost = 0;
-                nacexutils::writeNacexLog("getOrderShippingCost :: Transportista gratuito dado el importe min. grat.(Carrier:" . $id_carrier . " => 0 euros ");
+                nacexutils::writeNacexLog('getOrderShippingCost :: Transportista gratuito dado el importe min. grat.(Carrier:' . $id_carrier . ' => 0 euros ');
             }
         } elseif ($nacexDTO->isNacexIntCarrier($id_carrier)) {
 
             // Miramos si tiene definido un importe fijo
-            if ($calculo_importe_nacexint == "flat_rate") {
-                $shipping_cost = number_format($importe_fijo_nacexint_valor, 2, ".", "");
-                nacexutils::writeNacexLog("getOrderShippingCost :: Transportista con importe fijo (Carrier:" . $id_carrier . " => " . $shipping_cost . " euros ");
+            if ($calculo_importe_nacexint == 'flat_rate') {
+                $shipping_cost = number_format($importe_fijo_nacexint_valor, 2, '.', '');
+                nacexutils::writeNacexLog('getOrderShippingCost :: Transportista con importe fijo (Carrier:' . $id_carrier . ' => ' . $shipping_cost . ' euros ');
 
                 // Si no tiene importe fijo, miramos si hay que calcular el precio mediante WS
-            } elseif ($calculo_importe_nacexint == "web_service") {
+            } elseif ($calculo_importe_nacexint == 'web_service') {
                 $shipping_cost = nacexDAO::getImporteWebservice($params, $id_carrier);
             } else {
                 // Si no, se aplican las rates especificadas en cada método
                 $carrierTemp = new Carrier($id_carrier);
                 $tipoCalculoRate = $carrierTemp->getShippingMethod();
-                if ($tipoCalculoRate == 1) // En función del peso
-                    $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByWeight($params->getTotalWeight(), Address::getZoneById($params->id_address_delivery)), 2), 2);
-                else // == 2 => En función del precio
-                    $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByPrice($total, Address::getZoneById($params->id_address_delivery)), 2), 2);
+                if ($tipoCalculoRate == 1) { // En función del peso
+                    $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByWeight($params->getTotalWeight(), Address::getZoneById($params->id_address_delivery)), 2), 2); } else { // == 2 => En función del precio
+                        $shipping_cost = number_format(round($carrierTemp->getDeliveryPriceByPrice($total, Address::getZoneById($params->id_address_delivery)), 2), 2); }
             }
 
             // Sólo en el caso de calcular el importe por webservice añadimos gastos de manipulacion (si es necesario)
             if ($aplicar_gastos_manipulacion) {
                 $shipping_cost += $gastos_manipulacion_val;
-                nacexutils::writeNacexLog("getOrderShippingCost :: Aplicamos gastos de manipulacion (Carrier:" . $id_carrier . " => +" . $gastos_manipulacion_val . " euros ");
+                nacexutils::writeNacexLog('getOrderShippingCost :: Aplicamos gastos de manipulacion (Carrier:' . $id_carrier . ' => +' . $gastos_manipulacion_val . ' euros ');
             }
 
             // Miramos si el transportista es gratuito dado el 'importe minimo gratuito'
             if ($nacexint_importe_min_grat && $total >= $nacexint_importe_min_grat_val) {
                 $shipping_cost = 0;
-                nacexutils::writeNacexLog("getOrderShippingCost :: Transportista gratuito dado el importe min. grat.(Carrier:" . $id_carrier . " => 0 euros ");
+                nacexutils::writeNacexLog('getOrderShippingCost :: Transportista gratuito dado el importe min. grat.(Carrier:' . $id_carrier . ' => 0 euros ');
             }
         }
-        nacexutils::writeNacexLog("FIN calculoTarifa :: ");
-        nacexutils::writeNacexLog("--------");
+        nacexutils::writeNacexLog('FIN calculoTarifa :: ');
+        nacexutils::writeNacexLog('--------');
 
         return $shipping_cost;
     }
@@ -2078,8 +2060,7 @@ class nacex extends CarrierModule
         $cartProducts = $this->context->cart->getProducts();
 
         foreach ($cartProducts as $prod) {
-            if ($withTaxes) $subtotalWoT += $prod['price_with_reduction'];
-            else $subtotalWoT += $prod['price_with_reduction_without_tax'];
+            if ($withTaxes) { $subtotalWoT += $prod['price_with_reduction']; } else { $subtotalWoT += $prod['price_with_reduction_without_tax']; }
         }
 
         return $subtotalWoT;
@@ -2088,7 +2069,7 @@ class nacex extends CarrierModule
     // to compute the shipping price without using the ranges.
     public function getOrderShippingCostExternal($params)
     {
-        return nacex::calculoTarifa($params,$this->id_carrier);
+        return nacex::calculoTarifa($params, $this->id_carrier);
     }
 
     /** Nuevos hooks PS1.7.7 **/
@@ -2100,19 +2081,19 @@ class nacex extends CarrierModule
 
     public function hookactionValidateOrder($params)
     {
-        nacexutils::writeNacexLog("---------");
-        nacexutils::writeNacexLog("INI hookactionValidateOrder :: ");
+        nacexutils::writeNacexLog('---------');
+        nacexutils::writeNacexLog('INI hookactionValidateOrder :: ');
 
         // En los pagos con TPV pasa que el id_carrier del $params != al que guardamos en la cookie
         $carrier_activo = @unserialize($this->context->cookie->__get('carriers_nacex'));
         if (!is_array($carrier_activo)) {
-            $carrier_activo = array();
+            $carrier_activo = [];
         }
 
         // Cogemos el valor del carrier que el cliente ha seleccionado
         if (isset($_COOKIE['selected_carrier'])){
             $selected_carrier = $_COOKIE['selected_carrier'];
-        } else{
+        } else {
             $selected_carrier = $this->context->cookie->__get('selected_carrier') ?? null;
         }
 
@@ -2123,14 +2104,14 @@ class nacex extends CarrierModule
         // Revisamos el valor del carrier para que se muestre correctamente y printarlo en el log
         if ($isCarrierActivo && $selected_carrier == $orderCarrier) {
             $carrier = $orderCarrier;
-            nacexutils::writeNacexLog("carrier1 :: " . $carrier);
-           } elseif (!is_null($selected_carrier) || !empty($selected_carrier)){
-               $carrier = $selected_carrier;
-               nacexutils::writeNacexLog("carrier2 :: " . $carrier);
-           } else {
-               $carrier = $orderCarrier;
-               nacexutils::writeNacexLog("carrier3 :: " . $carrier);
-           }
+            nacexutils::writeNacexLog('carrier1 :: ' . $carrier);
+        } elseif (!is_null($selected_carrier) || !empty($selected_carrier)){
+            $carrier = $selected_carrier;
+            nacexutils::writeNacexLog('carrier2 :: ' . $carrier);
+        } else {
+            $carrier = $orderCarrier;
+            nacexutils::writeNacexLog('carrier3 :: ' . $carrier);
+        }
 
         $nacexDTO = new nacexDTO();
 
@@ -2160,39 +2141,37 @@ class nacex extends CarrierModule
 
             // Añadimos el carrier por si el pedido es 0
             // Revisamos si el id_carrier del es igual al seleccionado
-            if (is_null($params["order"]->id_carrier) || $params["order"]->id_carrier != $carrier) $params["order"]->id_carrier = $carrier;
-            if (is_null($order->id_carrier) || $order->id_carrier != $carrier) $order->id_carrier = $carrier;
+            if (is_null($params['order']->id_carrier) || $params['order']->id_carrier != $carrier) { $params['order']->id_carrier = $carrier; }
+            if (is_null($order->id_carrier) || $order->id_carrier != $carrier) { $order->id_carrier = $carrier; }
 
             $order->update();
-        } else if ($nacexDTO->isNacexCarrier($carrier) || $nacexDTO->isNacexIntCarrier($carrier)) {
+        } elseif ($nacexDTO->isNacexCarrier($carrier) || $nacexDTO->isNacexIntCarrier($carrier)) {
             $query = Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET ncx = "1" WHERE id_cart = "' . $params['cart']->id . '"');
             // Eliminar la cookie y comprobar que los datos del pedido sean los correctos
-            if(isset($_COOKIE['opc_shop_datos'])){
-                setcookie('opc_shop_datos', "", time() - 3600, '/');
+            if (isset($_COOKIE['opc_shop_datos'])){
+                setcookie('opc_shop_datos', '', time() - 3600, '/');
                 unset($_COOKIE['opc_shop_datos']);
-                $this->context->cookie->__unset("opc_shop_datos");
+                $this->context->cookie->__unset('opc_shop_datos');
             }
 
-            if(isset($_COOKIE['selected_carrier'])){
-                setcookie("selected_carrier", "", time() - 3600, '/');
+            if (isset($_COOKIE['selected_carrier'])){
+                setcookie('selected_carrier', '', time() - 3600, '/');
                 unset($_COOKIE['selected_carrier']);
-                $this->context->cookie->__unset("selected_carrier");
+                $this->context->cookie->__unset('selected_carrier');
             }
-
-
 
             $id_order = isset($params['order']->id) ? $params['order']->id : null;
             $order = new Order($id_order);
 
             // Añadimos el carrier por si el pedido es 0
             // Revisamos si el id_carrier del es igual al seleccionado
-            if (is_null($params["order"]->id_carrier) || $params["order"]->id_carrier != $carrier) $params["order"]->id_carrier = $carrier;
-            if (is_null($order->id_carrier) || $order->id_carrier != $carrier) $order->id_carrier = $carrier;
+            if (is_null($params['order']->id_carrier) || $params['order']->id_carrier != $carrier) { $params['order']->id_carrier = $carrier; }
+            if (is_null($order->id_carrier) || $order->id_carrier != $carrier) { $order->id_carrier = $carrier; }
 
             $order->update();
         }
 
-        nacexutils::writeNacexLog("FIN hookactionValidateOrder :: ");
-        nacexutils::writeNacexLog("---------");
+        nacexutils::writeNacexLog('FIN hookactionValidateOrder :: ');
+        nacexutils::writeNacexLog('---------');
     }
 }

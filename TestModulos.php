@@ -1,4 +1,5 @@
 <?php
+
 $modules = get_loaded_extensions();
 sort($modules);
 $html = '<h4>PHP: ' . phpversion() . '</h4><p>';

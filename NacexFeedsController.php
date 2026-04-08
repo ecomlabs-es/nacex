@@ -1,10 +1,11 @@
 <?php
+
 //SET ENVIRONMENT
 include(dirname(__FILE__) . '/../../config/config.inc.php');
 include(dirname(__FILE__) . '/../../init.php');
 include_once dirname(__FILE__) . '/CheckVersion.php';
 
-if($_POST && isset($_POST['action']) ) {
+if ($_POST && isset($_POST['action'])) {
 
     if ($_POST['action'] == 'download_nacex_new_version') {
         $uploadedVersion = isset($_POST['version']) ? $_POST['version'] : '';

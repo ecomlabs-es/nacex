@@ -2,7 +2,6 @@
 
 class nacexshop
 {
-
     protected $FILE_NAME = '';
     protected $pluginPath = '';
 
@@ -140,7 +139,7 @@ class nacexshop
         return $get;
     }
 
-    private static $fileContentsCache = array();
+    private static $fileContentsCache = [];
 
     private function searchFile($shop_codigo, $file, $isShop)
     {
@@ -186,15 +185,14 @@ class nacexshop
             }
         } else { // No hay conexión WS
             if (!$cpSearch) {
-                if ($matches = $this->searchCP($shop_codigo, $file[0], 3)) return $matches[0];
-                else {
+                if ($matches = $this->searchCP($shop_codigo, $file[0], 3)) { return $matches[0]; } else {
                     nacexutils::writeNacexLog("No se ha encontrado el código postal $shop_codigo en el archivo");
                     return false;
                 }
             } else {    // Buscamos por CP
                 $digits = [5, 4, 3, 2];  // Num. de digitos del CP por los que hacer la búsqueda de coincidencias
                 $contador = 0;
-                $arrayShops = array();
+                $arrayShops = [];
                 foreach ($digits as $d) {
                     $matches = $this->searchCP($shop_codigo, $file[0], $d);
                     $resultados[] = $matches[0];
@@ -202,8 +200,7 @@ class nacexshop
                     if (!empty($arrayShops)) {
                         $arrayShops = array_merge($arrayShops, $resultados[sizeof($resultados) - 1]);
                         $arrayShops = array_unique($arrayShops);
-                    } else
-                        $arrayShops = $resultados[sizeof($resultados) - 1];
+                    } else { $arrayShops = $resultados[sizeof($resultados) - 1]; }
 
                     $contador += sizeof($arrayShops);
                     if ($numResultados < $contador) {
@@ -212,7 +209,7 @@ class nacexshop
                     }
 
                     // Para buscar el centro de un CP para selección de punto de usuario
-                    if (!empty($arrayShops) && $cpCenter) break;
+                    if (!empty($arrayShops) && $cpCenter) { break; }
                 }
                 return $arrayShops;
             }
@@ -240,7 +237,7 @@ class nacexshop
             $lat = $output->results[0]->geometry->location->lat;
             $lon = $output->results[0]->geometry->location->lng;
             return true;
-        } else return false;
+        } else { return false; }
     }
 
     private function searchCP($cp, $file, $digits)
@@ -252,11 +249,10 @@ class nacexshop
         $contents = nacexutils::toUtf8($contents);
 
         // Aislamos el código de la provincia
-        if (strlen($cp) == 5 && $digits != 5) $pc = substr($cp, 0, $digits);
+        if (strlen($cp) == 5 && $digits != 5) { $pc = substr($cp, 0, $digits); }
 
         // escape special characters in the query
-        if (isset($pc)) $pattern = '\|' . $pc . '(\d{' . (5 - $digits) . '})\|';
-        else $pattern = '\|' . $cp . '\|';
+        if (isset($pc)) { $pattern = '\|' . $pc . '(\d{' . (5 - $digits) . '})\|'; } else { $pattern = '\|' . $cp . '\|'; }
         // finalise the regular expression, matching the whole line (starting with)
         $pattern = "/^.*$pattern.*\$/m";
 
@@ -267,20 +263,18 @@ class nacexshop
 
     public function getAgenciasTratadas($latLon)
     {
-        $json = array();
+        $json = [];
 
         // Cogemos las agencias con el CP de la provincia
         $listadoAgencias = $this->getFileData($latLon[0], true, false, true);
 
         foreach ($listadoAgencias as $key => $value) {
 
-            if (isset($agenciasCPFound))
-                $values = explode('|', $agenciasCPFound[$key]);
-            else
-                $values = explode('|', $value);
+            if (isset($agenciasCPFound)) {
+                $values = explode('|', $agenciasCPFound[$key]); } else { $values = explode('|', $value); }
 
             // Construimos el array para poder crear el JSON
-            $json[] = array(
+            $json[] = [
                 $values[0],
                 $values[3],
                 $values[5],
@@ -298,7 +292,7 @@ class nacexshop
                 trim($values[8]),
                 $values[2],
                 $values[16]
-            );
+            ];
         }
 
         //return json_encode($json, JSON_UNESCAPED_UNICODE);
@@ -310,19 +304,19 @@ class nacexshop
         //$this->get_actual_file($fichero, $path);
         for ($i = 0; $i < sizeof($_agencias); ++$i) {
             if ($i != 0) {
-                $ag = explode("~", $_agencias[$i]);
+                $ag = explode('~', $_agencias[$i]);
                 //foreach (array_map('str_getcsv', file($path . DIRECTORY_SEPARATOR . $fichero), ["|"]) as $line) {
                 // Para WS sin conexión
                 //foreach (array_map('str_getcsv', file(dirname(__FILE__) . '/files' . '/droppoint_' . date("Ymd") . '.csv'), ["|"]) as $line) {
 
                 $fichero = glob(_PS_MODULE_DIR_ . 'nacex/files/droppoints_*.csv'); // Devuelve array con las coincidencias
-                if (empty($fichero)) continue;
+                if (empty($fichero)) { continue; }
                 $lines = file($fichero[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
                 foreach ($lines as $csvLine) {
-                    $line2 = explode("|", $csvLine);
+                    $line2 = explode('|', $csvLine);
                     if (isset($line2[1]) && $line2[1] == $ag[12]) {
                         //$_agencias[$i] = $_agencias[$i] . "~" . $line2[2];
-                        $_agencias[$i] = $_agencias[$i] . "~" . nacexutils::toUtf8($line2[2]);
+                        $_agencias[$i] = $_agencias[$i] . '~' . nacexutils::toUtf8($line2[2]);
                         break;
                     }
                 }
@@ -368,7 +362,7 @@ class nacexshop
     private function get_map_csv_rows_number(&$csvAsArray, &$array_num, $file)
     {
         $csvAsArray = array_map(function ($v) {
-            return str_getcsv($v, "|");
+            return str_getcsv($v, '|');
         }, file($file));
         $array_num = count($csvAsArray);
     }
@@ -386,16 +380,16 @@ class nacexshop
 
         $nacex = new nacex();
         $_vista = new VInacexshop();
-        $tienda = array();
-        $_html = "";
-//GET ACTUAL FILE
+        $tienda = [];
+        $_html = '';
+        //GET ACTUAL FILE
         //$this->get_actual_file($fichero, $path);
         $fichero = glob($this->pluginPath . 'droppoint*.csv')[0];
-//GET MAP CSV & ROWS NUMBER
+        //GET MAP CSV & ROWS NUMBER
         //$this->get_map_csv_rows_number($csvAsArray, $array_num, $fichero, $this->pluginPath);
         $this->get_map_csv_rows_number($csvAsArray, $array_num, $fichero);
         $chivato = 0;
-//GET PROVINCIA
+        //GET PROVINCIA
         nacexutils::provincia($cp, $prov);
         $_html .= '<br>
                    <h1 style="color:orange;">' . $nacex->l('Nacexshop points') . '</h1>';
@@ -406,14 +400,14 @@ class nacexshop
                                 <th width='50%'>" . $nacex->l('Name') . "</th>
                                 <th width='60%'>" . $nacex->l('Address') . "</th>
                                 <th width='25%'>" . $nacex->l('Location') . "</th>
-                                <th width='10%'>" . $nacex->l('Schedule') . "</th>
+                                <th width='10%'>" . $nacex->l('Schedule') . '</th>
                             </tr>
-                   </table>";
-        $_html .= "</div>";
+                   </table>';
+        $_html .= '</div>';
         if ($conn) {
             foreach ($_agencias as $_agencia) {
                 if ($chivato != 0) {
-                    $ag = explode("~", $_agencia);
+                    $ag = explode('~', $_agencia);
                     for ($i = 0; $i < $array_num; ++$i) {
                         if ($csvAsArray[$i][1] == $ag[12]) {
                             $tienda = $csvAsArray[$i];
@@ -432,7 +426,7 @@ class nacexshop
                 $chivato++;
             }
         }
-//SET FUNCTION
+        //SET FUNCTION
         VInacexshop::get_nacex_shop_list_footer_jq($_html);
         $_vista->get_list_of_nacex_shop_script($_html);
         return $_html;
@@ -443,18 +437,18 @@ class nacexshop
     {
         require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'VInacexshop.php');
         $_googlemap = new VInacexshop();
-//GET HEADER
+        //GET HEADER
         //$_googlemap->get_nacex_shop_map_header($_html, $cp, $lat, $long);
         $_googlemap->get_nacex_shop_map_header($_html);
-        $puntos = array();
+        $puntos = [];
         $chivatomarker = 0;
 
         if ($conn) {
             foreach ($tienda as $agencia) {
                 if ($chivatomarker != 0) {
-                    $punto = explode("~", $agencia);
+                    $punto = explode('~', $agencia);
                     // Recuperamos los datos del fichero que no nos devuelve WS
-                    $csv_ag = explode("|", $this->importFromCsvFile($punto[0], true)[0]);
+                    $csv_ag = explode('|', $this->importFromCsvFile($punto[0], true)[0]);
                     $punto[] = $csv_ag[2];
                     $punto[] = $csv_ag[16];
 
@@ -479,13 +473,13 @@ class nacexshop
                 $chivatomarker++;
             }
         }
-//GET FOOTER
+        //GET FOOTER
         $_googlemap->get_nacex_shop_map_body($cp, $_html, $puntos);
         //$_googlemap->get_nacex_shop_map_footer($_html); // Lo necesito para los infowindows
         return $_html;
     }
 
-    public function getShopByCode($shop_codigo, $isShop){
+    public function getShopByCode($shop_codigo, $isShop) {
         $file = glob(dirname(__FILE__) . '/files/droppoint*.csv')[0];
 
         // get the file contents, assuming the file to be readable (and exist)
@@ -494,7 +488,7 @@ class nacexshop
         $contents = nacexutils::toUtf8($contents);
 
         // Si es tienda coge el código, si no, coge el alias
-        if($isShop) {
+        if ($isShop) {
             // escape special characters in the query
             $pattern = preg_quote($shop_codigo . '|', '/');
             // finalise the regular expression, matching the whole line (starting with)
@@ -511,6 +505,5 @@ class nacexshop
 
         return $matches;
     }
-
 
 }

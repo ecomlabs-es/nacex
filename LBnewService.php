@@ -1,4 +1,5 @@
 <?php
+
 require_once(dirname(__FILE__) . '/nacexDTO.php');
 require_once(dirname(__FILE__) . '/nacexDAO.php');
 // En versiones 1.7.7.X no puede estar al principio cuando se invoca desde una clase porque peta
@@ -47,14 +48,14 @@ class LBnewService
         file_put_contents($this->file, $rowfile, FILE_APPEND);
 
         // Instalamos transportistas en BBDD
-        $this->installNewService(substr_replace($rowfile, "", -1));
+        $this->installNewService(substr_replace($rowfile, '', -1));
     }
 
     /** Replicamos las operaciones anteriores en BBDD **/
     public function installNewService($servicio)
     {
-        nacexutils::writeNacexLog("----");
-        nacexutils::writeNacexLog("INI installNewService");
+        nacexutils::writeNacexLog('----');
+        nacexutils::writeNacexLog('INI installNewService');
 
         $tracking_url = nacexDTO::$url_seguimiento . '/seguimientoFormularioExterno.do?intcli=@';
         $transportista = explode(';', $servicio);
@@ -70,24 +71,22 @@ class LBnewService
 
         // Compruebo que el servicio tenga un icono; si no, recuperamos el genérico del servicio
         $nombre_fichero = _PS_MODULE_DIR_ . 'nacex/images/servicios/' . $ncx . '_servicio_' . $transportista[0] . '.jpg';
-        if (!file_exists($nombre_fichero)) $nombreLogo = $ncx . '.jpg';
-        else $nombreLogo = $ncx . '_servicio_' . $transportista[0] . '.jpg';
+        if (!file_exists($nombre_fichero)) { $nombreLogo = $ncx . '.jpg'; } else { $nombreLogo = $ncx . '_servicio_' . $transportista[0] . '.jpg'; }
 
         // Miramos la versión que es el PS y adecuamos el shipping_external a ello
-        if (version_compare(_PS_VERSION_, '1.7.8.2', '>=')) $shipping_external = 1;
-        else $shipping_external = 0;
+        if (version_compare(_PS_VERSION_, '1.7.8.2', '>=')) { $shipping_external = 1; } else { $shipping_external = 0; }
 
         // Damos por hecho que no existe el transportista y que el código es único (controlamos la entrada
-        $carrierNacex = array(
+        $carrierNacex = [
             'name' => $transportista[1],
             'id_tax_rules_group' => 0,
             'active' => false,  // Inicializamos que no se vean
             'deleted' => 1,     // y se activen cuando las seleccione el cliente
             'shipping_handling' => false,
             'range_behavior' => 0,
-            'delay' => array(
+            'delay' => [
                 Language::getIsoById(Configuration::get('PS_LANG_DEFAULT')) => $transportista[1]
-            ),
+            ],
             'id_zone' => 1,
             //'is_module' => true,
             'shipping_external' => $shipping_external,
@@ -96,14 +95,14 @@ class LBnewService
             'need_range' => true,
             'tip_serv' => $transportista[0],
             'url' => $tracking_url
-        );
+        ];
 
         $ids_instalados = nacexDAO::instalarTransportista($carrierNacex, $nombreLogo);
-        nacexutils::writeNacexLog("installNewService :: instalado newService " . $transportista[1]);
+        nacexutils::writeNacexLog('installNewService :: instalado newService ' . $transportista[1]);
         Configuration::updateValue($configCarrierValue, $ids_instalados);
 
-        nacexutils::writeNacexLog("FIN installNewService");
-        nacexutils::writeNacexLog("----");
+        nacexutils::writeNacexLog('FIN installNewService');
+        nacexutils::writeNacexLog('----');
     }
 
     public function removeServicesCSV($toRemoveServices)
@@ -124,7 +123,7 @@ class LBnewService
         }
 
         //Recorded in a file
-        file_put_contents($this->file, implode("", $file_out));
+        file_put_contents($this->file, implode('', $file_out));
 
         // Actualizamos en BBDD
         $this->removeNewService($servicio);
@@ -132,26 +131,26 @@ class LBnewService
 
     private function removeNewService($servicio)
     {
-        nacexutils::writeNacexLog("----");
-        nacexutils::writeNacexLog("INI removeNewService");
+        nacexutils::writeNacexLog('----');
+        nacexutils::writeNacexLog('INI removeNewService');
 
         $transportista = explode(';', $servicio);
         $ncx = trim($transportista[2]) === 'Std' ? 'nacex' : 'nacexshop';
 
         // Eliminamos las referencias del servicio
-        nacexutils::writeNacexLog("removeNewService:: Eliminamos las referencias del servicio");
-        $query = "SELECT id_carrier from " . _DB_PREFIX_ . "carrier WHERE ncx = '" . $ncx . "' AND tip_serv = '" . $transportista[0] . "'";
+        nacexutils::writeNacexLog('removeNewService:: Eliminamos las referencias del servicio');
+        $query = 'SELECT id_carrier from ' . _DB_PREFIX_ . "carrier WHERE ncx = '" . $ncx . "' AND tip_serv = '" . $transportista[0] . "'";
         $result = Db::getInstance()->executeS($query);
         foreach ($result as $value) {
-            $query = "DELETE from " . _DB_PREFIX_ . "carrier WHERE id_carrier = " . $value['id_carrier'];
+            $query = 'DELETE from ' . _DB_PREFIX_ . 'carrier WHERE id_carrier = ' . $value['id_carrier'];
             if (!Db::getInstance()->execute($query)) {
-                nacexutils::writeNacexLog("removeNewService :: Error al borrar el servicio.");
+                nacexutils::writeNacexLog('removeNewService :: Error al borrar el servicio.');
             }
         }
         nacexutils::writeNacexLog("removeNewService:: Servicio $transportista[0] eliminado");
 
-        nacexutils::writeNacexLog("FIN removeNewService");
-        nacexutils::writeNacexLog("----");
+        nacexutils::writeNacexLog('FIN removeNewService');
+        nacexutils::writeNacexLog('----');
     }
 
     public function editServiceCSV()
@@ -173,7 +172,7 @@ class LBnewService
         }
 
         //Recorded in a file
-        file_put_contents($this->file, implode("", $file_out));
+        file_put_contents($this->file, implode('', $file_out));
 
         // Actualizamos en BBDD
         $this->updateNewService($servicio);
@@ -181,22 +180,22 @@ class LBnewService
 
     private function updateNewService($servicio)
     {
-        nacexutils::writeNacexLog("----");
-        nacexutils::writeNacexLog("INI updateNewService");
+        nacexutils::writeNacexLog('----');
+        nacexutils::writeNacexLog('INI updateNewService');
 
         $transportista = explode(';', $servicio);
         $ncx = trim($transportista[2]) === 'Std' ? 'nacex' : 'nacexshop';
 
         // Actualizamos los datos por el nombre y el tipo de servicio
-        nacexutils::writeNacexLog("updateNewService:: Actualizamos los datos por el nombre y el tipo de servicio");
+        nacexutils::writeNacexLog('updateNewService:: Actualizamos los datos por el nombre y el tipo de servicio');
         Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'carrier 
                 SET name="' . $transportista[1] . '"
                 WHERE ncx = "' . $ncx . '" 
                 AND tip_serv = "' . $transportista[0] . '"');
 
-        nacexutils::writeNacexLog("updateNewService:: Base de datos actualizada");
+        nacexutils::writeNacexLog('updateNewService:: Base de datos actualizada');
 
-        nacexutils::writeNacexLog("FIN updateNewService");
-        nacexutils::writeNacexLog("----");
+        nacexutils::writeNacexLog('FIN updateNewService');
+        nacexutils::writeNacexLog('----');
     }
 }

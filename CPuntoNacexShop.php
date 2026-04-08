@@ -1,4 +1,5 @@
 <?php
+
 //SET ENVIRONMENT
 include dirname(__FILE__) . '/../../config/config.inc.php';
 include dirname(__FILE__) . '/../../init.php';
@@ -6,7 +7,6 @@ session_start();
 
 class CPuntoNacexShop
 {
-
     private $codigo;
     private $alias;
     private $nombre;
@@ -15,7 +15,6 @@ class CPuntoNacexShop
     private $poblacion;
     private $provincia;
     private $telefono;
-
 
     public function getCodigo()
     {

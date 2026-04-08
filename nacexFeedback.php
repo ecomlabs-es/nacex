@@ -1,4 +1,5 @@
 <?php
+
 //SET ENVIRONMENT
 include_once(dirname(__FILE__) . '/../../init.php');
 include_once(dirname(__FILE__) . '/../../config/config.inc.php');
@@ -7,7 +8,6 @@ include_once dirname(__FILE__) . '/nacexWS.php';
 
 class NacexFeedback
 {
-
     public $fileurl;
     public $filepath;
     //public $removepath;
@@ -50,10 +50,10 @@ class NacexFeedback
         ];
 
         // Con un array_column miro si la opción existe en opciones y me devuelva el email
-        $column = array_column($receiverEmail,'opciones');
+        $column = array_column($receiverEmail, 'opciones');
         $key = '';
         foreach ($column as $k => $value) {
-            if(array_search($tipoId, $value) !== false) {
+            if (array_search($tipoId, $value) !== false) {
                 $key = $k;
                 break;
             }
@@ -68,19 +68,19 @@ class NacexFeedback
         $abonado = Configuration::get('NACEX_AGCLI');
         $sender = Configuration::get('NACEX_FEEDBACK_SENDER');
 
-        $eml = "From: " . $sender . "
-To: " . $this->getReceiverDetail($tipoId) . "
-";
-        if($copia)
+        $eml = 'From: ' . $sender . '
+To: ' . $this->getReceiverDetail($tipoId) . '
+';
+        if ($copia) {
             $eml .= "Bcc: $email
-";
+"; }
         $eml .= "MIME-Version: 1.0
 Content-Type: text/html; charset=\"utf-8\"
 Content-Transfer-Encoding: 8bit
-Subject:=?utf-8?Q?Feedback Ecommerce | $tipo desde " . Configuration::get('PS_SHOP_NAME') . "?=
+Subject:=?utf-8?Q?Feedback Ecommerce | $tipo desde " . Configuration::get('PS_SHOP_NAME') . '?=
 
-<p>Correo de Atención al cliente de " . Configuration::get('PS_SHOP_NAME') . "</p>
-<p>Información del sistema: " . $this->nws->getSystemInfo() . "</p>
+<p>Correo de Atención al cliente de ' . Configuration::get('PS_SHOP_NAME') . '</p>
+<p>Información del sistema: ' . $this->nws->getSystemInfo() . "</p>
 <ul>
     <li><strong>Usuario de WS:</strong> $wsUser</li>
     <li><strong>URL Tienda:</strong> " . __PS_BASE_URI__ . "</li>
@@ -97,44 +97,38 @@ Subject:=?utf-8?Q?Feedback Ecommerce | $tipo desde " . Configuration::get('PS_SH
     }
 
     public function deleteEmlFile($file = null) {
-        if($file)
-            unlink($this->filepath . $file);
-        else
-            unlink($this->filename);
+        if ($file) {
+            unlink($this->filepath . $file); } else { unlink($this->filename); }
     }
 
     public function filesExist() {
-        if($files = glob($this->filepath . 'sendEmail_*.eml'))
-            return $files;
-        else
-            return false;
+        if ($files = glob($this->filepath . 'sendEmail_*.eml')) {
+            return $files; } else { return false; }
     }
 
     public function readFile($file) {
-        $datosEmail = array();
+        $datosEmail = [];
         $lines = file($file);
         $subj = 0;
 
         $datosEmail['from'] = trim(explode(': ', $lines[0])[1]);
         $datosEmail['to'] = trim(explode(': ', $lines[1])[1]);
         // Si hay bcc
-        if(strpos($lines[2], 'Bcc:') !== false) {
+        if (strpos($lines[2], 'Bcc:') !== false) {
             $datosEmail['bcc'] = trim(explode(': ', $lines[2])[1]);
             $subj = 6;
-        } else
-            $subj = 5;
+        } else { $subj = 5; }
 
-        $datosEmail['subject'] = substr(trim(explode(':', $lines[$subj])[1]),10, -2);
+        $datosEmail['subject'] = substr(trim(explode(':', $lines[$subj])[1]), 10, -2);
         $datosEmail['body'] = '';
 
-        for($i = $subj+1; $i < sizeof($lines); $i++) {
-            if(strpos($lines[$i],'<li>') !== false) {
+        for ($i = $subj + 1; $i < sizeof($lines); $i++) {
+            if (strpos($lines[$i], '<li>') !== false) {
                 $datosEmail['body'] .= '    - ' . trim(strip_tags($lines[$i])) . '%0D%0A';
-            } elseif(strpos($lines[$i],'ul>') !== false) {  // <ul> & </ul>
+            } elseif (strpos($lines[$i], 'ul>') !== false) {  // <ul> & </ul>
                 $datosEmail['body'] .= '';
             } else {
-                if($i == $subj+1) $datosEmail['body'] .= trim(strip_tags($lines[$i]));
-                else $datosEmail['body'] .= trim(strip_tags($lines[$i])) . '%0D%0A%0D%0A';
+                if ($i == $subj + 1) { $datosEmail['body'] .= trim(strip_tags($lines[$i])); } else { $datosEmail['body'] .= trim(strip_tags($lines[$i])) . '%0D%0A%0D%0A'; }
             }
         }
 
@@ -151,18 +145,15 @@ Subject:=?utf-8?Q?Feedback Ecommerce | $tipo desde " . Configuration::get('PS_SH
         return $text;
     }
 
-
     /*** ASIGNACIÓN DE CORREOS DE ENVÍO DE FEEDBACK ***/
     public function formEmail() {
         $abo = Configuration::get('NACEX_AGCLI');
-        $agencia = explode('/',$abo)[0];
+        $agencia = explode('/', $abo)[0];
 
         $datos = [$agencia . '.'];
 
-        if(substr($agencia,0,1) == '7') // Clientes Portugal
-            $datos[] = 'pt';
-        else
-            $datos[] = 'es';
+        if (substr($agencia, 0, 1) == '7') { // Clientes Portugal
+            $datos[] = 'pt'; } else { $datos[] = 'es'; }
 
         return $datos;
     }
@@ -182,12 +173,12 @@ Subject:=?utf-8?Q?Feedback Ecommerce | $tipo desde " . Configuration::get('PS_SH
         $email = $datos[0] . $dir . '@nacex.' . $datos[1];
         return $email;
     }
-//
-//    /*public function getDelegadoEmail() {
-//        $datos = $this->formEmail();
-//        $dir = $datos[1] == 'es' ? 'delegado' : 'delecao';
-//
-//        $email = $datos[0] . $dir . '@nacex.' . $datos[1];
-//        return $email;
-//    }*/
+    //
+    //    /*public function getDelegadoEmail() {
+    //        $datos = $this->formEmail();
+    //        $dir = $datos[1] == 'es' ? 'delegado' : 'delecao';
+    //
+    //        $email = $datos[0] . $dir . '@nacex.' . $datos[1];
+    //        return $email;
+    //    }*/
 }
