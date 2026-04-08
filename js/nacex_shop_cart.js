@@ -1,18 +1,9 @@
-/*function GetShop(carrier_sel,_url,codigo_postal_entrega,agencias_clientes) {
-    $('#order').fadeTo('fast', 0.4);
-    //modalWin(_url+'modules/nacex/COnxShop.php?cp=' + codigo_postal_entrega + '&clientes=' + agencias_clientes,200,200);
-    //_url=_url+'modules/nacex/COnxShop.php?cp=' + codigo_postal_entrega + '&clientes=' + agencias_clientes;
-    //tb_show('', 'http://magento2.nacex.local/ps1760/modules/nacex/COnxShop.php/?KeepThis=true&TB_iframe=true&height=409&width=674 &modal=false', 'null');
-    $('#order').fadeTo('fast', 1);
-    return false;
-}*/
 function unsetDatosSession(_url) {
     $.ajax({
         type: 'POST',
         url: _url + 'modules/nacex/CPuntoNacexShop.php',
         data: 'metodo_nacex=unsetSession',
-        async: false,
-        success: function (msg) {
+        success: function () {
             console.log('NACEX LOG - UNSETDATOSSESSION - SUCCESS');
         }
     });
@@ -23,18 +14,17 @@ function setDatosSession(txt, _url, id_cart) {
         type: 'POST',
         url: _url + 'modules/nacex/CPuntoNacexShop.php',
         data: 'txt=' + txt + '&cart=' + id_cart + '&metodo_nacex=setSession',
-        async: false,
-        success: function (msg) {
+        success: function () {
             console.log('NACEX LOG - SETDATOSSESSION - SUCCESS');
         }
     });
 }
+
 function getDatosSession(_url) {
     $.ajax({
         type: 'POST',
         url: _url + 'modules/nacex/CPuntoNacexShop.php',
         data: 'metodo_nacex=getSession',
-        async: false,
         success: function (msg) {
             console.log('NACEX LOG - GETDATOSSESSION - SUCCESS');
             rellenarNacexShop(msg);
@@ -43,31 +33,23 @@ function getDatosSession(_url) {
 }
 
 function seleccionadoNacexShop(tipo, txt, _url, opc) {
-
     rellenarNacexShop(txt);
     setDatosSession(txt, _url, id_cart);
 
-    var shopc = $('#nxshop_codigo').val();
-    var shopa = $('#nxshop_alias').val();
-    var shopn = $('#nxshop_nombre').val();
-    var shopd = $('#nxshop_direccion').val();
-    var shopcp = $('#nxshop_cp').val();
-    var shopp = $('#nxshop_poblacion').val();
-    var shoppr = $('#nxshop_provincia').val();
+    var datos = txt.replace(/~/g, ' ').split('|');
+    var opc_shop_datos = datos.map(function (d) { return d.trim(); }).join('|');
 
-    let opc_shop_datos = shopc.trim() + '|' + shopa.trim() + '|' + shopn.trim() + '|' + shopd.trim() + '|' + shopcp.trim() + '|' + shopp.trim() + '|' + shoppr.trim();
     document.getElementById('shop_datos').value = opc_shop_datos;
     document.cookie = 'opc_id_cart=' + id_cart;
-    document.cookie = 'opc_shop_datos=' + shopc.trim();
+    document.cookie = 'opc_shop_datos=' + (datos[0] || '').trim();
 
-    // Guardar en localStorage para persistir entre pasos del checkout
     try {
         localStorage.setItem('nacex_shop_datos', txt);
         localStorage.setItem('nacex_shop_cart', id_cart);
     } catch (e) {}
 
-    if (opc !== false) $('#' + opc).prop('disabled', false);
-    else document.getElementById("btnfinalizar").focus();
+    if (opc !== false) { $('#' + opc).prop('disabled', false); }
+    else { document.getElementById('btnfinalizar').focus(); }
 }
 
 function ClearShop(_url) {
@@ -90,23 +72,16 @@ function restaurarNacexShop() {
     } catch (e) {}
 }
 
-function rellenarNacexShop(txt, idCart = 0) {
-
-    //1085|0831-03|LIBRERÃA OPERA|Major 7|08870|SITGES|BARCELONA|938942143
+function rellenarNacexShop(txt, idCart) {
     if (txt == null || typeof txt !== 'string' || txt.length <= 0 || txt.indexOf('|') === -1) {
-        return false
+        return false;
     }
 
-    // Actualizamos también id del carrito para el caso de que tengamos seleccionado un punto
-    if (idCart !== 0) document.cookie = 'opc_id_cart=' + idCart;
+    if (idCart) { document.cookie = 'opc_id_cart=' + idCart; }
 
     $('#shop_datos').val(txt);
-    //$('#shop_datos').value = txt;
 
-    //var datos = txt.split('|');
-    var datos = txt.replace(/~/g, " ").split('|');
-
-    //if(datos.length >= 8 && datos[0] !== '') {
+    var datos = txt.replace(/~/g, ' ').split('|');
     $('#nxshop_codigo').val(datos[0]);
     $('#nxshop_alias').val(datos[1]);
     $('#nxshop_nombre').val(datos[2]);
@@ -115,43 +90,28 @@ function rellenarNacexShop(txt, idCart = 0) {
     $('#nxshop_poblacion').val(datos[5]);
     $('#nxshop_provincia').val(datos[6]);
 
-    // Mostrar la tabla y el título solo cuando hay datos
     $('#nacexshopChosen, #nacexshopChosenTitle').show();
-    //$('#nxshop_telefono').val(datos[7]);
-    //}
 }
-function hide_show (_object){
-    /* if (document.getElementById(_object.name).style.visibility=='hidden'){
-             document.getElementById(_object.name).style.visibility = 'visible';
-         }else{
-             document.getElementById(_object.name).style.visibility = 'hidden';
-         }*/
-    if (document.getElementById(_object.name).style.display == 'none') {
-        document.getElementById(_object.name).style.display = 'block';
-    } else {
-        document.getElementById(_object.name).style.display = 'none';
-    }
+
+function hide_show(_object) {
+    var el = document.getElementById(_object.name);
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
 function seleccionar_punto_shop(_url, opc, mess) {
-    if ($('input[name=shop_item]:checked').attr('shopalias') == undefined) {
+    var selected = $('input[name=shop_item]:checked');
+    if (selected.attr('shopalias') == undefined) {
         alert(mess);
         return;
     }
-    seleccionadoNacexShop('E', txt = $('input[name=shop_item]:checked').attr('shopcodigo') + '|' + $('input[name=shop_item]:checked').attr('shopalias') + '|' + $('input[name=shop_item]:checked').attr('shopnombre') + '|' + $('input[name=shop_item]:checked').attr('shopdireccion') + '|' + $('input[name=shop_item]:checked').attr('puebcp') + '|' + $('input[name=shop_item]:checked').attr('puebnombre') + '|' + $('input[name=shop_item]:checked').attr('provnombre') + '|' + $('input[name=shop_item]:checked').attr('tlf'), _url, opc);
+    var txt = selected.attr('shopcodigo') + '|' + selected.attr('shopalias') + '|' + selected.attr('shopnombre') + '|' + selected.attr('shopdireccion') + '|' + selected.attr('puebcp') + '|' + selected.attr('puebnombre') + '|' + selected.attr('provnombre') + '|' + selected.attr('tlf');
+    seleccionadoNacexShop('E', txt, _url, opc);
 }
 
-/*function seleccionar_punto_map(_url, _punto, opc = false) {
-    seleccionadoNacexShop('E', _punto, _url, opc);
-}*/
-
-// Para abrir la nueva ventana y recuperar los valores del punto seleccionado
 function modalWin(url) {
-    let windowWidth = 820;
-    let windowHeight = 650;
-    let LeftPosition = (screen.width) ? (screen.width - windowWidth) / 2 : 0;
-    let TopPosition = (screen.height) ? (screen.height - windowHeight) / 2 : 0;
-    //let ventana = window.open(url, '', 'height=550,width=820,top=' + (TopPosition - 10) + ',left=' + LeftPosition + ',toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,location=no,modal=yes');
-    window.open(url, '', 'height=' + windowHeight + ',width=' + windowWidth + ',top=' + (TopPosition - 10) + ',left=' + LeftPosition + ',toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,modal=yes');
-    //window.open(url, '', 'height=650,width=820,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,modal=yes');
+    var w = 820;
+    var h = 650;
+    var left = (screen.width - w) / 2;
+    var top = (screen.height - h) / 2;
+    window.open(url, '', 'height=' + h + ',width=' + w + ',top=' + (top - 10) + ',left=' + left + ',toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,modal=yes');
 }
