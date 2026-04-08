@@ -116,7 +116,7 @@ composer qa               # QA completo (lint + phpstan + tests)
 
 Si te ha gustado este trabajo y te ha sido util, puedes invitarme a un cafe ;)
 
-[![PayPal](https://img.shields.io/badge/PayPal-Donar-blue?logo=paypal)](https://paypal.me/soyjosean)
+[![Donar](https://img.shields.io/badge/Stripe-Donar-blue?logo=stripe)](https://buy.stripe.com/28E28rdbX96l7r95Nd1ck00)
 
 ## Licencia
 
