@@ -18,6 +18,8 @@
         <include>
             <file>nacexutils.php</file>
             <file>nacexDTO.php</file>
+            <file>nacexDAO.php</file>
+            <file>nacexWS.php</file>
             <file>hash.php</file>
             <file>filterdata.php</file>
             <file>tratardatos.php</file>

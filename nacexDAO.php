@@ -871,7 +871,7 @@ class nacexDAO
         nacexutils::writeNacexLog('-----');
     }
 
-    private static function sanitizeAddressField($value, $maxLength = 128)
+    public static function sanitizeAddressField($value, $maxLength = 128)
     {
         if (empty($value)) {
             return '';

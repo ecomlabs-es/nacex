@@ -1596,7 +1596,7 @@ class nacexWS {
      * Resuelve las variables NacexShop a partir de los datos del pedido.
      * Si ncx solo contiene el código del punto, busca los datos completos en el fichero CSV.
      */
-    private static function resolveNacexShopData($datospedido)
+    public static function resolveNacexShopData($datospedido)
     {
         $result = [
             'is_nxshop' => false,

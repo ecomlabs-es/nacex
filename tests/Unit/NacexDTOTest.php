@@ -127,4 +127,79 @@ class NacexDTOTest extends TestCase
     {
         $this->assertSame('nacex', nacexDTO::getModuleNacexName());
     }
+
+    // --- getCarrierData + isNacex*Carrier (cache) ---
+
+    protected function setCarrierCache(array $cache): void
+    {
+        $ref = new ReflectionClass('nacexDTO');
+        $prop = $ref->getProperty('carrierCache');
+        $prop->setAccessible(true);
+        $prop->setValue(null, $cache);
+    }
+
+    public function testIsNacexCarrierDevuelveDatosParaNacex(): void
+    {
+        $this->setCarrierCache([10 => ['id_carrier' => 10, 'ncx' => 'nacex', 'external_module_name' => 'nacex', 'active' => 1]]);
+        $result = nacexDTO::isNacexCarrier(10);
+        $this->assertIsArray($result);
+        $this->assertSame('nacex', $result['ncx']);
+    }
+
+    public function testIsNacexCarrierDevuelveFalseParaShop(): void
+    {
+        $this->setCarrierCache([10 => ['id_carrier' => 10, 'ncx' => 'nacexshop', 'external_module_name' => 'nacex', 'active' => 1]]);
+        $this->assertFalse(nacexDTO::isNacexCarrier(10));
+    }
+
+    public function testIsNacexShopCarrierDevuelveDatosParaShop(): void
+    {
+        $this->setCarrierCache([10 => ['id_carrier' => 10, 'ncx' => 'nacexshop', 'external_module_name' => 'nacex', 'active' => 1]]);
+        $result = nacexDTO::isNacexShopCarrier(10);
+        $this->assertIsArray($result);
+        $this->assertSame('nacexshop', $result['ncx']);
+    }
+
+    public function testIsNacexIntCarrierDevuelveDatosParaInt(): void
+    {
+        $this->setCarrierCache([10 => ['id_carrier' => 10, 'ncx' => 'nacexint', 'external_module_name' => 'nacex', 'active' => 1]]);
+        $result = nacexDTO::isNacexIntCarrier(10);
+        $this->assertIsArray($result);
+        $this->assertSame('nacexint', $result['ncx']);
+    }
+
+    public function testIsNacexCarrierDevuelveFalseParaCarrierInexistente(): void
+    {
+        $this->setCarrierCache([]);
+        $this->assertFalse(nacexDTO::isNacexCarrier(999));
+    }
+
+    public function testCarrierCacheEvitaSegundaQuery(): void
+    {
+        // Primer acceso: carga en cache
+        $this->setCarrierCache([10 => ['id_carrier' => 10, 'ncx' => 'nacex', 'external_module_name' => 'nacex', 'active' => 1]]);
+
+        // Llamar 3 veces — todas deben usar cache
+        nacexDTO::isNacexCarrier(10);
+        nacexDTO::isNacexShopCarrier(10);
+        $result = nacexDTO::isNacexIntCarrier(10);
+
+        // Si llega aquí sin error, el cache funciona (no hay DB real)
+        $this->assertFalse($result);
+    }
+
+    // --- getNacexIdCarrier ---
+
+    public function testGetNacexIdCarrierDevuelveConfigSiExiste(): void
+    {
+        Configuration::set('TRANSPORTISTA_NACEX', '23');
+        $this->assertSame('23', nacexDTO::getNacexIdCarrier());
+    }
+
+    public function testGetNacexIdCarrierDevuelveFallbackSiNoExiste(): void
+    {
+        Configuration::reset();
+        Configuration::set('NACEX_DEFAULT_TIP_SER', '08');
+        $this->assertSame('08', nacexDTO::getNacexIdCarrier());
+    }
 }

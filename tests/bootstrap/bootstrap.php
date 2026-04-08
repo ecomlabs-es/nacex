@@ -226,6 +226,119 @@ if (!class_exists('AdminController')) {
 if (!class_exists('Carrier')) {
     class Carrier
     {
+        public $id;
+        public $id_reference;
+        public $name;
+        public $external_module_name;
+        public $active;
+    }
+}
+
+if (!class_exists('Address')) {
+    class Address
+    {
+        public $id;
+        public $id_customer;
+        public $id_manufacturer;
+        public $id_supplier;
+        public $id_country;
+        public $id_state;
+        public $alias;
+        public $firstname;
+        public $lastname;
+        public $company;
+        public $address1;
+        public $address2;
+        public $postcode;
+        public $city;
+        public $phone;
+        public $phone_mobile;
+        public $dni;
+        public $date_add;
+        public $date_upd;
+        public $deleted;
+        public $other;
+
+        public function __construct($id = null)
+        {
+        }
+        public function add()
+        {
+            return true;
+        }
+        public function update()
+        {
+            return true;
+        }
+    }
+}
+
+if (!class_exists('Order')) {
+    class Order
+    {
+        public $id;
+        public $id_carrier;
+        public $id_address_delivery;
+        public $id_address_invoice;
+        public $id_lang = 1;
+        public $id_cart;
+
+        public function __construct($id = null)
+        {
+        }
+        public function getCurrentState()
+        {
+            return 1;
+        }
+        public function getHistory($id_lang)
+        {
+            return [];
+        }
+        public function getFirstMessage()
+        {
+            return '';
+        }
+        public function update()
+        {
+            return true;
+        }
+    }
+}
+
+if (!class_exists('OrderHistory')) {
+    class OrderHistory
+    {
+        public $id_order;
+        public function changeIdOrderState($state, $order)
+        {
+        }
+        public function addWithemail()
+        {
+        }
+    }
+}
+
+if (!class_exists('State')) {
+    class State
+    {
+        public static function getIdByName($name)
+        {
+            return 1;
+        }
+        public static function getNameById($id)
+        {
+            return 'Test';
+        }
+    }
+}
+
+if (!class_exists('Validate')) {
+    class Validate
+    {
+        public static function isPostCode($postcode)
+        {
+            return empty($postcode) || preg_match('/^[a-zA-Z 0-9-]+$/', $postcode);
+        }
     }
 }
 
@@ -270,3 +383,33 @@ eval($nacexDTOSource);
 require_once $moduleDir . '/hash.php';
 require_once $moduleDir . '/filterdata.php';
 require_once $moduleDir . '/tratardatos.php';
+
+// nacexDAO.php — cargamos solo la clase, eliminando includes del core
+$nacexDAOSource = file_get_contents($moduleDir . '/nacexDAO.php');
+$nacexDAOSource = preg_replace('/^<\?php/', '', $nacexDAOSource);
+// Eliminar includes de archivos del core/módulo
+$nacexDAOSource = preg_replace('/(?:require_once|include_once|require|include)\s*\(?\s*dirname\(__FILE__\).*?;/s', '// [TEST BOOTSTRAP] include omitido', $nacexDAOSource);
+// Eliminar clases PS no disponibles (Address, Order, OrderHistory, State, Shop, Carrier instanciados)
+eval($nacexDAOSource);
+
+// nacexWS.php — cargamos solo la clase, eliminando includes
+if (!class_exists('nacexWS')) {
+    $nacexWSSource = file_get_contents($moduleDir . '/nacexWS.php');
+    $nacexWSSource = preg_replace('/^<\?php/', '', $nacexWSSource);
+    $nacexWSSource = preg_replace('/(?:require_once|include_once|require|include)\s*\(?\s*dirname\(__FILE__\).*?;/s', '// [TEST BOOTSTRAP] include omitido', $nacexWSSource);
+    eval($nacexWSSource);
+}
+
+// Stub de nacexshop (ROnacexshop) para tests que llamen a resolveNacexShopData
+if (!class_exists('nacexshop')) {
+    class nacexshop
+    {
+        public function getFileData($shop_codigo, $isShop)
+        {
+            return false;
+        }
+        public function checkFileDate()
+        {
+        }
+    }
+}
