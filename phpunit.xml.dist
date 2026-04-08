@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    bootstrap="tests/bootstrap/bootstrap.php"
+    colors="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+>
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <include>
+            <file>nacexutils.php</file>
+            <file>nacexDTO.php</file>
+            <file>hash.php</file>
+            <file>filterdata.php</file>
+            <file>tratardatos.php</file>
+        </include>
+    </coverage>
+</phpunit>

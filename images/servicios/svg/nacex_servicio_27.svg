@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.21 35.17">
+    <defs>
+        <style>
+            .cls-1,.cls-2{fill:none;stroke:#ff5a00;stroke-width:1.44px;}.cls-1{stroke-miterlimit:22.93;}.cls-2{stroke-linecap:round;stroke-linejoin:round;}
+        </style>
+    </defs>
+    <title>eNacex</title>
+    <g id="Capa_2" data-name="Capa 2">
+        <g id="Capa_1-2" data-name="Capa 1">
+            <path class="cls-1" d="M23.57,17.54a6.1,6.1,0,1,1-6.1,6.1,6.1,6.1,0,0,1,6.1-6.1Z"/>
+            <path class="cls-2"
+                  d="M34.49,8.81V23.26a1.29,1.29,0,0,1-1.24,1.24l-3,.13M17,24.63,2,24.5A1.26,1.26,0,0,1,.72,23.26V2A1.24,1.24,0,0,1,2,.72H26.4m8.09,8.09H27.64A1.24,1.24,0,0,1,26.4,7.57V.72l8.09,8.09ZM5.07,6.13H22M5.07,10H22m-17,3.87H22"/>
+            <path class="cls-1" d="M23.57,20.73a2.91,2.91,0,1,1-2.91,2.91,2.91,2.91,0,0,1,2.91-2.91Z"/>
+            <polyline class="cls-2"
+                      points="18.29 26.7 15.46 31.85 20.8 34.45 23.63 30.05 26.45 34.45 31.87 31.87 29.01 26.41"/>
+        </g>
+    </g>
+</svg>

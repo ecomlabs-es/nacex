@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34.32 30.66">
+    <defs>
+        <style>
+            .cls-1,.cls-2{fill:none;stroke:#ff5a00;}.cls-1{stroke-linecap:round;stroke-linejoin:round;stroke-width:1.44px;}.cls-2{stroke-miterlimit:22.93;stroke-width:1.44px;}.cls-3{font-size:12px;fill:#ff5a00;font-family:Avenir-Medium,
+            Avenir;}.cls-4{letter-spacing:-0.09em;}
+        </style>
+    </defs>
+    <title>sabado</title>
+    <g id="Capa_2" data-name="Capa 2">
+        <g id="Capa_1-2" data-name="Capa 1">
+            <path class="cls-1"
+                  d="M2.7,2.93H31.62a2,2,0,0,1,2,2V28a2,2,0,0,1-2,2H2.7a2,2,0,0,1-2-2v-23a2,2,0,0,1,2-2ZM7.15.72v4.6M13.82.72v4.6M20.5.72v4.6M27.17.72v4.6"/>
+            <line class="cls-2" x1="0.72" y1="8.13" x2="33.6" y2="8.13"/>
+            <text class="cls-3" transform="translate(6.33 22.13)">S
+                <tspan class="cls-4" x="6.67" y="0">A</tspan>
+                <tspan x="14.02" y="0">T</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

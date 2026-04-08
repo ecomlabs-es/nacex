@@ -1,0 +1,14 @@
+Email de atendimento ao cliente de {tienda}
+Informação do sistema: {system_info}
+
+- Usuário WS:</strong> {usuarioWs}
+- URL da loja:</strong> {url_tienda}
+- Assinante:</strong> {abonado}
+- Tipo de consulta:</strong> {tipo}
+- Nomes e sobrenomes:</strong> {nombre}
+- O negócio:</strong> {company}
+- O email:</strong> {email}
+- Telefone:</strong> {telf}
+    
+Consulta:
+{consulta}

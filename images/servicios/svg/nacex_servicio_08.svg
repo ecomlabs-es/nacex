@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74 78.06">
+    <defs>
+        <style>.cls-1{fill:none;stroke:#ff692d;stroke-miterlimit:10;stroke-width:4.5px;}.cls-2{fill:#ff692d;}</style>
+    </defs>
+    <title>Urgentes19h</title>
+    <g id="Capa_2" data-name="Capa 2">
+        <g id="Capa_1-2" data-name="Capa 1">
+            <circle class="cls-1" cx="37" cy="40.98" r="34.75"/>
+            <rect class="cls-2" x="34.39" y="63.73" width="4.67" height="14.33" rx="2.33" ry="2.33"/>
+            <rect class="cls-2" x="34.39" y="4.95" width="4.67" height="12.94" rx="2.22" ry="2.22"/>
+            <rect class="cls-2" x="64.39" y="33.81" width="4.67" height="14.33" rx="2.33" ry="2.33"
+                  transform="translate(25.74 107.7) rotate(-90)"/>
+            <rect class="cls-2" x="5.49" y="35.41" width="4.67" height="11.14" rx="2.06" ry="2.06"
+                  transform="translate(-33.16 48.8) rotate(-90)"/>
+            <path class="cls-2"
+                  d="M18.55,5.93a.75.75,0,0,0,.31-1L16.46.4a.75.75,0,0,0-1-.31L11.56,2.15a.75.75,0,0,0-.31,1l2.39,4.51a.75.75,0,0,0,1,.31l1-.52L16.92,9.9l1.94-1L17.57,6.45Z"/>
+            <path class="cls-2"
+                  d="M54.9,5.93a.75.75,0,0,1-.31-1L57,.4a.75.75,0,0,1,1-.31l3.89,2.06a.75.75,0,0,1,.31,1L59.8,7.68a.75.75,0,0,1-1,.31l-1-.52L56.52,9.9l-1.94-1,1.29-2.43Z"/>
+            <path class="cls-2" d="M37.12,13.27l.21.25V41L11,50.19h0A27.71,27.71,0,1,0,37.12,13.27Z"/>
+        </g>
+    </g>
+</svg>

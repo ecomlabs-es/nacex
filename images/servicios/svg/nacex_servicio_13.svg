@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33.59 35.87">
+    <defs>
+        <style>.cls-1{fill:none;stroke:#ff5a00;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.44px;}</style>
+    </defs>
+    <title>nacexCambio</title>
+    <g id="Capa_2" data-name="Capa 2">
+        <g id="Capa_1-2" data-name="Capa 1">
+            <path class="cls-1"
+                  d="M20,2.85A15.3,15.3,0,0,1,27.4,6.46a15.39,15.39,0,0,1,4.46,6.83,15.26,15.26,0,0,1,.6,2.75"/>
+            <path class="cls-1" d="M13.65,33A15.35,15.35,0,0,1,1.13,19.83"/>
+            <polyline class="cls-1" points="11.94 29.53 14.23 32.86 10.91 35.15"/>
+            <polyline class="cls-1" points="21.67 6.34 19.38 3.01 22.7 0.72"/>
+            <path class="cls-1" d="M9.39,1.78A8.67,8.67,0,1,1,.72,10.45,8.67,8.67,0,0,1,9.39,1.78Z"/>
+            <path class="cls-1" d="M24.21,16.76a8.66,8.66,0,1,1-8.66,8.66,8.66,8.66,0,0,1,8.66-8.66Z"/>
+        </g>
+    </g>
+</svg>

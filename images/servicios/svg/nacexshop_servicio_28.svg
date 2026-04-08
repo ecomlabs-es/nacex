@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34.32 30.09">
+    <defs>
+        <style>.cls-1{fill:none;stroke:#ff5a00;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.44px;}</style>
+    </defs>
+    <title>Recurso 1</title>
+    <g id="Capa_2" data-name="Capa 2">
+        <g id="Modo_de_aislamiento" data-name="Modo de aislamiento">
+            <line class="cls-1" x1="0.77" y1="29.37" x2="33.55" y2="29.37"/>
+            <line class="cls-1" x1="4.22" y1="29.37" x2="4.22" y2="16.71"/>
+            <line class="cls-1" x1="12.3" y1="29.37" x2="12.3" y2="16.71"/>
+            <line class="cls-1" x1="30.11" y1="29.37" x2="30.11" y2="16.71"/>
+            <path class="cls-1"
+                  d="M4.45.72H29.88l3.67,8.55a3.66,3.66,0,0,1-6.8,2.43,3.66,3.66,0,0,1-6.39,0,3.66,3.66,0,0,1-6.39,0,3.66,3.66,0,0,1-6.39,0A3.66,3.66,0,0,1,.78,9.27L4.45.72Z"/>
+            <line class="cls-1" x1="7.52" y1="11.41" x2="9.15" y2="1.17"/>
+            <path class="cls-1" d="M13.89,11.41l.54-10.25"/>
+            <path class="cls-1" d="M20.26,11.41,19.71,1.17"/>
+            <line class="cls-1" x1="26.62" y1="11.41" x2="25" y2="1.17"/>
+            <line class="cls-1" x1="9.61" y1="23.2" x2="9.61" y2="20.81"/>
+            <line class="cls-1" x1="18.97" y1="24.9" x2="26.37" y2="17.41"/>
+            <line class="cls-1" x1="21.58" y1="26.97" x2="26.59" y2="21.9"/>
+        </g>
+    </g>
+</svg>

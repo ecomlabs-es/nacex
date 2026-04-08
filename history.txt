@@ -1,0 +1,485 @@
+----------------2.4.9 ^-----------------
+Mejorar estructura bloques formularios en vista de pedido
+Unificar funcionalidades en la configuración con los textos
+Modificar parte de visualización y funcionamiento de NacexShop con OPC
+Mejora de cambio de estados de pedidos
+Modificar tiempo de consulta de estado de expediciones
+Solucionar problema con los Headers en la recuperación del archivo droppoints
+Corregir problema con listado de salida de albaranes
+Mostrar mensaje de errores en la vista de pedidos de PS1.7.8.X
+Añadido opción de estado de pedido para no actualizarlo en nuestra configuración
+Corregir valor en el campo prealerta de unitaria por defecto
+Mantener la última fecha escogida en los formularios de documentar expediciones
+Mejora de la selección de los campos multiselect en forma de toggle
+Añadido código de la tienda en el desplegable de selección desde backend
+Fijar alto de logos de Nacex en el backend
+Mejora de la selección de carriers en masivo
+Arreglar problemas con actualizaciones de OPC y ajax infinito
+Solucionar envío de caracteres especiales a Diana
+Añadir opción Tercera al Tipo de cobro de Internacionales
+----------------2.4.8 ^-----------------
+Mejora en la actualización de estados de pedidos del listado
+Añadida opción de mostrar campo Empresa en las observaciones de la expedición
+----------------2.4.7 ^-----------------
+Mejora de selección de NacexShop en OnePageCheckout de terceros
+Nueva funcionalidad para actualizar los Estados de los pedidos al cargar el listado de pedidos.
+Mejora en mensajes de Warnings de unitarios y masivos.
+Corregido error de hash al entrar en los pedidos.
+Implementar Servicio44 en Unitaria
+Mejoramos la funcionalidad haciendo que la ventana de "cargando" se mantenga hasta que se cargue todo el contenido en unitarias.
+Se ha añadido la funcionalidad del zoom en algunas imágenes.
+Se ha eliminado código y archivos que no se usaban.
+Corregir error de cambio de estado al imprimir etiqueta de servicio 44
+----------------2.4.6.11 ^-----------------
+Solucionar un error 500 al realizar pedidos Estandar, ya que la cookie en algunos casos muy concretos no se eliminaba bien.
+Añadir Información de los Logs de los estados de pedidos tanto del listado como del pedido
+----------------2.4.6.10 ^-----------------
+Solucionar el que no aparezca la pantalla del NacexShop
+Solucionar error con el cambio de selección de Shop a Estándar, ya que al cambiar de shop a estándar generaba un pedido shop
+----------------2.4.6 ^-----------------
+Mejoras de código
+Solucionar problemas con redsys y mostrar precios a causa de campo de tabla en BBDD
+Mejorar control de impresión de etiquetas
+Arreglar problema con módulo quickpay
+Implementar diferenciación de versiones PS para problema de pago con tarjeta
+Añdir compatibilidad con SuperCheckout (OPC)
+Añadir funcionalidad de depuración de carriers
+Corregir posible problema con los transportistas genéricos
+Mejoras en el código
+----------------2.4.5 ^-----------------
+Solucionar problema de RedSys y de transportistas de Nacex que no aparecen o aparecen con el precio incorrecto
+Actualizar estado de los pedidos en el listado de pedidos del administrador según lo configurado
+Controlar campo Referencia personalizada para evitar algunos caracteres problemáticos
+Solucionar error de la fecha programada dejando la de defecto
+----------------2.4.4 ^-----------------
+Corregir el error que se multiplicaban los transportistas
+Corregir el error al que no se añadia bien el precio de los servicios predeterminados en la configuración
+----------------2.4.3 ^-----------------
+Mejorar gestión de guardado y recuperación de datos de punto NacexShop
+Cambiar frecuencia de actualización del arhivo de puntos
+----------------2.4.2 ^-----------------
+Añadir funcionalidad del Servicio 44
+Actualizar apariencia de los formularios
+Mejorada la instalación de nuevos servicios añadidos por el CSV
+Unificar carpetas de imágenes
+Modificar campos de los carriers
+Mejorar visualización de formulario en versiones >= 1.7.7
+Arreglar creación reiterada de servicios al guardar configuración
+Corregir algunos errores generales
+Actualizar visuales de configuración + logos + página de logs
+Solucionar problema con NacexShop y Redsys + cambio campos guardado NacexShop
+Añadir imágenes de los nuevos logos y eliminar las que no se usaban
+Arreglar y agregar traducciones
+Solucionar problema con direcciones punto nacexshop y editar punto nacexshop desde admin
+Añadir selector NacexShop para servicio manual
+Revisa el total de descuentos
+Revisar que en el carrito haya una regla que exluya el envio para los descuentos
+No se creaban bien los servicios en multitienda
+Error con NacexShop, el guardado en cart y la edición de la dirección
+Añadir portes aplicados antes o después de impuestos
+Cambiar funcionalidad NacexShop - Almacenamiento + Visualización
+----------------2.4.1.2 ^-----------------
+Añadir posibilidad de seleccionar un método de terceros y "convertirlo" en shop
+Cambiar forma de selección del punto NacexShop
+----------------2.4.1.1 ^-----------------
+Arreglar acceso a la sección de logs en el admin
+Solucionar problemas con estado de pedido OK
+Mejorar funcionaliadad puntos NacexShop en mapa y zoom
+Arreglar documentación de expediciones que aparecían como anuladas y no lo estaban
+Arreglar problema con Shipping a 0 en el OrderConfirmation y al guardar el pedido
+Solucionar problemas con la conexión WS y el Configuration
+Solventar errores de PHP 7.4 con los operadores ternarios
+----------------2.4.1 ^-----------------
+Cambiar URL's de http a https
+Arreglar errores en el listado de pedidos por los hooks de versiones >= PS1.7.7.x
+Solucionar problemas con el acceso a la info desde admin en algunos clientes
+Solucionar problemas con https
+Solucionar problemas varios
+Tener en cuenta los gastos de envío configurados en un producto específico
+Corregir problema con las , en los separadores de los miles en las peticiones de WS
+Añadir traducciones a PT y a EN
+Corregir problema con los botones de la infobox de expedición en REPARTO
+Eliminar referencias al FTP
+Programación de la fecha de la expedición, en masivos también
+Solucionar problemas con onepageaccount, ya que si el formulario tiene por defecto código postal 00000 se envía mal, en esta versió está solventado.
+----------------2.4.0 ^-----------------
+Modificar creación del admin tab de Configuración del módulo
+Añadir compatibilidad con PS1.7.7 de los pedidos
+Corregir puntos nacexShop con caracteres especiales en el nombre
+Cambiar límite de campo Instrucciones Adicionales
+Imprimir masivos en orden
+Actualizar el estado del pedido cuando la expedición tiene estado OK (entregado)
+Añadir funcionalidad NacexShop en frontend cuando no hay conexión WS
+Cambiar método de recuperación del archivo droppoints y el dónde se llama
+Controladas las funciones que se pueden hacer cuando no hay conexión WS, mostrando un mensaje de error. También en unitaria y masivo.
+Controlados los precios de los servicios cuando no hay conexión al WS
+----------------2.3.14 ^-----------------
+Solucionar problemas con los pedidos nacexShop que no actualizaban la dirección en el pedido
+Arreglar error con BBDD que se daba en algunos casos al guardar la configuración a causa de los servicios seleccionados
+----------------2.3.13.1 ^-----------------
+Corregir error de cookies que provocaba errores 502 en servidores Nginx
+Corregir problema con Newservices cuando está vacío el archivo
+----------------2.3.13 ^-----------------
+Añadir funcionalidad que el administrador pueda añadir nuevos servicios Nacex estandar y Shop
+Corregir errores de actualización de portes de WS por peso
+----------------2.3.12 ^-----------------
+Solucionar problema con las cookies y el precio total del pedido que no actualizaba el precio de los portes de envío
+----------------2.3.11 ^-----------------
+Añadir compatibilidad con versiones de PS1.7.7.x
+----------------2.3.10 ^-----------------
+Añadir logos nuevos a Nacexshop
+Solucionar problema de los gastos de envío en el pedido (al final no se sumaban)
+Mejora de consulta de BBDD
+Añadir opción "Ninguno" en los estados de los pedidos de la configuración
+Solucionar problema con variable "customopc"
+Arreglar problema de fechas en el listado de pedidos
+Añadir restricciones contrareembolso nacexShop (también en masivos)
+----------------2.3.9 ^-----------------
+Mejorado el formulario para documentar expediciones NacexSop
+Cambiado el texto de sección "Gestión de transportistas"
+Al actualizar el módulo se actualizan los elementos del menú
+Corregidos los mensajes de error al enviar un correo a Atención al cliente
+Añadido botón de seguimiento Nacex en el frontend
+Corregir error de las direcciones de un punto NacexShop y los números de teléfono y DNI
+Eliminar sobreescritura de datos de las zonas
+Quitar botón de "Seleccionar punto" y que el punto se seleccione al pulsar sobre el radio del punto deseado
+Solucionar problema con Nacex C@mbio
+Mejorar funcionalidad de la cancelación de expediciones: no se cancelan por BBDD por pedido sino por la expedición específica
+Arreglar problema con la documentación de expediciones con caracteres especiales (en el caracter 45, el último en el corte de la dirección)
+Solucionar error con los CP con guión (-)
+Arreglar problemas con nacexshop en el frontend
+----------------2.3.8 ^-------------------
+Solucionado problema con la carga del mapa en NacexShop cuando hay caracteres especiales en el punto NacexShop
+Recuperar información de la tienda para rellenar el formulario
+Solucionados problemas con Nacex Unitaria al cargar la información y al recibir la info desde el listado de pedidos
+Añadida función estática en el Hash
+Cambiado color del menú cuando está seleccionado
+Solucionado problema con Nacex Masivos y las claves
+Arreglado enlace que se forma en Unitaria que envía a la página del pedido
+Solucionado Unitaria accediendo desde lista de pedidos la búsqueda de expediciones de pedido diferente
+Eliminados enlaces a manuales contenidos en el módulo (sólo se descargan desde FTP) de Masivo
+Solucionado el problema al cargar los scripts en páginas https porque la URL base guardada en PS es http y producía incompatibilidades
+Mejorar sistema de filtrado de pedidos por transportista: ahora están todos los transportistas con los que se ha hecho algún pedido
+Mejorar funcionalidad de listar los pedidos Masivos con los filtros indicados
+Corregir funcionalidad y visualización del changelog
+Solucionado error que al guardar la configuración reestablecía los transportistas de Nacex
+Corregida funcionalidad de mostrar las instrucciones adicionales en unitaria y en vista de pedido
+Añadida nueva zona: NCX - Ceuta y Melilla y cambiada la asignación de zonas a dentro del condicional
+Corregido problema que se siguen creando métodos internacionales
+Corregidos algunos textos
+Volver a añadir la información del sistema en putExpedicion.
+Igualar aspecto botones configuración
+Creado un botón en la configuración del módulo para que se puedan instalar las zonas y asignarlas a los transportistas
+Arreglado problema de precios en servicios de tipo de envase no configurado
+Solucionado el que no cambia de estado al imprimir en  masiva y unitaria
+Corregido problemas con exceso de llamadas a WS (cambio drástico en las de getValoracion)
+Corregido problema con el https en el checkout con NacexShop
+Solucionado el error en el que no se mostraban los puntos NacexShop cuando hay instalado un módulo One Page Checkout
+Arreglado problema de guardado del campo de pagos contrareembolso
+Solucionado el problema de los puntos NacexShop cuando el servicio es genérico.
+Arreglado problema de envío de peso con ',' en vez de con '.' decimal por peso fijo en configuración.
+Solucionado problema con los puntos NacexShop y la validación que está alguno seleccionado cuando es un OPC3
+Solucionar problemas con las infowindows de google maps: no se cerraban cuando otro punto se pulsaba
+Arreglar problema con el cálculo de precios de envío por tabla de precios
+Añadir cálculo de tarifas con precios (antes sólo por peso)
+----------------2.3.7 ^-------------------
+Corregida la funcionalidad NacexShop que no guardaba los datos de la tienda seleccionada
+Añadida la sección "Atención al cliente" en el menú de Nacex
+Añadida posibilidad de descargar nueva versión del módulo desde la cofiguración del mismo
+----------------2.3.6 ^-------------------
+Cambiado comportamiento al mostrar info agencia en el detalle de pedido. Ahora abre un pop up mostrando la info de la WEB.
+Corregido error cambio de estado dos veces, NAcexDAO::updateorderstatus línea 1543.
+Corregido error para el envío de la notificiación vía correo al modificar el estado del pedido.
+Corregido error con las instrucciones adicionales, NacexVIEW::showExpedicionform línea 344.
+Corregido error en detalle pedido al entrar en métodos de envío no INTERNACIONAL error sobre la propiedad value nacex_contenido.
+Si el pedido se ha documentado con reembolso se coge el valor del formulario, NacexWS::putExpedicion línea 431.
+Quitada opcion de comprimir/expandir formulario de creación de expedición en detalle pedido.
+Corregido comportamiento al desinstalar/instalar el módulo sobre los transportistas.
+Añadida Versión del módulo al menú de Nacex.
+Añadido al detalle pedido link de seguimiento a la expedición.
+Añadido default al método do_i_have_to_update_expedition_status.
+Añadido default al método get_icon_status.
+Añadido actualizar estado del pedido en nacex_expediciones cuando se entra en el estado del pedido.
+Añadida estadísticas a los métodos putexpedicion, putexpedicionmasivo y cancelexpedicion.
+Lista de pedidos añadida opción de impresión.
+Lista de pedidos ajustado método nacexDAO::actDatosNacexExpediciones para la nueva relación 1:N.
+Fix Post error en carrito en la funcion unsetDatosSession se carga la url en clearshop.
+Ajustado estilo para el mensaje 'Dicha Solicitud ya ha sido Procesada.'.
+Añadido tratamiento de los caracteres especiales en putexpedicion, putexpedidciomasivo.
+Implementado cambio de estado al imprimir, documentar y cancelar.
+Al guardar la configuración no duplica los transportistas.
+Putexpedicion / Putexpedicionmasivo se ajusta la lógica para que tenga efecto la configuración kilos fijos o cesta.
+Panel de Configuración se pone tipo número a los kilos.
+Ajustado comportamiento en opción Unitaria.
+Rediseño/Optimización código columna estado de la expedición de detalle pedido.
+Añadido tratamiento de los datos al detalle de pedido.
+Ajustados controles HTML5 en detalle pedido.
+Ajustado metodo setnacexshopaddressinBD.
+Rediseño Carrito para los métodos de envío NacexShop.
+Añadido control F5 para PutExpedicion en detalle Pedido. No se pueden generar expediciones reenviando el formulario.
+Añadimos la etiqueta "Método:" cuando da error en el método requestWS de la clase nacexWS.
+Modificado método getAllServiciosNacex de la clase nacexDTO para que devuelva los INT.
+Añadida Fecha/Hora última actualización del Estado de la expedición.
+Solucionados errores de Token de las pantallas Unitaria y detalle pedido.
+Corregido error para mostrar NacexC@ambio.
+Rediseñado control sobre el color del Truck.
+Lista de pedidos añadido icono creación unitaria.
+Lista de pedidos añadido icono imprimir.
+Lista de pedidos añadido icono estado del envío.
+Lista de pedidos añadida etiqueta envío no documentado.
+Ajustados estilos Unitaria y gestión de logs.
+Agregados títulos con match a las opciones para las pestañas.
+Quitado link fichero log en formulario de configuración.
+Cambiado Título "listado de Salidas" a "Nacex listado de Salidas".
+Añadida Opción Gestión ficheros Logs.
+Añadida Columna NACEX a la lista de Pedidos.
+Añadido link Documentación de IONA.
+Añadido control OTROS en Internacionales.
+Añadido Link Descarga IONA en la pantalla de configuración.
+Añadida opción Creación unitaria.
+Añadido Mensaje expedición Creada con éxito al crear expedición desde detalle pedido.
+nacexDTO.php línea 205 corregida referencia a _moduleName.
+URL de iona por defecto configuración.
+Quitada opción Applet configuración.
+URL WS por defecto configuración.
+Quitada generación automï¿½tica NACEX_PRINT_URL.
+Quitados comportamientos sobre los radio buttons de IONA/APPLET.
+Quitados controles de errores sobre los campos eliminados.
+Se ajusta método que guarda la configuración del módulo para el nuevo comportamiento.
+Se define seleccionado en el fichero AdminConfig.php.
+Solucionado Error 500 internal error server al guardar en versión 1.7.5 y superiores. Fichero nacexDAO.php línea 317.
+Definida constante para URL de seguimiento.
+Ajustado el montaje de $tracking_url.
+Ajustadas las llamadas a IONA.
+Ajustadas las llamadas a WS.
+Agregada Opción limpiar al desinstalar
+    borrado de los transportistas.
+    borrado de los parámetros de configuración.
+    borrado de las tablas.
+Añadida Propiedad readonly a los campos URL WS y URL IONA
+----------------2.2.0.15 ^-------------------
+18012019 TODO PHP 7.2 change setMedia() to setMedia($isNewTheme = false) dependiendo de la versión de PHP.
+18032019 Implementado control en imp_reembolso. Requerido, número y 2 decimales. Fichero nacexVIEW.php línea 456.
+18022019 Control de contenido 999 Otros en Internacionales. Ficheros afectados NacexWS 481 y NacexView.
+23012019 Cambiado nombre del tab Nacex a Listado de Salidas. Fichero Nacex.php.
+21012018 Corregido error Prealerta creación expedición desde pedido, cogía fijo+móvil. NacexVIEW línea 59 y 79 añadido control tlf vacío.
+14122018 Corregido error en Chrome con confirm. nacex.php linea 630 creación del id dialog-confirm. linea 349 creación del confirm en jquery.
+10122018 Corregido bug selección NacexShop. nacex.php (369)
+01102018 Corregido bug al recuperar pedidos realizados desde la plataforma Amazon (No cargaba cs correctamente) en NacexWS.php (linea 47) -afernandez
+21092018 Corregido bug al recuperar el listado de contenidos internacionales en nacexView.php -afernandez
+13092018 Eliminada la cabecera Header que incluia el mapa de caracteres UT( por problemas con algunos Servidores web )
+23082018 Añadido icono para NacexCambio
+09082018 Escapado error en hookAdminOrder cuando nacexDAO::getDatosPedido($id_order) no es capaz de recuperar un pedido válido
+09082018 Corregido error en la función setMedia relacionada con el tema seleccionado ($isNewTheme = false)
+08082018 Añadidos el servicio 01, para Nacex10H y Azores Madeira
+----------------2.2.0.14 ^-------------------
+01082018 Corregido el estado cuando la agencia anula la expedición, WS no devuelve estado.
+01082018 Corregido el volcado de errores en los datos de la ventana de configuración
+31072018 Ajustado el contador de la ventana pedidos gestionados por Nacex
+31072018 Nuevo layout formulario de documentación masiva.
+31072018 Se Cambia el método registerStylesheet (ya no accesible en el backend) por addCSS el la vista de adminOrders
+30072018 Se modifican las cargas de JS y se pasan al hook displayBeforeBodyClosingTag al quedar obsoletos y sin funcionalidad addJS y addJquery para los controladores utilizados
+30072018 Revisada funcionalidad con Prestashop  1.7.4.2
+----------------2.2.0.13 ^-------------------
+27072018 Revisado el control de entrada "solo números" para número de bultos en AdminOrder
+26072018 se añade el control de CSS y JS en la zona de administración y se añaden em el Header
+26072018 Se controlan los caracteres extendidos en HTMEntities que pasan a ser UTF8
+24072018 Se añade un control para evitar: Notice on line 3283 nacex.php undefined index:estado_code; IM00547568
+06072018 Verifica que tenemos los datos de un punto Nacexshop (si es necesario) cuando se sale de la opción de selección de transportista
+22062018 Revisadas todas las cargas de JS y CSS en todas las páginas para que se hagan con métodos del core de Prestahop
+----------------2.2.0.12 ^-------------------
+20062018 Corregida la carga de CSS y JS para masivosTab en 1.7.3
+20062018 Se elimina el index id_envio_order de la tabla nacex_expediciones para permitir mas de un envío para el mismo pedido
+20062018 Añadida librería jquery-barcode para la generación de código de barras
+20062018 Corregida referencia a funciones en nacexDAO y nacexutils en nacextab
+20062018 Añadido servicio 22
+20062018 Ajuste del tamaño de los iconos de servicios
+----------------2.2.0.11 ^-------------------
+19062018 Añadidos métodos __construct y setMedia a nacextab para que cargue correctamente los javascript en la pestaña de listado de salidas para 1.7.3
+19062018 Añadido control al recuperar el CP de entrega de la dirección que selecciona el cliente (no se mostraba el buscador de puntos NacexShop).
+19062018 Añadidos controles para inserts en la tabla authorization_role cuando reconstruyen los Tabs y que no se han mantenido en 1.7.3 de versiones previas
+19062018 Aujustados Db::getInstance()->insert por cambios en la gestión de los valores por defecto en 1.7.3
+30052018 Corregido numero de bultos al documentar expediciones unitarias
+30052018 Actualizados los iconos de los servicios, pasan de png a svg
+28052018 Ajustados los includes de forma absoluta indicando el Path del fichero que carga el include_once
+24052018 Control de estado pendiente de integración revisado y ajustado en el momento de dar de alta la expedición
+24052018 Corregido aviso de CPs de Baleares que no se mostraba
+24052018 Corregido el aviso e frecuencia para servicio 9
+24052018 Añadido control para informar de las expediciones dadas de baja que han tenido incidencia previa
+24052018 Corregido bug datos formulario masivo que recuperaba los datos por defecto de la configuración del módulo
+24052018 Corregido bug sobre el número de bultos al documentar la expedición
+24052018 Añadido un control para el estado de las expediciones que se han documentado pero no están todavía en el sistema (Pendientes de integración)
+24052018 Añadido un control para la solicitud puexpedición cuando no llega código de servicio
+24052018 Corregidas las llamadas a htmlentities añadiendo la codificación que se solicita
+24052018 Corregido bug al recuperar parámetros de configuración de bultos y peso por defecto o del carrito.
+24052018 Ajuste de captura de teléfonos para que no se repita si el móvil y fijo es el mismo o si solo hay uno no utilice la barra separadora
+24052018 Se añade la librería jquery-barcode.js para evitar llamadas a www.nacex.es al recuperar los CB del listado de expediciones (soluciona error cuando el listado es extenso y www limita el número de peticiones concurrentes, no mostraba los CB)
+24052018 Se modifica la función geEstadoexpedicion para controlar las expediciones que se dan de baja por la agencia, informa al commerce.
+24052018 Revisada la impresión de salidas del commerce para que se ajuste bien a la Pagina A4 y se pueda escanear el código de Barras con un móvil
+24052018 Actualizado el JS de impresión jquery.printElement por errores al imprimir la imagen de código de barras
+----------------2.2.0.10 ^-------------------
+Adaptados los cambios implementados en el módulo para Prestashop 1.6 en 2.2.0.10
+----------------2.2.0.9 ^-------------------
+01022018 Ajustado el valor de la url de IONA por defecto
+01022018 Añadido el naceWS al objeto Nacex para disponer de los métodos WS aquï¿½
+01022018 Añadida la variable $id_carrier para que calcule tarifas del objeto heredado Carrier
+01022018 Movido el método getOrderShippingCost a Nacex desde nacexDAO para que herede del objeto Carrier
+01022018 Implementado cache de getValoracion para reducir las consultas al WS
+01022018 Corregidas llamadas a métodos de NacexVIEW utilizando objeto $nacexDTO
+----------------2.2.0.8 ^-------------------
+17012018 Corregido bugs en la documentación de masivos y selector de departamentos
+----------------2.2.0.7 ^-------------------
+12012018 Adaptado el módulo a Prestashop 1.7,Añadido IONA,Añadida la opción de indicar $reference como referencia de la expedición
+----------------2.2.0.6 ^-------------------
+
+*******Splitted in two branch**********************************************************************************************************************
+--------Module for PS-1.6 remains at 2.1.x.x versions----------------------------------------------------------------------------------------------
+***************************************************************************************************************************************************
+
+13042016	Añadidos los servicios Puente Urbano y Mallorca marï¿½timo
+13042016	Corregidos valores por defecto en el men? de Configuración (servicio, envase, portes, contenido) y recuperación en vista pedido y masivo
+----------------2.1.0.2 ^-------------------
+11042016	Corregido el focus de sms al cargar un pedido cuando tiene por defecto configuradas ealertas.
+11042016	Añadida la opción de ocultar en la vista de pedido la zona de transportista para acceder mejor al listado de productos del pedido.
+11042016	Añadida en la administración la opción de mostrar la Configuración de PHP y revisar los módulos instalados
+11042016	Ajustados CSS en la vista adnministrativa
+11042016	Añadimos la opción de documentar expediciones para los servicios EuroNacex Economy y PusPack Europa. Modificada la administración del
+			módulo para permitir env?os internacionales. Modificada documentación y gestión m?siva.
+----------------2.1.0.0 ^-------------------		<
+23122015	No lanzamos llamada al getValoracion si no detectamos CP de entrega.
+16122015	Corrige error al instalar transportistas en el backend, al no obtener c?digo de transportista de la Configuración
+----------------2.0.0.7 ^-------------------
+módulo expreso para un cliente determinado, no distribuir
+----------------2.0.0.6 ^-------------------
+10072015	Se corrige el problema que impedï¿½a la carga de la libreria jquery.showModalDialog.js
+10072015	Se añade el campo address2 en la direcci?n del env?o (IM00243141)
+10072015	Se corrige el problema que hacï¿½a que no se mostrara el teléfono de la prealerta en los servicios NacexShop (IM00238823)
+10072015	Se corrige el warning en la instalaci?n del módulo (IM00232460)
+19052015	Se añade opción de Configuración para informar de instrucciones adicionales por defecto
+19052015	Se añade input de instrucciones adicionales en formularios de generar expedicion
+19052015	Se actualiza manual de Configuración del módulo
+----------------2.0.0.5 ^-------------------
+07042015	Se actualiza manual de Configuración del módulo
+07042015	Se corrige error al añadir tracking_url a la hora de instalar un transportista
+07042015	Se añade opción de Configuración que permite mostrar u ocultar transportistas con coste 0?
+----------------2.0.0.4 ^-------------------
+04032015	Se corrige error al mostrar estado de una expedición no generada
+03032015	Se corrige error con decimales en la opción de peso fijo
+03032015	Se añade opción de Configuración para informar de la URL de tracking automï¿½ticamente al generar la expedición
+----------------2.0.0.3 ^-------------------
+24022015	Sobrecarga de la función para solventar el problema de que no heredamos de un AdminController
+24022015	Se corrige error al obtener el detalle del estado del pedido en el frontend
+24022015	Se corrige error con la función getOrderShippingCost obteniendo la info del cart del $params
+----------------2.0.0.2 ^-------------------
+20150219	Solo Se visualiza  el estado de la expedición en el frontend para los pedidos con transportista Nacex o Nacexshop
+20150219	Se visualiza correctamente el estado de la expedición en el frontend con Firefox
+----------------2.0.0.1 ^-------------------
+20150206	Se añaden enlaces a los manuales en la pantalla de Configuración y generaci?n de expediciones masivas
+20150206	Se añaden los manuales en pdf en la carpeta del módulo /docs
+20150206	Se crea un nuevo manual de generación de expediciones masivas
+20150206	Se crea un nuevo manual de Configuración
+20150206	Se obtiene el host de la variable de la URL de impresión (s?lo para prop?sitos de desarollo)
+20150206	Se desarrolla un control para modificar la URL de impresión a http://www.nacex.es
+20150206	La impresión del detalle de la expedición se realiza mediante applet y no la pasarela
+20150206	Se añade validación de los campos a la hora de guardar la Configuración
+20150206	Cambio en el diseño de la Configuración del módulo
+20150206	Se añade nuevas opciones de Configuración al módulo
+			- Test de conexión a WS
+			- Departamentos de cliente
+			- Importe fijo
+			- Importe mínimo gratiuto
+			- Texto a mostrar para los transportistas genéricos
+			- Referencia personalizada
+			- Gestión de prealertas por defecto
+			- Bultos fijos/cesta
+			- Peso fijo/cesta
+			- Gastos de manipulación
+----------------2.0.0 ^-------------------
+
+
+20150127	Generación e impresión de expediciones masivas
+----------------1.5.4.3 ^-----------------
+20150114	Se instalan los transportistas genéricos con tip_serv el que haya seleccionado por defecto en el backend
+20150114	Se añade valor del importe asegurado
+20150114	Se añade seguro
+----------------1.5.4.2 ^-----------------
+20141031	Se modifica la forma de codificar los texto para que se visualicen correctamente los acentos
+----------------1.5.4.0 ^-----------------
+20140915	Se modifica la función que updatea los carriers genéricos para informar del campo ncx
+20140910	Se adapta la función hookBeforeCarrier para compatibilidad con prestashop 1.4.3
+----------------1.5.3.9 ^-----------------
+20140604	Se cortan bien las instrucciones adicionales a 40 caracteres cada una
+20140527	Se modifica la forma de verificar si existe un campo para hacer el ALTER TABLE en la instalación
+20140527	Se añade un "echo" en el archivo "CPuntoNacexShop.php" al recuperar los datos de la sesión
+----------------1.5.3.8 ^-----------------
+20140512	Obtenemos el valor del pedido del campo total_paid en el caso de no estar informado el total_paid_real
+----------------1.5.3.7 ^-----------------
+20140506	Añadimos curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)');
+----------------1.5.3.6 ^-----------------
+20140422	Cambiamos los id de los inputs hidden que almacenan los valores del punto nacexshop
+----------------1.5.3.5 ^-----------------
+20140403	Habilitamos la creación del TAB NACEX para todas las versiones de prestashop
+20140403	Cambiamos la comprobación de los módulos de reembolso en el listado de albaranes
+----------------1.5.3.4 ^-----------------
+20140311	Cambiamos la codificación de todas las llamadas SOAP a UTF-8
+----------------1.5.3.3 ^-----------------
+20140310	Cambiamos la codificación de la llamada cancelExpedicion a UTF-8
+----------------1.5.3.2 ^-----------------
+20140213	Controlamos mediante sentencia try catch la obtención de CP en paginas que no son OPC
+----------------1.5.3.1 ^-----------------
+20140129	Controlamos mediante sentencia try catch los alter tables para evitar 'duplicated columns'
+20140124	Sustituimos las consultas mysql_query por la API de DB de prestashop
+----------------1.5.3 ^-----------------
+20131223	Actualización del manual de Configuración.
+20131223	Nueva opción en la Configuración del módulo para activar el cálculo de transportistas mediante WS.
+20131223	Permitimos el calculo del importe de los transportistas Nacex mediante el WebService.
+20131223	Nueva opción en la Configuración del módulo para informar del código postal de recogida.
+----------------1.5.2 ^-----------------
+20131216	Solucionamos error al llamar al selector de puntos NacexShop en el modo de compra de 5 pasos
+20131216	Modificamos las llamadas a funciones de base de datos
+----------------1.5.1 ^-----------------
+20131107	Permitimos realizar env?os Nacex C@MBIO
+----------------1.5.0 ^-----------------
+20131004	Solucionado error al obtener el punto nacex shop en versiones de PHP > 5.2
+20131004	Cambiado el valor por defecto del envase en la Configuración a PAQ
+20131004	Nuevo filtrado de radio buttons: Creamos una nueva función para determinar si el radio button contiene un carrier o no.
+20131004	Solucionamos error de formato de c?digo
+----------------1.4.9 ^-----------------
+20130528    Nuevo modos de prealerta S,P,R,E
+20130528    Permitimos prealertas tipo e-mail para env?os nacexshop
+----------------1.4.8 ^-----------------
+20130517    Nuevo tratamiento de datos nacexshop en sesiones php
+20130517    Nuevo tratamiento selector destinos nacexshop para versiones >1.5
+----------------1.4.7 ^-----------------
+20130507    Nueva llamada al selector de destinos nacexshop en los modos 5 pasos y OnePageCheckout
+----------------1.4.6 ^-----------------
+20130315    Solucionamos error al seleccionar destino nacexshop en internet explorer
+----------------1.4.5 ^-----------------
+20130307    Pasamos host por parámetro al selector de destinos nacexshop
+20130307    Solucionada incidencia al generar expediciones nacexshop
+20130306    Añadimos importe seguro 0 en putExpedicion para evitar comisiones
+----------------1.4.4 ^-----------------
+20130221   Añadido nuevo servicio "04"-"PLUSBAG"
+----------------1.4.3 ^-----------------
+20121114	Añadido campo en Configuración para listar nombres de los módulos de pago contra reembolso instalados y activados
+20121114	Añadido control longitud máxima campos en putExpedicion. Si se superan se trunca contenido
+----------------1.4.2 ^-----------------
+20121025	Cambio de paradigma Selección Servicios Backend/Frontend ya compatible con Prestashop v1.5+
+----------------1.4.1 ^-----------------
+20121017	Añadida opción de mostrar o no información de la expedición en el Frontend, cuando el cliente visualiza los detalles de su pedido
+20121007	Cambio de paradigma. Reprogramación del módulo para incluir opción para que el cliente pueda elegir los servicios concretos desde el Frontend
+----------------1.4.0 ^-----------------
+20121002	Adición opción mostrar o no errores en tiempo de ejecución por Configuración
+20121001	Adición opción 0 (cero) 'Docs' para parámetro "tipo de envío"
+20121001	Corregido para que muestre correctamente campo "Nombre destinatario" en listado pestaña Nacex.
+20120928	Se actualiza datos dirección si es NacexShop en "Mis Pedidos" del Frontend y en visualización del pedido en el Backend
+20120921	Añadida compatibilidad con 1.5
+20120919	Añadido campo Retorno y opción forzar mostrar formulario Generar Expedicion también para transportistas externos
+20120919	Contemplada modalidad OPC con ruta intermedia /onepagecheckout/
+20120919	Arreglado problema enlaces machacados en OPC
+20120918	Añadido bot?n de "Semana Pasada" al rango de fechas en nacextab.php (pestaña Nacex en Pedidos)
+20120918	Solución para cuando se obliga a chequear CGV al cliente en modalidad OPC (One Page Checkout)
+20120918	Try catch para controlar posible error Tools::getValue en HookBeforeCarrier en pantalla OPC (One Page Checkout)
+20120915	Traducción inglï¿½s
+20120915	Arreglado enlace a pedido desde pestaña Nacex (Listado)
+20120915	Añadido botones de "Ayer", "Esta Semana" y "Este Mes" al rango de fechas en nacextab.php (pestaña Nacex en Pedidos)

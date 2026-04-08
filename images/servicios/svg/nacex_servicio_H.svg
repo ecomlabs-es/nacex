@@ -1,0 +1,36 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 60.42 49.57">
+    <defs>
+        <style>.cls-1,.cls-3{fill:#ff5a00;}.cls-2{fill:none;}.cls-3{font-size:14px;font-family:Avenir-Light, Avenir;}
+        </style>
+    </defs>
+    <title>PlusPack</title>
+    <g
+            id="Capa_2" data-name="Capa 2">
+        <g id="πœ_h_1" data-name="πœºh_1">
+            <path class="cls-1"
+                  d="M 43.55 8.3 a 18.92 18.92 0 0 1 0 14.54 l 1.85 0.77 a 21 21 0 0 0 0 -16.07 Z"
+            />
+            <path class="cls-1" d="M 50 5.62 l -1.85 0.77 a 24 24 0 0 1 0 18.37 l 1.85 0.77 a 26 26 0 0 0 0 -19.9 Z"
+            />
+            <path class="cls-1"
+                  d="M 8.45 8.3 L 6.6 7.53 a 21 21 0 0 0 0 16.07 l 1.85 -0.77 a 18.93 18.93 0 0 1 0 -14.54 Z"
+            />
+            <path class="cls-1" d="M 3.83 6.38 L 2 5.62 a 26 26 0 0 0 0 19.9 l 1.85 -0.77 a 24 24 0 0 1 0 -18.37 Z"
+            />
+            <circle class="cls-2" cx="26" cy="15.66" r="4.86"/>
+            <path class="cls-2"
+                  d="M 26 2.26 A 13.4 13.4 0 0 0 14.27 22.13 L 26 43.33 l 11.73 -21.2 A 13.4 13.4 0 0 0 26 2.26 Z m 0 20.51 a 7.12 7.12 0 1 1 7.12 -7.12 A 7.12 7.12 0 0 1 26 22.78 Z"
+            />
+            <path class="cls-1"
+                  d="M 26 0 A 15.66 15.66 0 0 0 12.29 23.22 L 26 48 L 39.71 23.22 A 15.66 15.66 0 0 0 26 0 Z M 37.73 22.13 L 26 43.33 L 14.27 22.13 a 13.39 13.39 0 1 1 23.46 0 Z"
+            />
+            <path class="cls-1"
+                  d="M 26 8.53 a 7.12 7.12 0 1 0 7.12 7.12 A 7.13 7.13 0 0 0 26 8.53 Z m 0 12 a 4.86 4.86 0 1 1 4.86 -4.86 A 4.86 4.86 0 0 1 26 20.51 Z"
+            />
+            <text class="cls-3"
+                  transform="translate(35.92 46.07)">.EU
+            </text>
+        </g>
+    </g>
+</svg>

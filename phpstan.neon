@@ -1,0 +1,55 @@
+parameters:
+    level: 5
+
+    paths:
+        - nacexutils.php
+        - nacexDTO.php
+        - hash.php
+        - filterdata.php
+        - tratardatos.php
+        - LBnewService.php
+
+    bootstrapFiles:
+        - tests/bootstrap/bootstrap.php
+
+    treatPhpDocTypesAsCertain: false
+
+    # Excluimos errores inevitables por el ecosistema PrestaShop
+    ignoreErrors:
+        # Métodos heredados del core de PrestaShop no tipados en stubs
+        - '#Call to an undefined method#'
+        - '#Call to an undefined static method#'
+        # Propiedades dinámicas de clases del core
+        - '#Access to an undefined property#'
+        # Constantes de PrestaShop definidas en runtime
+        - '#Access to undefined constant#'
+        - '#Constant _DB_PREFIX_ not found#'
+        - '#Constant _PS_VERSION_ not found#'
+        - '#Constant _PS_MODULE_DIR_ not found#'
+        - '#Constant __PS_BASE_URI__ not found#'
+        # Clases del módulo no cargadas en análisis estático aislado
+        - '#on an unknown class nacexDAO#'
+        - '#on an unknown class nacex#'
+        - '#on an unknown class VInacexlogs#'
+        - '#class nacex not found#'
+        - '#Function getReferenciaGeneral not found#'
+
+    # No analizar vendor ni tests
+    excludePaths:
+        - vendor
+        - tests
+        - upgrade
+        - controllers
+        - views
+        - translations
+        # Archivos demasiado acoplados al core para análisis estático sin stubs completos
+        - nacex.php
+        - nacexDAO.php
+        - nacexWS.php
+        - nacexVIEW.php
+        - AdminConfig.php
+        - ConsultasBD.php
+        - FuncionesWS.php
+        - nacextab.php
+        - nacextabMasivo.php
+        - nacexunitario.php

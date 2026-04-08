@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>nacex</name>
+    <displayName><![CDATA[M&oacute;dulo Nacex]]></displayName>
+    <version><![CDATA[2.5.0]]></version>
+    <description><![CDATA[Genere expediciones e imprima etiquetas enviando informaci&oacute;n a Nacex con un solo clic]]></description>
+    <author><![CDATA[Nacex]]></author>
+    <tab><![CDATA[shipping_logistics]]></tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>0</need_instance>
+	<limited_countries></limited_countries>
+</module>

@@ -1,0 +1,88 @@
+/* Estilos mensajes RSS */
+.alert.alert-nacex {
+	border: none;
+	border-left: 3px solid #ff5000 !important;
+	padding-left: 50px;
+	position: relative;
+	background-color: #ffdccc !important;
+	color: #cc4000 !important;
+}
+
+.alert.alert-nacex::before {
+	content: "";
+	left: 7px;
+	top: 6px;
+	background-image: url('../img/n.png');
+	background-repeat: no-repeat;
+	background-size: 1em 1em;
+	background-position: top center;
+	height: 100%;
+	position: absolute;
+	width: 40px;
+	font-size: 2em;
+}
+
+/*.alert.alert-nacex:before {
+	font-family: 'Material Icons';
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	vertical-align: middle;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	text-rendering: optimizeLegibility;
+	font-feature-settings: "liga";
+	position: absolute;
+	width: 46px;
+	width: 2.875rem;
+	height: 100%;
+	text-align: center;
+	font-size: 1.563rem;
+	display: -ms-flexbox;
+	justify-content: center;
+	flex-direction: column;
+}*/
+
+.nobootstrap .alert-nacex button.close {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 1;
+	color: #000;
+	float: right;
+	opacity: .2;
+	text-shadow: 0 1px 0 #fff;
+}
+
+.nobootstrap .alert-nacex button.close:hover {
+	color: #000;
+	cursor: pointer;
+	filter: alpha(opacity=50);
+	opacity: .5;
+	text-decoration: none;
+}
+
+#content.nobootstrap .alert-nacex {
+	padding: 5px 10px 15px 50px;
+	line-height: 1;
+	border-radius: 3px;
+}
+.close.mark-all-as-read, #content.nobootstrap .close.mark-all-as-read {
+	float: none;
+	margin-left: 45%;
+	font-size: 1em;
+	color: #ff5000 !important;
+	opacity: 1;
+	vertical-align: middle;
+}
+.mark-all-as-read .material-icons, #content.nobootstrap .mark-all-as-read .material-icons {
+	font-size: 1.5em;
+	vertical-align: text-bottom;
+}

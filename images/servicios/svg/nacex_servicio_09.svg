@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34.22 36.07">
+    <defs>
+        <style>
+            .cls-1,.cls-2,.cls-3,.cls-4,.cls-5{fill:none;stroke:#ff5a00;stroke-linecap:round;stroke-linejoin:round;}.cls-1{stroke-width:1.44px;}.cls-2{stroke-width:1.44px;}.cls-3{stroke-width:1.44px;}.cls-4{stroke-width:1.44px;}.cls-5{stroke-width:1.44px;}
+        </style>
+    </defs>
+    <title>urbano</title>
+    <g id="Capa_2" data-name="Capa 2">
+        <g id="Capa_1-2" data-name="Capa 1">
+            <line class="cls-1" x1="0.72" y1="35.35" x2="33.5" y2="35.35"/>
+            <polyline class="cls-2" points="3.51 35.35 3.51 0.72 23.5 0.72 23.5 35.35"/>
+            <polyline class="cls-3" points="23.95 6.5 30.71 6.5 30.71 34.35"/>
+            <polyline class="cls-4" points="11.66 34.91 11.66 28.62 15.35 28.62 15.35 34.91"/>
+            <path class="cls-5"
+                  d="M8.07,6.6V4.81M13.51,6.6V4.81M18.94,6.6V4.81M8.07,12.63V10.84m5.43,1.79V10.84m5.43,1.79V10.84M8.07,18.67V16.88m5.43,1.79V16.88m5.43,1.79V16.88M8.07,24.71V22.92m5.43,1.79V22.92m5.43,1.79V22.92M8.07,30.75V29m10.87,1.79V29m8-16.32V10.84m0,7.83V16.88m0,7.83V22.92m0,7.83V29"/>
+        </g>
+    </g>
+</svg>

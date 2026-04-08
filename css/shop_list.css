@@ -1,0 +1,45 @@
+html{
+    font-family: 'Oswald', sans-serif;
+    background-color: white;
+}
+
+#ncx_shop_filtros_buttons_container {
+    margin-top: 15px;
+}
+
+#cabecerashop {
+
+    color: darkorange;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#ncx_shop_list{
+    text-decoration: none;
+    padding: 5px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #ffffff;
+    background-color: darkorange;
+    border-radius: 6px;
+    border: 2px solid darkorange;
+}
+
+.nompop{
+     color: #E68800 !important;
+     text-decoration-line: underline !important;
+     font-weight: bold !important;
+ }
+
+#botoninfo{
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: end !important;
+}
+
+.paragraph{
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}

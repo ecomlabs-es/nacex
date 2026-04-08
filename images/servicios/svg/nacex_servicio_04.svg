@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36.47 32.46">
+    <defs>
+        <style>.cls-1{fill:none;stroke:#ff5a00;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.44px;}</style>
+    </defs>
+    <title>plusback</title>
+    <g id="Capa_2" data-name="Capa 2">
+        <g id="Capa_1-2" data-name="Capa 1">
+            <path class="cls-1" d="M34,17.35V30.57a1.18,1.18,0,0,1-1.17,1.17H3.61a1.18,1.18,0,0,1-1.17-1.17v-13"/>
+            <path class="cls-1" d="M12.93,6V2.64A1.93,1.93,0,0,1,14.85.72h6.76a1.94,1.94,0,0,1,1.92,1.92V6"/>
+            <path class="cls-1"
+                  d="M15,20A37,37,0,0,1,.72,16.58l0-9.34A1.18,1.18,0,0,1,1.91,6.07H34.55a1.18,1.18,0,0,1,1.17,1.17l0,9.09A34.82,34.82,0,0,1,21.27,20"/>
+            <path class="cls-1"
+                  d="M16.12,18.29h4.22a.65.65,0,0,1,.65.65v2.89a.65.65,0,0,1-.65.65H16.12a.65.65,0,0,1-.65-.65V18.94a.65.65,0,0,1,.65-.65Z"/>
+        </g>
+    </g>
+</svg>

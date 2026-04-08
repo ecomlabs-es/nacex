@@ -1,0 +1,1385 @@
+/* CSSPortal : Wed, 30 May 2018 07:21:44 +0000
+http://www.generateit.net/css-optimize/index.php
+*/
+@media print {
+	.noprint {
+		display:none;
+	}
+
+	.print {
+		display:block;
+	}
+
+	#ncx_div_listado {
+		font-family:sans-serif;
+	}
+
+	#ncx_div_listado h1 {
+		font-size:36px;
+	}
+
+	table#ncx_tabla_listado {
+		margin-bottom: 10px;
+		font-size: 35px;
+		font-family: sans-serif;
+		border-collapse: collapse;
+		/*border:2px solid grey;
+		background-color:#FFF!important;*/
+		width: 100%;
+	}
+
+	table#ncx_tabla_listado tr {
+		border:1px solid grey;
+	}
+
+	table#ncx_tabla_listado td {
+		padding:15px 15px 15px 30px;
+	}
+
+	table#ncx_tabla_listado th {
+		font-size: 32px;
+		text-align: center;
+		padding: 0 2px;
+	}
+
+	table#ncx_tabla_listado a {
+		color:#000;
+		text-decoration:none;
+	}
+
+	sub {
+		font-size:28px;
+	}
+
+	#td_cb {
+		text-align:center;
+		vertical-align:middle;
+		white-space:nowrap;
+	}
+
+	.pagebreak {
+		page-break-before:always;
+	}
+}
+
+/**** CODIGO PARA VER EN LA PANTALLA ****/
+@media screen {
+	.noscreen {
+		display:none;
+	}
+
+	.screen {
+		display:block;
+	}
+
+	#td_cb {
+		text-align:center;
+		vertical-align:middle;
+		width:135px;
+		white-space:nowrap;
+	}
+
+	.ncx_minibutton {
+		border: 1px solid gray;
+		color: gray;
+		cursor: pointer;
+		font-size: 11px;
+		margin: 3px;
+		padding: 5px;
+	}
+
+	.ncx_minibutton:hover {
+		background-color: #ff5100;
+		color: #fff;
+	}
+
+	/* FORMULARIOS EN LOS PEDIDOS */
+	#ncx_info_exp, #ncx_info_shop {
+		margin-bottom: 10px;
+		width: 540px;
+		/*border:1px solid #000;
+		background-color:grey;*/
+		text-align: left;
+		padding: 0 5px 15px;
+	}
+
+	#ncx_info_exp hr, #ncx_info_shop hr {
+		border: 0;
+	}
+
+	div#ncx_info_exp h2 {
+		color: #FFF;
+	}
+
+	.zoomable:focus {
+		background-color: transparent;
+	}
+
+	#ncx_info_exp input.button, #ncx_info_shop input.button {
+		margin: auto;
+		width: auto !important;
+	}
+
+	#ncx_info_shop p.maxRefundText {
+		margin-left: 5px;
+		font-style: italic;
+		color: #ff5100 !important;
+	}
+
+	#ncx_info_exp fieldset, #ncx_info_shop fieldset {
+		border: 1px solid #FF5100;
+		margin-top: 10px;
+		/*background: rgba(255,255,255,0.6);*/
+		color: #555;
+		font: 12px/1.5em Arial, Helvetica, sans-serif;
+		padding: 1em;
+	}
+
+	#ncx_info_exp.ncx_box fieldset p, #ncx_info_exp fieldset form p, #ncx_info_shop.ncx_box fieldset p, #ncx_info_shop fieldset form p {
+		color: #000 !important;
+	}
+
+	#ncx_info_exp fieldset legend, #ncx_info_shop fieldset legend {
+		padding: 0px 10px;
+		color: #ff5100;
+		height: initial;
+		text-transform: uppercase;
+		border: none;
+		width: auto;
+		font: 400 16px/1.42857 Open Sans, Helvetica, Arial, sans-serif;
+	}
+
+	#ncx_info_shop fieldset legend, .ncx_box.shop fieldset legend {
+		color: #00AE42 !important;
+	}
+
+	#ncx_info_shop fieldset {
+		border: 1px solid #FF5100;
+	}
+
+	#ncx_info_exp .info-tooltip, #ncx_info_shop .info-tooltip {
+		cursor: help;
+		background-color: #ff5100;
+		padding: 7px 10px;
+		margin-left: 0.8em;
+		border-radius: 50%;
+		color: #fff;
+		font-size: 14px;
+		font-weight: bolder;
+	}
+
+	#ncx_cod_exp {
+		float: right;
+		/*color: #aaa;*/
+		color: #555;
+		margin-right: -5px;
+		margin-top: -20px;
+		font-size: xx-small;
+	}
+
+	div#ncx_info_exp fieldset form div, div#ncx_info_shop fieldset form div {
+		text-align: center;
+	}
+
+	#ncx_info_exp select:hover, #ncx_info_shop select:hover {
+		cursor: pointer;
+	}
+
+	.ncx_fieldset_icon.lupa {
+		float: right;
+		margin-right: -10px;
+		margin-top: -20px;
+	}
+
+	.ncx_fieldset_icon {
+		float: right;
+		margin-right: 5px;
+		margin-top: -14px;
+		color: #ff5100 !important;
+	}
+
+	/*#cancelIcon:hover, #printIcon:hover {*/
+	.zoomable:hover {
+		-webkit-transform: scale(1.3);
+		transform: scale(1.3);
+	}
+
+	.ncx_button_small {
+		padding: 0em 0.6em !important;
+		margin-right: 1em;
+	}
+
+	.ncx_box {
+		/*background:url(../../nacex/images/nacex_box.png) grey no-repeat right 3px!important;*/
+		border: 1px solid #ff5100;
+	}
+
+	.ncx_box::before {
+		content: "";
+		position: absolute;
+		background-image: url(../../nacex/images/nacex_box.png);
+		background-repeat: no-repeat;
+		background-position: right;
+		background-size: cover;
+		opacity: 0.18;
+		width: 256px;
+		height: 256px;
+		margin-left: 260px;
+		margin-top: 65px;
+	}
+
+	.ncx_box fieldset {
+		border: none !important;
+		/*background-color: rgba(255,81,0,0.1);*/
+		background-color: rgba(250, 235, 215, 0.4);
+	}
+
+	/* Añadir nuevo servicio nacex */
+	.addNewServiceNacexStd .add-newservice, .addNewServiceNacexShp .add-newservice {
+		background-color: #28a745 !important;
+		border-color: #28a745 !important;
+		color: #fff !important;
+	}
+
+	.addNewServiceNacexStd .add-newservice:hover, .addNewServiceNacexShp .add-newservice:hover {
+		background-color: #218838 !important;
+		border-color: #1e7e34 !important;
+		color: #fff !important;
+	}
+
+	/* Eliminar nuevo servicio nacex */
+	.removeNewServiceNacexStd .remove-newservice, .removeNewServiceNacexShp .remove-newservice {
+		background-color: #bd2130 !important;
+		border-color: #b21f2d !important;
+		color: #fff !important;
+	}
+
+	.removeNewServiceNacexStd .remove-newservice:hover, .removeNewServiceNacexShp .remove-newservice:hover {
+		background-color: #c82333 !important;
+		border-color: #bd2130 !important;
+		color: #fff !important;
+	}
+
+	/* Editar nuevo servicio nacex */
+	.editNewServiceNacexStd .edit-newservice, .editNewServiceNacexShp .edit-newservice {
+		background-color: #f8f9fa !important;
+		border-color: #f8f9fa !important;
+		color: #212529 !important;
+	}
+
+	.editNewServiceNacexStd .edit-newservice:hover, .editNewServiceNacexShp .edit-newservice:hover {
+		background-color: #e2e6ea !important;
+		border-color: #dae0e5 !important;
+		color: #212529 !important;
+	}
+
+	/* Efectos de los botones */
+	#newservice p span {
+		max-width: 0;
+		-webkit-transition: max-width 1s;
+		transition: max-width 1s;
+		display: inline-block;
+		vertical-align: top;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	#newservice p:hover span {
+		max-width: 7rem;
+	}
+
+	/* Estilos botones */
+	#newservice {
+		display: block;
+		margin-right: 1em;
+		float: left;
+	}
+
+	#newservice:last-child {
+		margin-right: 0;
+	}
+
+	#addStdService, #addShpService,
+	#removeStdService, #removeShpService,
+	#editStdService, #editShpService {
+		clear: left;
+	}
+
+	#nacex_available_tip_ser.columna2, #nacex_available_tip_nxshop_ser.columna2 {
+		width: 40%;
+	}
+
+	#ncx_div_listado h1 {
+		font-size:18px;
+	}
+
+	a[href*="tab=nacextab"] {
+		color: #FF5510;
+		font-size: 15px;
+		font-style: italic;
+		font-weight: 700;
+		text-decoration: none !important;
+	}
+
+	.ncx_listado {
+		padding:20px 0;
+	}
+
+	div#ncx_info_exp form#configForm.form fieldset table {
+		width:100%;
+	}
+
+	table#ncx_tabla_listado {
+		margin-bottom:10px;
+		font-size:10px;
+		width:100%;
+	}
+
+	table#ncx_tabla_listado td {
+		padding: 0 2px;
+		border-bottom: none;
+	}
+
+	table#ncx_tabla_listado th {
+		font-size: 11px;
+		text-align: center;
+		padding: 0 2px;
+	}
+
+	/*table#ncx_tabla_listado a {
+		color:blue;
+		text-decoration:underline;
+	}*/
+	table#ncx_tabla_listado a.ballLink {
+		background-color: #FF5100;
+		color: #fff;
+		border-radius: 50%;
+		border: 1.5px solid #ff5100;
+		padding: 0.25em;
+		text-decoration: none;
+	}
+
+	table#ncx_tabla_listado a.ballLink:hover {
+		background-color: #fff;
+		color: #ff5510;
+		border: 1.5px solid #ff5100;
+	}
+
+	#ncx_info_exp input#cancelIcon:hover {
+		border: none !important;
+	}
+
+	/* Cambiar vista de botones de masivo */
+	.nacextabmasivo #createIcon:hover, .nacextabmasivo #printIcon:hover, .nacextabmasivo #searchIcon:hover {
+		/*background-color: #ff5100;*/
+		border-radius: 45%;
+		background-color: #00aeff;
+		filter: invert(100%);
+		cursor: pointer;
+	}
+
+	/* Nacex masivo */
+	.nacextabmasivo .imprimirEtiquetas img#printIcon, .nacextabmasivo .imprimirEtiquetas img#createIcon {
+		cursor: pointer;
+	}
+
+	.subheader a {
+		color: #ff5100;
+	}
+
+	.subheader a:hover, .subheader a:active, .subheader a:focus {
+		color: #333;
+		text-decoration: none;
+	}
+
+	#list_table {
+		margin-top: 1em;
+	}
+
+	.thead-default td #createIcon {
+		margin-left: 4em;
+	}
+
+	.thead-default td #printIcon {
+		margin-left: 2em;
+	}
+
+	.column-headers th span {
+		display: block;
+		padding-bottom: 1em;
+	}
+
+	.header-masivo {
+		padding: 1em 2em !important;
+	}
+
+	.ncx_date_input {
+		display: inline-block;
+		padding-left: 1em;
+	}
+
+	/* Transportistas en Masivo */
+	#alternar-transportistas {
+		border: 1px solid #000;
+		padding: 5px;
+	}
+
+	#alternar-transportistas:hover {
+		background-color: #ff5100;
+		color: #fff;
+	}
+
+	.nacextabmasivo .accordion.panel {
+		display: none;
+	}
+
+	#ncx_boxinfo_masivo {
+		margin-top: 1em;
+	}
+
+	#ncx_boxinfo_masivo .inlineSuperior select, #ncx_boxinfo_masivo .inlineSuperior input, #ncx_boxinfo_masivo .inlineSuperior p {
+		display: inline-block !important;
+		width: auto !important;
+	}
+
+	.bootstrap #ncx_boxinfo_masivo input:not([type='button']):not([type='submit']), .bootstrap #ncx_boxinfo_masivo select, .bootstrap #ncx_boxinfo_masivo textarea {
+		background-color: transparent;
+		border: none;
+		border-top: 1px solid lightgray;
+	}
+
+	.bootstrap #ncx_boxinfo_masivo input[type='text']:read-only, .bootstrap #ncx_boxinfo_masivo input[type='text']:disabled {
+		background-color: #eee;
+	}
+
+	#list_table tbody {
+		text-align: center;
+	}
+
+	.ui-datepicker .ui-state-active {
+		background: #FD8921 !important;
+		border: 1px solid #ff5100 !important;
+		color: #fff !important;
+	}
+
+	/* Estilos PS unitaria */
+	.subheader {
+		background-color: #fff;
+		padding: 1em 0;
+		border-bottom: 2px solid #ff5100;
+		margin-bottom: 1em;
+		border-radius: 5px;
+	}
+
+	.nacex-logo, .idpedido-input {
+		display: block;
+	}
+
+	.idpedido-input b {
+		padding-right: 5px;
+	}
+
+	#btnbuscar {
+		display: inline-block;
+		margin-top: 0 !important;
+	}
+
+	.thead-default {
+		background-color: #fff;
+	}
+
+	.column-headers th {
+		text-align: center;
+		font-weight: bold !important;
+	}
+
+	/* Estilos Listado de Salidas */
+	#ncx_div_listado {
+		background-color: #fff;
+		border-radius: 5px;
+	}
+
+	#ncx_div_listado h1 {
+		padding: 1em;
+		padding-bottom: 0;
+	}
+
+	#ncx_div_listado #info-usuario {
+		padding: 1em;
+		padding-top: 0;
+		border-bottom: 2px solid #ff5100;
+		font-weight: 800;
+	}
+
+	.subheader .pageTitle {
+		margin-left: 2em;
+		padding-top: 1em;
+	}
+
+	#ncx_desde, #ncx_hasta {
+		display: inline-block;
+		margin-bottom: 1em;
+	}
+
+	#ncx_tabla_listado {
+		text-align: center;
+	}
+
+	#ncx_tabla_listado tfoot {
+		background-color: #ff5100;
+		color: #fff;
+	}
+
+	#info-usuario sub {
+		color: #ff5100;
+	}
+
+	.column-headers th {
+		vertical-align: bottom !important;
+	}
+
+	/* Nacex formulario Frontend */
+	div.ncx_network_error {
+		background-image: url(../../nacex/images/icono_network_error.png);
+		background-position: 10px 7px;
+		background-repeat: no-repeat;
+	}
+
+	div.ncx_network_error h1 {
+		margin-bottom: 6px;
+		margin-left: 50px;
+		margin-top: 2px;
+	}
+
+	div.ncx_network_error div.metodo {
+		color:grey;
+		margin:10px;
+		padding:0 10px;
+	}
+
+	div.ncx_network_error div.descripcion {
+		font-style:italic;
+	}
+
+	ul.estado_expedicion {
+		/*margin-top:5px;
+		color:grey;
+		border:1px solid grey;*/
+		/*float:right;
+        background-color:#FFF;
+		text-align:center;
+		display:inline;
+		width:100%!important;
+		height:auto!important;
+		padding:10px 3px 10px 0;*/
+		/*background: no-repeat 10px 10px #FFF;*/
+		background-color: #fff;
+		box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, .2);
+		padding: 1rem;
+		text-align: center;
+	}
+
+	ul.estado_expedicion img {
+		width: 200px;
+		margin-bottom: 1em;
+	}
+
+	ul.estado_expedicion h3 {
+		margin-top: -5px;
+		padding: 5px;
+	}
+
+	ul.estado_expedicion h3.ncx_error {
+		background: url(../../nacex/images/error.gif) no-repeat right top transparent;
+	}
+
+	ul.estado_expedicion h3.ncx_pending {
+		background: url(../../nacex/images/pending.gif) no-repeat right top transparent;
+	}
+
+	ul.estado_expedicion h3.ncx_checked {
+		background: url(../../nacex/images/checked.gif) no-repeat right top transparent;
+	}
+
+	ul.estado_expedicion h3.ncx_warning {
+		background: url(../../nacex/images/warning.gif) no-repeat right top transparent;
+	}
+
+	ul.estado_expedicion h3.ncx_question {
+		background: url(../../nacex/images/question.gif) no-repeat right top transparent;
+	}
+
+	.icon-truck.orange, .material-icons.orange {
+		color: orange !important;
+	}
+
+	.icon-truck.green, .material-icons.green {
+		color: green !important;
+	}
+
+	.icon-truck.red, .material-icons.red {
+		color: red !important;
+	}
+
+	.icon-truck.goldenrod, .material-icons.goldenrod {
+		color: goldenrod !important;
+	}
+
+	.pointer {
+		cursor: pointer;
+	}
+
+	#ncx_info_exp input[type=radio], #ncx_info_exp input[type=checkbox], #ncx_info_shop input[type=radio], #ncx_info_shop input[type=checkbox] {
+		margin-left: 10px;
+	}
+
+	.accordion.panel {
+		padding-bottom: 0px !important;
+	}
+
+	.accordion span.panel-heading {
+		cursor: pointer;
+		display: block;
+	}
+
+	.accordion .card-header {
+		padding: 5px;
+	}
+
+	.accordion > .card-header {
+		margin-bottom: 5px;
+	}
+
+	.additional-actions {
+		display: inline-block;
+		width: 100%;
+	}
+
+	.additional-actions form {
+		float: left;
+		/*margin-right: 21rem;*/
+		/*width: 485px;*/
+	}
+
+	/* Gastos de manipulación en el summary del checkout */
+	#cart-shipping-summary {
+		background-color: #f5f5f5;
+		padding: 5px 5px 0 10px;
+		font-size: 0.8rem;
+		line-height: 1;
+		font-style: italic;
+	}
+	#cart-shipping-summary .label {
+		font-size: .8rem;
+	}
+
+	/* Detalles Agencia en Infobox detalle pedido */
+	@font-face {
+		font-family: 'Avenir Book';
+		src: url('fonts/Avenir-Book.woff2') format('woff2'),
+		url('fonts/Avenir-Book.woff') format('woff'),
+		url('fonts/Avenir-Book.ttf') format('truetype');
+		font-weight: normal;
+		font-style: italic;
+	}
+	.Z3 {
+		min-height: 100px;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		margin-top: 10px;
+		display: block;
+		z-index: 800;
+		float: left;
+		background: white;
+		position: inherit;
+		height: 100%;
+		font-family: 'Avenir Book', Verdana, Arial, Helvetica, sans-serif !important;
+		font-size: 11pt;
+		line-height: 1.5;
+		/*border-top: 10px solid #3c3c3c;
+		border-bottom: 1px solid #3c3c3c;*/
+		margin-bottom: 10px;
+		border: 1px solid #e1d3c1;
+	}
+
+	.Z3 .texto {
+		text-align: initial;
+		color: #555;
+		padding: 0px 20px;
+		font-size: 12pt;
+		width: 99.99999%;
+		clear: left;
+		display: grid;
+		padding-bottom: 10px;
+	}
+
+	.Z3 #foto {
+		/*min-width:220px;
+		height: 200px;*/
+		margin-left: 1.5em;
+	}
+
+	.nx-container:after, .nx-container:before, .nx-row:after, .nx-row:before, .nx-row-padding:after, .nx-row-padding:before {
+		content: "";
+		display: table;
+		clear: both;
+	}
+
+	.nx-row-padding {
+		width: 100%;
+		padding-left: 8px;
+		padding-right: 8px;
+		padding-top: 1em;
+		float: left;
+		overflow: auto;
+	}
+	.c4, c6 {
+		float: left;
+	}
+	.c7 h3 {
+		font-size: 20px !important;
+		color: #000 !important;
+		font-weight: bold;
+		margin: 0 !important;
+		margin-top: 0 !important;
+		margin-bottom: 1rem !important;
+		border: none !important;
+		height: auto !important;
+		line-height: 1.2em !important;
+		padding: 0 0 0 5px !important;
+		text-transform: none !important;
+		font-family: 'Avenir Book', Verdana, Arial, Helvetica, sans-serif !important;
+	}
+
+	/** Estilos de página de Atención al cliente **/
+	.ncx_feedback_container {
+		margin-top: 2em;
+	}
+	.ncx_feedback_container .accordion span {
+		margin-right: 0.5em;
+	}
+	.ncx_feedback_container h2.accordion {
+		color: #ff5100;
+		font-weight: 600;
+		padding: 5px 0;
+	}
+	.ncx_feedback_container h2.accordion:hover {
+		cursor: pointer;
+	}
+	.ncx_feedback_container .material-icons {
+		vertical-align: middle;
+	}
+	#element.feedback .active h2 {
+		border-bottom: 3px solid #ff5100;
+		background-color: #ffede5;
+	}
+	.ncx_feedback_container fieldset, .ncx_feedback_container fieldset legend {
+		background-color: #fff;
+	}
+	form.atencion-cliente {
+		width: 75%;
+		margin: auto;
+	}
+	form.atencion-cliente fieldset {
+		margin: 10px 0px;
+		border: 1px solid #ff5100;
+	}
+	form.atencion-cliente legend {
+		padding: 0px 10px;
+		color: #ff5100;
+		height: initial;
+		font-size: 16px;
+		text-transform: uppercase;
+		border: none;
+	}
+
+	form.atencion-cliente label {
+		font-size: 14px;
+		color: #ff5100;
+		font-weight: bold;
+		display: block;
+		margin-bottom: 5px;
+	}
+
+	form.atencion-cliente select, form.atencion-cliente input, form.atencion-cliente textarea,
+	.bootstrap #configForm select, .bootstrap #configForm input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
+	#ncx_boxinfo select, #ncx_boxinfo input:not([type='button']):not([type='submit']):not([type='radio']), #ncx_boxinfo textarea {
+		border: 0;
+		outline: 0px;
+		border-top: 1px solid lightgray;
+		outline: none;
+		background: 0;
+		margin-right: 0.8em;
+		margin-bottom: 1.5em;
+		color: #444;
+		font-size: 12pt;
+		min-width: 160px;
+		box-shadow: none;
+	}
+
+	.bootstrap #configForm select, .bootstrap #configForm input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
+	#ncx_boxinfo select, #ncx_boxinfo input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
+	#ncx_boxinfo_masivo select, #ncx_boxinfo_masivo input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']) {
+		margin-bottom: 0;
+	}
+
+	form.atencion-cliente select:focus, form.atencion-cliente input:focus, form.atencion-cliente textarea:focus,
+	.bootstrap #configForm select:focus, .bootstrap #configForm input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']):focus,
+	#ncx_boxinfo select:focus, #ncx_boxinfo input:not([type='button']):not([type='submit']):not([type='radio']):focus, #ncx_boxinfo textarea:focus,
+	#ncx_boxinfo_masivo select:focus, #ncx_boxinfo_masivo input:not([type='button']):not([type='submit']):not([type='radio']):focus, #ncx_boxinfo_masivo textarea:focus {
+		border-top: 2px solid #ff5100;
+	}
+
+	form.atencion-cliente input, form.atencion-cliente select,
+	.bootstrap #configForm select, .bootstrap #configForm input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
+	#ncx_boxinfo select, #ncx_boxinfo input:not([type='radio']),
+	#ncx_boxinfo_masivo select, #ncx_boxinfo_masivo input:not([type='radio']) {
+		display: block;
+		width: 50%;
+		font-weight: 300;
+	}
+
+	form.atencion-cliente fieldset > input, form.atencion-cliente fieldset > label {
+		margin-top: 10px;
+		margin-left: 10px;
+	}
+
+	form.atencion-cliente input[type='text'],
+	.bootstrap #configForm input[type='text'], .bootstrap #configForm input[type='password'],
+	#ncx_boxinfo input[type='text'], #ncx_boxinfo input[type='number'] {
+		border-bottom: none;
+		border-left: none;
+		border-right: none;
+		box-shadow: none;
+	}
+
+	form.atencion-cliente input[type='checkbox'] {
+		color: #fff !important;
+		background-color: #3c3c3c !important;
+		margin: 5px 3px 2px 10px;
+		height: 0.6em;
+		position: relative;
+		top: -2px;
+		left: -5px;
+		float: left;
+		min-width: 0.9em;
+		min-height: 0.9em;
+		clear: left;
+		width: auto;
+	}
+	form.atencion-cliente input[type='submit'] {
+		border: 1px solid #ff5100;
+		color: #ffffff;
+		font-weight: normal;
+		font-size: 1.3em;
+		background: #ff5100;
+		padding: 3px 20px 3px 20px;
+		text-decoration: none;
+		line-height: 2;
+		outline: 0;
+		border-radius: 0;
+		margin-top: 3px;
+		width: auto;
+	}
+	form.atencion-cliente label.consulta {
+		text-align: left;
+	}
+	form.atencion-cliente input[type='submit']:hover {
+		color: #ff5100;
+		background: none;
+		text-decoration: none;
+		cursor: pointer;
+	}
+	form.atencion-cliente textarea {
+		border: 1px dashed lightgray;
+		border-top: 1px solid lightgray;
+		outline: none;
+		background: 0;
+		margin-right: 0.8em;
+		margin-bottom: 2em;
+		margin-left: 10px;
+	}
+	form.atencion-cliente .copia {
+		margin: 20px 0;
+	}
+	form.atencion-cliente .copia label.label-noerror {
+		color: inherit;
+	}
+	form.atencion-cliente span.mini {
+		display: block;
+		font-size: 8pt;
+		font-style: italic;
+	}
+	form.atencion-cliente label.mage-error {
+		background-color: #ffede5;
+	}
+	form.atencion-cliente input.mage-error {
+		border-top: 2px solid #ff5100;
+	}
+	form.atencion-cliente input.mage-error:not(:focus) {
+		border-top: 1px solid #ff5100;
+	}
+	form.atencion-cliente input.mage-error::placeholder, .form.atencion-cliente input[type="checkbox"]:checked::before, .copia a {
+		color: #ff5100;
+		text-decoration: none;
+	}
+	.copia a:hover {
+		text-decoration: underline;
+	}
+	table.admin__table-primary.feedback {
+		border-top: 1px solid #e3e3e3;
+		border-bottom: 1px solid #e3e3e3;
+	}
+	.action-children {
+		margin: 0 0.5rem;
+		color: #333;
+	}
+
+	.action-children a:link {
+		text-decoration: none;
+		color: #333;
+	}
+
+	.action-children a:link:hover {
+		color: #666;
+	}
+
+	.adminnacexlogs .nobootstrap {
+		min-width: auto;
+	}
+
+	.adminnacexlogs .nobootstrap #cabecera input.ncx_button {
+		color: #fff;
+	}
+
+	.adminnacexlogs .nobootstrap #cabecera input.ncx_button:hover {
+		color: #ff5100;
+	}
+
+	tbody.log-body tr:nth-child(even) {
+		background-color: #fff;
+	}
+
+	tbody.log-body td:first-child {
+		border-left: 0.1rem solid #d6d6d6;
+		padding: 0 1rem !important;
+	}
+
+	tbody.log-body td:last-child {
+		border-right-style: solid;
+	}
+
+	tbody.log-body td {
+		border-right: 0.1rem dashed #d6d6d6;
+	}
+
+	tbody.log-body tr:hover {
+		background-color: #ffede5;
+	}
+	/* Apartado "Podemos resolver dudas" */
+	#ncx_feedback_table_container ul.ac-list {
+		list-style: none !important;
+	}
+	#ncx_feedback_table_container ul.ac-list li {
+		padding: 0.5em 0;
+		font-size: 14px;
+	}
+	#ncx_feedback_table_container ul.ac-list li a {
+		text-decoration: none;
+	}
+	#ncx_feedback_table_container ul.ac-list li a:hover {
+		background-color: #ffede5;
+		padding: 5px;
+	}
+
+	/* VERSION CONFIG */
+	.new-version {
+		background-color: #ffdccc;
+		border-left: 3px solid #ff5100;
+		padding: 0.5em;
+		padding-left: 1em;
+	}
+	.new-version a {
+		color: #ff5100;
+	}
+	#accordion span {
+		color: #ff5100;
+		cursor: pointer;
+		line-height: 2;
+	}
+	#accordion span:hover {
+		color: #333;
+		text-decoration: underline;
+	}
+	#contentChangelog {
+		display: none;
+		max-height: 200px;
+		overflow: auto;
+		background-color: #fff;
+		border-left: 3px solid #ff5100;
+		padding-left: 0.5em;
+		/*margin: 0.5em 0;*/
+		max-width: 50%;
+		position: absolute;
+	}
+
+	/* Estilos tabla NacexShop */
+	table#nacexshopChosen input, table#tabla-nacexlogs {
+		width: 100%;
+	}
+
+	/* Estilos enlace PDF a la guía de usuario de la configuración */
+	.user-guide-pdf {
+		float: right;
+		margin-top: -1em;
+	}
+
+	#download-ncx-user-guide b {
+		margin-right: 2rem;
+	}
+
+	/* Estilos del elemento del menú */
+	.main-menu #subtab-AdminNacex.link-levelone.-active > .link {
+		border-left: .25rem solid #EA7601;
+	}
+
+	.main-menu #subtab-AdminNacex.link-levelone.-active > .link .material-icons:first-child,
+	#subtab-AdminNacex .link-leveltwo > .link:hover, #subtab-AdminNacex .link-leveltwo.-active > .link,
+	.nav-bar #subtab-AdminNacex .material-icons {
+		color: #EA7601;
+	}
+
+	/* Eliminar cierre infowindow maps */
+	.gm-ui-hover-effect[aria-label='Cerrar'] {
+		display: none !important;
+	}
+
+	/***** Mejora visualización botones + tabla nacexShop *****/
+	.ncx_button, #ncx_info_exp input.button, #ncx_info_shop input.button, .ncx_button_small {
+		background-color: #ff5100;
+		border: 1px solid #ff5100;
+		color: #fff;
+		font-size: 14px;
+		/*font-weight: 700 !important;*/
+		cursor: pointer !important;
+		margin-top: 10px !important;
+		padding: .4em 1.5em !important;
+	}
+
+	#ncx_info_exp .printDevolucion.button, .ncx_button.green {
+		background-color: #00AE42;
+		border: 1px solid #00AE42;
+		margin-left: calc(38% / 2);
+		margin-top: 0 !important;
+	}
+
+	#ncx_info_exp .printDevolucion.button:hover, #ncx_info_exp .printDevolucion.button:focus-visible,
+	.ncx_button.green:hover, .ncx_button.green:focus-visible {
+		background-color: #fff;
+		color: #00AE42;
+		outline: 0;
+	}
+
+	.ncx_button:hover, #ncx_info_exp input.button:hover, #ncx_info_shop input.button:hover, .ncx_button_small:hover {
+		background-color: #fff;
+		color: #ff5100;
+	}
+
+	.ncx_button.inverse, #ncx_info_exp input.button.inverse, #ncx_info_shop input.button.inverse, .ncx_button_small.inverse {
+		background-color: #fff;
+		color: #ff5100;
+	}
+
+	.ncx_button.inverse:hover, #ncx_info_exp input.button.inverse:hover, #ncx_info_shop input.button.inverse:hover, .ncx_button_small.inverse:hover {
+		background-color: #ff5100;
+		color: #fff;
+	}
+
+	/* tabla */
+	#tabla-nacexlogs .material-icons {
+		color: #555;
+	}
+
+	#tabla-nacexlogs thead .column-headers {
+		border-bottom: 1px solid #ff5100;
+	}
+
+	#tabla-nacexlogs thead .column-headers th {
+		background-color: #fff;
+	}
+
+	#tabla-nacexlogs, #tabla-nacexlogs tr td {
+		border: none;
+	}
+
+	#nacexshopChosen, #tabla-nacexlogs {
+		font-size: .850rem;
+	}
+
+	#nacexshopChosen tr.odd, #tabla-nacexlogs tr.odd, #ncx_tabla_listado tr.odd td {
+		background-color: antiquewhite;
+	}
+
+	#nacexshopChosen tr > td:first-child {
+		border-right: #ff5100 solid 1px;
+		text-align: right;
+
+	}
+
+	#nacexshopChosen td input, #tabla-nacexlogs td input {
+		font-weight: bold;
+		border: none;
+		background-color: transparent;
+	}
+
+	/* Editar direccion NacexShop admin */
+	form #cpPointsChoices {
+		width: 95%;
+		margin: 10px 0;
+	}
+
+	/* Nuevos estilos del formulario de Configuración */
+	#ayuda .version h2 {
+		padding-left: 2em;
+	}
+
+	#ayuda .logo-nacex-by-logista {
+		padding: 1em;
+		text-align: center;
+	}
+
+	.bootstrap #configForm legend {
+		border-bottom: 1px solid #ff5100 !important;
+	}
+
+	.bootstrap #configForm hr {
+		border-top: 1px solid #ff5100 !important;
+	}
+
+	.bootstrap #configForm input:not([type='button']):not([type='submit']), .bootstrap #configForm select {
+		background-color: transparent;
+	}
+
+	.bootstrap #configForm input[type='text']:read-only, .bootstrap #configForm input[type='text']:disabled {
+		background-color: #eee;
+	}
+
+	#configForm .resaltado {
+		color: #555;
+	}
+
+	#configForm .bold {
+		font-weight: bold;
+	}
+
+	/* Editar estilos de los módulos de PHP */
+	#modulosResult {
+		margin-top: 1em;
+	}
+
+	/* Antiguo formulario */
+	.tabItem {
+		display: block;
+		background: #FFFFFF;
+		border: 1px solid #ff5100;
+		border-radius: 5px;
+		padding: 10px;
+		padding-top: 20px;
+	}
+
+	.columna1 {
+		width: 250px;
+		/*text-align:left;*/
+		/*vertical-align:top;*/
+		/*font-size: 0.8em;*/
+		/*font-weight:bold;*/
+	}
+
+	.columna2 {
+		text-align: left;
+		padding-bottom: 1em;
+	}
+
+	/* Replicar estilos de Radio Buttons porque dan problemas con el bootstrap */
+	.bootstrap #configForm .input-group {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: stretch;
+		width: 100%;
+	}
+
+	.bootstrap #configForm .ps-switch {
+		position: relative;
+		display: inline-block;
+		min-width: 8.125rem;
+		margin-top: 5px;
+		font-size: .813rem;
+		background-color: #eff1f2;
+		border-radius: 1px;
+		text-align: center;
+	}
+
+	.bootstrap #configForm .ps-switch input {
+		position: absolute;
+		opacity: 0;
+	}
+
+	.bootstrap #configForm .ps-switch label {
+		position: relative;
+		z-index: 2;
+		float: left;
+		width: 50%;
+		height: 100%;
+		padding: .231em .769em;
+		margin: 0;
+		vertical-align: middle;
+		text-align: center;
+		text-transform: uppercase;
+		color: #bbcdd2;
+		font-weight: 400;
+		cursor: pointer;
+		transition: color .2s ease-out;
+	}
+
+	.bootstrap #configForm .ps-switch input:checked + label {
+		color: #fff;
+	}
+
+	.bootstrap #configForm .ps-switch input:last-of-type:checked ~ .slide-button {
+		background-color: #2eacce;
+		left: 50%;
+	}
+
+	.ps-switch > .slide-button {
+		position: absolute;
+		top: 0;
+		left: 0;
+		padding: 0;
+		z-index: 1;
+		width: 50%;
+		height: 100%;
+		color: #fff;
+		background-color: #c05c67;
+		transition: all .3s ease-out;
+	}
+
+	.bootstrap #configForm input[type="radio"] {
+		box-sizing: border-box;
+		padding: 0;
+	}
+
+	.bootstrap #configForm .form-text {
+		color: #6c868e;
+		font-size: .75rem;
+		display: block;
+		margin-top: .25rem;
+	}
+
+	.bootstrap #configForm .small, .bootstrap #configForm small {
+		font-size: 80%;
+		font-weight: 400;
+	}
+
+	/* Estilos radios nacex */
+	.bootstrap #configForm .ps-switch.nacex {
+		background-color: #fff;
+		border: 1px solid #ff5100;
+	}
+
+	.bootstrap #configForm .ps-switch.nacex label {
+		color: #ff9666;
+	}
+
+	.bootstrap #configForm .ps-switch.nacex input:last-of-type:checked ~ .slide-button {
+		background-color: #ff5100;
+	}
+
+	.bootstrap #configForm .ps-switch.nacex > .slide-button {
+		color: #ff5100;
+		background-color: #ff5100;
+	}
+
+	/* Ajustar texto de los labels de los nuevos radios */
+	#configForm .form-control-label {
+		padding-right: 2em;
+	}
+
+	/* Lupa para el formulario de la info de las expediciones */
+	#magnifying-glass {
+		font-size: 2em; /* This controls the size. */
+		display: inline-block;
+		width: 0.4em;
+		height: 0.4em;
+		border: 0.1em solid #ff5100;
+		position: relative;
+		border-radius: 0.35em;
+		margin-right: 3em;
+	}
+
+	#magnifying-glass::before {
+		content: "";
+		display: inline-block;
+		position: absolute;
+		right: -0.27em;
+		bottom: -0.15em;
+		border-width: 0;
+		background: #ff5100;
+		width: 0.35em;
+		height: 0.08em;
+		-webkit-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		-o-transform: rotate(45deg);
+	}
+
+	/* Botón toTop de nacexMasivo */
+	#nacexToTop {
+		display: none; /* Hidden by default */
+		position: fixed; /* Fixed/sticky position */
+		bottom: 20px; /* Place the button at the bottom of the page */
+		right: 30px; /* Place the button 30px from the right */
+		z-index: 99; /* Make sure it does not overlap */
+		outline: none; /* Remove outline */
+		background-color: #ff5100; /* Set a background color */
+		color: white; /* Text color */
+		cursor: pointer; /* Add a mouse pointer on hover */
+		padding: 15px 20px 10px; /* Some padding */
+		border-radius: 50%; /* Rounded corners */
+		border: 2px solid #ff5100;
+		font-size: 18px; /* Increase font size */
+	}
+
+	#nacexToTop:hover {
+		background-color: #fff;
+	}
+
+	#nacexToTop:hover > .arrow {
+		border: solid #ff5100;
+		border-width: 0 5px 5px 0;
+	}
+
+	.arrow {
+		border: solid white;
+		border-width: 0 5px 5px 0;
+		display: inline-block;
+		padding: 5px;
+	}
+
+	.up {
+		transform: rotate(-135deg);
+		-webkit-transform: rotate(-135deg);
+	}
+
+	/* Esconder apartados que dependen de otro */
+	[data-depends] {
+		display: none;
+	}
+
+	/* Apartado de Revisar carriers */
+	#tableEditCarrier {
+		display: flex;
+		margin-top: 3em;
+	}
+}
