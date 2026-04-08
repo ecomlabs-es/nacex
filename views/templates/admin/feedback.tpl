@@ -89,18 +89,6 @@
         </a>
     </div>
     <div id="ncx_feedback_table_container">
-        <div id="accordion1">
-            <h2 id="tabTitle1" class="accordion"><i
-                        class="material-icons">keyboard_arrow_down</i>{l s='Can we solve any doubts?' mod="nacex"}</h2>
-            <div id="tabContent1" style="display: none;">
-                <ul class="ac-list">
-                    {foreach $filenames as $filename}
-                        <li><a href="{$filepath|cat:$filename}" target="_blank">{$filename}</a></li>
-                    {/foreach}
-                </ul>
-            </div>
-        </div>
-
         {if $fb->filesExist()}
             <div id="accordion2">
                 <h2 id="tabTitle2" class="accordion"><i
