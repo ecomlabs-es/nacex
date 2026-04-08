@@ -143,15 +143,21 @@ class nacexshop
 
     private static $fileContentsCache = [];
 
-    private function searchFile($shop_codigo, $file, $isShop)
+    /**
+     * Lee el contenido del CSV con cache por request. Una sola lectura de disco por fichero.
+     */
+    private static function getCsvContents($file)
     {
-        // Cache del contenido del CSV en memoria para evitar releer en cada busqueda
         if (!isset(self::$fileContentsCache[$file])) {
             $raw = file_get_contents($file);
-            // toUtf8 por retrocompatibilidad con archivos CSV descargados antes del fix de codificación
             self::$fileContentsCache[$file] = $raw !== false ? nacexutils::toUtf8(trim($raw)) : '';
         }
-        $contents = self::$fileContentsCache[$file];
+        return self::$fileContentsCache[$file];
+    }
+
+    private function searchFile($shop_codigo, $file, $isShop)
+    {
+        $contents = self::getCsvContents($file);
 
         // Si es tienda coge el código, si no, coge el alias
         if ($isShop) {
@@ -254,10 +260,7 @@ class nacexshop
     private function searchCP($cp, $file, $digits)
     {
 
-        // get the file contents, assuming the file to be readable (and exist)
-        $contents = trim(file_get_contents($file));
-        // Codificamos los caracteres correctamente
-        $contents = nacexutils::toUtf8($contents);
+        $contents = self::getCsvContents($file);
 
         // Aislamos el código de la provincia
         if (strlen($cp) == 5 && $digits != 5) { $pc = substr($cp, 0, $digits); }
@@ -352,7 +355,7 @@ class nacexshop
 
         $tienda = ($agencia) ? $this->searchFile($shop_codigo, $file[0], false)[0] : $this->searchFile($shop_codigo, $file[0], true)[0];
 
-        $contents = nacexutils::toUtf8(file_get_contents($file[0]));
+        $contents = self::getCsvContents($file[0]);
 
         // Cogemos el alias de la tienda ( codigo|ALIAS-xx|... )
         $alias = explode('-', explode('|', $tienda[0])[1])[0];
@@ -491,10 +494,7 @@ class nacexshop
     public function getShopByCode($shop_codigo, $isShop) {
         $file = glob(dirname(__FILE__) . '/files/droppoint*.csv')[0];
 
-        // get the file contents, assuming the file to be readable (and exist)
-        $contents = file_get_contents($file);
-        // Codificamos los caracteres correctamente
-        $contents = nacexutils::toUtf8($contents);
+        $contents = self::getCsvContents($file);
 
         // Si es tienda coge el código, si no, coge el alias
         if ($isShop) {
