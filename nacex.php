@@ -1617,11 +1617,16 @@ class nacex extends CarrierModule
 
         if ($result) {
             // Miramos si ya están creados los transportistas genéricos
-            $selectStd = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'carrier WHERE ncx="nacexG"');
-            $selectShp = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'carrier WHERE ncx="nacexshopG"');
-            $selectInt = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'carrier WHERE ncx="nacexintG"');
+            $genericCarriers = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'carrier WHERE ncx IN ("nacexG","nacexshopG","nacexintG")');
 
-            if (sizeof($selectStd) == 0 && sizeof($selectShp) == 0 && sizeof($selectInt) == 0) {
+            $selectStd = $selectShp = $selectInt = [];
+            foreach ($genericCarriers as $c) {
+                if ($c['ncx'] === 'nacexG') { $selectStd[] = $c; }
+                elseif ($c['ncx'] === 'nacexshopG') { $selectShp[] = $c; }
+                elseif ($c['ncx'] === 'nacexintG') { $selectInt[] = $c; }
+            }
+
+            if (empty($genericCarriers)) {
                 nacexDAO::setTransportistasBackend();
             } else {
                 nacexDAO::setTransportistasBackend($selectStd, $selectShp, $selectInt);
