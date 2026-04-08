@@ -139,10 +139,10 @@ class LBnewService
 
         // Eliminamos las referencias del servicio
         nacexutils::writeNacexLog('removeNewService:: Eliminamos las referencias del servicio');
-        $query = 'SELECT id_carrier from ' . _DB_PREFIX_ . "carrier WHERE ncx = '" . $ncx . "' AND tip_serv = '" . $transportista[0] . "'";
+        $query = 'SELECT id_carrier FROM ' . _DB_PREFIX_ . "carrier WHERE ncx = '" . pSQL($ncx) . "' AND tip_serv = '" . pSQL($transportista[0]) . "'";
         $result = Db::getInstance()->executeS($query);
         foreach ($result as $value) {
-            $query = 'DELETE from ' . _DB_PREFIX_ . 'carrier WHERE id_carrier = ' . $value['id_carrier'];
+            $query = 'DELETE FROM ' . _DB_PREFIX_ . 'carrier WHERE id_carrier = ' . (int)$value['id_carrier'];
             if (!Db::getInstance()->execute($query)) {
                 nacexutils::writeNacexLog('removeNewService :: Error al borrar el servicio.');
             }

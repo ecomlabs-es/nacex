@@ -1,25 +1,39 @@
 <?php
 
+require_once(dirname(__FILE__) . '/../../config/config.inc.php');
+require_once(dirname(__FILE__) . '/../../init.php');
 require_once(dirname(__FILE__) . '/LBnewService.php');
+
+// Verificar que el usuario es un admin logueado
+$context = Context::getContext();
+if (!$context->employee || !$context->employee->id) {
+    header('Content-Type: application/json');
+    die(json_encode(['success' => false, 'errors' => ['auth' => 'Unauthorized']]));
+}
 
 $LBnewService = new LBnewService();
 $errors = [];
 $data = [];
 
-if (isset($_POST['action'])) {
+$action = Tools::getValue('action');
+
+if ($action) {
 
     // Añadimos un nuevo servicio
-    if ($_POST['action'] == 'add') {
-        if (empty($_POST['newCodigo'])) {
+    if ($action == 'add') {
+        $newCodigo = Tools::getValue('newCodigo');
+        $newName = Tools::getValue('newName');
+
+        if (empty($newCodigo)) {
             $errors['newCodigo'] = 'El código es obligatorio';
         } else {
             $codes = $LBnewService->getAllServices();
-            if (array_key_exists($_POST['newCodigo'], $codes)) {
+            if (array_key_exists($newCodigo, $codes)) {
                 $errors['newCodigo'] = 'Ese código ya se está usando';
             }
         }
 
-        if (empty($_POST['newName'])) {
+        if (empty($newName)) {
             $errors['newName'] = 'Hay que asignar un nombre';
         }
 
@@ -30,13 +44,13 @@ if (isset($_POST['action'])) {
             $data['success'] = true;
             $data['message'] = 'Se ha añadido el nuevo servicio';
 
-            // Como no hay errores, creamos/modificamos el CSV con el método creado y lo añadimos
             $LBnewService->manageCSV();
         }
 
-    } elseif ($_POST['action'] == 'remove') {
+    } elseif ($action == 'remove') {
+        $selectedOptions = Tools::getValue('selectedOptions');
 
-        if (empty($_POST['selectedOptions'])) {
+        if (empty($selectedOptions)) {
             $errors['selectedOptions'] = 'No hay ningún servicio seleccionado';
         }
 
@@ -47,16 +61,18 @@ if (isset($_POST['action'])) {
             $data['success'] = true;
             $data['message'] = 'Se han eliminado los servicios seleccionados';
 
-            $LBnewService->removeServicesCSV($_POST['selectedOptions']);
+            $LBnewService->removeServicesCSV($selectedOptions);
         }
 
-    } elseif ($_POST['action'] == 'edit') {
+    } elseif ($action == 'edit') {
+        $code = Tools::getValue('code');
+        $editName = Tools::getValue('editName');
 
-        if (empty($_POST['code'])) {
+        if (empty($code)) {
             $errors['code'] = 'No hay ningún servicio seleccionado';
         }
 
-        if (empty($_POST['editName'])) {
+        if (empty($editName)) {
             $errors['editName'] = 'Hay que asignar un nombre';
         }
 
@@ -67,7 +83,6 @@ if (isset($_POST['action'])) {
             $data['success'] = true;
             $data['message'] = 'Se ha modificado el servicio';
 
-            // Como no hay errores, creamos/modificamos el CSV con el método creado y lo añadimos
             $LBnewService->editServiceCSV();
         }
     }
