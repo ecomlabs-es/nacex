@@ -1,3 +1,38 @@
+----------------2.5.0 ^-----------------
+Compatibilidad con PrestaShop 1.7.8, 8.x y 9.x
+Compatibilidad con PHP 7.4, 8.0, 8.1, 8.2, 8.3 y 8.4
+Sustituir utf8_encode (eliminado en PHP 8.2) por toUtf8() con detección automática de encoding
+Corregir number_format() para PHP 8+ (cast a float)
+Compatibilidad Doctrine DBAL 3.x para PrestaShop 9 (executeQuery/fetchAllAssociative)
+Actualizar hooks: eliminar hooks legacy pre-1.7.8, registrar hooks Symfony
+Corregir SQL injection en múltiples archivos con (int) cast y pSQL()
+Corregir XSS en formularios y variables JavaScript
+Mejorar hash anti-CSRF: random_int(), validación como par, token de un solo uso
+Reemplazar $_POST/$_GET directos por Tools::getValue()
+Activar verificación SSL en llamadas cURL y añadir timeouts
+Sanitizar campos Address (city, address1) antes de creación
+Cache de carrier lookups por request (isNacexCarrier/Shop/Int)
+Centralizar lectura de CSV con cache por request (getCsvContents)
+Optimizar listado de pedidos: una sola query para todas las expediciones en vez de N+1
+Filtrar estados finales en SQL para evitar consultas WS innecesarias
+Consolidar queries de carriers genéricos en una sola con IN
+Persistir selección NacexShop en localStorage entre pasos del checkout
+Convertir CSV de puntos NacexShop a UTF-8 al descargar
+Descarga automática del CSV si no existe al confirmar pedido
+Resolver datos del punto NacexShop desde CSV actualizado
+Corregir updateOrderStatus: inicializar variable $estadoEncontrado
+Corregir hash_form: actualizar siempre al regenerar
+Corregir datos incompletos del shop al crear dirección
+Actualizar nombre del tab automáticamente con la versión actual
+Eliminar código muerto: nacex_loader.php (WooCommerce), nacexcontrolversion.php, jquery.cluetip.js
+Eliminar librerías duplicadas: lib/jquery-barcode, lib/jquery-printelement, lib/js-md5, lib/jquery-validate
+Eliminar jQuery 3.3.1 bundled (PrestaShop ya lo incluye)
+Eliminar carpeta includes/ sin uso
+Limpiar JavaScript: eliminar async:false innecesario, código comentado, selectores redundantes
+Añadir tests unitarios con PHPUnit
+Añadir análisis estático con PHPStan
+Añadir PHP CS Fixer para estilo de código
+Añadir workflows GitHub Actions: CI (PHP 7.4-8.4) + release automático
 ----------------2.4.9 ^-----------------
 Mejorar estructura bloques formularios en vista de pedido
 Unificar funcionalidades en la configuración con los textos
