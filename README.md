@@ -4,7 +4,7 @@ Módulo de transporte para PrestaShop que integra los servicios de mensajería d
 
 ## Requisitos
 
-- PrestaShop 1.7.7+
+- PrestaShop 1.7.8+ / 8.x / 9.x
 - PHP 7.4 / 8.0 / 8.1 / 8.2 / 8.3 / 8.4
 - Extensión PHP cURL
 
@@ -58,15 +58,39 @@ composer qa
 
 ## Cambios respecto al módulo original
 
-- Corrección de vulnerabilidades SQL injection en múltiples archivos (nacexDAO, MOunitaria, CPuntoNacexShop, CambioEstadoPedido, etc.)
-- Sustitución de `utf8_encode` (eliminado en PHP 8.2) por función compatible
-- Corrección de métodos deprecated de PrestaShop (`Execute` → `execute`, `ExecuteS` → `executeS`)
+### Compatibilidad
+- Soporte para PrestaShop 1.7.8, 8.x y 9.x
+- Compatibilidad con PHP 7.4 a 8.4
+- Sustitución de `utf8_encode` (eliminado en PHP 8.2) por `toUtf8()` con detección automática de encoding
+- Cast a `(float)` en llamadas a `number_format()` (estricto en PHP 8+)
+- Compatibilidad Doctrine DBAL 3.x (PS9): `executeQuery()`/`fetchAllAssociative()`
+- Hooks actualizados: eliminados hooks legacy pre-1.7.8, registrados hooks Symfony
+
+### Seguridad
+- Corrección de SQL injection en múltiples archivos: `(int)` cast y `pSQL()` en todas las queries
+- XSS: escapado de `$_SERVER['REQUEST_URI']` en formularios, `addslashes()` en variables JS
+- Hash anti-CSRF: `random_int()` en vez de `rand()`, validación como par hash+order_id, token de un solo uso
+- Reemplazo de `$_POST`/`$_GET` directos por `Tools::getValue()`
 - Activación de verificación SSL en llamadas cURL y adición de timeouts
-- Validación y try-catch en el tratamiento de respuestas XML del webservice
-- Corrección de bugs: variables sin inicializar, operadores incorrectos, asignaciones faltantes
-- Eliminación de código muerto y métodos sin uso
-- Añadidos tests unitarios, PHPStan y PHP CS Fixer
-- Añadidos workflows de GitHub Actions (CI + release automático)
+- Sanitización de campos Address (city, address1) antes de creación
+
+### Rendimiento
+- Cache de carrier lookups por request (`isNacexCarrier`/`isNacexShopCarrier`/`isNacexIntCarrier`)
+- Lectura de CSV centralizada con cache por request (`getCsvContents()`)
+- Listado de pedidos: una sola query para todas las expediciones en vez de N+1
+- Filtro de estados finales en SQL para evitar consultas WS innecesarias
+- Consolidación de 3 queries de carriers genéricos en una sola con `IN`
+
+### Funcionalidad
+- Selección de punto NacexShop persistida en localStorage entre pasos del checkout
+- CSV de puntos NacexShop convertido a UTF-8 al descargar, con retrocompatibilidad para archivos legacy
+- Descarga automática del CSV si no existe al confirmar pedido
+- Resolución de datos del punto NacexShop desde CSV actualizado (no datos estáticos)
+
+### Calidad de código
+- Eliminación de código muerto: hooks legacy, métodos vacíos, bloques comentados
+- Tests unitarios con PHPUnit, análisis estático con PHPStan, estilo con PHP CS Fixer
+- Workflows de GitHub Actions: CI (PHP 7.4-8.4) + release automático con zip
 
 ## Licencia
 
