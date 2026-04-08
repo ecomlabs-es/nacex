@@ -1114,8 +1114,8 @@ class nacexVIEW
         // No se puede modificar la expedicion
         if ($gestionAgencia && !$canPrint) {
             $html .= "<div id='messages-nacex' class='bootstrap' style='margin-top:10px'>
-            <div class='alert alert-danger conf' style='width:auto'>
-                " . $nacex->l("It's not possible to modify the expedition") . '
+            <div class='alert alert-info conf' style='width:auto'>
+                " . $nacex->l('No es posible modificar la expedición') . '
             </div></div>';
         }
 
