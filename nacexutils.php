@@ -25,6 +25,10 @@ class nacexutils
         if ($string === null || $string === '') {
             return '';
         }
+        // Si ya es UTF-8 válido, no convertir (evita doble codificación)
+        if (mb_check_encoding($string, 'UTF-8')) {
+            return $string;
+        }
         return mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
     }
 

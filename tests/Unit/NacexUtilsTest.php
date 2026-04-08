@@ -226,6 +226,7 @@ class NacexUtilsTest extends TestCase
             'cadena vacia' => ['', ''],
             'null' => [null, ''],
             'ascii puro' => ['Hello', 'Hello'],
+            'ya utf8 no doble codifica' => ['LOGROÑO', 'LOGROÑO'],
         ];
     }
 
