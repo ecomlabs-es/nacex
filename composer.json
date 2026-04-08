@@ -9,11 +9,7 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
-    "prestashop/circuit-breaker": "^3.0.0",
-    "doctrine/cache": "^1.6",
-    "symfony/css-selector": "^3.4.0",
-    "guzzlehttp/cache-subscriber": "^0.2.0"
+    "php": ">=7.4"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.6",
