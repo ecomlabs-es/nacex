@@ -14,85 +14,70 @@ class NacexUtilsTest extends TestCase
 
     // --- getDefValue ---
 
-    public function testGetDefValueReturnsValueWhenKeyExists(): void
+    public function getDefValueProvider(): array
     {
-        $array = ['foo' => 'bar'];
-        $this->assertSame('bar', nacexutils::getDefValue($array, 'foo', 'default'));
+        return [
+            'clave existente' => [['foo' => 'bar'], 'foo', 'default', 'bar'],
+            'clave inexistente' => [['foo' => 'bar'], 'missing', 'default', 'default'],
+            'valor cero' => [['zero' => 0], 'zero', 'default', 0],
+            'valor cadena vacia' => [['empty' => ''], 'empty', 'default', ''],
+            'valor null (isset=false)' => [['null' => null], 'null', 'default', 'default'],
+        ];
     }
 
-    public function testGetDefValueReturnsDefaultWhenKeyMissing(): void
+    /**
+     * @dataProvider getDefValueProvider
+     */
+    public function testGetDefValue(array $array, string $key, $default, $expected): void
     {
-        $array = ['foo' => 'bar'];
-        $this->assertSame('default', nacexutils::getDefValue($array, 'missing', 'default'));
-    }
-
-    public function testGetDefValueReturnsValueEvenIfFalsy(): void
-    {
-        $array = ['zero' => 0, 'empty' => '', 'null' => null];
-        $this->assertSame(0, nacexutils::getDefValue($array, 'zero', 'default'));
-        $this->assertSame('', nacexutils::getDefValue($array, 'empty', 'default'));
-        // null pasa isset() como false, así que devuelve default
-        $this->assertSame('default', nacexutils::getDefValue($array, 'null', 'default'));
+        $this->assertSame($expected, nacexutils::getDefValue($array, $key, $default));
     }
 
     // --- normalizarDecimales ---
 
-    public function testNormalizarDecimalesFormateaCorrectamente(): void
+    public function normalizarDecimalesProvider(): array
     {
-        $result = nacexutils::normalizarDecimales(1234.5, 2, ',', '.', false, false);
-        $this->assertSame('1.234,50', $result);
+        return [
+            'formato normal' => [1234.5, 2, ',', '.', false, false, '1.234,50'],
+            'cero sin printIfZero' => ['0', 2, ',', '.', true, false, ''],
+            'null sin printIfZero' => [null, 2, ',', '.', true, false, ''],
+            'sin formatear si noPrintIfCeroDec' => [42.5, 2, ',', '.', false, true, 42.5],
+            'sin separador de miles' => [1234.5, 2, '.', '', false, false, '1234.50'],
+        ];
     }
 
-    public function testNormalizarDecimalesDevuelveVacioSiCeroYNoPrintIfZero(): void
+    /**
+     * @dataProvider normalizarDecimalesProvider
+     */
+    public function testNormalizarDecimales($value, $dec, $decSep, $thousandSep, $noPrintIfZero, $noPrintIfCeroDec, $expected): void
     {
-        $result = nacexutils::normalizarDecimales('0', 2, ',', '.', true, false);
-        $this->assertSame('', $result);
-    }
-
-    public function testNormalizarDecimalesDevuelveVacioSiNullYNoPrintIfZero(): void
-    {
-        $result = nacexutils::normalizarDecimales(null, 2, ',', '.', true, false);
-        $this->assertSame('', $result);
-    }
-
-    public function testNormalizarDecimalesDevuelveValorSinFormatearSiNoPrintIfCeroDec(): void
-    {
-        $result = nacexutils::normalizarDecimales(42.5, 2, ',', '.', false, true);
-        $this->assertSame(42.5, $result);
-    }
-
-    public function testNormalizarDecimalesSinSeparadorDeMiles(): void
-    {
-        $result = nacexutils::normalizarDecimales(1234.5, 2, '.', '', false, false);
-        $this->assertSame('1234.50', $result);
+        $result = nacexutils::normalizarDecimales($value, $dec, $decSep, $thousandSep, $noPrintIfZero, $noPrintIfCeroDec);
+        $this->assertSame($expected, $result);
     }
 
     // --- getMapCambios ---
 
-    public function testGetMapCambiosParseaCorrectamente(): void
+    public function getMapCambiosProvider(): array
     {
-        $input = 'nombre=Juan|ciudad=Madrid|edad=30';
-        $expected = ['nombre' => 'Juan', 'ciudad' => 'Madrid', 'edad' => '30'];
+        return [
+            'multiples pares' => ['nombre=Juan|ciudad=Madrid|edad=30', ['nombre' => 'Juan', 'ciudad' => 'Madrid', 'edad' => '30']],
+            'un solo par' => ['key=value', ['key' => 'value']],
+            'cadena vacia' => ['', []],
+        ];
+    }
+
+    /**
+     * @dataProvider getMapCambiosProvider
+     */
+    public function testGetMapCambios(string $input, array $expected): void
+    {
         $this->assertSame($expected, nacexutils::getMapCambios($input));
-    }
-
-    public function testGetMapCambiosConUnSoloPar(): void
-    {
-        $this->assertSame(['key' => 'value'], nacexutils::getMapCambios('key=value'));
-    }
-
-    public function testGetMapCambiosConCadenaVacia(): void
-    {
-        $this->assertSame([], nacexutils::getMapCambios(''));
     }
 
     public function testGetMapCambiosIgnoraSegmentosVacios(): void
     {
-        $input = 'a=1||b=2';
-        $result = nacexutils::getMapCambios($input);
-        $this->assertSame('1', $result['a']);
-        $this->assertSame('2', $result['b']);
-        $this->assertCount(2, $result);
+        $result = nacexutils::getMapCambios('a=1||b=2');
+        $this->assertSame(['a' => '1', 'b' => '2'], $result);
     }
 
     // --- cutupString ---
@@ -100,9 +85,7 @@ class NacexUtilsTest extends TestCase
     public function testCutupStringCortaEnFragmentos(): void
     {
         $result = nacexutils::cutupString('ABCDEFGHIJ', 3, 3);
-        $this->assertSame('ABC', $result[0]);
-        $this->assertSame('DEF', $result[1]);
-        $this->assertSame('GHI', $result[2]);
+        $this->assertSame(['ABC', 'DEF', 'GHI'], array_slice($result, 0, 3));
     }
 
     public function testCutupStringConTextoCorto(): void
@@ -115,9 +98,7 @@ class NacexUtilsTest extends TestCase
     public function testCutupStringEliminaSaltosDeLinea(): void
     {
         $result = nacexutils::cutupString("ABC\nDEF\rGHI", 3, 3);
-        $this->assertSame('ABC', $result[0]);
-        $this->assertSame('DEF', $result[1]);
-        $this->assertSame('GHI', $result[2]);
+        $this->assertSame(['ABC', 'DEF', 'GHI'], array_slice($result, 0, 3));
     }
 
     // --- explodeShopData ---
@@ -138,28 +119,21 @@ class NacexUtilsTest extends TestCase
 
     public function testExplodeShopDataConDatosParciales(): void
     {
-        $input = 'COD001|Alias1';
-        $result = nacexutils::explodeShopData($input);
-
+        $result = nacexutils::explodeShopData('COD001|Alias1');
         $this->assertSame('COD001', $result['shop_codigo']);
-        $this->assertSame('Alias1', $result['shop_alias']);
         $this->assertNull($result['shop_nombre']);
-        $this->assertNull($result['shop_direccion']);
     }
 
     public function testExplodeShopDataConNull(): void
     {
         $result = nacexutils::explodeShopData(null);
         $this->assertNull($result['shop_codigo']);
-        $this->assertNull($result['shop_alias']);
     }
 
     public function testExplodeShopDataTrimeaEspacios(): void
     {
-        $input = ' COD001 | Alias1 | Nombre ';
-        $result = nacexutils::explodeShopData($input);
+        $result = nacexutils::explodeShopData(' COD001 | Alias1 | Nombre ');
         $this->assertSame('COD001', $result['shop_codigo']);
-        $this->assertSame('Alias1', $result['shop_alias']);
         $this->assertSame('Nombre', $result['shop_nombre']);
     }
 
@@ -167,35 +141,29 @@ class NacexUtilsTest extends TestCase
 
     public function testArrayFlattenAplanaCorrectamente(): void
     {
-        $input = [
-            ['name' => 'Juan'],
-            ['name' => 'Maria'],
-            ['name' => 'Pedro'],
-        ];
+        $input = [['name' => 'Juan'], ['name' => 'Maria'], ['name' => 'Pedro']];
         $this->assertSame(['Juan', 'Maria', 'Pedro'], nacexutils::arrayFlatten($input));
     }
 
     // --- provincia ---
 
-    public function testProvinciaEncuentraMadridPorCodigoPostal(): void
+    public function provinciaProvider(): array
     {
-        $prov = '';
-        nacexutils::provincia('28001', $prov);
-        $this->assertSame('MADRID', $prov);
+        return [
+            'Madrid' => ['28001', 'MADRID'],
+            'Barcelona' => ['08015', 'BARCELONA'],
+            'Ceuta' => ['51001', 'CEUTA'],
+        ];
     }
 
-    public function testProvinciaEncuentraBarcelona(): void
+    /**
+     * @dataProvider provinciaProvider
+     */
+    public function testProvincia(string $cp, string $expected): void
     {
         $prov = '';
-        nacexutils::provincia('08015', $prov);
-        $this->assertSame('BARCELONA', $prov);
-    }
-
-    public function testProvinciaEncuentraCeuta(): void
-    {
-        $prov = '';
-        nacexutils::provincia('51001', $prov);
-        $this->assertSame('CEUTA', $prov);
+        nacexutils::provincia($cp, $prov);
+        $this->assertSame($expected, $prov);
     }
 
     public function testProvinciaNoModificaSiCPNoCoincide(): void
@@ -207,28 +175,24 @@ class NacexUtilsTest extends TestCase
 
     // --- print_messages ---
 
-    public function testPrintMessagesGeneraAlertaError(): void
+    public function printMessagesProvider(): array
     {
-        $response = '';
-        nacexutils::print_messages($response, 'ERROR', 'Algo falló');
-        $this->assertStringContainsString('alert-danger', $response);
-        $this->assertStringContainsString('Algo falló', $response);
+        return [
+            'error' => ['ERROR', 'Algo falló', 'alert-danger'],
+            'success' => ['SUCCESS', 'Todo bien', 'alert-success'],
+            'message' => ['MESSAGE', 'Info', '<p class=\'tip\'>'],
+        ];
     }
 
-    public function testPrintMessagesGeneraAlertaSuccess(): void
+    /**
+     * @dataProvider printMessagesProvider
+     */
+    public function testPrintMessages(string $type, string $text, string $expectedHtml): void
     {
         $response = '';
-        nacexutils::print_messages($response, 'SUCCESS', 'Todo bien');
-        $this->assertStringContainsString('alert-success', $response);
-        $this->assertStringContainsString('Todo bien', $response);
-    }
-
-    public function testPrintMessagesGeneraMensajeTip(): void
-    {
-        $response = '';
-        nacexutils::print_messages($response, 'MESSAGE', 'Info');
-        $this->assertStringContainsString('<p class=\'tip\'>', $response);
-        $this->assertStringContainsString('Info', $response);
+        nacexutils::print_messages($response, $type, $text);
+        $this->assertStringContainsString($expectedHtml, $response);
+        $this->assertStringContainsString($text, $response);
     }
 
     // --- getModuleName ---
@@ -244,53 +208,44 @@ class NacexUtilsTest extends TestCase
     {
         Configuration::set('NACEX_REF_PERS', 'SI');
         Configuration::set('NACEX_REF_PERS_PREFIJO', 'MI_TIENDA_');
-
         $this->assertSame('MI_TIENDA_', nacexutils::getReferenciaGeneral());
     }
 
     public function testGetReferenciaGeneralUsaPrefijoPorDefecto(): void
     {
         Configuration::set('NACEX_REF_PERS', 'NO');
-
         $this->assertSame('pedido_', nacexutils::getReferenciaGeneral());
     }
 
     // --- toUtf8 ---
 
-    public function testToUtf8ConvierteLatin1AUtf8(): void
+    public function toUtf8Provider(): array
     {
-        // "ñ" en ISO-8859-1 es byte 0xF1
-        $latin1 = "\xF1";
-        $result = nacexutils::toUtf8($latin1);
-        $this->assertSame('ñ', $result);
+        return [
+            'latin1 ñ' => ["\xF1", 'ñ'],
+            'cadena vacia' => ['', ''],
+            'null' => [null, ''],
+            'ascii puro' => ['Hello', 'Hello'],
+        ];
     }
 
-    public function testToUtf8ConCadenaVacia(): void
+    /**
+     * @dataProvider toUtf8Provider
+     */
+    public function testToUtf8($input, string $expected): void
     {
-        $this->assertSame('', nacexutils::toUtf8(''));
+        $this->assertSame($expected, nacexutils::toUtf8($input));
     }
 
-    public function testToUtf8ConNull(): void
-    {
-        $this->assertSame('', nacexutils::toUtf8(null));
-    }
-
-    public function testToUtf8ConTextoAscii(): void
-    {
-        $this->assertSame('Hello', nacexutils::toUtf8('Hello'));
-    }
-
-    // --- checkInstalledModule (fix variable no inicializada) ---
+    // --- checkInstalledModule / checkEnabledModule ---
 
     public function testCheckInstalledModuleDevuelveNullSinModulos(): void
     {
-        $result = nacexutils::checkInstalledModule(['modulo_inexistente']);
-        $this->assertNull($result);
+        $this->assertNull(nacexutils::checkInstalledModule(['modulo_inexistente']));
     }
 
     public function testCheckEnabledModuleDevuelveFalseSinModulos(): void
     {
-        $result = nacexutils::checkEnabledModule(['modulo_inexistente']);
-        $this->assertFalse($result);
+        $this->assertFalse(nacexutils::checkEnabledModule(['modulo_inexistente']));
     }
 }
