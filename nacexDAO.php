@@ -764,19 +764,19 @@ class nacexDAO
         $shop_alias = substr($array_shop_data['shop_nombre'], 0, 32);
 
         // Hemos añadido los números de teléfono y el DNI para que coincidan con una única persona
-        $dirnacexshop = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'address WHERE 
-					alias = "' . $shop_alias . '" AND 
-					firstname= "' . $array_address[0]['firstname'] . '" AND 
-					lastname = "' . $array_address[0]['lastname'] . '" AND 
-					company = "' . $array_shop_data['shop_alias'] . '" AND 
-					address1 = "' . $array_shop_data['shop_direccion'] . '" AND 
-					address2 = "' . $array_shop_data['shop_codigo'] . '"|"' . $array_shop_data['shop_nombre'] . '" AND 
-					postcode = "' . $array_shop_data['shop_cp'] . '" AND 
-					city = "' . $array_shop_data['shop_poblacion'] . '" AND 
-					id_state = "' . $provincia . '" AND 
-					phone = "' . $array_address[0]['phone'] . '" AND 
-					phone_mobile = "' . $array_address[0]['phone_mobile'] . '" AND 
-					dni = "' . $array_address[0]['dni'] . '"');
+        $dirnacexshop = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'address WHERE
+					alias = "' . pSQL($shop_alias) . '" AND
+					firstname= "' . pSQL($array_address[0]['firstname']) . '" AND
+					lastname = "' . pSQL($array_address[0]['lastname']) . '" AND
+					company = "' . pSQL($array_shop_data['shop_alias']) . '" AND
+					address1 = "' . pSQL($array_shop_data['shop_direccion']) . '" AND
+					address2 = "' . pSQL($array_shop_data['shop_codigo'] . '|' . $array_shop_data['shop_nombre']) . '" AND
+					postcode = "' . pSQL($array_shop_data['shop_cp']) . '" AND
+					city = "' . pSQL($array_shop_data['shop_poblacion']) . '" AND
+					id_state = ' . (int)$provincia . ' AND
+					phone = "' . pSQL($array_address[0]['phone']) . '" AND
+					phone_mobile = "' . pSQL($array_address[0]['phone_mobile']) . '" AND
+					dni = "' . pSQL($array_address[0]['dni']) . '"');
 
         // Hemos añadido los números de teléfono y el DNI para que coincidan con una única persona
         /*$dirnacexshop = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'address WHERE
@@ -806,8 +806,8 @@ class nacexDAO
         if (!empty($dirnacexshop)) {
             // Si existe sobreescribimos id_address_delivery en ORDERS y CART
             nacexutils::writeNacexLog('setNacexShopAddressinBD :: Sobreescribimos id_address_delivery en ORDERS y CART');
-            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'orders SET id_address_delivery="' . $dirnacexshop[0]['id_address'] . '" WHERE id_order = "' . $id_order . '"');
-            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET id_address_delivery="' . $dirnacexshop[0]['id_address'] . '" WHERE id_cart = "' . $id_cart . '"');
+            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'orders SET id_address_delivery=' . (int)$dirnacexshop[0]['id_address'] . ' WHERE id_order = ' . (int)$id_order);
+            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET id_address_delivery=' . (int)$dirnacexshop[0]['id_address'] . ' WHERE id_cart = ' . (int)$id_cart);
             $id_nueva = $dirnacexshop[0]['id_address'];
         } else {
             // Si no existe la creamos
@@ -826,10 +826,10 @@ class nacexDAO
             $new_address->firstname = $array_address[0]['firstname'];
             $new_address->lastname = $array_address[0]['lastname'];
             $new_address->company = $campoEmpresaFinal;
-            $new_address->address1 = $array_shop_data['shop_direccion'];
+            $new_address->address1 = self::sanitizeAddressField($array_shop_data['shop_direccion'], 128);
             $new_address->address2 = $array_shop_data['shop_codigo'] . '|' . $array_shop_data['shop_nombre'];
             $new_address->postcode = $array_shop_data['shop_cp'];
-            $new_address->city = $array_shop_data['shop_poblacion'];
+            $new_address->city = self::sanitizeAddressField($array_shop_data['shop_poblacion'], 64);
             //$new_address->other = $array_shop_data["shop_provincia"];
             // $new_address->phone = $array_shop_data["shop_telefono"];
             $new_address->phone = $array_address[0]['phone'];
@@ -847,15 +847,25 @@ class nacexDAO
                 //Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'address SET firstname="' . $array_shop_data["shop_alias"] . '", lastname="' . $array_shop_data["shop_nombre"] . '" WHERE id_address = "' . $id_nueva . '"');
                 //nacexutils::writeNacexLog("UPDATE setNacexShopAddressinBD :: UPDATE " . _DB_PREFIX_ . "address SET firstname=" . $array_shop_data["shop_alias"] . ", lastname=" . $array_shop_data["shop_nombre"] . " WHERE id_address = " . $id_nueva);
                 // Y sobreescribimos con el nuevo id_address el id_address_delivery en ORDERS y CART
-                Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'orders SET id_address_delivery="' . $id_nueva . '" WHERE id_order = "' . $id_order . '"');
-                nacexutils::writeNacexLog('UPDATE setNacexShopAddressinBD :: UPDATE ' . _DB_PREFIX_ . 'orders SET id_address_delivery=' . $id_nueva . ' WHERE id_order = ' . $id_order);
-                Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET id_address_delivery="' . $id_nueva . '" WHERE id_cart = "' . $id_cart . '"');
-                nacexutils::writeNacexLog('UPDATE setNacexShopAddressinBD :: UPDATE ' . _DB_PREFIX_ . 'cart SET id_address_delivery=' . $id_nueva . ' WHERE id_cart = ' . $id_cart);
+                Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'orders SET id_address_delivery=' . (int)$id_nueva . ' WHERE id_order = ' . (int)$id_order);
+                nacexutils::writeNacexLog('UPDATE setNacexShopAddressinBD :: UPDATE orders SET id_address_delivery=' . $id_nueva . ' WHERE id_order = ' . $id_order);
+                Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'cart SET id_address_delivery=' . (int)$id_nueva . ' WHERE id_cart = ' . (int)$id_cart);
+                nacexutils::writeNacexLog('UPDATE setNacexShopAddressinBD :: UPDATE cart SET id_address_delivery=' . $id_nueva . ' WHERE id_cart = ' . $id_cart);
             }
         }
 
         nacexutils::writeNacexLog('FIN setNacexShopAddressinBD :: id_order: ' . $id_order);
         nacexutils::writeNacexLog('-----');
+    }
+
+    private static function sanitizeAddressField($value, $maxLength = 128)
+    {
+        if (empty($value)) {
+            return '';
+        }
+        // Eliminar caracteres no válidos para campos de Address en PrestaShop (isGenericName/isCityName)
+        $value = preg_replace('/[<>={}#]/', '', $value);
+        return mb_substr(trim($value), 0, $maxLength, 'UTF-8');
     }
 
     public static function getDatosExpedicionNacexShop($id_order)
