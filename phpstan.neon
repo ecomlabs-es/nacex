@@ -33,6 +33,7 @@ parameters:
         - '#on an unknown class VInacexlogs#'
         - '#class nacex not found#'
         - '#Function getReferenciaGeneral not found#'
+        - '#Function pSQL not found#'
 
     # No analizar vendor ni tests
     excludePaths:
@@ -48,8 +49,6 @@ parameters:
         - nacexWS.php
         - nacexVIEW.php
         - AdminConfig.php
-        - ConsultasBD.php
-        - FuncionesWS.php
         - nacextab.php
         - nacextabMasivo.php
         - nacexunitario.php
