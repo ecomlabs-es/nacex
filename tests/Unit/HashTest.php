@@ -49,8 +49,6 @@ class HashTest extends TestCase
     public function testHashFormActualizaHashParaMismoOrderId(): void
     {
         hash::hash_form('100');
-        // Simular que se envió el form con order_id=100
-        Tools::set('order_id', '100');
         $rand2 = hash::hash_form('100');
 
         $this->assertCount(1, $_SESSION['rand']);
@@ -60,12 +58,23 @@ class HashTest extends TestCase
     public function testValidateHashDevuelveTrueConDatosCorrectos(): void
     {
         $rand = hash::hash_form('100');
-        // Tools::getValue() lee de $_POST y $_GET
         Tools::set('order_id', '100');
         Tools::set('hash', (string)$rand);
 
         $hashObj = new hash();
         $this->assertTrue($hashObj->validate_hash());
+    }
+
+    public function testValidateHashConsumeTokenTrasPrimerUso(): void
+    {
+        $rand = hash::hash_form('100');
+        Tools::set('order_id', '100');
+        Tools::set('hash', (string)$rand);
+
+        $hashObj = new hash();
+        $this->assertTrue($hashObj->validate_hash());
+        // Segundo intento con el mismo hash debe fallar (protección anti-F5)
+        $this->assertFalse($hashObj->validate_hash());
     }
 
     public function testValidateHashDevuelveFalseConHashIncorrecto(): void

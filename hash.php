@@ -10,12 +10,9 @@ class hash
             $_SESSION['rand'] = [$push_data];
         } else {
             $valor_id = array_column($_SESSION['rand'], 'ORDER_ID');
-            if (in_array($order_id, $valor_id)) {
-                $order_idpost = Tools::getValue('order_id');
-                $clave = array_search($order_idpost, $valor_id);
-                if ($clave !== false) {
-                    $_SESSION['rand'][$clave]['HASH'] = $rand;
-                }
+            $clave = array_search($order_id, $valor_id);
+            if ($clave !== false) {
+                $_SESSION['rand'][$clave]['HASH'] = $rand;
             } else {
                 $_SESSION['rand'][] = $push_data;
             }
@@ -36,9 +33,12 @@ class hash
             return false;
         }
 
-        // Validar que hash y order_id coincidan como par
-        foreach ($_SESSION['rand'] as $entry) {
+        // Validar que hash y order_id coincidan como par y consumir el token
+        foreach ($_SESSION['rand'] as $key => $entry) {
             if ($entry['ORDER_ID'] == $order_id && $entry['HASH'] == $hash) {
+                // Invalidar el hash para evitar reenvíos (F5)
+                unset($_SESSION['rand'][$key]);
+                $_SESSION['rand'] = array_values($_SESSION['rand']);
                 return true;
             }
         }
