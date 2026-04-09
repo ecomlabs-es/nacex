@@ -1487,14 +1487,14 @@ class nacexDAO
 
                 if (isset($map['countries'])) {
                     foreach ($map['countries'] as $iso) {
-                        Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . "country SET id_zone = " . $id_zone . " WHERE iso_code = '" . pSQL($iso) . "'");
+                        Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'country SET id_zone = ' . $id_zone . " WHERE iso_code = '" . pSQL($iso) . "'");
                         nacexutils::writeNacexLog('initNcxZones :: País ' . $iso . ' asignado a zona ' . $zone);
                     }
                 }
 
                 if (isset($map['states'])) {
                     $isos = implode("','", array_map('pSQL', $map['states']));
-                    Db::getInstance()->execute("UPDATE " . _DB_PREFIX_ . "state SET id_zone = " . $id_zone . " WHERE iso_code IN ('" . $isos . "')");
+                    Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'state SET id_zone = ' . $id_zone . " WHERE iso_code IN ('" . $isos . "')");
                     nacexutils::writeNacexLog('initNcxZones :: Estados ' . implode(', ', $map['states']) . ' asignados a zona ' . $zone);
                 }
 
@@ -1537,7 +1537,6 @@ class nacexDAO
 
         return true;
     }
-
 
     public static function deleteNcxZones()
     {

@@ -940,7 +940,8 @@ function getFormularioConfiguracion($obj)
 															<td class="columna1">' . $obj->l('Standard service types') . '::</td>
 															<td class="columna2" id="nacex_available_tip_ser">
 																' . showError($errores, 'nacex_available_tip_ser') . '
-'; $stdOptions = [];
+';
+    $stdOptions = [];
     foreach ($nacexDTO->getServiciosNacex() as $serv => $value) {
         $stdOptions[$serv] = $serv . $nacexDTO->getServSeparador() . $value['nombre'];
     }
@@ -1024,7 +1025,8 @@ function getFormularioConfiguracion($obj)
 									  			<tr>
 									  				<td class="columna1">' . $obj->l('NacexShop service types') . ':</td>
 									  				<td class="columna2" id="nacex_available_tip_nxshop_ser">
-'; $shopOptions = [];
+';
+    $shopOptions = [];
     foreach ($nacexDTO->getServiciosNacexShop() as $serv => $value) {
         $shopOptions[$serv] = $serv . $nacexDTO->getServSeparador() . $value['nombre'];
     }
@@ -1110,7 +1112,8 @@ function getFormularioConfiguracion($obj)
                                                     <td class="columna1">' . $obj->l('International service types') . ':</td>
                                                     <td class="columna2" id="nacex_available_tip_ser_int">
                                                     ' . showError($errores, 'nacex_available_tip_ser_int') . '
-'; $intOptions = [];
+';
+    $intOptions = [];
     foreach ($nacexDTO->getServiciosNacexInt() as $serv => $value) {
         $intOptions[$serv] = $serv . $nacexDTO->getServSeparador() . $value['nombre'];
     }
