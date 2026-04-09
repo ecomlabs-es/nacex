@@ -273,7 +273,18 @@ class nacexWS {
         $resultado = $nacexWS->treatmentXML($postResult, $metodo);
 
         if ($resultado[0] == 'ERROR') {
-            //echo '<br><div class="alert error" style="width:396px">';
+            // Error 5611: la expedición no existe en Nacex (ya fue cancelada externamente)
+            if (isset($resultado[2]) && $resultado[2] == '5611') {
+                echo '<br><div id="messages-nacex" class="bootstrap" style="margin-top:10px">';
+                echo '<div class="alert alert-info conf" style="width:auto">';
+                echo '<strong>' . $nacexDTO->l('The expedition was already cancelled') . '</strong>';
+                echo '</div></div>';
+                nacexutils::writeNacexLog('cancelExpedicion :: Expedición ya cancelada en Nacex, actualizamos BD');
+                nacexDAO::cancelarExpedicion($id_pedido, $cod_exp);
+                nacexDAO::actualizaEstadoPedido($id_order, 'c');
+                return null;
+            }
+
             echo '<br><div id="messages-nacex" class="bootstrap" style="margin-top:10px">';
             echo '<div class="alert alert-danger conf" style="width:auto">';
             foreach ($resultado as $res) {
@@ -281,7 +292,6 @@ class nacexWS {
                 nacexutils::writeNacexLog('cancelExpedicion :: ' . $res);
             }
             echo '</div></div>';
-            //return utf8_encode($this->_html);(mexpositop 20171127)
             return null;
         } else {
             //echo '<br><div class="conf confirm" style="width:396px">';
