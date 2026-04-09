@@ -703,6 +703,9 @@ class nacex extends CarrierModule
 
         $cart = $params['cart'];
         $carriersList = $cart->getDeliveryOptionList();
+        if (empty($carriersList)) {
+            return;
+        }
         $carriers = array_keys($carriersList[array_keys($carriersList)[0]]);
 
         foreach ($carriers as $key => $value) {
