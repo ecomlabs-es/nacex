@@ -280,6 +280,7 @@ $_MODULE['<{nacex}prestashop>nacex_3b5c949e5a7f93592ece65422e0496df'] = 'Buscar 
 $_MODULE['<{nacex}prestashop>nacex_92dc7f9e646c0bca2eba33329e5a47a5'] = 'Generar Expediciones';
 $_MODULE['<{nacex}prestashop>nacex_c879cb3351593188d1178647eb2032fe'] = 'Imprimir Etiquetas';
 $_MODULE['<{nacex}prestashop>nacex_db396dbc61242b4820d8ad819c18173f'] = 'Filtrar por transportista';
+$_MODULE['<{nacex}prestashop>nacex_96cd2e9298335421573f279ce171bf76'] = 'Filtrar por estado de pedido';
 $_MODULE['<{nacex}prestashop>nacex_2d13df6f8b5e4c5af9f87e0dc39df69d'] = 'Pendiente';
 $_MODULE['<{nacex}prestashop>nacex_67edd3b99247c9eb5884a02802a20fa7'] = 'Entregado';
 $_MODULE['<{nacex}prestashop>nacex_124617f0ad4a4ecb40ac0b9dcad97ed9'] = 'Incidencia';

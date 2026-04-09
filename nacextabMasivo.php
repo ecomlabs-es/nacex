@@ -152,9 +152,8 @@ class nacextabMasivo extends ModuleAdminController
 			
 			</td>
 			<td rowspan='2'><br>
-			<b>" . $this->nacex->l('Order status') . ": </b>
 			<select id='ncx_estado' name='ncx_estado' style='width:175px'>
-                        <option value='-1'>" . $this->nacex->l('All') . '</option>';
+                        <option value='-1'>" . $this->nacex->l('Filter by order status') . '</option>';
         foreach ($statuses as $status) {
             $this->_html .= $status['id_order_state'] == $estado_pedido ?
                 "<option value='" . $status['id_order_state'] . "' selected>" . $status['name'] . '</option>' :
