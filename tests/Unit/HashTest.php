@@ -44,14 +44,14 @@ class HashTest extends TestCase
         $this->assertCount(2, $data);
     }
 
-    public function testHashFormActualizaHashParaMismoOrderId(): void
+    public function testHashFormReutilizaHashParaMismoOrderId(): void
     {
-        hash::hash_form('100');
+        $rand1 = hash::hash_form('100');
         $rand2 = hash::hash_form('100');
 
+        $this->assertSame($rand1, $rand2);
         $data = json_decode(Context::getContext()->cookie->__get('nacex_hashes'), true);
         $this->assertCount(1, $data);
-        $this->assertSame($rand2, $data[0]['HASH']);
     }
 
     public function testValidateHashDevuelveTrueConDatosCorrectos(): void
