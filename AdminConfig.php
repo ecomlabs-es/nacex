@@ -904,10 +904,10 @@ function getFormularioConfiguracion($obj)
 													  <tr>
 															<td class="columna1">' . $obj->l('Do you want to install our zones?') . '</td>
 															<td class="columna2" id="nacex_zones">
-																<p class="alert alert-warning">' . $obj->l('If you enable this option') . ' <strong>' . $obj->l('all the current carriers and zones configuration will be overwritten') . '</strong>.<br>' . $obj->l('Please, check and reassign necessary values after click the button if convenient.') . '</p>
+																<p class="alert alert-info">' . $obj->l('This will create NCX zones and assign Nacex carriers to them. It will NOT modify your existing zone or country configuration.') . '<br>' . $obj->l('After creating the zones, assign countries and states to them from International > Locations > Zones.') . '</p>
 																<input style="cursor: pointer;padding: 7px;width: 250px;" class="ncx_button" onclick="javascript:inizializarZonas();" type="button" name="initZonas" id="initZonas" value="' . $obj->l('Install and initialize zones') . '"/>
 																<div id="initZonasResult"></div>
-																<p class="tip">' . $obj->l('Install the zones Nacex uses by default and initializes them. Recommended if you don\'t have created one yet.') . '</p>
+																<p class="tip">' . $obj->l('Creates NCX zones and assigns Nacex carriers to them. Does not affect other carriers or zone assignments.') . '</p>
 															</td>
 													  </tr>
 													  <tr>' . nacexutils::getRadioHTML('Allow specific service selection to customer', 'nacex_serv_back_or_front', 'B', $serv_back_or_front_B, 'F', $serv_back_or_front_F, 'Allow frontend specific Nacex or Nacex Shop service selection to customer from frontend')

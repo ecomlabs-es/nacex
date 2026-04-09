@@ -1403,303 +1403,101 @@ class nacexDAO
         nacexutils::writeNacexLog('----');
         nacexutils::writeNacexLog('INI initNcxZones');
 
-        //Tenemos que añadir las zonas a ps_zone_shop
+        $int = ['G', 'H'];
+        $shp = ['31', '28', '90', '42'];
 
+        // Obtener carriers Nacex
         $id_code_carrier = [];
         $code_carrier = Db::getInstance()->executeS('SELECT id_carrier,name FROM ' . _DB_PREFIX_ . "carrier WHERE name LIKE 'NACEX%'");
-        /* id => codigo */
         foreach ($code_carrier as $code) {
-            $cod = explode('_', $code['name'])[1];
-            if ($cod != 'std' && $cod != 'shp') {
-                $id_code_carrier[$code['id_carrier']] = $cod; }
+            $parts = explode('_', $code['name']);
+            if (isset($parts[1]) && $parts[1] != 'std' && $parts[1] != 'shp') {
+                $id_code_carrier[(int)$code['id_carrier']] = $parts[1];
+            }
 
-            /*nacexutils::writeNacexLog("Limpiamos la tabla " . _DB_PREFIX_ . "carrier_zone de las zonas asignadas que no corresponden a Nacex.");
-            // Limpiar las asignaciones de las otras zonas a los transportistas
-            $delete = 'DELETE FROM ' . _DB_PREFIX_ . 'carrier_zone WHERE id_carrier = ' . $code['id_carrier'];
-            Db::getInstance()->Execute($delete);
-            nacexutils::writeNacexLog("¡Limpiada tabla!");
-            nacexutils::writeNacexLog("----");*/
-
-            nacexutils::writeNacexLog('Asignamos los rangos de peso y sus precios');
-            $rangeWeight = new RangeWeight();
-            $rangeWeight->id_carrier = $code['id_carrier'];
-            $rangeWeight->delimiter1 = '0';
-            $rangeWeight->delimiter2 = '1000000000';
-            $rangeWeight->add();
-        }
-
-        foreach ($zones as $zone) {
-
-            // Verificamos que no están creadas las zonas
-            nacexutils::writeNacexLog('Comprobamos que no exista la zona');
-            $select = Db::getInstance()->executeS('SELECT id_zone FROM ' . _DB_PREFIX_ . "zone WHERE name LIKE '" . $zone . "'");
-            if (sizeof($select) == 0) {  // Si no hay ninguna creada, las creamos
-                nacexutils::writeNacexLog('Creamos zona:: ' . $zone);
-                $insert = 'INSERT INTO ' . _DB_PREFIX_ . "zone (name,active) VALUES ('" . $zone . "',1)";
-                if (!Db::getInstance()->Execute($insert)) {
-                    nacexutils::writeNacexLog('initZones :: Error al crear la zona ' . $zone);
-                    return false;
-                }
-                $select = Db::getInstance()->executeS('SELECT id_zone FROM ' . _DB_PREFIX_ . "zone WHERE name LIKE '" . $zone . "'");
-
-                // Lo trasladamos de fuera a esta posición para que no sobreescriba lo que el cliente pudiera tener por defecto
-                self::asignarZona($zone, $id_code_carrier, $select);
-
-                // Insertamos en la tabla _zone_shop la zona creada
-                nacexutils::writeNacexLog('initZones :: ID_ZONA ' . $select);
-                //$insert_zone_shop = 'INSERT INTO ' . _DB_PREFIX_ . "zone_shop (name,active) VALUES ('" . $zone . "',1)";
-                //                if (!Db::getInstance()->Execute($insert_zone_shop)) {
-                //
-                //                }
+            // Crear rango de peso si no existe
+            $existingRange = Db::getInstance()->executeS(
+                'SELECT id_range_weight FROM ' . _DB_PREFIX_ . 'range_weight WHERE id_carrier = ' . (int)$code['id_carrier']
+            );
+            if (empty($existingRange)) {
+                nacexutils::writeNacexLog('initNcxZones :: Creamos rango de peso para carrier ' . $code['id_carrier']);
+                $rangeWeight = new RangeWeight();
+                $rangeWeight->id_carrier = (int)$code['id_carrier'];
+                $rangeWeight->delimiter1 = '0';
+                $rangeWeight->delimiter2 = '1000000000';
+                $rangeWeight->add();
             }
         }
+
+        // Obtener rangos de peso indexados
+        $weightRange = [];
+        $sql = Db::getInstance()->executeS('SELECT id_range_weight, id_carrier FROM ' . _DB_PREFIX_ . 'range_weight');
+        foreach ($sql as $val) {
+            $weightRange[$val['id_carrier']] = $val['id_range_weight'];
+        }
+
+        // Crear zonas y asignar carriers
+        foreach ($zones as $zone) {
+            $select = Db::getInstance()->executeS('SELECT id_zone FROM ' . _DB_PREFIX_ . "zone WHERE name = '" . pSQL($zone) . "'");
+
+            if (empty($select)) {
+                nacexutils::writeNacexLog('initNcxZones :: Creamos zona ' . $zone);
+                Db::getInstance()->execute('INSERT INTO ' . _DB_PREFIX_ . "zone (name, active) VALUES ('" . pSQL($zone) . "', 1)");
+                $select = Db::getInstance()->executeS('SELECT id_zone FROM ' . _DB_PREFIX_ . "zone WHERE name = '" . pSQL($zone) . "'");
+
+                if (empty($select)) {
+                    nacexutils::writeNacexLog('initNcxZones :: Error al crear la zona ' . $zone);
+                    continue;
+                }
+
+                // Insertar en zone_shop para multitienda
+                $id_zone = (int)$select[0]['id_zone'];
+                $id_shop = (int)Configuration::get('PS_SHOP_DEFAULT');
+                Db::getInstance()->execute(
+                    'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'zone_shop (id_zone, id_shop) VALUES (' . $id_zone . ', ' . $id_shop . ')'
+                );
+            }
+
+            $id_zone = (int)$select[0]['id_zone'];
+
+            // Determinar qué carriers asignar a esta zona
+            $isIntZone = strpos($zone, 'Internacional') !== false;
+
+            foreach ($id_code_carrier as $code_id => $code_val) {
+                // Internacionales solo a zonas internacionales, nacionales/shop solo a zonas nacionales
+                if ($isIntZone && !in_array($code_val, $int)) {
+                    continue;
+                }
+                if (!$isIntZone && in_array($code_val, $int)) {
+                    continue;
+                }
+                // NacexShop no va a Portugal
+                if ($zone === 'NCX - Portugal' && in_array($code_val, $shp)) {
+                    continue;
+                }
+
+                // Asignar carrier a zona (sin duplicados)
+                Db::getInstance()->execute(
+                    'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'carrier_zone (id_carrier, id_zone) VALUES (' . (int)$code_id . ', ' . $id_zone . ')'
+                );
+
+                // Crear entrada de delivery con precio 0
+                $id_range = isset($weightRange[$code_id]) ? (int)$weightRange[$code_id] : 0;
+                if ($id_range > 0) {
+                    Db::getInstance()->execute(
+                        'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'delivery (id_carrier, id_range_price, id_range_weight, id_zone, price)
+                         VALUES (' . (int)$code_id . ', 0, ' . $id_range . ', ' . $id_zone . ', 0)'
+                    );
+                }
+            }
+        }
+
         nacexutils::writeNacexLog('FIN initNcxZones');
         nacexutils::writeNacexLog('----');
 
         return true;
     }
 
-    private static function asignarZona($zone, $id_code_carrier, $select) {
-
-        nacexutils::writeNacexLog('----');
-        nacexutils::writeNacexLog('INI asignarZona');
-        $iva = 21;
-        $shp = ['31','28','90'];
-        $int = ['G','H'];
-        $id_zone = (int)$select[0]['id_zone'];
-
-        // Hacemos consulta del IVA y de la tienda
-        $id_tax_select = Db::getInstance()->executeS('SELECT id_tax_rules_group FROM ' . _DB_PREFIX_ . 'tax_rules_group WHERE name LIKE \'%' . (int)$iva . '%\' AND active = 1');
-        $id_tax = isset($id_tax_select[0]) ? (int)$id_tax_select[0]['id_tax_rules_group'] : 0;
-        $id_tax_shop_select = Db::getInstance()->executeS('SELECT id_shop FROM ' . _DB_PREFIX_ . 'tax_rules_group_shop WHERE id_tax_rules_group = ' . $id_tax);
-        $id_tax_shop = isset($id_tax_shop_select[0]) ? (int)$id_tax_shop_select[0]['id_shop'] : (int)Configuration::get('PS_SHOP_DEFAULT');
-
-        // Creamos los rangos de peso para nuestras zonas
-        $sql = Db::getInstance()->executeS('SELECT id_range_weight,id_carrier FROM ' . _DB_PREFIX_ . 'range_weight');
-        $weightRange = [];
-        foreach ($sql as $val) {
-            $weightRange[$val['id_range_weight']] = $val['id_carrier'];
-        }
-
-        $queries = [];
-
-        // Obtenemos el id_country de España dinámicamente
-        $esCountry = Db::getInstance()->executeS('SELECT id_country FROM ' . _DB_PREFIX_ . "country WHERE iso_code = 'ES'");
-        $id_country_es = isset($esCountry[0]) ? (int)$esCountry[0]['id_country'] : 6;
-
-        // Miramos para cada una de las zonas cambiar el país y las provincias específicas
-        switch ($zone) {
-            case 'NCX - España peninsular':
-                $queries[] = 'UPDATE ' . _DB_PREFIX_ . 'country SET id_zone = ' . $id_zone . " WHERE iso_code = 'ES'";
-                $queries[] = 'UPDATE ' . _DB_PREFIX_ . 'state SET id_zone = ' . $id_zone . ' WHERE id_country = ' . $id_country_es;
-                // Revisar id's de métodos para descartar los internacionales
-                foreach ($id_code_carrier as $code_id => $code_val) {
-                    if (!in_array($code_val, $int)) {
-                        // Asignamos el IVA a los métodos
-                        $queries[] = 'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'carrier_tax_rules_group_shop (id_carrier, id_tax_rules_group, id_shop) VALUES (' . (int)$code_id . ',' . $id_tax . ',' . $id_tax_shop . ')';
-
-                        Db::getInstance()->insert(
-                            'carrier_zone',
-                            ['id_carrier' => $code_id,'id_zone' => $id_zone],
-                            false,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-
-                        Db::getInstance()->insert(
-                            'delivery',
-                            ['id_carrier' => $code_id, 'id_range_price' => null, 'id_range_weight' => array_search($code_id, $weightRange), 'id_zone' => $id_zone, 'price' => '0'],
-                            true,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-                    }
-                }
-                break;
-            case 'NCX - Baleares':
-                $queries[] = 'UPDATE ' . _DB_PREFIX_ . 'state SET id_zone = ' . $id_zone . " WHERE iso_code = 'ES-PM'";
-                // Revisar id's de métodos para descartar los internacionales
-                foreach ($id_code_carrier as $code_id => $code_val) {
-                    if (!in_array($code_val, $int)) {
-
-                        Db::getInstance()->insert(
-                            'carrier_zone',
-                            ['id_carrier' => $code_id,'id_zone' => $id_zone],
-                            false,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-
-                        Db::getInstance()->insert(
-                            'delivery',
-                            ['id_carrier' => $code_id, 'id_range_price' => null, 'id_range_weight' => array_search($code_id, $weightRange), 'id_zone' => $id_zone, 'price' => '0'],
-                            true,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-                    }
-                }
-                break;
-            case 'NCX - Canarias':
-                $queries[] = 'UPDATE ' . _DB_PREFIX_ . 'state SET id_zone = ' . $id_zone . " WHERE iso_code IN ('ES-GC','ES-TF')";
-                // Revisar id's de métodos para descartar los internacionales
-                foreach ($id_code_carrier as $code_id => $code_val) {
-                    if (!in_array($code_val, $int)) {
-
-                        Db::getInstance()->insert(
-                            'carrier_zone',
-                            ['id_carrier' => $code_id,'id_zone' => $id_zone],
-                            false,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-
-                        Db::getInstance()->insert(
-                            'delivery',
-                            ['id_carrier' => $code_id, 'id_range_price' => null, 'id_range_weight' => array_search($code_id, $weightRange), 'id_zone' => $id_zone, 'price' => '0'],
-                            true,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-                    }
-                }
-                break;
-            case 'NCX - Ceuta y Melilla':
-                $queries[] = 'UPDATE ' . _DB_PREFIX_ . 'state SET id_zone = ' . $id_zone . " WHERE iso_code IN ('ES-CE','ES-ML')";
-                // Revisar id's de métodos para descartar los internacionales
-                foreach ($id_code_carrier as $code_id => $code_val) {
-                    if (!in_array($code_val, $int)) {
-
-                        Db::getInstance()->insert(
-                            'carrier_zone',
-                            ['id_carrier' => $code_id,'id_zone' => $id_zone],
-                            false,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-
-                        Db::getInstance()->insert(
-                            'delivery',
-                            ['id_carrier' => $code_id, 'id_range_price' => null, 'id_range_weight' => array_search($code_id, $weightRange), 'id_zone' => $id_zone, 'price' => '0'],
-                            true,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-                    }
-                }
-                break;
-            case 'NCX - Portugal':
-                $queries[] = 'UPDATE ' . _DB_PREFIX_ . 'country SET id_zone = ' . $id_zone . " WHERE iso_code = 'PT'";
-
-                // Revisar id's de métodos para descartar los shops y los internacionales
-                foreach ($id_code_carrier as $code_id => $code_val) {
-                    if (!in_array($code_val, $int) && !in_array($code_val, $shp)) {
-
-                        // Asignamos el IVA a los métodos
-                        $queries[] = 'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'carrier_tax_rules_group_shop (id_carrier, id_tax_rules_group, id_shop) VALUES (' . (int)$code_id . ',' . $id_tax . ',' . $id_tax_shop . ')';
-
-                        Db::getInstance()->insert(
-                            'carrier_zone',
-                            ['id_carrier' => $code_id,'id_zone' => $id_zone],
-                            false,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-
-                        Db::getInstance()->insert(
-                            'delivery',
-                            ['id_carrier' => $code_id, 'id_range_price' => null, 'id_range_weight' => array_search($code_id, $weightRange), 'id_zone' => $id_zone, 'price' => '0'],
-                            true,
-                            false,
-                            Db::INSERT,
-                            true
-                        );
-                    }
-                }
-                break;
-            case 'NCX - Internacional Zona 1 - 2':
-                foreach (nacexDTO::INTERNACIONAL1 as $int1) {
-                    $queries[] = 'UPDATE ' . _DB_PREFIX_ . 'country SET id_zone = ' . $id_zone . " WHERE iso_code = '" . pSQL($int1) . "'";
-
-                    // Revisar id's de métodos para descartar los shops y los internacionales
-                    foreach ($id_code_carrier as $code_id => $code_val) {
-                        if (in_array($code_val, $int)) {
-                            // Asignamos el IVA a los métodos
-                            $queries[] = 'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'carrier_tax_rules_group_shop (id_carrier, id_tax_rules_group, id_shop) VALUES (' . (int)$code_id . ',' . $id_tax . ',' . $id_tax_shop . ')';
-
-                            Db::getInstance()->insert(
-                                'carrier_zone',
-                                ['id_carrier' => $code_id,'id_zone' => $id_zone],
-                                false,
-                                false,
-                                Db::INSERT,
-                                true
-                            );
-
-                            Db::getInstance()->insert(
-                                'delivery',
-                                ['id_carrier' => $code_id, 'id_range_price' => null, 'id_range_weight' => array_search($code_id, $weightRange), 'id_zone' => $id_zone, 'price' => '0'],
-                                true,
-                                false,
-                                Db::INSERT,
-                                true
-                            );
-                        }
-                    }
-                }
-                break;
-            case 'NCX - Internacional Zona 3 - 5':
-                foreach (nacexDTO::INTERNACIONAL2 as $int3) {
-                    $queries[] = 'UPDATE ' . _DB_PREFIX_ . 'country SET id_zone = ' . $id_zone . " WHERE iso_code = '" . pSQL($int3) . "'";
-
-                    // Revisar id's de métodos para descartar los shops y los internacionales
-                    foreach ($id_code_carrier as $code_id => $code_val) {
-                        if (in_array($code_val, $int)) {
-                            // Asignamos el IVA a los métodos
-                            $queries[] = 'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'carrier_tax_rules_group_shop (id_carrier, id_tax_rules_group, id_shop) VALUES (' . (int)$code_id . ',' . $id_tax . ',' . $id_tax_shop . ')';
-
-                            Db::getInstance()->insert(
-                                'carrier_zone',
-                                ['id_carrier' => $code_id,'id_zone' => $id_zone],
-                                false,
-                                false,
-                                Db::INSERT,
-                                true
-                            );
-
-                            Db::getInstance()->insert(
-                                'delivery',
-                                ['id_carrier' => $code_id, 'id_range_price' => null, 'id_range_weight' => array_search($code_id, $weightRange), 'id_zone' => $id_zone, 'price' => '0'],
-                                true,
-                                false,
-                                Db::INSERT,
-                                true
-                            );
-                        }
-                    }
-                }
-                break;
-        }
-
-        nacexutils::writeNacexLog('Asignamos la zona con países y regiones correspondientes. Queries: ' . count($queries));
-        foreach ($queries as $query) {
-            nacexutils::writeNacexLog('asignarZona :: ' . $query);
-            Db::getInstance()->execute($query);
-        }
-        nacexutils::writeNacexLog('Queries ejecutadas correctamente');
-
-        nacexutils::writeNacexLog('FIN asignarZona');
-        nacexutils::writeNacexLog('----');
-    }
 
     public static function deleteNcxZones() {
         nacexutils::writeNacexLog('----');

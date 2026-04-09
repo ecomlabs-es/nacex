@@ -13,5 +13,12 @@ if (!$context->employee || !$context->employee->id) {
 }
 
 $nacex = new nacex();
-nacexDAO::initNcxZones();
-echo '<div class="bootstrap" style="margin-top:10px"><div class="alert alert-success conf" style="width:auto">' . $nacex->l('Zones created and initialised') . '</div></div>';
+$result = nacexDAO::initNcxZones();
+if ($result) {
+    echo '<div class="bootstrap" style="margin-top:10px">';
+    echo '<div class="alert alert-success conf" style="width:auto">' . $nacex->l('Zones and carriers created successfully.') . '</div>';
+    echo '<div class="alert alert-info conf" style="width:auto">' . $nacex->l('Remember to assign countries and states to the new NCX zones from International > Locations > Zones in your back office.') . '</div>';
+    echo '</div>';
+} else {
+    echo '<div class="bootstrap" style="margin-top:10px"><div class="alert alert-danger conf" style="width:auto">' . $nacex->l('Error creating zones. Check the log for details.') . '</div></div>';
+}
