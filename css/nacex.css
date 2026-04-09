@@ -1210,65 +1210,7 @@ http://www.generateit.net/css-optimize/index.php
 		width: 100%;
 	}
 
-	.bootstrap #configForm .ps-switch {
-		position: relative;
-		display: inline-block;
-		min-width: 8.125rem;
-		margin-top: 5px;
-		font-size: .813rem;
-		background-color: #eff1f2;
-		border-radius: 1px;
-		text-align: center;
-	}
-
-	.bootstrap #configForm .ps-switch input {
-		position: absolute;
-		opacity: 0;
-	}
-
-	.bootstrap #configForm .ps-switch label {
-		position: relative;
-		z-index: 2;
-		float: left;
-		width: 50%;
-		height: 100%;
-		padding: .231em .769em;
-		margin: 0;
-		vertical-align: middle;
-		text-align: center;
-		text-transform: uppercase;
-		color: #bbcdd2;
-		font-weight: 400;
-		cursor: pointer;
-		transition: color .2s ease-out;
-	}
-
-	.bootstrap #configForm .ps-switch input:checked + label {
-		color: #fff;
-	}
-
-	.bootstrap #configForm .ps-switch input:last-of-type:checked ~ .slide-button {
-		background-color: #2eacce;
-		left: 50%;
-	}
-
-	.ps-switch > .slide-button {
-		position: absolute;
-		top: 0;
-		left: 0;
-		padding: 0;
-		z-index: 1;
-		width: 50%;
-		height: 100%;
-		color: #fff;
-		background-color: #c05c67;
-		transition: all .3s ease-out;
-	}
-
-	.bootstrap #configForm input[type="radio"] {
-		box-sizing: border-box;
-		padding: 0;
-	}
+	/* ps-switch: usar estilos nativos de PrestaShop 8 */
 
 	.bootstrap #configForm .form-text {
 		color: #6c868e;
@@ -1280,25 +1222,6 @@ http://www.generateit.net/css-optimize/index.php
 	.bootstrap #configForm .small, .bootstrap #configForm small {
 		font-size: 80%;
 		font-weight: 400;
-	}
-
-	/* Estilos radios nacex */
-	.bootstrap #configForm .ps-switch.nacex {
-		background-color: #fff;
-		border: 1px solid #ff5100;
-	}
-
-	.bootstrap #configForm .ps-switch.nacex label {
-		color: #ff9666;
-	}
-
-	.bootstrap #configForm .ps-switch.nacex input:last-of-type:checked ~ .slide-button {
-		background-color: #ff5100;
-	}
-
-	.bootstrap #configForm .ps-switch.nacex > .slide-button {
-		color: #ff5100;
-		background-color: #ff5100;
 	}
 
 	/* Ajustar texto de los labels de los nuevos radios */
