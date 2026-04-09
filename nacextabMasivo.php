@@ -53,8 +53,11 @@ class nacextabMasivo extends ModuleAdminController
     }*/
 
     public function initContent() {
+        parent::initContent();
+
         $accion = Tools::getValue('accion', '');
         $html = '';
+        $this->_html .= "<div id='content' class='bootstrap'>";
         $this->_html .= "<form id='nacex_filtro_masivo' name='nacex_filtro_masivo' method='post'>";
 
         $this->getFiltrosMasivos();
@@ -68,8 +71,8 @@ class nacextabMasivo extends ModuleAdminController
             $this->getListadoPedidos(); }
 
         $this->_html .= '</form>';
+        $this->_html .= '</div>';
 
-        parent::initContent();
         $this->context->smarty->assign('content', $this->_html);
     }
 
