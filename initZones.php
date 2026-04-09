@@ -1,17 +1,16 @@
 <?php
 
+include_once dirname(__FILE__) . '/../../config/config.inc.php';
+include_once dirname(__FILE__) . '/../../init.php';
 include_once dirname(__FILE__) . '/nacexDAO.php';
 include_once dirname(__FILE__) . '/nacex.php';
-//SET ENVIRONMENT
-/*include('../../config/config.inc.php');
-include('../../init.php');*/
 
-include_once dirname(__FILE__) . '/../../config/config.inc.php';
-
-//include_once dirname(__FILE__) . '/../../config/config.inc.php';
-// Está habiendo un problema con la inclusión de este archivo: include_once dirname(__FILE__) . '/../../init.php';
-
-session_start();
+// Verificar que el usuario es un admin logueado
+$context = Context::getContext();
+if (!$context->employee || !$context->employee->id) {
+    header('Content-Type: application/json');
+    die(json_encode(['success' => false, 'error' => 'Unauthorized']));
+}
 
 $nacex = new nacex();
 nacexDAO::initNcxZones();

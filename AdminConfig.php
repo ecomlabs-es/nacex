@@ -700,17 +700,17 @@ function getFormularioConfiguracion($obj)
                         }
                     }
                     function inizializarZonas() {
-                        var msg="";
-                        
                         $.ajax({
                             type: "POST",
                             url: "' . $nacexDTO->getPath() . 'initZones.php",
-                            async: false,
                             beforeSend: function(){
-                                $("#initZonasResult").html(\'<img src= \"../modules/nacex/images/loading.gif\" style=\"width:30px\">\');
+                                $("#initZonasResult").html(\'<img src= \"' . $nacexDTO->getPath() . 'images/loading.gif\" style=\"width:30px\">\');
                             },
                             success: function(msg) {
                                 $("#initZonasResult").html(msg);
+                            },
+                            error: function() {
+                                $("#initZonasResult").html(\'<div class="alert alert-danger">Error al inicializar las zonas</div>\');
                             }
                         });
                     }
