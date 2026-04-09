@@ -489,6 +489,10 @@ http://www.generateit.net/css-optimize/index.php
 		padding-right: 5px;
 	}
 
+	.idpedido-input input {
+		width: 200px;
+	}
+
 	#btnbuscar {
 		display: inline-block;
 		margin-top: 0 !important;
