@@ -5,13 +5,16 @@ class AdminNacexConfigController extends ModuleAdminController
     public function __construct()
     {
         parent::__construct();
+        $this->bootstrap = true;
     }
 
     public function initContent()
     {
-        $configure = $this->context->link->getAdminLink('AdminModules', false)
-            .'&configure='.$this->module->name.'&tab_module='.$this->module->tab.'&module_name='.$this->module->name.'&token='.Tools::getAdminTokenLite('AdminModules');
-        Tools::redirectAdmin($configure);
-        die();
+        parent::initContent();
+
+        $module = Module::getInstanceByName('nacex');
+        $content = $module->getContent();
+
+        $this->context->smarty->assign('content', $content);
     }
 }
