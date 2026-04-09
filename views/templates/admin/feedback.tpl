@@ -85,7 +85,7 @@
 <div class="ncx_feedback_container">
     <div class="ncx_feedback_logo" align="center">
         <a target="_blank" title="{l s='Go to Nacex web' mod="nacex"}" href="https://www.nacex.es">
-            <img src="{$ncx_logo200url}" alt="Logotipo Nacex" style="width: 200px;height: 49px;"/>
+            <img src="{$ncx_logo200url}" alt="Logotipo Nacex" style="width: 200px;height: auto;"/>
         </a>
     </div>
     <div id="ncx_feedback_table_container">
