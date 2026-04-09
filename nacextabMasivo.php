@@ -16,7 +16,7 @@ if (Configuration::get('NACEX_SHOW_ERRORS') == 'SI') {
     ini_set('display_errors', '0');
 }
 
-class nacextabMasivo extends AdminController
+class nacextabMasivo extends ModuleAdminController
 {
     private $_html = '';
     private $nacex = '';
