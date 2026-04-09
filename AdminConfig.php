@@ -904,7 +904,7 @@ function getFormularioConfiguracion($obj)
 													  <tr>
 															<td class="columna1">' . $obj->l('Do you want to install our zones?') . '</td>
 															<td class="columna2" id="nacex_zones">
-																<p class="alert alert-info">' . $obj->l('This will create NCX zones and assign Nacex carriers to them. It will NOT modify your existing zone or country configuration.') . '<br>' . $obj->l('After creating the zones, assign countries and states to them from International > Locations > Zones.') . '</p>
+																<p class="alert alert-warning">' . $obj->l('This will create shipping zones, assign countries/states to them, and configure Nacex carriers.') . '<br>' . $obj->l('If you already have zones configured, review your carrier zone assignments after this operation.') . '</p>
 																<input style="cursor: pointer;padding: 7px;width: 250px;" class="ncx_button" onclick="javascript:inizializarZonas();" type="button" name="initZonas" id="initZonas" value="' . $obj->l('Install and initialize zones') . '"/>
 																<div id="initZonasResult"></div>
 																<p class="tip">' . $obj->l('Creates NCX zones and assigns Nacex carriers to them. Does not affect other carriers or zone assignments.') . '</p>

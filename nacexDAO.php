@@ -1436,7 +1436,22 @@ class nacexDAO
             $weightRange[$val['id_carrier']] = $val['id_range_weight'];
         }
 
-        // Crear zonas y asignar carriers
+        // Mapeo zona => países/estados que se asignarán
+        $zoneCountryMap = [
+            'España peninsular' => ['countries' => ['ES'], 'states_all_country' => 'ES'],
+            'Baleares' => ['states' => ['ES-PM']],
+            'Canarias' => ['states' => ['ES-GC', 'ES-TF']],
+            'Ceuta y Melilla' => ['states' => ['ES-CE', 'ES-ML']],
+            'Portugal' => ['countries' => ['PT']],
+            'Internacional Zona 1' => ['countries' => nacexDTO::INTERNACIONAL1],
+            'Internacional Zona 2' => ['countries' => nacexDTO::INTERNACIONAL2],
+        ];
+
+        // Obtener id_country de España
+        $esCountry = Db::getInstance()->executeS('SELECT id_country FROM ' . _DB_PREFIX_ . "country WHERE iso_code = 'ES'");
+        $id_country_es = isset($esCountry[0]) ? (int)$esCountry[0]['id_country'] : 6;
+
+        // Crear zonas, asignar países y carriers
         foreach ($zones as $zone) {
             $select = Db::getInstance()->executeS('SELECT id_zone FROM ' . _DB_PREFIX_ . "zone WHERE name = '" . pSQL($zone) . "'");
 
@@ -1460,28 +1475,47 @@ class nacexDAO
 
             $id_zone = (int)$select[0]['id_zone'];
 
+            // Asignar países y estados a la zona
+            if (isset($zoneCountryMap[$zone])) {
+                $map = $zoneCountryMap[$zone];
+
+                if (isset($map['countries'])) {
+                    foreach ($map['countries'] as $iso) {
+                        Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . "country SET id_zone = " . $id_zone . " WHERE iso_code = '" . pSQL($iso) . "'");
+                        nacexutils::writeNacexLog('initNcxZones :: País ' . $iso . ' asignado a zona ' . $zone);
+                    }
+                }
+
+                if (isset($map['states'])) {
+                    $isos = implode("','", array_map('pSQL', $map['states']));
+                    Db::getInstance()->execute("UPDATE " . _DB_PREFIX_ . "state SET id_zone = " . $id_zone . " WHERE iso_code IN ('" . $isos . "')");
+                    nacexutils::writeNacexLog('initNcxZones :: Estados ' . implode(', ', $map['states']) . ' asignados a zona ' . $zone);
+                }
+
+                if (isset($map['states_all_country'])) {
+                    Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'state SET id_zone = ' . $id_zone . ' WHERE id_country = ' . $id_country_es);
+                    nacexutils::writeNacexLog('initNcxZones :: Todos los estados de ES asignados a zona ' . $zone);
+                }
+            }
+
             // Determinar qué carriers asignar a esta zona
             $isIntZone = strpos($zone, 'Internacional') !== false;
 
             foreach ($id_code_carrier as $code_id => $code_val) {
-                // Internacionales solo a zonas internacionales, nacionales/shop solo a zonas nacionales
                 if ($isIntZone && !in_array($code_val, $int)) {
                     continue;
                 }
                 if (!$isIntZone && in_array($code_val, $int)) {
                     continue;
                 }
-                // NacexShop no va a Portugal
-                if ($zone === 'NCX - Portugal' && in_array($code_val, $shp)) {
+                if ($zone === 'Portugal' && in_array($code_val, $shp)) {
                     continue;
                 }
 
-                // Asignar carrier a zona (sin duplicados)
                 Db::getInstance()->execute(
                     'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'carrier_zone (id_carrier, id_zone) VALUES (' . (int)$code_id . ', ' . $id_zone . ')'
                 );
 
-                // Crear entrada de delivery con precio 0
                 $id_range = isset($weightRange[$code_id]) ? (int)$weightRange[$code_id] : 0;
                 if ($id_range > 0) {
                     Db::getInstance()->execute(
