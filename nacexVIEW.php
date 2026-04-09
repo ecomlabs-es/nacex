@@ -475,7 +475,6 @@ class nacexVIEW
 				</span>';
         }
 
-
         $html .= '
 				<div align="center" id="ncx_boxinfo' . (isset($datosexpedicion['exp_cod']) ? $datosexpedicion['exp_cod'] : '') . '" class="card-body">					
 				  <a target="_blank" title="' . $webtext . '" href="' . $webdir . '" >
@@ -1053,7 +1052,6 @@ class nacexVIEW
 					NACEX  ' . $datosexpedicion['ag_cod_num_exp'] . '
 				</span>';
         }
-
 
         $html .= '
           <div align="center" id="ncx_boxinfo' . $datosexpedicion['exp_cod'] . '" style="margin-left: 20px;' . $acc_active . '">
