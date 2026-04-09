@@ -2023,16 +2023,16 @@ class nacex extends CarrierModule
         // Revisamos cuál es el carrier seleccionado correcto
         $isCarrierActivo = $carrier_activo ? (!is_null($orderCarrier) && in_array($orderCarrier, $carrier_activo)) : $carrier_activo;
 
-        // Revisamos el valor del carrier para que se muestre correctamente y printarlo en el log
-        if ($isCarrierActivo && $selected_carrier == $orderCarrier) {
+        // Priorizar el carrier real del pedido; solo usar la cookie como fallback si no existe
+        if (!is_null($orderCarrier)) {
             $carrier = $orderCarrier;
-            nacexutils::writeNacexLog('carrier1 :: ' . $carrier);
-        } elseif (!is_null($selected_carrier) || !empty($selected_carrier)){
+            nacexutils::writeNacexLog('carrier (order) :: ' . $carrier);
+        } elseif (!empty($selected_carrier)) {
             $carrier = $selected_carrier;
-            nacexutils::writeNacexLog('carrier2 :: ' . $carrier);
+            nacexutils::writeNacexLog('carrier (cookie) :: ' . $carrier);
         } else {
-            $carrier = $orderCarrier;
-            nacexutils::writeNacexLog('carrier3 :: ' . $carrier);
+            $carrier = null;
+            nacexutils::writeNacexLog('carrier :: no carrier found');
         }
 
         $nacexDTO = new nacexDTO();
@@ -2049,10 +2049,16 @@ class nacex extends CarrierModule
             // Comprobamos si la dirección del pedido coincide con la que hemos guardado en el carrito para los Shop
             //$shop_address = nacexDAO::getDatosCartNacexShop($params['cart']->id);
 
+            $shop_datos = null;
             if (isset($_COOKIE['opc_id_cart']) && isset($_COOKIE['opc_shop_datos']) && $_COOKIE['opc_id_cart'] == $id_cart) {
                 $shop_datos = $_COOKIE['opc_shop_datos'];
             } elseif (!empty($query['ncx'])) {
                 $shop_datos = $query['ncx'];
+            }
+
+            if (empty($shop_datos)) {
+                nacexutils::writeNacexLog('hookactionValidateOrder :: NacexShop carrier but no shop data found, skipping address update');
+                return;
             }
 
             $new_idDelivery = '';
