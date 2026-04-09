@@ -102,13 +102,27 @@ composer qa               # QA completo (lint + phpstan + tests)
 - CSV de puntos NacexShop convertido a UTF-8 al descargar, con retrocompatibilidad para archivos legacy
 - Descarga automatica del CSV si no existe al confirmar pedido
 - Resolucion de datos del punto NacexShop desde CSV actualizado (no datos estaticos)
+- Persistir estado de expedicion en BD al visualizar pedido (sincroniza con WS de Nacex)
+- Cancelar expedicion: actualiza BD cuando ya fue cancelada externamente (error 5611)
+- Inicializacion de zonas segura: no sobreescribe configuracion global de paises
+- Soporte multitienda en inicializacion de zonas (zone_shop segun contexto)
+</details>
+
+<details>
+<summary><strong>Interfaz</strong></summary>
+
+- Configuracion: multi-select reemplazados por checkboxes
+- Configuracion: toggles con estilo nativo PrestaShop 8
+- Configuracion: tab Nacex se abre directamente sin redireccion
+- Proteccion de endpoints AJAX con verificacion de admin
 </details>
 
 <details>
 <summary><strong>Calidad de codigo</strong></summary>
 
-- Eliminacion de codigo muerto: hooks legacy, metodos vacios, bloques comentados
-- Tests unitarios con PHPUnit, analisis estatico con PHPStan, estilo con PHP CS Fixer
+- Eliminacion de codigo muerto y dependencias no utilizadas
+- Tests unitarios con PHPUnit (97 tests, 143 assertions)
+- Analisis estatico con PHPStan, estilo con PHP CS Fixer
 - Workflows de GitHub Actions: CI (PHP 7.4-8.4) + release automatico con zip
 </details>
 

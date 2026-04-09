@@ -33,8 +33,16 @@ Eliminar código muerto: ConsultasBD.php, FuncionesWS.php, NacexLog.php (duplica
 Eliminar librerías duplicadas: lib/jquery-barcode, lib/jquery-printelement, lib/js-md5, lib/jquery-validate
 Eliminar jQuery 3.3.1 bundled (PrestaShop ya lo incluye)
 Eliminar carpeta includes/ sin uso, logo.gif sin uso
+Eliminar dependencias no utilizadas (circuit-breaker, doctrine/cache, guzzle, css-selector)
+Persistir estado de expedición en BD al visualizar pedido (sincroniza con WS)
+Cancelar expedición: actualizar BD cuando el WS devuelve 5611 (ya cancelada externamente)
+Inicialización de zonas segura: no sobreescribe configuración global de países/zonas
+Soporte multitienda en inicialización de zonas (zone_shop según contexto)
+Configuración: multi-select reemplazados por checkboxes
+Configuración: ps-switch con estilo nativo PrestaShop 8
+Configuración: tab Nacex se abre directamente sin redirección a AdminModules
 Limpiar JavaScript: eliminar async:false innecesario, código comentado, selectores redundantes
-Añadir tests unitarios con PHPUnit
+Añadir tests unitarios con PHPUnit (97 tests)
 Añadir análisis estático con PHPStan
 Añadir PHP CS Fixer para estilo de código
 Añadir workflows GitHub Actions: CI (PHP 7.4-8.4) + release automático
