@@ -159,7 +159,7 @@ class nacextab extends AdminController
 		<div class='ncx_listado'>
 		<form method='post'>	
 			<div align='center' style='margin-top:-25px;padding:20px;'>
-				<a target='_blank' title='" . $webtext . "' href='" . $webdir . "'><img style='margin-bottom:5px; width: 200px;height: 49px;' src='" . $webimg . "' /></a>
+				<a target='_blank' title='" . $webtext . "' href='" . $webdir . "'><img style='margin-bottom:5px; width: 200px;height: auto;' src='" . $webimg . "' /></a>
 			</div>
 			<div align='center'>				
 				<b>" . $this->nacex->l('From') . ": </b>
