@@ -485,7 +485,12 @@ http://www.generateit.net/css-optimize/index.php
 	}
 
 	.thead-default {
-		background-color: #fff;
+		background-color: #fff !important;
+	}
+
+	.thead-default th,
+	.thead-default td {
+		background-color: #fff !important;
 	}
 
 	.column-headers th {
