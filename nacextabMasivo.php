@@ -511,10 +511,10 @@ class nacextabMasivo extends ModuleAdminController
                         <option name='T' value='nacex'>Nacex</option>
                         <option name='S' value='nacexshop'>NacexShop</option>
                         <option name='I' value='nacexint'>" . $this->nacex->l('Nacex International') . "</option>
-                        <option name='E' value='otros'>" . $this->nacex->l('Others') . "</option>
+                        <option name='E' value='otros'>" . $this->nacex->l('Others') . '</option>
                     </select>
                 </div>
-            </div>";
+            </div>';
 
         $tabla .= "<table name='list_table' id='list_table' class='table table-bordered' style='width:100%'>
                      <thead class='thead-default'>
@@ -584,7 +584,7 @@ class nacextabMasivo extends ModuleAdminController
                     $badgeColor = '#ff9800';
                     $badgeText = $estado;
                 }
-                $badgeExp = "<span style='background-color:" . $badgeColor . ";color:white;padding:0.25em 0.6em;border-radius:1em;font-size:0.85em;white-space:nowrap;display:inline-block;'>" . $badgeText . "</span>";
+                $badgeExp = "<span style='background-color:" . $badgeColor . ";color:white;padding:0.25em 0.6em;border-radius:1em;font-size:0.85em;white-space:nowrap;display:inline-block;'>" . $badgeText . '</span>';
                 $link = Context::getContext()->link->getAdminLink('AdminOrders');
 
                 $zona = 'NAC';
@@ -625,8 +625,8 @@ class nacextabMasivo extends ModuleAdminController
 
                 $tabla .= "<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $img_servicio . "</a></td>
             <td class='center'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['serv'] . "</a></td>
-            <td class='center'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $badgeExp . "</a></td>									 
-			</tr>";
+            <td class='center'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $badgeExp . '</a></td>									 
+			</tr>';
             }
         }
 
