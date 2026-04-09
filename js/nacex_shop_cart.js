@@ -1,3 +1,10 @@
+// Listener para recibir selección NacexShop via postMessage (cross-origin fallback)
+window.addEventListener('message', function (event) {
+    if (event.data && event.data.type === 'nacexShopSelected') {
+        seleccionadoNacexShop(event.data.tipo, event.data.txt, event.data.uri, event.data.opc);
+    }
+});
+
 function unsetDatosSession(_url) {
     $.ajax({
         type: 'POST',

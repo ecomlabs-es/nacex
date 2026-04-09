@@ -7,7 +7,6 @@
     $cp = $_GET ['cp'];
     $agencias_clientes = $_GET ['clientes'];
     $opc = $_GET ['opc'];
-    //$url = $_SERVER["REQUEST_SCHEME"] . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["REWRITEBASE"];
     $url = $_GET ['uriPS'];
     ?>
 
@@ -17,16 +16,27 @@
 
         if (top.name != null && top.name !== '') {
             try {
-                window.opener.seleccionadoNacexShop('E', top.name, uri, opc);
+                if (window.opener && !window.opener.closed) {
+                    try {
+                        window.opener.seleccionadoNacexShop('E', top.name, uri, opc);
+                    } catch (e) {
+                        // Cross-origin: usar postMessage como fallback
+                        window.opener.postMessage({
+                            type: 'nacexShopSelected',
+                            tipo: 'E',
+                            txt: top.name,
+                            uri: uri,
+                            opc: opc
+                        }, '*');
+                    }
+                }
                 top.name = '';
             } catch (e) {
                 alert('Error' + e.message);
             }
             window.close();
         } else {
-            //http://sv553.altadis.com:8082/selectorNacexShop.do
             top.name = document.location;
-            // En vez de codigp_postal hemos probado también con el CP_POB que es el name y el id del campo pero no se rellena tampoco
             document.location = 'https://<?php echo $host;?>/selectorNacexShop.do?codigo_postal=<?php echo $cp;?>&clientes=<?php echo $agencias_clientes;?>';
         }
     </script>
