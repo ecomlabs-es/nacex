@@ -2,49 +2,57 @@
 
 class hash
 {
-    private static function getStoredHashes()
+    private static function getStoredHash($order_id)
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        return isset($_SESSION['nacex_hashes']) && is_array($_SESSION['nacex_hashes'])
-            ? $_SESSION['nacex_hashes']
-            : [];
+        $sql = 'SELECT hash FROM ' . _DB_PREFIX_ . 'nacex_hash WHERE order_id = ' . (int)$order_id;
+        return Db::getInstance()->getValue($sql);
     }
 
-    private static function saveStoredHashes($hashes)
+    private static function saveHash($order_id, $hash)
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        $db = Db::getInstance();
+        $existing = self::getStoredHash($order_id);
+        if ($existing) {
+            $db->update('nacex_hash', ['hash' => pSQL($hash)], 'order_id = ' . (int)$order_id);
+        } else {
+            $db->insert('nacex_hash', ['order_id' => (int)$order_id, 'hash' => pSQL($hash)]);
         }
-        $_SESSION['nacex_hashes'] = $hashes;
+    }
+
+    private static function deleteHash($order_id)
+    {
+        Db::getInstance()->delete('nacex_hash', 'order_id = ' . (int)$order_id);
+    }
+
+    public static function ensureTable()
+    {
+        $sql = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'nacex_hash (
+            order_id INT UNSIGNED NOT NULL PRIMARY KEY,
+            hash VARCHAR(64) NOT NULL
+        ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8';
+        Db::getInstance()->execute($sql);
     }
 
     public static function hash_form($order_id)
     {
-        $hashes = self::getStoredHashes();
+        self::ensureTable();
 
         // Si ya existe un hash para este pedido, reutilizarlo
-        foreach ($hashes as $entry) {
-            if ($entry['ORDER_ID'] == $order_id) {
-                return $entry['HASH'];
-            }
+        $existing = self::getStoredHash($order_id);
+        if ($existing) {
+            return $existing;
         }
 
         // No existe, generar uno nuevo
         $rand = random_int(100000, PHP_INT_MAX);
-        $hashes[] = ['HASH' => $rand, 'ORDER_ID' => $order_id];
-
-        if (count($hashes) > 20) {
-            $hashes = array_slice($hashes, -20);
-        }
-
-        self::saveStoredHashes($hashes);
+        self::saveHash($order_id, $rand);
         return $rand;
     }
 
     public function validate_hash()
     {
+        self::ensureTable();
+
         $order_id = Tools::getValue('order_id');
         $hash = Tools::getValue('hash');
 
@@ -52,14 +60,10 @@ class hash
             return false;
         }
 
-        $hashes = self::getStoredHashes();
-
-        foreach ($hashes as $key => $entry) {
-            if ($entry['ORDER_ID'] == $order_id && $entry['HASH'] == $hash) {
-                unset($hashes[$key]);
-                self::saveStoredHashes(array_values($hashes));
-                return true;
-            }
+        $stored = self::getStoredHash($order_id);
+        if ($stored && $stored == $hash) {
+            self::deleteHash($order_id);
+            return true;
         }
 
         return false;
