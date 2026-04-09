@@ -69,7 +69,7 @@ class nacextabMasivo extends AdminController
 
         $this->_html .= '</form>';
 
-        //return $this->_html;
+        parent::initContent();
         $this->context->smarty->assign('content', $this->_html);
     }
 
