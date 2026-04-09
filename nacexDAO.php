@@ -1397,8 +1397,8 @@ class nacexDAO
     /*** Añadimos las zonas Nacex y verificamos que se muestre el campo de Provincia en el checkout ***/
     public static function initNcxZones()
     {
-        $zones = ['NCX - España peninsular', 'NCX - Baleares', 'NCX - Canarias', 'NCX - Ceuta y Melilla',
-            'NCX - Portugal', 'NCX - Internacional Zona 1 - 2', 'NCX - Internacional Zona 3 - 5'];
+        $zones = ['España peninsular', 'Baleares', 'Canarias', 'Ceuta y Melilla',
+            'Portugal', 'Internacional Zona 1', 'Internacional Zona 2'];
 
         nacexutils::writeNacexLog('----');
         nacexutils::writeNacexLog('INI initNcxZones');
@@ -1499,69 +1499,23 @@ class nacexDAO
     }
 
 
-    public static function deleteNcxZones() {
+    public static function deleteNcxZones()
+    {
         nacexutils::writeNacexLog('----');
         nacexutils::writeNacexLog('INI deleteNcxZones');
 
         $code_carrier = Db::getInstance()->executeS('SELECT id_carrier FROM ' . _DB_PREFIX_ . "carrier WHERE ncx != ''");
-        $delete = '';
+        $tables = ['carrier_group', 'carrier_lang', 'carrier_shop', 'carrier_tax_rules_group_shop', 'carrier_zone', 'delivery', 'range_weight'];
 
         foreach ($code_carrier as $code) {
-            nacexutils::writeNacexLog('Eliminando datos de la tabla ' . _DB_PREFIX_ . 'carrier_group');
-            $delete .= 'DELETE FROM ' . _DB_PREFIX_ . 'carrier_group WHERE id_carrier = '.$code['id_carrier'].';';
-
-            nacexutils::writeNacexLog('Eliminando datos de la tabla ' . _DB_PREFIX_ . 'carrier_lang');
-            $delete .= 'DELETE FROM ' . _DB_PREFIX_ . 'carrier_lang WHERE id_carrier = '.$code['id_carrier'].';';
-
-            nacexutils::writeNacexLog('Eliminando datos de la tabla ' . _DB_PREFIX_ . 'carrier_shop');
-            $delete .= 'DELETE FROM ' . _DB_PREFIX_ . 'carrier_shop WHERE id_carrier = '.$code['id_carrier'].';';
-
-            nacexutils::writeNacexLog('Eliminando datos de la tabla ' . _DB_PREFIX_ . 'carrier_tax_rules_group_shop');
-            $delete .= 'DELETE FROM ' . _DB_PREFIX_ . 'carrier_tax_rules_group_shop WHERE id_carrier = '.$code['id_carrier'].';';
-
-            nacexutils::writeNacexLog('Eliminando datos de la tabla ' . _DB_PREFIX_ . 'carrier_zone');
-            $delete .= 'DELETE FROM ' . _DB_PREFIX_ . 'carrier_zone WHERE id_carrier = '.$code['id_carrier'].';';
-
-            nacexutils::writeNacexLog('Eliminando datos de la tabla ' . _DB_PREFIX_ . 'delivery');
-            $delete .= 'DELETE FROM ' . _DB_PREFIX_ . 'delivery WHERE id_carrier = '.$code['id_carrier'].';';
-            //$delete .= 'DELETE FROM ' . _DB_PREFIX_ . 'range_price WHERE id_carrier = '.$code['id_carrier'].';';
-
-            nacexutils::writeNacexLog('Eliminando datos de la tabla ' . _DB_PREFIX_ . 'range_weight');
-            $delete .= 'DELETE FROM ' . _DB_PREFIX_ . 'range_weight WHERE id_carrier = '.$code['id_carrier'].';';
+            $id = (int)$code['id_carrier'];
+            foreach ($tables as $table) {
+                nacexutils::writeNacexLog('deleteNcxZones :: DELETE FROM ' . $table . ' WHERE id_carrier = ' . $id);
+                Db::getInstance()->execute('DELETE FROM ' . _DB_PREFIX_ . $table . ' WHERE id_carrier = ' . $id);
+            }
         }
 
-        nacexutils::writeNacexLog('------');
-        nacexutils::writeNacexLog('Borrando zonas...');
-        $delete .= 'DELETE FROM ' . _DB_PREFIX_ . "zone WHERE name LIKE 'NCX - %'";
-
-        if (! Db::getInstance()->Execute($delete)) {
-            nacexutils::writeNacexLog('deleteNcxZones :: Error al desinstalar los datos de las tablas y las zonas.');
-            return false;
-        }
-
-        nacexutils::writeNacexLog('deleteNcxZones:: consulta 1 realizada');
-        nacexutils::writeNacexLog($delete);
-
-        // Tenemos que borrar la asignación de las nuevas zonas creadas a los carriers
-
-        // Dejamos asignados los países a las zonas que tocan (Europa)
-        /*$update = 'UPDATE ' . _DB_PREFIX_ . "country SET id_zone = 1 WHERE iso_code = 'ES';";
-        $update .= 'UPDATE ' . _DB_PREFIX_ . "state SET id_zone = 1 WHERE id_country = 6";*/
-
-        $paises = array_merge(nacexDTO::NACIONAL, nacexDTO::INTERNACIONAL1, nacexDTO::INTERNACIONAL2);
-        $noEU = ['AD','GI','NO','CH'];
-        $update = '';
-        foreach ($paises as $pais) {
-            $idZone = in_array($pais, $noEU) ? 7 : 1;
-
-            $update .= 'UPDATE ' . _DB_PREFIX_ . "country SET id_zone = '".$idZone."' WHERE iso_code = '".$pais."';";
-
-            if ($pais == 'ES') {
-                $update .= 'UPDATE ' . _DB_PREFIX_ . "state SET id_zone = '".$idZone."' WHERE id_country = (SELECT id_country FROM " . _DB_PREFIX_ . "country WHERE iso_code = '".$pais."');"; }
-        }
-
-        nacexutils::writeNacexLog('Reestablecemos zonas originales de Prestashop');
-        Db::getInstance()->Execute($update);
+        // No borramos zonas ni modificamos países — no son exclusivas de Nacex
 
         nacexutils::writeNacexLog('FIN deleteNcxZones');
         nacexutils::writeNacexLog('----');
