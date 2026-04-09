@@ -1577,6 +1577,15 @@ class nacexDAO
         } elseif ($tipo == 'o') {
             $textlog = 'finalizar Expedición estado OK';
             $configType = 'OK';
+        } elseif ($tipo == 't') {
+            $textlog = 'Expedición en tránsito';
+            $configType = 'TRANSITO';
+        } elseif ($tipo == 'r') {
+            $textlog = 'Expedición en reparto';
+            $configType = 'REPARTO';
+        } elseif ($tipo == 'n') {
+            $textlog = 'Incidencia en expedición';
+            $configType = 'INCIDENCIA';
         }
 
         // Cambiamos el estado del pedido al Imprimir la etiqueta y al Documentar expedición (siempre va a haber una opción seleccionada)

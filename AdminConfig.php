@@ -1307,7 +1307,58 @@ function getFormularioConfiguracion($obj)
         }
         $seleccionado = '';
     }
-    $html .= '</select>    
+    $html .= '</select>
+            </td>
+          </tr>
+          <tr>
+            <td class="columna1">' . $obj->l('Update order status when shipment is in transit') . ':</td>
+            <td id="cambiar_estado_transito" class="columna2">';
+    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_TRANSITO');
+    $html .= '<select name="cambiar_estado_transito">';
+    $html .= '<option value="">' . $obj->l('None') . '</option>';
+    foreach ($estados as $estado) {
+        if (isset($estado['id_order_state'])) {
+            $id_estado = $estado['id_order_state'];
+            $valor = $estado['name'];
+            $seleccionado = ($sel_cambiar !== false && $id_estado == $sel_cambiar) ? 'selected' : '';
+            $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
+        }
+    }
+    $html .= '</select>
+            </td>
+          </tr>
+          <tr>
+            <td class="columna1">' . $obj->l('Update order status when shipment is out for delivery') . ':</td>
+            <td id="cambiar_estado_reparto" class="columna2">';
+    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_REPARTO');
+    $html .= '<select name="cambiar_estado_reparto">';
+    $html .= '<option value="">' . $obj->l('None') . '</option>';
+    foreach ($estados as $estado) {
+        if (isset($estado['id_order_state'])) {
+            $id_estado = $estado['id_order_state'];
+            $valor = $estado['name'];
+            $seleccionado = ($sel_cambiar !== false && $id_estado == $sel_cambiar) ? 'selected' : '';
+            $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
+        }
+    }
+    $html .= '</select>
+            </td>
+          </tr>
+          <tr>
+            <td class="columna1">' . $obj->l('Update order status when shipment has an incident') . ':</td>
+            <td id="cambiar_estado_incidencia" class="columna2">';
+    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_INCIDENCIA');
+    $html .= '<select name="cambiar_estado_incidencia">';
+    $html .= '<option value="">' . $obj->l('None') . '</option>';
+    foreach ($estados as $estado) {
+        if (isset($estado['id_order_state'])) {
+            $id_estado = $estado['id_order_state'];
+            $valor = $estado['name'];
+            $seleccionado = ($sel_cambiar !== false && $id_estado == $sel_cambiar) ? 'selected' : '';
+            $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
+        }
+    }
+    $html .= '</select>
             </td>
           </tr>
           <tr>
@@ -2307,6 +2358,15 @@ function guardarConfiguracion()
         return false;
     }
     if (!Configuration::updateValue('NACEX_CAMBIAR_ESTADO_OK', Tools::getValue('cambiar_estado_ok'))) {
+        return false;
+    }
+    if (!Configuration::updateValue('NACEX_CAMBIAR_ESTADO_TRANSITO', Tools::getValue('cambiar_estado_transito'))) {
+        return false;
+    }
+    if (!Configuration::updateValue('NACEX_CAMBIAR_ESTADO_REPARTO', Tools::getValue('cambiar_estado_reparto'))) {
+        return false;
+    }
+    if (!Configuration::updateValue('NACEX_CAMBIAR_ESTADO_INCIDENCIA', Tools::getValue('cambiar_estado_incidencia'))) {
         return false;
     }
 

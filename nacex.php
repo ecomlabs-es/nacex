@@ -1537,18 +1537,18 @@ class nacex extends CarrierModule
                     $datos['estado'] = $respuestaGetEstadoExpedicion['estado'];
                 }
 
-                // Si el estado de la expedición es un OK (4), entonces cambiamos el estado del pedido.
-                // Teniendo en cuenta que no sea el estado final en el que debería estar
-                $order = new Order($id_order);
-                $est = $order->getCurrentState();
-                $final_est = Configuration::get('NACEX_CAMBIAR_ESTADO_OK');
+                // Actualizar estado del pedido según el estado de la expedición
+                $estadoExp = isset($respuestaGetEstadoExpedicion['estado']) ? $respuestaGetEstadoExpedicion['estado'] : $datos['estado'];
+                $estadoCode = isset($respuestaGetEstadoExpedicion['estado_code']) ? $respuestaGetEstadoExpedicion['estado_code'] : '';
 
-                if (($final_est != '' && $est != $final_est) &&
-                    ($respuestaGetEstadoExpedicion['estado_code'] == 4 || $respuestaGetEstadoExpedicion['estado'] == 'OK' || $datos['estado'] == 'ENTREGADA')) {
-
-                    /*** Cambio de estado al pedido al documentar expedición ***/
-                    nacexutils::writeNacexLog('hookAdminOrder :: Cambiamos el estado del pedido al estar en OK');
+                if ($estadoCode == 4 || $estadoExp == 'OK' || $estadoExp == 'ENTREGADA') {
                     nacexDAO::actualizaEstadoPedido($id_order, 'o');
+                } elseif ($estadoCode == 2 || $estadoExp == 'TRANSITO') {
+                    nacexDAO::actualizaEstadoPedido($id_order, 't');
+                } elseif ($estadoCode == 3 || $estadoExp == 'REPARTO') {
+                    nacexDAO::actualizaEstadoPedido($id_order, 'r');
+                } elseif ($estadoExp == 'INCIDENCIA' || $estadoExp == 'INCIDENCIA EXPEDICION') {
+                    nacexDAO::actualizaEstadoPedido($id_order, 'n');
                 }
 
                 // marcamos la solicitud solo de la Última del listado
