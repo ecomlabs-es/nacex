@@ -1465,12 +1465,18 @@ class nacexDAO
                     continue;
                 }
 
-                // Insertar en zone_shop para multitienda
+                // Insertar en zone_shop según el contexto de tienda
                 $id_zone = (int)$select[0]['id_zone'];
-                $id_shop = (int)Configuration::get('PS_SHOP_DEFAULT');
-                Db::getInstance()->execute(
-                    'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'zone_shop (id_zone, id_shop) VALUES (' . $id_zone . ', ' . $id_shop . ')'
-                );
+                if (Shop::getContext() == Shop::CONTEXT_ALL || Shop::getContext() == Shop::CONTEXT_GROUP) {
+                    $shops = Shop::getShops(true, null, true);
+                } else {
+                    $shops = [Shop::getContextShopID()];
+                }
+                foreach ($shops as $id_shop) {
+                    Db::getInstance()->execute(
+                        'INSERT IGNORE INTO ' . _DB_PREFIX_ . 'zone_shop (id_zone, id_shop) VALUES (' . $id_zone . ', ' . (int)$id_shop . ')'
+                    );
+                }
             }
 
             $id_zone = (int)$select[0]['id_zone'];
