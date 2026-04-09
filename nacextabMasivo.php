@@ -495,21 +495,7 @@ class nacextabMasivo extends AdminController
 
         $nacexDTO = new nacexDTO();
 
-        $tabla .= "<table name='list_table' id='list_table' class='table table-bordered' style='width:100%;table-layout:fixed;'>
-                     <colgroup>
-                        <col style='width:40px;'>
-                        <col style='width:50px;'>
-                        <col style='width:12%;'>
-                        <col style='width:11%;'>
-                        <col style='width:10%;'>
-                        <col style='width:14%;'>
-                        <col style='width:7%;'>
-                        <col style='width:7%;'>
-                        <col style='width:9%;'>
-                        <col style='width:7%;'>
-                        <col style='width:5%;'>
-                        <col style='width:8%;'>
-                     </colgroup>
+        $tabla .= "<table name='list_table' id='list_table' class='table table-bordered' style='width:100%'>
                      <thead class='thead-default'>
             <tr>";
         if (nacexWS::ws_checkConnection()[0] != '500ERROR') {

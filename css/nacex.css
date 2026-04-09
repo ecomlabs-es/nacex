@@ -396,16 +396,14 @@ http://www.generateit.net/css-optimize/index.php
 		margin-top: 1em;
 	}
 
-	#list_table td {
-		overflow: hidden;
-		text-overflow: ellipsis;
+	#list_table td,
+	#list_table th {
 		vertical-align: middle;
 	}
 
 	#list_table td img[src*="logos/"] {
 		width: 60px;
 		height: auto;
-		max-height: 20px;
 	}
 
 	.thead-default td #createIcon {
