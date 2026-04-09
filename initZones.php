@@ -5,9 +5,9 @@ include_once dirname(__FILE__) . '/../../init.php';
 include_once dirname(__FILE__) . '/nacexDAO.php';
 include_once dirname(__FILE__) . '/nacex.php';
 
-// Verificar que el usuario es un admin logueado
-$context = Context::getContext();
-if (!$context->employee || !$context->employee->id) {
+// Verificar que el usuario es un admin logueado via cookie
+$cookie = new Cookie('psAdmin');
+if (!$cookie->id_employee) {
     die('<div class="alert alert-danger">Unauthorized</div>');
 }
 
