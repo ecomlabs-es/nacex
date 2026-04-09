@@ -277,7 +277,8 @@ class nacexWS {
             if (isset($resultado[2]) && $resultado[2] == '5611') {
                 echo '<br><div id="messages-nacex" class="bootstrap" style="margin-top:10px">';
                 echo '<div class="alert alert-info conf" style="width:auto">';
-                echo '<strong>' . $nacexDTO->l('The expedition was already cancelled') . '</strong>';
+                $nacex = new nacex();
+                echo '<strong>' . $nacex->l('The expedition was already cancelled') . '</strong>';
                 echo '</div></div>';
                 nacexutils::writeNacexLog('cancelExpedicion :: Expedición ya cancelada en Nacex, actualizamos BD');
                 nacexDAO::cancelarExpedicion($id_pedido, $cod_exp);
