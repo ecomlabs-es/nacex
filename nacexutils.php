@@ -558,11 +558,11 @@ class nacexutils
         // Creamos la estructura de tabla que tiene la configuración
         $radioHTML = '<td class="form-control-label">' . $nacex->l($label) . ': </td>
                       <td class="col-sm" id="' . $radioName . '">
-                          <div class="input-group">															    
+                          <div class="input-group">
                             <span class="ps-switch ' . $nacexClass . '">
-                                <input id="' . $radioName . '_n" class="ps-switch" type="radio" name="' . $radioName . '" ' . $ocN . ' value="' . $valueN . '" ' . $selectedN . '/>
+                                <input id="' . $radioName . '_n" type="radio" name="' . $radioName . '" ' . $ocN . ' value="' . $valueN . '" ' . $selectedN . '/>
                                 <label for="' . $radioName . '_n">' . $nacex->l($labelN) . '</label>
-                                <input id="' . $radioName . '_s" class="ps-switch" type="radio" name="' . $radioName . '" ' . $ocY . ' value="' . $valueY . '" ' . $selectedY . '/>
+                                <input id="' . $radioName . '_s" type="radio" name="' . $radioName . '" ' . $ocY . ' value="' . $valueY . '" ' . $selectedY . '/>
                                 <label for="' . $radioName . '_s">' . $nacex->l($labelY) . '</label>
                                 <span class="slide-button"></span>
                             </span>
