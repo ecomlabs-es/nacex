@@ -57,7 +57,6 @@ class nacex extends CarrierModule
         $ok &= $this->registerHook('displayBeforeCarrier');
         $ok &= $this->registerHook('displayOrderConfirmation');
         $ok &= $this->registerHook('displayOrderDetail');
-        $ok &= $this->registerHook('displayPDFInvoice');
         $ok &= $this->registerHook('displayHeader');
         $ok &= $this->registerHook('displayBackOfficeHeader');
         $ok &= $this->registerHook('displayBeforeBodyClosingTag');

@@ -14,7 +14,6 @@ function upgrade_module_2_5_0($object)
         'displayBeforeCarrier',
         'displayOrderConfirmation',
         'displayOrderDetail',
-        'displayPDFInvoice',
         'displayHeader',
         'displayBackOfficeHeader',
         'displayBeforeBodyClosingTag',
@@ -29,6 +28,7 @@ function upgrade_module_2_5_0($object)
         'ActionAdminOrdersListingFieldsModifier',
         'displayAdminOrder',
         'orderDetailDisplayed',
+        'displayPDFInvoice',
     ];
 
     // Registrar hooks nuevos (registerHook ignora si ya existe)

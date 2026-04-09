@@ -18,7 +18,6 @@ try {
         'displayBeforeCarrier',
         'displayOrderConfirmation',
         'displayOrderDetail',
-        'displayPDFInvoice',
         'displayHeader',
         'displayBackOfficeHeader',
         'displayBeforeBodyClosingTag',
@@ -33,6 +32,7 @@ try {
         'ActionAdminOrdersListingFieldsModifier',
         'displayAdminOrder',
         'orderDetailDisplayed',
+        'displayPDFInvoice',
     ];
 
     foreach ($hooksToRegister as $hook) {
