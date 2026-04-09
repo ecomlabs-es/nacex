@@ -414,9 +414,9 @@ eval($nacexutilsSource);
 // dependencias pesadas. Solo necesitamos la clase nacexDTO.
 $nacexDTOSource = file_get_contents($moduleDir . '/nacexDTO.php');
 // Eliminar los include_once del inicio
-$nacexDTOSource = preg_replace('/include_once\s+dirname\(__FILE__\)\s*\.\s*"\/AdminConfig\.php";/', '// [TEST BOOTSTRAP] include omitido', $nacexDTOSource);
-$nacexDTOSource = preg_replace('/include_once\s+dirname\(__FILE__\)\s*\.\s*"\/nacexutils\.php";/', '// [TEST BOOTSTRAP] include omitido', $nacexDTOSource);
-$nacexDTOSource = preg_replace('/include_once\s+dirname\(__FILE__\)\s*\.\s*"\/LBnewService\.php";/', '// [TEST BOOTSTRAP] include omitido', $nacexDTOSource);
+$nacexDTOSource = preg_replace('/include_once\s+dirname\(__FILE__\)\s*\.\s*["\'][\s]*\/?AdminConfig\.php["\'];/', '// [TEST BOOTSTRAP] include omitido', $nacexDTOSource);
+$nacexDTOSource = preg_replace('/include_once\s+dirname\(__FILE__\)\s*\.\s*["\'][\s]*\/?nacexutils\.php["\'];/', '// [TEST BOOTSTRAP] include omitido', $nacexDTOSource);
+$nacexDTOSource = preg_replace('/include_once\s+dirname\(__FILE__\)\s*\.\s*["\'][\s]*\/?LBnewService\.php["\'];/', '// [TEST BOOTSTRAP] include omitido', $nacexDTOSource);
 // Eliminar las etiquetas PHP de apertura y cierre
 $nacexDTOSource = preg_replace('/^<\?php/', '', $nacexDTOSource);
 $nacexDTOSource = preg_replace('/\?>\s*$/', '', $nacexDTOSource);
