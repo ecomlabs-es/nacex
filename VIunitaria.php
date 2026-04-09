@@ -26,7 +26,7 @@ class VIunitaria
                 <div class="subheader">
                     <center>
                     <a target="_blank" title="' . $nacex->l('Go to Nacex web') . '" href="https://www.nacex.es" class="nacex-logo" style="width: fit-content;">
-                        <img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg" style="width: 200px;height: 49px;">
+                        <img src="' . _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png" style="width: 200px;">
                     </a>    
                     <br>
                     <span class="idpedido-input"><b>' . $nacex->l('Id order') . ': </b><input type="number" id="idpedido" autofocus="autofocus" value="' . $_GET['id_pedido'] . '"></span>
@@ -281,7 +281,7 @@ class VIunitaria
             $css_id = 'ncx_info_shop';
             $webtext = $nacex->l('Go to NacexShop web');
             $webdir = 'https://www.nacexshop.com';
-            $webimg = _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg';
+            $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
             $array_address_invoice = nacexDAO::getAddressInvoiceByOrder($id_order);
             $att = $array_address_invoice[0]['firstname'] . ' ' . $array_address_invoice[0]['lastname'];
