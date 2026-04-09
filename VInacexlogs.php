@@ -15,7 +15,7 @@ class VInacexlogs
         $mensaje = $nacex->l('Are you sure you want to delete all log files?');
         return '<center>
                     <a target="_blank" title="' . $nacex->l('Go to Nacex web') . '" href="https://www.nacex.es">
-                        <img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg" style="width: 200px">
+                        <img src="' . _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png" style="width: 200px">
                     </a>    
                 </center>
                 <div align="right">
