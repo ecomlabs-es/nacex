@@ -479,4 +479,7 @@ $_MODULE['<{nacex}prestashop>nacex_dafdcfb42039225398d393769f8d6d99'] = 'Crea la
 $_MODULE['<{nacex}prestashop>initzones_da6892790a5a359bd1081991594ace18'] = 'Zonas creadas, países asignados y transportistas Nacex configurados correctamente.';
 $_MODULE['<{nacex}prestashop>initzones_4b4684496f81b2742e4da996ad1e2c66'] = 'Revisa las asignaciones de zona en Envío > Transportistas si tienes otros transportistas configurados.';
 $_MODULE['<{nacex}prestashop>initzones_fae72eb16dfd19d96da363b572ad4ef5'] = 'Error al crear las zonas. Revisa el log para más detalles.';
+$_MODULE['<{nacex}prestashop>nacex_da6892790a5a359bd1081991594ace18'] = 'Zonas creadas, países asignados y transportistas Nacex configurados correctamente.';
+$_MODULE['<{nacex}prestashop>nacex_4b4684496f81b2742e4da996ad1e2c66'] = 'Revisa las asignaciones de zona en Envío > Transportistas si tienes otros transportistas configurados.';
+$_MODULE['<{nacex}prestashop>nacex_fae72eb16dfd19d96da363b572ad4ef5'] = 'Error al crear las zonas. Revisa el log para más detalles.';
 $_MODULE['<{nacex}prestashop>nacexws_388e8aeb7d166aedb9acde6d023d3068'] = 'La expedición ya estaba cancelada';
