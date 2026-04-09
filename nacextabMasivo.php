@@ -564,11 +564,34 @@ class nacextabMasivo extends AdminController
 
                 $phone = !empty($datos[0]['phone_mobile']) ? $phone = $datos[0]['phone_mobile'] : $phone = $datos[0]['phone'];
 
-                $imgncx = "<img src='../modules/nacex/images/nosent.png' alt='" . $this->nacex->l('Expedition to document') . "' title='" . $this->nacex->l('Expedition to document') . "'/>";
-
-                if (!empty($value['ag_cod_num_exp']) && $value['estado'] != 'ANULADA') {
-                    $imgncx = "<img src='../modules/nacex/images/sent.png' alt='" . $this->nacex->l('Documented expedition') . ' - (' . $value['ag_cod_num_exp'] . ")' title='" . $this->nacex->l('Documented expedition') . ' - (' . $value['ag_cod_num_exp'] . ")'/>";
+                // Badge del estado de la expedición
+                $estado = isset($value['estado']) ? $value['estado'] : '';
+                if (empty($value['ag_cod_num_exp']) || empty($estado)) {
+                    $badgeColor = '#999';
+                    $badgeText = $this->nacex->l('Pending');
+                } elseif ($estado == 'ANULADA' || $estado == 'BAJA') {
+                    $badgeColor = '#dc3545';
+                    $badgeText = $estado;
+                } elseif ($estado == 'OK') {
+                    $badgeColor = '#28a745';
+                    $badgeText = $this->nacex->l('Delivered');
+                } elseif ($estado == 'INCIDENCIA' || $estado == 'INCIDENCIA EXPEDICION') {
+                    $badgeColor = '#daa520';
+                    $badgeText = $this->nacex->l('Incident');
+                } elseif ($estado == 'TRANSITO') {
+                    $badgeColor = '#2196F3';
+                    $badgeText = $this->nacex->l('In transit');
+                } elseif ($estado == 'REPARTO') {
+                    $badgeColor = '#17a2b8';
+                    $badgeText = $this->nacex->l('Delivery');
+                } elseif ($estado == 'PENDIENTE' || $estado == 'PENDIENTE DE INTEGRA') {
+                    $badgeColor = '#ff9800';
+                    $badgeText = $this->nacex->l('Notified');
+                } else {
+                    $badgeColor = '#ff9800';
+                    $badgeText = $estado;
                 }
+                $badgeExp = "<span class='color_field' style='background-color:" . $badgeColor . ";color:white'>" . $badgeText . "</span>";
                 $link = Context::getContext()->link->getAdminLink('AdminOrders');
 
                 $zona = 'NAC';
@@ -602,14 +625,14 @@ class nacextabMasivo extends AdminController
 
                 if ($value['ncx'] == 'nacexshop' || $value['ncx'] == 'nacexshopG') {
                     $iso_code = Language::getIsoById(nacexutils::getCurrentLang());
-                    $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEXshop_sostenible_' . $iso_code . '.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" style="width: 50px;" />';
+                    $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEXshop_sostenible_' . $iso_code . '.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" style="width: 50px; max-height: 20px;" />';
                 } else {
-                    $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" style="width: 50px;" />';
+                    $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" style="width: 50px; max-height: 20px;" />';
                 }
 
                 $tabla .= "<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $img_servicio . "</a></td>
             <td class='center'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['serv'] . "</a></td>
-            <td class='center'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $imgncx . "&nbsp;<img src='../img/admin/details.gif' alt='" . $this->nacex->l('See order detail') . "' title='" . $this->nacex->l('See order detail') . "'/></a></span></td>									 
+            <td class='center'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $badgeExp . "</a></td>									 
 			</tr>";
             }
         }
