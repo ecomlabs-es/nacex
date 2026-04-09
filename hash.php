@@ -2,8 +2,6 @@
 
 class hash
 {
-    // Cache por request: si el hook se llama varias veces en la misma petición,
-    // devolvemos el mismo hash para evitar que la segunda llamada sobreescriba el primero
     private static $requestCache = [];
 
     private static function getStoredHashes()
@@ -26,7 +24,6 @@ class hash
 
     public static function hash_form($order_id)
     {
-        // Si ya generamos un hash para este pedido en esta petición, devolverlo
         if (isset(self::$requestCache[$order_id])) {
             return self::$requestCache[$order_id];
         }
@@ -47,13 +44,15 @@ class hash
             $hashes[] = ['HASH' => $rand, 'ORDER_ID' => $order_id];
         }
 
-        // Limitar a 20 entradas para no desbordar la sesión
         if (count($hashes) > 20) {
             $hashes = array_slice($hashes, -20);
         }
 
         self::saveStoredHashes($hashes);
         self::$requestCache[$order_id] = $rand;
+
+        nacexutils::writeNacexLog('hash_form :: order_id: ' . $order_id . ' | hash: ' . $rand . ' | session_id: ' . session_id());
+
         return $rand;
     }
 
@@ -62,20 +61,26 @@ class hash
         $order_id = Tools::getValue('order_id');
         $hash = Tools::getValue('hash');
 
+        nacexutils::writeNacexLog('validate_hash :: order_id: ' . $order_id . ' | hash_recibido: ' . $hash . ' | session_id: ' . session_id());
+
         if (!$order_id || !$hash) {
+            nacexutils::writeNacexLog('validate_hash :: FAIL - order_id o hash vacíos');
             return false;
         }
 
         $hashes = self::getStoredHashes();
+        nacexutils::writeNacexLog('validate_hash :: hashes en sesión: ' . json_encode($hashes));
 
         foreach ($hashes as $key => $entry) {
             if ($entry['ORDER_ID'] == $order_id && $entry['HASH'] == $hash) {
                 unset($hashes[$key]);
                 self::saveStoredHashes(array_values($hashes));
+                nacexutils::writeNacexLog('validate_hash :: OK');
                 return true;
             }
         }
 
+        nacexutils::writeNacexLog('validate_hash :: FAIL - hash no encontrado');
         return false;
     }
 }
