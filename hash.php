@@ -4,22 +4,20 @@ class hash
 {
     private static function getStoredHashes()
     {
-        $cookie = Context::getContext()->cookie;
-        $data = $cookie->__get('nacex_hashes');
-        if ($data) {
-            $decoded = json_decode($data, true);
-            if (is_array($decoded)) {
-                return $decoded;
-            }
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
-        return [];
+        return isset($_SESSION['nacex_hashes']) && is_array($_SESSION['nacex_hashes'])
+            ? $_SESSION['nacex_hashes']
+            : [];
     }
 
     private static function saveStoredHashes($hashes)
     {
-        $cookie = Context::getContext()->cookie;
-        $cookie->__set('nacex_hashes', json_encode($hashes));
-        $cookie->write();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $_SESSION['nacex_hashes'] = $hashes;
     }
 
     public static function hash_form($order_id)
@@ -40,7 +38,7 @@ class hash
             $hashes[] = ['HASH' => $rand, 'ORDER_ID' => $order_id];
         }
 
-        // Limitar a 20 entradas para no desbordar la cookie
+        // Limitar a 20 entradas para no desbordar la sesión
         if (count($hashes) > 20) {
             $hashes = array_slice($hashes, -20);
         }
