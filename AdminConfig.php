@@ -714,6 +714,21 @@ function getFormularioConfiguracion($obj)
                             }
                         });
                     }
+                    function reinstalarHooks() {
+                        $.ajax({
+                            type: "POST",
+                            url: "' . $nacexDTO->getPath() . 'reinstallHooks.php",
+                            beforeSend: function(){
+                                $("#reinstallHooksResult").html(\'<img src= \"' . $nacexDTO->getPath() . 'images/loading.gif\" style=\"width:30px\">\');
+                            },
+                            success: function(msg) {
+                                $("#reinstallHooksResult").html(msg);
+                            },
+                            error: function() {
+                                $("#reinstallHooksResult").html(\'<div class="alert alert-danger">Error</div>\');
+                            }
+                        });
+                    }
                     function revisarTablaCarriers() {
                         var msg="";
                         
@@ -1579,10 +1594,18 @@ function getFormularioConfiguracion($obj)
     $html .= '<tr data-depends="nacex_show_dev_ops">' . nacexutils::getRadioHTML('Show runtime errors', 'nacex_show_errors', 'NO', $show_errors_no, 'SI', $show_errors_si, 'For debugging purposes only when necessary.')
         . '</tr>
                                                     <tr data-depends="nacex_show_dev_ops">
-                                                        <td class="columna1">Revisar tabla carriers</td>
+                                                        <td class="columna1">' . $obj->l('Review carriers table') . '</td>
                                                         <td class="columna2" id="nacex_tableCarriers">
-                                                            <input style="cursor: pointer;padding: 7px;width: 250px;" class="ncx_button" onclick="javascript:revisarTablaCarriers();" type="button" name="nacex_tableCarriers" id="nacex_tableCarriers" value="Revisar carriers"/>
+                                                            <input style="cursor: pointer;padding: 7px;width: 250px;" class="ncx_button" onclick="javascript:revisarTablaCarriers();" type="button" name="nacex_tableCarriers" id="nacex_tableCarriers" value="' . $obj->l('Review carriers') . '"/>
                                                             <div id="nacex_tableCarriersResult" class="dataTables_wrapper" style="margin-top: 5px;"></div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr data-depends="nacex_show_dev_ops">
+                                                        <td class="columna1">' . $obj->l('Reinstall hooks') . '</td>
+                                                        <td class="columna2">
+                                                            <input style="cursor: pointer;padding: 7px;width: 250px;" class="ncx_button" onclick="javascript:reinstalarHooks();" type="button" value="' . $obj->l('Reinstall hooks') . '"/>
+                                                            <div id="reinstallHooksResult" style="margin-top: 5px;"></div>
+                                                            <p class="tip">' . $obj->l('Re-registers all hooks for PS 1.7.8+ compatibility. Use if expedition forms or status updates are not working.') . '</p>
                                                         </td>
                                                     </tr>';
     //endif;
