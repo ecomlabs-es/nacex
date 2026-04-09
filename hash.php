@@ -2,6 +2,10 @@
 
 class hash
 {
+    // Cache por request: si el hook se llama varias veces en la misma petición,
+    // devolvemos el mismo hash para evitar que la segunda llamada sobreescriba el primero
+    private static $requestCache = [];
+
     private static function getStoredHashes()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -22,6 +26,11 @@ class hash
 
     public static function hash_form($order_id)
     {
+        // Si ya generamos un hash para este pedido en esta petición, devolverlo
+        if (isset(self::$requestCache[$order_id])) {
+            return self::$requestCache[$order_id];
+        }
+
         $rand = random_int(100000, PHP_INT_MAX);
         $hashes = self::getStoredHashes();
 
@@ -44,6 +53,7 @@ class hash
         }
 
         self::saveStoredHashes($hashes);
+        self::$requestCache[$order_id] = $rand;
         return $rand;
     }
 
