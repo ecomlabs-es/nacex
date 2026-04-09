@@ -625,9 +625,9 @@ class nacextabMasivo extends AdminController
 
                 if ($value['ncx'] == 'nacexshop' || $value['ncx'] == 'nacexshopG') {
                     $iso_code = Language::getIsoById(nacexutils::getCurrentLang());
-                    $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEXshop_sostenible_' . $iso_code . '.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" style="height: 15px; width: auto;" />';
+                    $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEXshop_sostenible_' . $iso_code . '.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" width="60" height="15" />';
                 } else {
-                    $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" style="height: 15px; width: auto;" />';
+                    $img_servicio = '<img src="' . _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg" title="' . $value['carrier_name'] . '" alt="' . $value['carrier_name'] . '" width="60" height="15" />';
                 }
 
                 $tabla .= "<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $img_servicio . "</a></td>
