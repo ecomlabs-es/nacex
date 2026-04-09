@@ -475,12 +475,11 @@ class nacexVIEW
 				</span>';
         }
 
-        if ($isShop) { $height = 'height: 89px;'; } else { $height = 'height: 61px;'; }
 
         $html .= '
 				<div align="center" id="ncx_boxinfo' . (isset($datosexpedicion['exp_cod']) ? $datosexpedicion['exp_cod'] : '') . '" class="card-body">					
 				  <a target="_blank" title="' . $webtext . '" href="' . $webdir . '" >
-				    <img style="margin-bottom:5px; width:250px;' . $height . '" src="' . $webimg . '" />
+				    <img style="margin-bottom:5px; width:130px;height: auto;" src="' . $webimg . '" />
                   </a>
 				  <div id="' . $css_id . '">				  
 				  <fieldset class="diana">
@@ -1055,11 +1054,10 @@ class nacexVIEW
 				</span>';
         }
 
-        if ($isShop) { $height = 'height: 89px;'; } else { $height = 'height: 61px;'; }
 
         $html .= '
           <div align="center" id="ncx_boxinfo' . $datosexpedicion['exp_cod'] . '" style="margin-left: 20px;' . $acc_active . '">
-              <a target="_blank" title="' . $webtext . '" href="' . $webdir . '" ><img style="margin-bottom:5px; width: 250px;' . $height . '" src="' . $webimg . '" /></a>';
+              <a target="_blank" title="' . $webtext . '" href="' . $webdir . '" ><img style="margin-bottom:5px; width:130px;height: auto;" src="' . $webimg . '" /></a>';
 
         $cssShop = $isShop ? ' shop' : '';
 
