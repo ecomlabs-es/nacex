@@ -527,10 +527,7 @@ class nacextabMasivo extends ModuleAdminController
                 <th class='center'>" . $this->nacex->l('Email') . "</th>
                 <th class='center'>" . $this->nacex->l('Phone') . "</th>
                 <th class='center'>" . $this->nacex->l('Nacex Ref.') . "</th>
-                <th class='center'>
-                    <span>" . $this->nacex->l('Agency/Number') . "</span>
-                    <input class='noborder' type='checkbox' onclick='checkDelBoxes(this.form, \"idPedidoBoxPrint[]\", this.checked)' name='checkme' /> 
-                </th>
+                <th class='center'>" . $this->nacex->l('Agency/Number') . "</th>
                 <th class='center'>" . $this->nacex->l('Carriers') . "</th>
                 <th class='center'>" . $this->nacex->l('Service') . "</th> 
                 <th class='center'>" . $this->nacex->l('Exp. status') . '</th>
