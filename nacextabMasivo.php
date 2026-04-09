@@ -103,8 +103,8 @@ class nacextabMasivo extends ModuleAdminController
         $eti = Configuration::get('NACEX_PRINT_ET');
 
         //Recogemos las variables del formulario para inicializar los filtros
-        $fecha_desde = Tools::getValue('date_from') == '' ? $desde : Tools::getValue('date_from');
-        $fecha_hasta = Tools::getValue('date_to') == '' ? $hasta : Tools::getValue('date_to');
+        $fecha_desde = Tools::getValue('date_from') == '' ? $hoy_desde : Tools::getValue('date_from');
+        $fecha_hasta = Tools::getValue('date_to') == '' ? $hoy_hasta : Tools::getValue('date_to');
         $estado_pedido = Tools::getValue('ncx_estado') == '' ? -1 : Tools::getValue('ncx_estado');
 
         if (!Tools::getValue('ncx_carrier_sel')) {
