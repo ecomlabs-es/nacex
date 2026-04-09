@@ -1525,6 +1525,19 @@ class nacex extends CarrierModule
                     $this->_html .= '</p>';
                 }
 
+                // Persistir estado del WS en BD si ha cambiado
+                if (isset($respuestaGetEstadoExpedicion['estado']) && $respuestaGetEstadoExpedicion['estado'] != $datos['estado']) {
+                    nacexDAO::actDatosNacexExpediciones(
+                        $id_order,
+                        $datos,
+                        $respuestaGetEstadoExpedicion['estado'],
+                        isset($respuestaGetEstadoExpedicion['fecha']) ? $respuestaGetEstadoExpedicion['fecha'] : '',
+                        isset($respuestaGetEstadoExpedicion['hora']) ? $respuestaGetEstadoExpedicion['hora'] : ''
+                    );
+                    // Actualizar datos locales para que showExpedicionBoxInfo muestre el estado correcto
+                    $datos['estado'] = $respuestaGetEstadoExpedicion['estado'];
+                }
+
                 // Si el estado de la expedición es un OK (4), entonces cambiamos el estado del pedido.
                 // Teniendo en cuenta que no sea el estado final en el que debería estar
                 $order = new Order($id_order);
