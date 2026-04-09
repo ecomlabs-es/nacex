@@ -29,7 +29,7 @@ class VIunitaria
                         <img src="' . _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png" style="width: 200px;">
                     </a>    
                     <br>
-                    <span class="idpedido-input"><b>' . $nacex->l('Id order') . ': </b><input type="number" id="idpedido" autofocus="autofocus" value="' . $_GET['id_pedido'] . '"></span>
+                    <span class="idpedido-input"><label for="idpedido">' . $nacex->l('Id order') . ': </label><input type="number" id="idpedido" autofocus="autofocus" value="' . $_GET['id_pedido'] . '"></span>
                     <br>
                     <span class="ncx_button" id="btnbuscar" onclick="unitaria.search(idpedido.valueAsNumber,\'' . $mess . '\');">' . $nacex->l('Search') . '</span>
                     </center>

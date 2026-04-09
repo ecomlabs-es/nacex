@@ -485,8 +485,9 @@ http://www.generateit.net/css-optimize/index.php
 		display: block;
 	}
 
-	.idpedido-input b {
+	.idpedido-input label {
 		padding-right: 5px;
+		font-weight: bold;
 	}
 
 	.idpedido-input {
