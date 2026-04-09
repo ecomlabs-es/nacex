@@ -1111,8 +1111,9 @@ class nacexVIEW
 			  	
 			  	<div class="additional-actions">';
 
-        // No se puede modificar la expedicion
-        if ($gestionAgencia && !$canPrint) {
+        // No se puede modificar la expedicion (no mostrar si ya está anulada/baja)
+        $isAnulada = isset($estado_exp) && in_array($estado_exp, ['ANULADA', 'BAJA']);
+        if ($gestionAgencia && !$canPrint && !$isAnulada) {
             $html .= "<div id='messages-nacex' class='bootstrap' style='margin-top:10px'>
             <div class='alert alert-info conf' style='width:auto'>
                 " . $nacex->l("It's not possible to modify the expedition") . '
