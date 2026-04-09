@@ -515,10 +515,9 @@ class nacextabMasivo extends AdminController
         $tabla .= "</td>
             </tr>
             <tr class='column-headers'>
-                <th>
+                <th class='center'>
                     <span>" . $this->nacex->l('Generate Expeditions') . "</span>
-                    <!-- <input class='noborder' type='checkbox' onclick='checkDelBoxes(this.form, \"idPedidoBox[]\", this.checked)' name='checkme' /> -->
-                    <select class='selectByFilter'>
+                    <select class='selectByFilter' style='display:block;margin:0 auto;'>
                         <option name='' value=''></option>    
                         <option name='T' value='nacex'>Nacex</option>    
                         <option name='S' value='nacexshop'>NacexShop</option>    
