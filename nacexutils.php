@@ -553,20 +553,16 @@ class nacexutils
         $ocN = !is_null($onchangeN) ? 'onchange="' . $onchangeN . '"' : '';
         $ocY = !is_null($onchangeY) ? 'onchange="' . $onchangeY . '"' : '';
 
-        $nacexClass = $labelN != 'No' && $labelY != 'Yes' ? 'nacex' : '';
-
-        // Creamos la estructura de tabla que tiene la configuración
-        $radioHTML = '<td class="form-control-label">' . $nacex->l($label) . ': </td>
-                      <td class="col-sm" id="' . $radioName . '">
-                          <div class="input-group">
-                            <span class="ps-switch ' . $nacexClass . '">
+        // Creamos la estructura de tabla con ps-switch nativo de PS8
+        $radioHTML = '<td class="columna1">' . $nacex->l($label) . ': </td>
+                      <td class="columna2" id="' . $radioName . '">
+                            <span class="ps-switch">
                                 <input id="' . $radioName . '_n" type="radio" name="' . $radioName . '" ' . $ocN . ' value="' . $valueN . '" ' . $selectedN . '/>
                                 <label for="' . $radioName . '_n">' . $nacex->l($labelN) . '</label>
                                 <input id="' . $radioName . '_s" type="radio" name="' . $radioName . '" ' . $ocY . ' value="' . $valueY . '" ' . $selectedY . '/>
                                 <label for="' . $radioName . '_s">' . $nacex->l($labelY) . '</label>
                                 <span class="slide-button"></span>
-                            </span>
-                        </div>';
+                            </span>';
         if (!is_null($small)) {
             $radioHTML .= '<small class="form-text">' . $nacex->l($small) . '</small>';
             $radioHTML .= '</td>';

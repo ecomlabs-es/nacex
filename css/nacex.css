@@ -1208,71 +1208,7 @@ http://www.generateit.net/css-optimize/index.php
 		width: 100%;
 	}
 
-	/* ps-switch: replica del estilo nativo de PrestaShop 8 */
-	#configForm .ps-switch {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
-		min-width: 8.125rem;
-		height: 2.188rem;
-		font-size: .813rem;
-		background-color: #e8e8e8;
-		border-radius: 1.094rem;
-		overflow: hidden;
-	}
-
-	#configForm .ps-switch input[type="radio"] {
-		position: absolute;
-		opacity: 0;
-		width: 0;
-		height: 0;
-	}
-
-	#configForm .ps-switch label {
-		position: relative;
-		z-index: 2;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 50%;
-		height: 100%;
-		margin: 0;
-		padding: 0 .769em;
-		text-align: center;
-		text-transform: uppercase;
-		color: #6c868e;
-		font-weight: 600;
-		font-size: .688rem;
-		cursor: pointer;
-		transition: color .25s ease;
-		line-height: 1;
-	}
-
-	#configForm .ps-switch input[type="radio"]:checked + label {
-		color: #fff;
-	}
-
-	#configForm .ps-switch > .slide-button {
-		position: absolute;
-		top: 2px;
-		left: 2px;
-		z-index: 1;
-		width: calc(50% - 2px);
-		height: calc(100% - 4px);
-		border-radius: .938rem;
-		background-color: #dc3545;
-		transition: all .25s ease;
-	}
-
-	#configForm .ps-switch input[type="radio"]:last-of-type:checked ~ .slide-button {
-		left: 50%;
-		background-color: #25b9d7;
-	}
-
-	#configForm .ps-switch input[type="radio"] {
-		box-sizing: border-box;
-		padding: 0;
-	}
+	/* ps-switch: sin estilos custom, usa los nativos de PS8 (theme.css) */
 
 	.bootstrap #configForm .form-text {
 		color: #6c868e;
