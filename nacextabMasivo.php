@@ -505,13 +505,16 @@ class nacextabMasivo extends ModuleAdminController
                         " . $this->nacex->l('There is a problem with Nacex Web Service connection and some functionality may be affected, as well as <strong>some expedition status</strong>. Please, wait few minutes until connextion will be restored. We apologize for the inconvenients') . '
                         </p>';
         }
-        $tabla .= "<select class='selectByFilter'>
+        $tabla .= "<div style='margin-left:auto;display:flex;align-items:center;gap:0.5em;'>
+                    <label style='margin:0;white-space:nowrap;'>" . $this->nacex->l('Filter by carrier') . ":</label>
+                    <select class='selectByFilter'>
                         <option name='' value=''></option>
                         <option name='T' value='nacex'>Nacex</option>
                         <option name='S' value='nacexshop'>NacexShop</option>
                         <option name='I' value='nacexint'>" . $this->nacex->l('Nacex International') . "</option>
                         <option name='E' value='otros'>" . $this->nacex->l('Others') . "</option>
                     </select>
+                </div>
             </div>";
 
         $tabla .= "<table name='list_table' id='list_table' class='table table-bordered' style='width:100%'>
