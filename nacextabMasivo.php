@@ -495,7 +495,21 @@ class nacextabMasivo extends AdminController
 
         $nacexDTO = new nacexDTO();
 
-        $tabla .= "<table name='list_table' id='list_table' class='table table-bordered' style='width:100%'>
+        $tabla .= "<table name='list_table' id='list_table' class='table table-bordered' style='width:100%;table-layout:fixed;'>
+                     <colgroup>
+                        <col style='width:40px;'>
+                        <col style='width:50px;'>
+                        <col style='width:12%;'>
+                        <col style='width:11%;'>
+                        <col style='width:10%;'>
+                        <col style='width:14%;'>
+                        <col style='width:7%;'>
+                        <col style='width:7%;'>
+                        <col style='width:9%;'>
+                        <col style='width:7%;'>
+                        <col style='width:5%;'>
+                        <col style='width:8%;'>
+                     </colgroup>
                      <thead class='thead-default'>
             <tr>";
         if (nacexWS::ws_checkConnection()[0] != '500ERROR') {
@@ -610,7 +624,7 @@ class nacextabMasivo extends AdminController
                 }
                 $tabla .= "</td>
 			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['id_order'] . "</a></td>
-			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\"><span style='background-color:" . $value['color'] . ";color:white;padding:0.25em 0.6em;border-radius:1em;font-size:0.85em;white-space:nowrap;display:inline-block;'>" . $value['status_name'] . "</span></a></td>
+			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\"><span style='background-color:" . $value['color'] . ";color:white;padding:0.25em 0.6em;border-radius:1em;font-size:0.75em;display:inline-block;'>" . $value['status_name'] . "</span></a></td>
 			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['date_add'] . "</a></td>
 			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['firstname'] . '&nbsp;' . $value['lastname'] . "</a></td>
 			<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['email'] . "</a></td>
