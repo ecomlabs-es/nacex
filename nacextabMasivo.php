@@ -495,35 +495,30 @@ class nacextabMasivo extends AdminController
 
         $nacexDTO = new nacexDTO();
 
+        // Toolbar encima de la tabla
+        $tabla .= "<div style='display:flex;align-items:center;gap:1em;margin-bottom:0.5em;'>";
+        if (nacexWS::ws_checkConnection()[0] != '500ERROR') {
+            $tabla .= "<img class='zoomable' id='createIcon' src='" . nacexDTO::getPath() . "images/generar_expediciones.svg' title='" . $this->nacex->l('Generate Expeditions') . "' alt='" . $this->nacex->l('Generate Expeditions') . "' width='38px'>
+                        <img class='zoomable' id='printIcon' src='" . nacexDTO::getPath() . "images/Print-outlined-circular-interface-button.svg' title='" . $this->nacex->l('Print labels') . "' alt='" . $this->nacex->l('Print labels') . "' width='38px'>";
+        } else {
+            $tabla .= "<p class='alert alert-info' style='margin:0;'>
+                        " . $this->nacex->l('There is a problem with Nacex Web Service connection and some functionality may be affected, as well as <strong>some expedition status</strong>. Please, wait few minutes until connextion will be restored. We apologize for the inconvenients') . '
+                        </p>';
+        }
+        $tabla .= "<select class='selectByFilter'>
+                        <option name='' value=''></option>
+                        <option name='T' value='nacex'>Nacex</option>
+                        <option name='S' value='nacexshop'>NacexShop</option>
+                        <option name='I' value='nacexint'>" . $this->nacex->l('Nacex International') . "</option>
+                        <option name='E' value='otros'>" . $this->nacex->l('Others') . "</option>
+                    </select>
+            </div>";
+
         $tabla .= "<table name='list_table' id='list_table' class='table table-bordered' style='width:100%'>
                      <thead class='thead-default'>
-            <tr>";
-        if (nacexWS::ws_checkConnection()[0] != '500ERROR') {
-            $tabla .= "<td colspan='8'>
-                    <img class='zoomable' id='createIcon' src='" . nacexDTO::getPath() . "images/generar_expediciones.svg'  title='" . $this->nacex->l('Generate Expeditions') . "'
-                    title='" . $this->nacex->l('Generate Expeditions') . "' alt='" . $this->nacex->l('Generate Expeditions') . "' width='38px)'>
-                    </td>
-                    <td colspan='4'>
-                        <img class='zoomable' id='printIcon' src='" . nacexDTO::getPath() . "images/Print-outlined-circular-interface-button.svg' title='" . $this->nacex->l('Print labels') . "'
-                        title='" . $this->nacex->l('Print labels') . "' alt='" . $this->nacex->l('Print labels') . "' width='38px'>";
-        } else {
-            $tabla .= "<td colspan='12'>
-                            <p class='alert alert-info'>
-                            " . $this->nacex->l('There is a problem with Nacex Web Service connection and some functionality may be affected, as well as <strong>some expedition status</strong>. Please, wait few minutes until connextion will be restored. We apologize for the inconvenients') . '
-                            </p>';
-        }
-        $tabla .= "</td>
-            </tr>
             <tr class='column-headers'>
-                <th class='center'>
-                    <span>" . $this->nacex->l('Generate Expeditions') . "</span>
-                    <select class='selectByFilter' style='display:block;margin:0 auto;'>
-                        <option name='' value=''></option>    
-                        <option name='T' value='nacex'>Nacex</option>    
-                        <option name='S' value='nacexshop'>NacexShop</option>    
-                        <option name='I' value='nacexint'>" . $this->nacex->l('Nacex International') . "</option>    
-                        <option name='E' value='otros'>" . $this->nacex->l('Others') . "</option>    
-                    </select>
+                <th class='center' style='width:40px;'>
+                    <input class='noborder' type='checkbox' onclick='checkDelBoxes(this.form, \"idPedidoBox[]\", this.checked)' name='checkme' />
                 </th>
                 <th class='center'>ID</th>
                 <th class='center'>" . $this->nacex->l('Status') . "</th>
