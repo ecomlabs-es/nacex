@@ -195,6 +195,30 @@ class nacexutils
         return '';
     }
 
+    public static function isMultiOptionChecked($fieldName, $configName, $sep, $val)
+    {
+        $results = Tools::getValue($fieldName, null);
+        if (!isset($results)) {
+            $results = explode($sep, Configuration::get($configName));
+        }
+        return in_array($val, $results) ? 'checked' : '';
+    }
+
+    public static function renderCheckboxGroup($fieldName, $configName, $sep, $options)
+    {
+        $html = '<div class="nacex-checkbox-group" style="max-height:200px;overflow-y:auto;border:1px solid #ddd;padding:8px;border-radius:4px;width:335px;">';
+        foreach ($options as $value => $label) {
+            $checked = self::isMultiOptionChecked($fieldName, $configName, $sep, $value);
+            $id = htmlspecialchars($fieldName . '_' . $value, ENT_QUOTES, 'UTF-8');
+            $html .= '<label style="display:block;padding:3px 0;cursor:pointer;" for="' . $id . '">';
+            $html .= '<input type="checkbox" id="' . $id . '" name="' . htmlspecialchars($fieldName, ENT_QUOTES, 'UTF-8') . '[]" value="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '" ' . $checked . ' style="margin-right:6px;" />';
+            $html .= htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
+            $html .= '</label>';
+        }
+        $html .= '</div>';
+        return $html;
+    }
+
     public static function markCheckedCheckBoxes($array_multi_option_field_name, $config_name, $sep, $val) {
 
         $results = Tools::getValue($array_multi_option_field_name, null);

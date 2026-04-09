@@ -29,11 +29,11 @@ function getFormularioConfiguracion($obj)
             }
         }
 
-        $divpayment .= "<select multiple='multiple' style='width:335px;height:110px' name='nacex_modulos_reembolso[]'>";
+        $paymentOptions = [];
         foreach ($payment_methods as $pm) {
-            $divpayment .= '<option ' . nacexutils::markSelectedMultiOption('nacex_modulos_reembolso', 'NACEX_MODULOS_REEMBOLSO', '|', $pm['value']) . " value='" . $pm['value'] . "'>" . $pm['label'] . '</option>';
+            $paymentOptions[$pm['value']] = $pm['label'];
         }
-        $divpayment .= '</select>';
+        $divpayment .= nacexutils::renderCheckboxGroup('nacex_modulos_reembolso', 'NACEX_MODULOS_REEMBOLSO', '|', $paymentOptions);
     }
 
     // Recuperamos los servicios que hay creados
@@ -42,11 +42,11 @@ function getFormularioConfiguracion($obj)
     $services = Carrier::getCarriers($id_lang);
 
     if ($services) {
-        $divservices = "<select multiple='multiple' style='width:335px;height:110px' name='nacexshop_external_modules[]'>";
+        $serviceOptions = [];
         foreach ($services as $ser) {
-            $divservices .= '<option ' . nacexutils::markSelectedMultiOption('nacexshop_external_modules', 'NACEXSHOP_EXTERNAL_MODULES', '|', $ser['id_carrier']) . " value='" . $ser['id_carrier'] . "'>" . $ser['name'] . '</option>';
+            $serviceOptions[$ser['id_carrier']] = $ser['name'];
         }
-        $divservices .= '</select>';
+        $divservices = nacexutils::renderCheckboxGroup('nacexshop_external_modules', 'NACEXSHOP_EXTERNAL_MODULES', '|', $serviceOptions);
     }
 
     $link = new Link();
@@ -150,15 +150,6 @@ function getFormularioConfiguracion($obj)
                     $("tr[data-depends=\'nacex_show_dev_ops\']").toggle("display");
                 });
                                     
-                // Toggle options del multiselect
-                $("select[multiple] option").mousedown(function(){
-                   var self = $(this);
-                   
-                   if (self.prop("selected")) self.prop("selected", false);
-                   else self.prop("selected", true);
-                
-                   return false;
-                });
                         
             });
             function disableValor(obj_name){
@@ -949,13 +940,12 @@ function getFormularioConfiguracion($obj)
 															<td class="columna1">' . $obj->l('Standard service types') . '::</td>
 															<td class="columna2" id="nacex_available_tip_ser">
 																' . showError($errores, 'nacex_available_tip_ser') . '
-																<select id="nacex_available_tip_ser_select" multiple="multiple"  style="width:335px;height:110px" name="nacex_available_tip_ser[]">';
+'; $stdOptions = [];
     foreach ($nacexDTO->getServiciosNacex() as $serv => $value) {
-        $servname = $value['nombre'];
-        $html .= '<option ' . nacexutils::markSelectedMultiOption('nacex_available_tip_ser', 'NACEX_AVAILABLE_TIP_SER', '|', $serv) . ' value="' . $serv . '">' . $serv . $nacexDTO->getServSeparador() . $servname . '</option>';
+        $stdOptions[$serv] = $serv . $nacexDTO->getServSeparador() . $value['nombre'];
     }
-    $html .= '</select>	
-						   									<p class="tip">' . $obj->l('Available service types (multiselection)') . '</p>
+    $html .= nacexutils::renderCheckboxGroup('nacex_available_tip_ser', 'NACEX_AVAILABLE_TIP_SER', '|', $stdOptions) . '
+						   									<p class="tip">' . $obj->l('Available service types') . '</p>
 															</td>
 															<td>';
     $html .= $newServices->printNewServiceButtons('Std');
@@ -1034,13 +1024,12 @@ function getFormularioConfiguracion($obj)
 									  			<tr>
 									  				<td class="columna1">' . $obj->l('NacexShop service types') . ':</td>
 									  				<td class="columna2" id="nacex_available_tip_nxshop_ser">
-															<select id="nacex_available_tip_nxshop_ser_select" multiple="multiple"  style="width:335px" name="nacex_available_tip_nxshop_ser[]">';
+'; $shopOptions = [];
     foreach ($nacexDTO->getServiciosNacexShop() as $serv => $value) {
-        $servname = $value['nombre'];
-        $html .= '<option ' . nacexutils::markSelectedMultiOption('nacex_available_tip_nxshop_ser', 'NACEX_AVAILABLE_TIP_NXSHOP_SER', '|', $serv) . ' value="' . $serv . '">' . $serv . $nacexDTO->getServSeparador() . $servname . '</option>';
+        $shopOptions[$serv] = $serv . $nacexDTO->getServSeparador() . $value['nombre'];
     }
-    $html .= '</select>	
-															<p class="tip">' . $obj->l('Available service types (multiselection)') . '</p>
+    $html .= nacexutils::renderCheckboxGroup('nacex_available_tip_nxshop_ser', 'NACEX_AVAILABLE_TIP_NXSHOP_SER', '|', $shopOptions) . '
+															<p class="tip">' . $obj->l('Available service types') . '</p>
 									  				</td>
                                                     <td>';
     $html .= $newServices->printNewServiceButtons('Shp');
@@ -1121,14 +1110,12 @@ function getFormularioConfiguracion($obj)
                                                     <td class="columna1">' . $obj->l('International service types') . ':</td>
                                                     <td class="columna2" id="nacex_available_tip_ser_int">
                                                     ' . showError($errores, 'nacex_available_tip_ser_int') . '
-                                                    <select multiple="multiple"  style="width:335px;" name="nacex_available_tip_ser_int[]">';
+'; $intOptions = [];
     foreach ($nacexDTO->getServiciosNacexInt() as $serv => $value) {
-        $servname = $value['nombre'];
-        $servdesc = $value['descripcion'];
-        $html .= '<option ' . nacexutils::markSelectedMultiOption('nacex_available_tip_ser_int', 'NACEX_AVAILABLE_TIP_SER_INT', '|', $serv) . ' value="' . $serv . '">' . $serv . $nacexDTO->getServSeparador() . $servname . '</option>';
+        $intOptions[$serv] = $serv . $nacexDTO->getServSeparador() . $value['nombre'];
     }
-    $html .= '</select>	
-						   									<p class="tip">' . $obj->l('Available service types (multiselection)') . '</p>
+    $html .= nacexutils::renderCheckboxGroup('nacex_available_tip_ser_int', 'NACEX_AVAILABLE_TIP_SER_INT', '|', $intOptions) . '
+						   									<p class="tip">' . $obj->l('Available service types') . '</p>
 															</td>								
                                                 </tr>
                                                 <tr>
@@ -1308,14 +1295,12 @@ function getFormularioConfiguracion($obj)
           <tr>
             <td class="columna1">' . $obj->l('Do not update order status when your order has any of these statuses') . ':</td>
                 <td id="no_cambiar_estado_ok" class="columna2" >';
-    $html .= '<select id="no_cambiar_estado_ok" name="no_cambiar_estado_ok[]" multiple="multiple" style="width:335px;" >';
-    //$html .= '<option value="">' . $obj->l('None') . '</option>';
+    $estadoOptions = [];
     foreach ($estados as $value => $estado) {
         $idOrderState = !isset($estado['id_order_state']) ? '' : $value;
-        $html .= '<option ' . nacexutils::markSelectedMultiOption('no_cambiar_estado_ok', 'NACEX_NO_CAMBIAR_ESTADO_A_OK', '|', $value) . ' value="' . $idOrderState . '"> ' . $estado['name'] . '</option>';
+        $estadoOptions[$idOrderState] = $estado['name'];
     }
-
-    $html .= '</select>    
+    $html .= nacexutils::renderCheckboxGroup('no_cambiar_estado_ok', 'NACEX_NO_CAMBIAR_ESTADO_A_OK', '|', $estadoOptions) . '
           </td>
           </tr>
           <tr>						
