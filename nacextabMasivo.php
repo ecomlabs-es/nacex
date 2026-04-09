@@ -610,7 +610,7 @@ class nacextabMasivo extends AdminController
                 }
                 $tabla .= "</td>
 			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['id_order'] . "</a></td>
-			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\"><span class='color_field' style='background-color:" . $value['color'] . ";color:white'>" . $value['status_name'] . "</span></a></td>
+			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\"><span style='background-color:" . $value['color'] . ";color:white;padding:0.25em 0.6em;border-radius:1em;font-size:0.85em;white-space:nowrap;display:inline-block;'>" . $value['status_name'] . "</span></a></td>
 			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['date_add'] . "</a></td>
 			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['firstname'] . '&nbsp;' . $value['lastname'] . "</a></td>
 			<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['email'] . "</a></td>
