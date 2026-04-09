@@ -188,7 +188,7 @@ class nacextabMasivo extends ModuleAdminController
         $this->_html .= '</select>';
         $this->_html .= "<br /><input type='button' id='select_all_carriers' name='select_all_carriers' class='ncx_button' value='" . $this->nacex->l('Select all') . "'>";
 
-        $this->_html .= "</div>											
+        $this->_html .= "</div></div>
 			</td>
 			</tr>
 			<tr>
@@ -197,7 +197,6 @@ class nacextabMasivo extends ModuleAdminController
 			</td>
 			</tr>
 			</table>
-			</div>									
 			</div>
 			</fieldset>
 			</div> <!-- subheader -->";
