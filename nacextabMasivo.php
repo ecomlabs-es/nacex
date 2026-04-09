@@ -81,7 +81,7 @@ class nacextabMasivo extends ModuleAdminController
 
         $webtext = $this->nacex->l('Go to Nacex web');
         $webdir = 'https://www.nacex.es';
-        $webimg = _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg';
+        $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
         $desde = date('Y-m-d H:i:s');
         $hasta = $desde;

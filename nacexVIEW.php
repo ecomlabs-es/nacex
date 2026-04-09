@@ -36,7 +36,7 @@ class nacexVIEW
         $webtext = $nacex->l('Go to Nacex web');
         $webdir = 'https://www.nacex.es';
         //        $webimg = _MODULE_DIR_ . "nacex/images/logos/NACEX.png";
-        $webimg = _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg';
+        $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
         $titulo = ($isnacexcambio ? $nacex->l('Generate expedition') . ' Nacex C@mbio' : $nacex->l('Generate expedition')) . '<span  style="padding-left: 10px;"><b>' . nacexutils::getReferenciaGeneral() . $id_order . '</b></span>';
 
         $shop_codigo = null;
@@ -883,7 +883,7 @@ class nacexVIEW
 
         $webtext = $nacex->l('Go to Nacex web');
         $webdir = 'https://www.nacex.es';
-        $webimg = _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg';
+        $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
         // ¿Es NacexShop?
         $isShop = isset($datosexpedicion['shop_codigo']) && $datosexpedicion['shop_codigo'] != 1 && $datosexpedicion['shop_codigo'] != '';

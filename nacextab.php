@@ -51,7 +51,7 @@ class nacextab extends AdminController
 
         $webtext = $this->nacex->l('Go to Nacex web');
         $webdir = 'https://www.nacex.es';
-        $webimg = _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg';
+        $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
         $png_barcode_url = 'https://www.nacex.es/impCodBarras.do?x=150&y=60&fontsizeB=10&codebar=';
 

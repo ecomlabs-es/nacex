@@ -15,7 +15,7 @@ class AdminNacexFeedbackController extends ModuleAdminController
     {
         parent::__construct();
 
-        $this->ncx_logo200url = _MODULE_DIR_ . 'nacex/images/logos/NACEX_logo.svg';
+        $this->ncx_logo200url = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
         // Nombre el Manual de Usuario. Cambiarlo si éste se modifica
         $this->filpath = _MODULE_DIR_ . 'nacex/docs/';
