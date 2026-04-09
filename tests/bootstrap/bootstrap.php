@@ -137,6 +137,41 @@ if (!class_exists('Tools')) {
     }
 }
 
+if (!class_exists('Cookie')) {
+    class Cookie
+    {
+        private $data = [];
+
+        public function __construct($name = '')
+        {
+        }
+
+        public function __get($key)
+        {
+            return isset($this->data[$key]) ? $this->data[$key] : null;
+        }
+
+        public function __set($key, $value)
+        {
+            $this->data[$key] = $value;
+        }
+
+        public function __isset($key)
+        {
+            return isset($this->data[$key]);
+        }
+
+        public function __unset($key)
+        {
+            unset($this->data[$key]);
+        }
+
+        public function write()
+        {
+        }
+    }
+}
+
 if (!class_exists('Context')) {
     class Context
     {
@@ -150,8 +185,16 @@ if (!class_exists('Context')) {
             if (!self::$instance) {
                 self::$instance = new self();
                 self::$instance->shop = new Shop();
+                self::$instance->cookie = new Cookie();
             }
             return self::$instance;
+        }
+
+        public static function reset(): void
+        {
+            if (self::$instance) {
+                self::$instance->cookie = new Cookie();
+            }
         }
     }
 }
