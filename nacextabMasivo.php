@@ -129,7 +129,7 @@ class nacextabMasivo extends ModuleAdminController
  			<div>
                 <a target='_blank' title='" . $webtext . "' href='" . $webdir . "'><img style='width:100px;height: 24px;' src='" . $webimg . "' /></a>				
     			<div class='pageTitle'>
-                    <h3 style='padding-left: 15px;'>" . $this->nacex->l('Mass generation of shipments') . "</h3>
+                    <h3>" . $this->nacex->l('Mass generation of shipments') . "</h3>
                 </div>
 			</div>
 			<div align='left' style='width:100%;margin: 0 auto'>
