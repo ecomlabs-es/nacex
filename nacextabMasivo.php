@@ -591,7 +591,7 @@ class nacextabMasivo extends AdminController
                     $badgeColor = '#ff9800';
                     $badgeText = $estado;
                 }
-                $badgeExp = "<span class='color_field' style='background-color:" . $badgeColor . ";color:white'>" . $badgeText . "</span>";
+                $badgeExp = "<span style='background-color:" . $badgeColor . ";color:white;padding:0.25em 0.6em;border-radius:1em;font-size:0.85em;white-space:nowrap;display:inline-block;'>" . $badgeText . "</span>";
                 $link = Context::getContext()->link->getAdminLink('AdminOrders');
 
                 $zona = 'NAC';
