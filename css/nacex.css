@@ -1210,7 +1210,7 @@ http://www.generateit.net/css-optimize/index.php
 		width: 100%;
 	}
 
-	/* ps-switch: estilos compatibles con PS8 dentro de tablas legacy */
+	/* ps-switch: replica del estilo nativo de PrestaShop 8 */
 	#configForm .ps-switch {
 		position: relative;
 		display: inline-flex;
@@ -1269,6 +1269,11 @@ http://www.generateit.net/css-optimize/index.php
 	#configForm .ps-switch input[type="radio"]:last-of-type:checked ~ .slide-button {
 		left: 50%;
 		background-color: #25b9d7;
+	}
+
+	#configForm .ps-switch input[type="radio"] {
+		box-sizing: border-box;
+		padding: 0;
 	}
 
 	.bootstrap #configForm .form-text {
