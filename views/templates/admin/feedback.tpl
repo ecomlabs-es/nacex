@@ -76,7 +76,7 @@
 </script>
 
 <div class="panel">
-    <div class="panel-heading" style="display:flex;align-items:center;gap:1em;">
+    <div class="panel-heading">
         <a target="_blank" title="{l s='Go to Nacex web' mod="nacex"}" href="https://www.nacex.es">
             <img src="{$ncx_logo200url}" alt="Logotipo Nacex" style="width:130px;height:auto;"/>
         </a>
