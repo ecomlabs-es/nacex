@@ -1,15 +1,12 @@
 ----------------2.5.0 rev1.0 ^-----------------
-Cancelar expedición solo disponible en estado PENDIENTE (notificado)
-Ocultar mensaje "No es posible modificar la expedición" cuando está ANULADA o BAJA
-Fix hash anti-duplicado: reutilizar hash existente en cookie (PS8 llama al hook 2 veces)
-Fix error fatal en checkout cuando no hay transportistas disponibles
-Fix detección de carrier en hookactionValidateOrder: priorizar carrier del pedido sobre cookie
-Fix popup NacexShop cross-origin: fallback con postMessage
-Actualización de estado del pedido según estado de expedición: tránsito, reparto e incidencia
-Tabla masiva: mejoras de maquetación, badges de estado y filtro por transportista
+Cancelar expedición solo en estado PENDIENTE, ocultar mensaje en ANULADA/BAJA
+Fix hash anti-duplicado en PS8 (hook se ejecuta 2 veces por request)
+Fix error fatal en checkout sin transportistas y detección de carrier con cookie obsoleta
+Fix popup NacexShop cross-origin con postMessage
+Actualización de estado del pedido: añadidos tránsito, reparto e incidencia
+Tabla masiva: maquetación, badges de estado y filtro por transportista
 Logo Nacex Logista en todas las vistas
-Eliminar tabla nacex_expediciones_his: histórico de expediciones desde tabla principal
-Traducciones español: badges de estado, filtros de transportista y estado de pedido
+Histórico de expediciones desde tabla principal (eliminada tabla _his)
 ----------------2.5.0 ^-----------------
 Compatibilidad con PrestaShop 1.7.8, 8.x y 9.x
 Compatibilidad con PHP 7.4, 8.0, 8.1, 8.2, 8.3 y 8.4
