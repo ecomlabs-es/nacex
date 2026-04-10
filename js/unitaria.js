@@ -20,7 +20,7 @@ class unitaria {
             url: _url,
             data: 'method=' + _method + '&current_url=' + _current_url + '&oToken=' + oToken + '&pedido=' + _idpedido + '&controller=' + controller,
             dataType: 'json',
-            beforeSend: $('#ncx-loading').show(),
+            beforeSend: function() { $('#ncx-loading').show(); },
         })
             .done(function (_data) {
                 if (_data[0].cod_response === '100') {
@@ -58,7 +58,7 @@ class unitaria {
                 document.getElementById('resultado').innerHTML = textStatus;
                 console.error("MODULO NACEX - ERROR - FUNCION GET_UNITARIA - " + textStatus);
             })
-            .complete(function () {
+            .always(function () {
                 $('#ncx-loading').hide();
             });
     }
@@ -118,7 +118,7 @@ class unitaria {
             url: _url,
             data: _data,
             dataType: 'json',
-            beforeSend: $('#ncx-loading').show(),
+            beforeSend: function() { $('#ncx-loading').show(); },
         })
             .done(function (_data) {
                 document.getElementById('resultado').innerHTML = _data[0].result;
@@ -129,7 +129,7 @@ class unitaria {
                 document.getElementById('resultado').innerHTML = _data;
                 console.error("MODULO NACEX - ERROR - FUNCION POST_ORDER - " + _data);
             })
-            .complete(function () {
+            .always(function () {
                 $('#ncx-loading').hide();
                 window.scrollTo(0, 0);
 
