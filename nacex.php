@@ -1549,7 +1549,15 @@ class nacex extends CarrierModule
                     'pais_ent' => $pais_ent,
                     'tel_ent' => substr($tel_ent, 0, 20),
                     'obs1' => Tools::getValue('nacex_obs1', ''),
+                    'obs2' => Tools::getValue('nacex_obs2', ''),
                     'ret' => ($retVal == 'SI') ? 'S' : 'N',
+                    'tip_seg' => Tools::getValue('nacex_tip_seg', ''),
+                    'seg' => Tools::getValue('nacex_imp_seg', ''),
+                    'tip_ree' => Tools::getValue('nacex_tip_ree', ''),
+                    'ree' => Tools::getValue('nacex_imp_ree', ''),
+                    'tip_pre1' => Tools::getValue('nacex_tip_pre1', ''),
+                    'mod_pre1' => Tools::getValue('nacex_mod_pre1', ''),
+                    'pre1' => Tools::getValue('nacex_pre1', ''),
                 ];
 
                 // Filtrar vacíos
