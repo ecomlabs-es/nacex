@@ -12,7 +12,6 @@ class AdminNacexLogsController extends ModuleAdminController
     {
         $this->addCSS(_MODULE_DIR_ . 'nacex/css/nacex.css', 'all', null, true);
         $this->addJS(_MODULE_DIR_ . 'nacex/js/nacexlogs.js');
-        $this->addJS('https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js');
         parent::setMedia();
     }
 
@@ -21,6 +20,7 @@ class AdminNacexLogsController extends ModuleAdminController
         parent::initContent();
 
         $html = "
+            <script src='https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js'></script>
             <script>
                 var Base_uri = '" . __PS_BASE_URI__ . "';
                 $(document).ready(function() {
