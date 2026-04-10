@@ -852,7 +852,7 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Do you want to install our zones?') . '</label>
+											<div class="col-lg-3 col-form-label">' . $obj->l('Do you want to install our zones?') . '</div>
 											<div class="col-lg-9">
 												<div class="alert alert-warning" style="margin-bottom:0.5em;">' . $obj->l('This will create shipping zones, assign countries/states to them, and configure Nacex carriers.') . '<br>' . $obj->l('If you already have zones configured, review your carrier zone assignments after this operation.') . '</div>
 												<button type="button" class="btn btn-default" onclick="inizializarZonas();">' . $obj->l('Install and initialize zones') . '</button>
@@ -886,7 +886,7 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Standard service types') . '</label>
+											<div class="col-lg-3 col-form-label">' . $obj->l('Standard service types') . '</div>
 											<div class="col-lg-6">
 												' . showError($errores, 'nacex_available_tip_ser') . '
 ';
@@ -968,7 +968,7 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('NacexShop service types') . '</label>
+											<div class="col-lg-3 col-form-label">' . $obj->l('NacexShop service types') . '</div>
 											<div class="col-lg-6">
 ';
     $shopOptions = [];
@@ -1048,7 +1048,7 @@ ttttttttt' . $saveBtn . '
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('International service types') . '</label>
+											<div class="col-lg-3 col-form-label">' . $obj->l('International service types') . '</div>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_available_tip_ser_int') . '
 ';
@@ -1168,7 +1168,7 @@ ttttttttt' . $saveBtn . '
         $estadoOptions[$idOrderState] = $estado['name'];
     }
     $html .= '<div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Do not update order status when your order has any of these statuses') . '</label>
+        <div class="col-lg-3 col-form-label">' . $obj->l('Do not update order status when your order has any of these statuses') . '</div>
         <div class="col-lg-9">' . nacexutils::renderCheckboxGroup('no_cambiar_estado_ok', 'NACEX_NO_CAMBIAR_ESTADO_A_OK', '|', $estadoOptions) . '</div>
     </div>
     <hr>
@@ -1183,7 +1183,7 @@ ttttttttt' . $saveBtn . '
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Cash on delivery modules') . '</label>
+        <div class="col-lg-3 col-form-label">' . $obj->l('Cash on delivery modules') . '</div>
         <div class="col-lg-9">
             ' . showError($errores, 'nacex_modulos_reembolso') . $divpayment . '
             <small class="form-text text-muted"><strong>' . $obj->l('You must assign manually the payment methods to the carriers. The cash on delivery MUST NOT be enabled for carriers PLUS BAG (04) nor INTERNATIONALS (G y H).') . '</strong><br>
@@ -1372,7 +1372,7 @@ ttttttttt' . $saveBtn . '
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Selecciona los servicios Nacexshop creados a mano') . '</label>
+											<div class="col-lg-3 col-form-label">' . $obj->l('Selecciona los servicios Nacexshop creados a mano') . '</div>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacexshop_external_modules') . $divservices . '
 											</div>
@@ -1390,14 +1390,14 @@ ttttttttt' . $saveBtn . '
 										<div data-depends="nacex_show_dev_ops">
 											' . nacexutils::getRadioHTML('Show runtime errors', 'nacex_show_errors', 'NO', $show_errors_no, 'SI', $show_errors_si, 'For debugging purposes only when necessary.') . '
 											<div class="form-group row">
-												<label class="col-lg-3 col-form-label">' . $obj->l('Review carriers table') . '</label>
+												<div class="col-lg-3 col-form-label">' . $obj->l('Review carriers table') . '</div>
 												<div class="col-lg-9">
 													<button type="button" class="btn btn-default" onclick="revisarTablaCarriers();">' . $obj->l('Review carriers') . '</button>
 													<div id="nacex_tableCarriersResult" style="margin-top:0.5em;"></div>
 												</div>
 											</div>
 											<div class="form-group row">
-												<label class="col-lg-3 col-form-label">' . $obj->l('Reinstall hooks') . '</label>
+												<div class="col-lg-3 col-form-label">' . $obj->l('Reinstall hooks') . '</div>
 												<div class="col-lg-9">
 													<button type="button" class="btn btn-default" onclick="reinstalarHooks();">' . $obj->l('Reinstall hooks') . '</button>
 													<div id="reinstallHooksResult" style="margin-top:0.5em;"></div>
