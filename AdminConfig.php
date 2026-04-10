@@ -765,7 +765,7 @@ function getFormularioConfiguracion($obj)
 											<label class="col-lg-3 col-form-label" for="nacex_print_iona">' . $obj->l('Iona URL') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_print_iona') . '
-												<input type="text" class="form-control" name="nacex_print_iona" value="' . nacexDTO::$url_iona . '" readonly/>
+												<input type="text" class="form-control" name="nacex_print_iona" id="nacex_print_iona" value="' . nacexDTO::$url_iona . '" readonly/>
 												<small class="form-text text-muted">
 													<a href="https://www.nacex.es/files/iona/iona.zip" style="color:#ff5100;">' . $obj->l('Download IONA') . '</a>
 													&nbsp;|&nbsp;
@@ -794,7 +794,7 @@ function getFormularioConfiguracion($obj)
 											<label class="col-lg-3 col-form-label" for="nacex_print_et">' . $obj->l('Printer') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_print_et') . '
-												<input type="text" class="form-control" name="nacex_print_et" value="' . Tools::getValue('nacex_print_et', Configuration::get('NACEX_PRINT_ET')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" name="nacex_print_et" id="nacex_print_et" value="' . Tools::getValue('nacex_print_et', Configuration::get('NACEX_PRINT_ET')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('Physical printer name') . '. ' . $obj->l('Ex:') . ' Kyocera FS-1350DN KX</small>
 											</div>
 										</div>
@@ -802,14 +802,14 @@ function getFormularioConfiguracion($obj)
 											<label class="col-lg-3 col-form-label" for="nacex_wsusername">' . $obj->l('Web Service user') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_wsusername') . '
-												<input type="text" class="form-control" name="nacex_wsusername" value="' . Tools::getValue('nacex_wsusername', Configuration::get('NACEX_WSUSERNAME')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" name="nacex_wsusername" id="nacex_wsusername" value="' . Tools::getValue('nacex_wsusername', Configuration::get('NACEX_WSUSERNAME')) . '" style="max-width:335px;" />
 											</div>
 										</div>
 										<div class="form-group row">
 											<label class="col-lg-3 col-form-label" for="nacex_wspassword">' . $obj->l('Web Service password') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_wspassword') . '
-												<input type="password" class="form-control" name="nacex_wspassword" value="' . Tools::getValue('nacex_wspassword', Configuration::get('NACEX_WSPASSWORD_ORIGINAL')) . '" style="max-width:335px;" />
+												<input type="password" class="form-control" name="nacex_wspassword" id="nacex_wspassword" value="' . Tools::getValue('nacex_wspassword', Configuration::get('NACEX_WSPASSWORD_ORIGINAL')) . '" style="max-width:335px;" />
 											</div>
 										</div>
 										<div class="form-group row">
@@ -831,7 +831,7 @@ function getFormularioConfiguracion($obj)
 											<label class="col-lg-3 col-form-label" for="nacex_agcli">' . $obj->l('Agencies/Customers') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_agcli') . '
-												<input type="text" class="form-control" name="nacex_agcli" value="' . Tools::getValue('nacex_agcli', Configuration::get('NACEX_AGCLI')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" name="nacex_agcli" id="nacex_agcli" value="' . Tools::getValue('nacex_agcli', Configuration::get('NACEX_AGCLI')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('Comma separated agency/customer codes') . '. ' . $obj->l('Ex:') . ' 1234/01234,4321/04321</small>
 											</div>
 										</div>
@@ -839,7 +839,7 @@ function getFormularioConfiguracion($obj)
 											<label class="col-lg-3 col-form-label" for="nacex_departamentos">' . $obj->l('Customer departaments') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_departamentos') . '
-												<input type="text" class="form-control" name="nacex_departamentos" value="' . Tools::getValue('nacex_departamentos', Configuration::get('NACEX_DEPARTAMENTOS')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" name="nacex_departamentos" id="nacex_departamentos" value="' . Tools::getValue('nacex_departamentos', Configuration::get('NACEX_DEPARTAMENTOS')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('Comma separated customer departaments. The first one will be used as default') . '. ' . $obj->l('Ex:') . ' DEPT1, 2DEPARTAMENTO</small>
 											</div>
 										</div>
@@ -847,7 +847,7 @@ function getFormularioConfiguracion($obj)
 											<label class="col-lg-3 col-form-label" for="nacex_cprec">' . $obj->l('Shipment pickup postcode') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_cprec') . '
-												<input type="text" class="form-control" name="nacex_cprec" value="' . Tools::getValue('nacex_cprec', Configuration::get('NACEX_CP_REC')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" name="nacex_cprec" id="nacex_cprec" value="' . Tools::getValue('nacex_cprec', Configuration::get('NACEX_CP_REC')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('Pickup postcode or shipment order origin necessary to calculate shipping cost or service estimation for applying to shipping cost') . '</small>
 											</div>
 										</div>
