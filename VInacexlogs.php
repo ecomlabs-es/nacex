@@ -13,47 +13,49 @@ class VInacexlogs
     {
         $nacex = self::getNacex();
         $mensaje = $nacex->l('Are you sure you want to delete all log files?');
-        return '<center>
-                    <a target="_blank" title="' . $nacex->l('Go to Nacex web') . '" href="https://www.nacex.es">
-                        <img src="' . _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png" style="width: 200px">
-                    </a>    
-                </center>
-                <div align="right">
-                    <input type="button" class="ncx_button" id="btnrefrescarvolver" value ="' . $nacex->l('Refresh/Back') . '"" onclick="nacexlogs.get(\'init\',Base_uri);"</input>
-                    <input type="button" class="ncx_button" id="btnborrartodo" value ="' . $nacex->l('Delete logs') . '" onclick="nacexlogs.get(\'delete_all\',Base_uri,\'' . $mensaje . '\');"</input>
+        $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
+
+        return "
+            <div class='panel'>
+                <div class='panel-heading' style='display:flex;align-items:center;justify-content:space-between;'>
+                    <div style='display:flex;align-items:center;gap:1em;'>
+                        <a target='_blank' href='https://www.nacex.es'>
+                            <img style='width:130px;height:auto;' src='" . $webimg . "' />
+                        </a>
+                        <span style='font-size:1.1em;'>" . $nacex->l('Log files') . "</span>
+                    </div>
+                    <div>
+                        <button type='button' class='btn btn-default btn-sm' id='btnrefrescarvolver' onclick=\"nacexlogs.get('init',Base_uri);\">
+                            <i class='icon-refresh'></i> " . $nacex->l('Refresh/Back') . "
+                        </button>
+                        <button type='button' class='btn btn-danger btn-sm' id='btnborrartodo' onclick=\"nacexlogs.get('delete_all',Base_uri,'" . $mensaje . "');\">
+                            <i class='icon-trash'></i> " . $nacex->l('Delete logs') . "
+                        </button>
+                    </div>
                 </div>
-                <div align="right">' . $nacex->l('Ctrl + F to search') . '</div>
-                <hr style="border-bottom: 2px solid #ff5000; border-top: none;">';
+            </div>";
     }
 
     public static function content_directory($_file, $path, $index)
     {
         $nacex = self::getNacex();
-
-        /** Modificamos la función para mostrar una tabla con los logs que hay **/
-        $html = '';
-        //$mensaje = sprintf($nacex->l('Are you sure you want to delete %1 file?$d'), $_file);
         $mensaje = $nacex->l('Are you sure you want to delete file') . ' ' . $_file . '?';
 
-        $odd = $index % 2 != 0 ? 'class="odd"' : '';
-
-        $html .= '<tr ' . $odd . '>
-                    <td><b>' . $_file . '</b></td>
-                    <td>' . self::formatSizeUnits(filesize($path . DIRECTORY_SEPARATOR . $_file)) . "</td>
+        return "<tr>
+                    <td><strong>" . $_file . "</strong></td>
+                    <td>" . self::formatSizeUnits(filesize($path . DIRECTORY_SEPARATOR . $_file)) . "</td>
                     <td>
-                        <a href='#' name='view' id=" . $_file . " title='" . $nacex->l('Open file') . "' value='" . $nacex->l('Open file') . "' onclick='nacexlogs.get(\"read\",Base_uri,\"\",this.id);'>
-                            <i class='material-icons'>remove_red_eye</i>
+                        <a href='#' title='" . $nacex->l('Open file') . "' onclick='nacexlogs.get(\"read\",Base_uri,\"\",\"" . $_file . "\");return false;'>
+                            <i class='icon-eye-open'></i>
                         </a>
-                        <a href='#' name='delete' id=" . $_file . " title='" . $nacex->l('Delete file') . "' value='" . $nacex->l('Delete file') . "' onclick='nacexlogs.get(\"delete\",Base_uri,\"$mensaje\",this.id);'>
-                            <i class='material-icons'>delete</i>
+                        &nbsp;
+                        <a href='#' title='" . $nacex->l('Delete file') . "' onclick='nacexlogs.get(\"delete\",Base_uri,\"" . $mensaje . "\",\"" . $_file . "\");return false;' style='color:#dc3545;'>
+                            <i class='icon-trash'></i>
                         </a>
                     </td>
                 </tr>";
-
-        return $html;
     }
 
-    /** Creamos una función para que devuelva el tamaño del archivo en unidades más legibles **/
     private static function formatSizeUnits($bytes)
     {
         if ($bytes >= 1073741824) {
@@ -76,21 +78,27 @@ class VInacexlogs
     public static function content_directory_no_files()
     {
         $nacex = self::getNacex();
-        return '<center><h1>' . $nacex->l('Do not exist log files') . '</h1></center>';
+        return "<div class='alert alert-info' style='text-align:center;'>" . $nacex->l('Do not exist log files') . '</div>';
     }
-    public static function response_delete($_message) {
-        return "<center><h1>$_message</h1></center>";
+
+    public static function response_delete($_message)
+    {
+        return "<div class='alert alert-success' style='text-align:center;'>" . $_message . '</div>';
     }
-    public static function response_open($_message) {
-        return "<center><h1>$_message</h1></center>";
+
+    public static function response_open($_message)
+    {
+        return "<div class='alert alert-info' style='text-align:center;'>" . $_message . '</div>';
     }
+
     public static function content_file_title($_file)
     {
         $nacex = self::getNacex();
-        return '<center><h1>' . $nacex->l('Content of') . " '" . $_file . "'</h1></center>
-                <hr>";
+        return "<div class='panel-heading'><strong>" . $nacex->l('Content of') . " '" . $_file . "'</strong></div>";
     }
-    public static function content_file($_line) {
-        return "<p>$_line</p>";
+
+    public static function content_file($_line)
+    {
+        return '<p style="margin:0;padding:2px 0;font-family:monospace;font-size:12px;">' . $_line . '</p>';
     }
 }

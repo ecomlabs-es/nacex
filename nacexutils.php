@@ -474,13 +474,16 @@ class nacexutils
         $_files = scandir($_path);
         if (sizeof($_files) > 2) {
             /** Creamos la tabla para que se visualicen bien **/
-            $_html .= '<table id="tabla-nacexlogs" class="table table-bordered" style="width: 100%;">
-                            <thead class="thead-default">
-                                  <tr class="column-headers">
+            $_html .= '<div class="panel"><div class="table-responsive">
+                        <table id="tabla-nacexlogs" class="table table-hover">
+                            <thead>
+                                <tr>
                                     <th>' . $nacex->l('File') . '</th>
                                     <th>' . $nacex->l('Size') . '</th>
                                     <th>' . $nacex->l('Actions') . '</th>
-                        </tr></thead><tbody>';
+                                </tr>
+                            </thead>
+                            <tbody>';
 
             // Ordeno los files de más reciente a más antiguo
             rsort($_files);
@@ -491,7 +494,7 @@ class nacexutils
                 }
             }
             /** Cerramos tabla creada **/
-            $_html .= '</tbody></table>';
+            $_html .= '</tbody></table></div></div>';
 
         } else {
             $_html = VInacexlogs::content_directory_no_files();
