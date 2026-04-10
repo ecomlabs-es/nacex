@@ -780,7 +780,7 @@ function getFormularioConfiguracion($obj)
 													<option disabled="disabled" selected></option>
 													<optgroup label="' . $obj->l('Labeller model') . '">';
 
-    $mod = Configuration::get('NACEX_PRINT_MODEL');
+    $mod = Tools::getValue('nacex_print_model', Configuration::get('NACEX_PRINT_MODEL'));
     foreach ($nacexDTO->getModelosEtiquetadoras() as $m) {
         $selected = ($mod !== false && $m['value'] == $mod) ? ' selected' : '';
         $html .= '<option value="' . $m['value'] . '"' . $selected . '>' . $m['label'] . '</option>';
