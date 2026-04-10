@@ -472,31 +472,31 @@ class nacextabMasivo extends ModuleAdminController
                 // Badge del estado de la expedición
                 $estado = isset($value['estado']) ? $value['estado'] : '';
                 if (empty($value['ag_cod_num_exp']) || empty($estado)) {
-                    $badgeColor = '#999';
+                    $badgeClass = 'badge-default';
                     $badgeText = $this->nacex->l('Pending');
                 } elseif ($estado == 'ANULADA' || $estado == 'BAJA') {
-                    $badgeColor = '#dc3545';
+                    $badgeClass = 'badge-danger';
                     $badgeText = $estado;
                 } elseif ($estado == 'OK') {
-                    $badgeColor = '#28a745';
+                    $badgeClass = 'badge-success';
                     $badgeText = $this->nacex->l('Delivered');
                 } elseif ($estado == 'INCIDENCIA' || $estado == 'INCIDENCIA EXPEDICION') {
-                    $badgeColor = '#daa520';
+                    $badgeClass = 'badge-warning';
                     $badgeText = $this->nacex->l('Incident');
                 } elseif ($estado == 'TRANSITO') {
-                    $badgeColor = '#2196F3';
+                    $badgeClass = 'badge-info';
                     $badgeText = $this->nacex->l('In transit');
                 } elseif ($estado == 'REPARTO') {
-                    $badgeColor = '#17a2b8';
+                    $badgeClass = 'badge-info';
                     $badgeText = $this->nacex->l('Delivery');
                 } elseif ($estado == 'PENDIENTE' || $estado == 'PENDIENTE DE INTEGRA') {
-                    $badgeColor = '#ff9800';
+                    $badgeClass = 'badge-warning';
                     $badgeText = $this->nacex->l('Notified');
                 } else {
-                    $badgeColor = '#ff9800';
+                    $badgeClass = 'badge-warning';
                     $badgeText = $estado;
                 }
-                $badgeExp = "<span style='background-color:" . $badgeColor . ";color:white;padding:0.25em 0.6em;border-radius:1em;font-size:0.85em;white-space:nowrap;display:inline-block;'>" . $badgeText . '</span>';
+                $badgeExp = "<span class='badge " . $badgeClass . "'>" . $badgeText . '</span>';
                 $link = Context::getContext()->link->getAdminLink('AdminOrders');
 
                 $zona = 'NAC';
@@ -515,7 +515,7 @@ class nacextabMasivo extends ModuleAdminController
                 }
                 $tabla .= "</td>
 			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['id_order'] . "</a></td>
-			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\"><span style='background-color:" . $value['color'] . ";color:white;padding:0.25em 0.6em;border-radius:1em;font-size:0.75em;display:inline-block;'>" . $value['status_name'] . "</span></a></td>
+			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\"><span class='badge' style='background-color:" . $value['color'] . ";color:white;'>" . $value['status_name'] . "</span></a></td>
 			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['date_add'] . "</a></td>
 			<td class='left'><a href='"   . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['firstname'] . '&nbsp;' . $value['lastname'] . "</a></td>
 			<td class='left'><a href='" . $link . '&id_order=' . $value['id_order'] . "&vieworder' style=\"text-decoration:none\">" . $value['email'] . "</a></td>
