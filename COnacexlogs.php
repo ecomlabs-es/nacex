@@ -1,11 +1,16 @@
 <?php
 
-//SET ENVIRONMENT
 include dirname(__FILE__) . '/../../config/config.inc.php';
 include dirname(__FILE__) . '/../../init.php';
 
-// Forzar idioma del empleado para traducciones
+// Verificar que el usuario es un empleado autenticado
 $cookie = new Cookie('psAdmin');
+if (!$cookie->id_employee) {
+    http_response_code(403);
+    die(json_encode([['cod_response' => '403', 'header' => '', 'result' => 'Unauthorized']]));
+}
+
+// Forzar idioma del empleado para traducciones
 if ($cookie->id_lang) {
     Context::getContext()->language = new Language((int) $cookie->id_lang);
 }
@@ -29,11 +34,5 @@ switch ($method) {
         $_router->read($file);
         break;
     default:
-        $_response = [];
-        $_response[] = [
-            'cod_response' => '404',
-            'header' => '',
-            'result' => '<center><h1>Error: Method not found</h1></center>'
-        ];
-        echo json_encode($_response);
+        echo json_encode([['cod_response' => '404', 'header' => '', 'result' => '<div class="alert alert-danger">Error: Method not found</div>']]);
 }
