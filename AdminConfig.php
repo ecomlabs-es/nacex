@@ -118,7 +118,8 @@ function getFormularioConfiguracion($obj)
                     
                 // Mostramos u ocultamos las opciones de desarrollador
                 $("input[name=\'nacex_show_dev_ops\']").on("change", function() {
-                    $("[data-depends=\'nacex_show_dev_ops\']").toggle("display");
+                    if($(this).val() === "SI") $("[data-depends=\'nacex_show_dev_ops\']").show();
+                    else $("[data-depends=\'nacex_show_dev_ops\']").hide();
                 });
                                     
                         
