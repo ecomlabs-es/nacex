@@ -557,7 +557,7 @@ class nacexutils
         $ocY = !is_null($onchangeY) ? 'onchange="' . $onchangeY . '"' : '';
 
         $radioHTML = '<div class="form-group row">
-                        <label class="col-lg-3 col-form-label">' . $nacex->l($label) . '</label>
+                        <div class="col-lg-3 col-form-label">' . $nacex->l($label) . '</div>
                         <div class="col-lg-9" id="' . $radioName . '">
                             <span class="ps-switch">
                                 <input id="' . $radioName . '_n" type="radio" name="' . $radioName . '" ' . $ocN . ' value="' . $valueN . '" ' . $selectedN . '/>
