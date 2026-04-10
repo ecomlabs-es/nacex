@@ -43,7 +43,7 @@ switch ($action) {
             $zipUrl = $release['assets'][0]['browser_download_url'];
         }
 
-        $hasUpdate = ($latestTag !== '' && $latestTag !== $currentVersion);
+        $hasUpdate = ($latestTag !== '' && isNewerVersion($latestTag, $currentVersion));
 
         echo json_encode([
             'current' => $currentVersion,
@@ -174,4 +174,33 @@ function self_rmdir($dir)
         is_dir($path) ? self_rmdir($path) : unlink($path);
     }
     return rmdir($dir);
+}
+
+/**
+ * Compara versiones con formato X.Y.Z o X.Y.Z-revN
+ * Devuelve true si $latest es mayor que $current
+ */
+function isNewerVersion($latest, $current)
+{
+    // Separar base y rev: "2.5.0-rev5" => ["2.5.0", 5]
+    $latestParts = explode('-rev', $latest);
+    $currentParts = explode('-rev', $current);
+
+    $latestBase = $latestParts[0];
+    $currentBase = $currentParts[0];
+
+    // Comparar versión base primero
+    $baseCmp = version_compare($latestBase, $currentBase);
+    if ($baseCmp > 0) {
+        return true;
+    }
+    if ($baseCmp < 0) {
+        return false;
+    }
+
+    // Misma base: comparar rev
+    $latestRev = isset($latestParts[1]) ? (int) $latestParts[1] : 0;
+    $currentRev = isset($currentParts[1]) ? (int) $currentParts[1] : 0;
+
+    return $latestRev > $currentRev;
 }
