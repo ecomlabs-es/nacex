@@ -1513,32 +1513,49 @@ class nacex extends CarrierModule
                 $exp_cod = Tools::getValue('nacex_edit_exp_cod');
                 nacexutils::writeNacexLog('hookAdminOrder :: Detectado submiteditexpedicion para exp_cod: ' . $exp_cod);
 
-                // Recoger los campos del formulario de expedición (mismos que putExpedicion)
+                // Datos del destinatario desde el pedido
+                $address = new Address((int) $datospedido[0]['id_address_delivery']);
+                $country = new Country((int) $address->id_country);
+                $nom_ent = $address->firstname . ' ' . $address->lastname;
+                $dir_ent = $address->address1 . ($address->address2 ? ' ' . $address->address2 : '');
+                $cp_ent = str_replace('-', '', $address->postcode);
+                $pob_ent = $address->city;
+                $pais_ent = $country->iso_code;
+                $tel_ent = !empty($address->phone_mobile) ? $address->phone_mobile : $address->phone;
+
+                // Peso desde productos del pedido
+                $productos = Db::getInstance()->executeS('SELECT product_quantity, product_weight FROM ' . _DB_PREFIX_ . 'order_detail WHERE id_order = ' . (int) $id_order);
+                $kil = 0;
+                foreach ($productos as $p) { $kil += floatval($p['product_quantity'] * $p['product_weight']); }
+                if ($kil < 1) { $kil = 1; }
+
+                // Campos del formulario + datos del pedido
                 $agcli = Tools::getValue('nacex_agcli', '');
                 $arr_agcli = explode('/', $agcli);
+                $retVal = Tools::getValue('nacex_ret', 'NO');
+
                 $editData = [
                     'del_cli' => isset($arr_agcli[0]) ? trim($arr_agcli[0]) : '',
                     'num_cli' => isset($arr_agcli[1]) ? trim($arr_agcli[1]) : '',
                     'tip_ser' => Tools::getValue('nacex_tip_ser', ''),
                     'tip_cob' => Tools::getValue('nacex_tip_cob', ''),
                     'tip_env' => Tools::getValue('nacex_tip_env', ''),
-                    'bul' => Tools::getValue('nacex_bul', ''),
-                    'kil' => Tools::getValue('nacex_kil', ''),
-                    'nom_ent' => Tools::getValue('nacex_nom_ent', ''),
-                    'dir_ent' => Tools::getValue('nacex_dir_ent', ''),
-                    'cp_ent' => Tools::getValue('nacex_cp_ent', ''),
-                    'pob_ent' => Tools::getValue('nacex_pob_ent', ''),
-                    'pais_ent' => Tools::getValue('nacex_pais_ent', ''),
-                    'tel_ent' => Tools::getValue('nacex_tel_ent', ''),
+                    'bul' => Tools::getValue('nacex_bul', '1'),
+                    'kil' => (string) $kil,
+                    'nom_ent' => substr($nom_ent, 0, 50),
+                    'dir_ent' => substr($dir_ent, 0, 60),
+                    'cp_ent' => substr($cp_ent, 0, 15),
+                    'pob_ent' => substr($pob_ent, 0, 40),
+                    'pais_ent' => $pais_ent,
+                    'tel_ent' => substr($tel_ent, 0, 20),
                     'obs1' => Tools::getValue('nacex_obs1', ''),
-                    'ref_cli' => Tools::getValue('nacex_ref_cli', ''),
-                    'ret' => Tools::getValue('nacex_ret', ''),
+                    'ret' => ($retVal == 'SI') ? 'S' : 'N',
                 ];
 
                 // Filtrar vacíos
                 $editData = array_filter($editData, function ($v) { return $v !== ''; });
 
-                if (!empty($editData) && !empty($exp_cod)) {
+                if (!empty($exp_cod)) {
                     $result = nacexWS::editExpedicion($exp_cod, $editData);
                     if (is_array($result) && isset($result['exp_cod']) && $result['exp_cod'] != '') {
                         $this->_html .= '<div class="alert alert-success">' . $this->l('Expedition updated successfully') . '</div>';
