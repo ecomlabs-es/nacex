@@ -755,11 +755,11 @@ function getFormularioConfiguracion($obj)
 									<div class="panel-body">
 									<input type="hidden" name="nacex_ws_url" value="' . nacexDTO::$url_ws . '"/>';
 
-    $saveBtn = '<button class="btn btn-primary btn-sm" type="submit" name="submitSave" onclick="procesando()"><i class="material-icons" style="font-size:14px;vertical-align:middle;">save</i> ' . $obj->l('Save') . '</button>';
+    $saveBtn = '<div class="panel-footer" style="text-align:right;"><button class="btn btn-primary" type="submit" name="submitSave" onclick="procesando()"><i class="material-icons" style="font-size:14px;vertical-align:middle;">save</i> ' . $obj->l('Save') . '</button></div>';
 
     $html .= '
 								<div class="panel">
-									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">' . $obj->l('Connection settings') . $saveBtn . '</div>
+									<div class="panel-heading">' . $obj->l('Connection settings') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Iona URL') . '</label>
@@ -824,7 +824,7 @@ function getFormularioConfiguracion($obj)
 								</div>
 									
 								<div class="panel">
-									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">' . $obj->l('Subscriber settings') . $saveBtn . '</div>
+									<div class="panel-heading">' . $obj->l('Subscriber settings') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Agencies/Customers') . '</label>
@@ -869,11 +869,12 @@ function getFormularioConfiguracion($obj)
         . '
 											' . nacexutils::getRadioHTML('Enable Show Empresa', 'nacex_show_empresa', 'NO', $nacex_show_empresa_no, 'SI', $nacex_show_empresa_si, 'If enabled, the order that generates the shipment will use the 2 observation fields to add the company name of the order shipping address.')
         . '
+									' . $saveBtn . '
 									</div>
 								</div>
 
 								<div class="panel">
-									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">' . $obj->l('Nacex Standard services') . $saveBtn . '</div>
+									<div class="panel-heading">' . $obj->l('Nacex Standard services') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Text for generic service') . '</label>
@@ -954,7 +955,7 @@ function getFormularioConfiguracion($obj)
 								</div>
 								
 								<div class="panel">
-									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">' . $obj->l('NacexShop services') . $saveBtn . '</div>
+									<div class="panel-heading">' . $obj->l('NacexShop services') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Text for generic service') . '</label>
@@ -1032,7 +1033,7 @@ function getFormularioConfiguracion($obj)
 								</div>
 									  
 								<div class="panel">
-									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">' . $obj->l('Nacex International') . $saveBtn . '</div>
+									<div class="panel-heading">' . $obj->l('Nacex International') . '</div>
 									<div class="panel-body">
 										<div class="alert alert-info">' . $obj->l('To use international services you must create a carrier for every service and define weight scaled rates for each country you want to ship') . '</div>
 										<div class="form-group row">
@@ -1123,7 +1124,7 @@ function getFormularioConfiguracion($obj)
 								</div>
 									 
 								<div class="panel">
-									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">' . $obj->l('Backend form') . $saveBtn . '</div>
+									<div class="panel-heading">' . $obj->l('Backend form') . '</div>
 									<div class="panel-body">';
 
     // Helper para generar selects de estado
@@ -1326,11 +1327,12 @@ function getFormularioConfiguracion($obj)
             <small class="form-text text-muted">' . $obj->l('Amount added in shipping costs for handling expenses') . '</small>
         </div>
     </div>
+									' . $saveBtn . '
 									</div>
 								</div>
 
 								<div class="panel">
-									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">' . $obj->l('Frontend form') . $saveBtn . '</div>
+									<div class="panel-heading">' . $obj->l('Frontend form') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Frontend services logo\'s width') . '</label>
@@ -1371,11 +1373,12 @@ function getFormularioConfiguracion($obj)
 												' . showError($errores, 'nacexshop_external_modules') . $divservices . '
 											</div>
 										</div>
+									' . $saveBtn . '
 									</div>
 								</div>
 
 								<div class="panel">
-									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">' . $obj->l('Debug') . $saveBtn . '</div>
+									<div class="panel-heading">' . $obj->l('Debug') . '</div>
 									<div class="panel-body">
 										' . nacexutils::getRadioHTML('Enable Nacex logs', 'nacex_save_log', 'NO', $nacex_save_log_no, 'SI', $nacex_save_log_si, 'Save a diary log trace in folder nacex/log/aaaa-mm-dd-nacex.log. They can see from "Nacex > See Logs" menu option')
         . nacexutils::getRadioHTML('Cleaning Data Base when disabling module', 'nacex_borrar_configuracion', 'NO', $show_borrar_configuracion_no, 'SI', $show_borrar_configuracion_si, 'When disabling Nacex module, remove all data generated on data base.')
@@ -1398,11 +1401,12 @@ function getFormularioConfiguracion($obj)
 												</div>
 											</div>
 										</div>
+									' . $saveBtn . '
 									</div>
 								</div>
 
 								<div class="panel">
-									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">' . $obj->l('News and Updates') . $saveBtn . '</div>
+									<div class="panel-heading">' . $obj->l('News and Updates') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Feedback form sender email') . '</label>
@@ -1411,17 +1415,12 @@ function getFormularioConfiguracion($obj)
 												<small class="form-text text-muted">' . $obj->l('Email sender for feedback form') . '</small>
 											</div>
 										</div>
-										' . nacexutils::getRadioHTML('SMTP is used to send emails?', 'nacex_feedback_smtp', 'NO', $nacex_feedback_smtp_no, 'SI', $nacex_feedback_smtp_si) . '
+										' . nacexutils::getRadioHTML('SMTP is used to send emails?', 'nacex_feedback_smtp', 'NO', $nacex_feedback_smtp_no, 'SI', $nacex_feedback_smtp_si)
+        . $saveBtn . '
 									</div>
 								</div>
 
-								    <div style="text-align:center;margin-top:1em;">
-											<button class="btn btn-primary" type="submit" name="submitSave" onclick="procesando()">
-												<i class="material-icons" style="font-size:14px;vertical-align:middle;">save</i> ' . $obj->l('Save config') . '
-											</button>
-										</div>
-
-									</div>
+								</div>
 								</div>
 								</form>';
 
