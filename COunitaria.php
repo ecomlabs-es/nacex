@@ -4,6 +4,12 @@
 include(dirname(__FILE__) . '/../../config/config.inc.php');
 include(dirname(__FILE__) . '/../../init.php');
 
+// Forzar idioma del empleado para traducciones
+$cookie = new Cookie('psAdmin');
+if ($cookie->id_lang) {
+    Context::getContext()->language = new Language((int) $cookie->id_lang);
+}
+
 include_once dirname(__FILE__) . '/VIunitaria.php';
 $_response = [];
 $_resultcodresponse = [];
