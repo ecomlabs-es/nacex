@@ -952,9 +952,10 @@ function getFormularioConfiguracion($obj)
 												<small class="form-text text-muted">' . $obj->l('Order amount from which shipping costs will be free') . '</small>
 											</div>
 										</div>
+									' . $saveBtn . '
 									</div>
 								</div>
-								
+
 								<div class="panel">
 									<div class="panel-heading">' . $obj->l('NacexShop services') . '</div>
 									<div class="panel-body">
@@ -1031,6 +1032,7 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 									</div>
+ttttttttt' . $saveBtn . '
 								</div>
 									  
 								<div class="panel">
@@ -1122,6 +1124,7 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 									</div>
+ttttttttt' . $saveBtn . '
 								</div>
 									 
 								<div class="panel">
