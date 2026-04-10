@@ -1118,9 +1118,10 @@ function getFormularioConfiguracion($obj)
 									</div>
 								</div>
 									 
-									<fieldset>
-											<legend> ' . $obj->l('Backend form') . '</legend>
-								      	<table style="border: 0px;">			
+								<div class="panel">
+									<div class="panel-heading">' . $obj->l('Backend form') . '</div>
+									<div class="panel-body">
+								      	<table style="border:0;width:100%;">
 					<tr>
 					    <td class="columna1">' . $obj->l('Update order status on printing label') . ' :</td>
 						    <td id="cambiar_estado_imprimir" class="columna2">';
@@ -1482,13 +1483,12 @@ function getFormularioConfiguracion($obj)
 									  				</td>
 									  			</tr>							
 									  		</table>
-									  </fieldset>
-										
-									  
-										<br/>
-									
-										<fieldset>
-											<legend> ' . $obj->l('Frontend form') . '</legend>
+									</div>
+								</div>
+
+								<div class="panel">
+									<div class="panel-heading">' . $obj->l('Frontend form') . '</div>
+									<div class="panel-body">
 								      	<table style="border: 0px;">
 					      					<tr>				
                                                 <td class="columna1">' . $obj->l('Frontend services logo\'s width') . ': </td>
@@ -1535,14 +1535,12 @@ function getFormularioConfiguracion($obj)
                                                 </td>	
                                             </tr>
 								      	</table>
-								    </fieldset>
-										
-									  
-										<br/>
-									
-										<fieldset>
-											<legend> ' . $obj->l('Debug') . '</legend>
-								      	<table style="border: 0px;">
+									</div>
+								</div>
+
+								<div class="panel">
+									<div class="panel-heading">' . $obj->l('Debug') . '</div>
+									<div class="panel-body">
 													' . nacexutils::getRadioHTML('Enable Nacex logs', 'nacex_save_log', 'NO', $nacex_save_log_no, 'SI', $nacex_save_log_si, 'Save a diary log trace in folder nacex/log/aaaa-mm-dd-nacex.log. They can see from "Nacex > See Logs" menu option')
         . '
 													' . nacexutils::getRadioHTML('Cleaning Data Base when disabling module', 'nacex_borrar_configuracion', 'NO', $show_borrar_configuracion_no, 'SI', $show_borrar_configuracion_si, 'When disabling Nacex module, remove all data generated on data base.')
@@ -1569,14 +1567,14 @@ function getFormularioConfiguracion($obj)
                                                         </td>
                                                     </tr>';
     //endif;
-    $html .= '</table>
-								    </fieldset>
-										
-                                    <br/>
-                                
-                                    <fieldset>
-                                        <legend> ' . $obj->l('News and Updates') . '</legend>
-								      	<table style="border: 0px;">
+    $html .= '
+									</div>
+								</div>
+
+								<div class="panel">
+									<div class="panel-heading">' . $obj->l('News and Updates') . '</div>
+									<div class="panel-body">
+								      	<table style="border:0;width:100%;">
 													<tr>
 														<td class="columna1">' . $obj->l('Feedback form sender email') . ':</td>
 														<td class="columna2">
@@ -1589,7 +1587,8 @@ function getFormularioConfiguracion($obj)
 													' . nacexutils::getRadioHTML('SMTP is used to send emails?', 'nacex_feedback_smtp', 'NO', $nacex_feedback_smtp_no, 'SI', $nacex_feedback_smtp_si)
         . '
 								      	</table>
-								    </fieldset>
+									</div>
+								</div>
 
 								    <div style="text-align:center;margin-top:1em;">
 											<button class="btn btn-primary" type="submit" name="submitSave" onclick="procesando()">
