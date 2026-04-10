@@ -463,12 +463,26 @@ class nacextabMasivo extends ModuleAdminController
         } else {
             $hay_registros = 1;
 
+            // Obtener estados de todas las expediciones en UNA sola llamada WS
+            $fechaDesde = Tools::getValue('date_from', date('d/m/Y'));
+            $fechaHasta = Tools::getValue('date_to', date('d/m/Y'));
+            // Convertir de Y-m-d a dd/mm/yyyy si es necesario
+            if (strpos($fechaDesde, '-') !== false) {
+                $fechaDesde = date('d/m/Y', strtotime($fechaDesde));
+            }
+            if (strpos($fechaHasta, '-') !== false) {
+                $fechaHasta = date('d/m/Y', strtotime($fechaHasta));
+            }
+            $estadosBulk = nacexWS::ws_getListadoExpediciones($fechaDesde, $fechaHasta);
+
             foreach ($datos as $value) {
 
-                // Comprobamos que no esté cancelada en Diana si existe expedición y si no está anulada o enviada
-                if (!is_null($value['estado']) && ($value['estado'] != 'ANULADA' || $value['estado'] != 'OK')) {
-                    $estadoExp = nacexWS::ws_getEstadoExpedicion($value);
-                    $value['estado'] = $estadoExp['estado'];
+                // Actualizar estado desde la consulta bulk (sin llamada WS individual)
+                if (!is_null($value['estado']) && $value['estado'] != 'ANULADA' && $value['estado'] != 'OK') {
+                    $agCodNum = $value['ag_cod_num_exp'];
+                    if (!empty($agCodNum) && isset($estadosBulk[$agCodNum]) && !empty($estadosBulk[$agCodNum]['estado'])) {
+                        $value['estado'] = $estadosBulk[$agCodNum]['estado'];
+                    }
                 }
 
                 //Datos del pedido

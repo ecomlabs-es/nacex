@@ -82,6 +82,86 @@ class nacexWS {
         }
     }
 
+    /**
+     * Obtiene el estado de múltiples expediciones en una sola llamada WS.
+     * Reemplaza N llamadas individuales a ws_getEstadoExpedicion.
+     *
+     * @param string $fechaIni Fecha inicio dd/mm/yyyy
+     * @param string $fechaFin Fecha fin dd/mm/yyyy
+     * @return array Mapa [exp_cod => ['estado' => ..., 'estado_code' => ..., 'fecha' => ..., 'hora' => ...]]
+     */
+    public static function ws_getListadoExpediciones($fechaIni, $fechaFin)
+    {
+        $nacexWS = new nacexWS();
+        nacexutils::writeNacexLog("----\nINI ws_getListadoExpediciones :: $fechaIni - $fechaFin");
+
+        $urlNacex = Configuration::get('NACEX_WS_URL');
+        $URL = $urlNacex . '/soap';
+
+        $nacexWSusername = Configuration::get('NACEX_WSUSERNAME');
+        $nacexWSpassword = Configuration::get('NACEX_WSPASSWORD');
+        $metodo = 'getListadoExpediciones';
+
+        $XML = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="urn:soap/types">
+            <soapenv:Header/>
+            <soapenv:Body>
+                <typ:getListadoExpediciones>
+                    <String_1>' . $nacexWSusername . '</String_1>
+                    <String_2>' . $nacexWSpassword . '</String_2>
+                    <arrayOfString_3>fecha_ini=' . $fechaIni . '</arrayOfString_3>
+                    <arrayOfString_3>fecha_fin=' . $fechaFin . '</arrayOfString_3>
+                    <arrayOfString_3>campos=estado;estado_desc;fecha_estado;hora_estado;observaciones_estado</arrayOfString_3>
+                    <arrayOfString_3>' . nacexWS::getSystemInfo() . '</arrayOfString_3>
+                </typ:getListadoExpediciones>
+            </soapenv:Body>
+        </soapenv:Envelope>';
+
+        nacexutils::writeNacexLog('ws_getListadoExpediciones :: request');
+
+        $result = $nacexWS->requestWS($URL, $XML, $metodo);
+        $expedicionesMap = [];
+
+        if (is_string($result) && substr($result, 0, 5) != '<html' && $result != 'ERROR') {
+            $resultado = $nacexWS->treatmentXML($result, $metodo);
+
+            if (is_array($resultado) && isset($resultado[0]) && $resultado[0] != 'ERROR') {
+                // La respuesta viene como líneas separadas por | y campos por ~
+                // Formato: agencia~numAlbaran~digitalizacion~campo1~campo2~...
+                $response = is_array($resultado) ? implode('', $resultado) : $resultado;
+                $lines = explode('|', $response);
+
+                foreach ($lines as $line) {
+                    $fields = explode('~', $line);
+                    if (count($fields) >= 5) {
+                        $agencia = trim($fields[0]);
+                        $numAlbaran = trim($fields[1]);
+                        $agCodNumExp = $agencia . '/' . $numAlbaran;
+
+                        // Los campos solicitados: estado, estado_desc, fecha_estado, hora_estado, observaciones_estado
+                        $estadoCode = isset($fields[3]) ? trim($fields[3]) : '';
+                        $estadoDesc = isset($fields[4]) ? trim($fields[4]) : '';
+                        $fechaEstado = isset($fields[5]) ? trim($fields[5]) : '';
+                        $horaEstado = isset($fields[6]) ? trim($fields[6]) : '';
+                        $obsEstado = isset($fields[7]) ? trim($fields[7]) : '';
+
+                        $expedicionesMap[$agCodNumExp] = [
+                            'estado_code' => $estadoCode,
+                            'estado' => $estadoDesc,
+                            'fecha' => $fechaEstado,
+                            'hora' => $horaEstado,
+                            'observaciones' => $obsEstado,
+                        ];
+                    }
+                }
+            }
+        }
+
+        nacexutils::writeNacexLog('ws_getListadoExpediciones :: ' . count($expedicionesMap) . ' expediciones');
+        nacexutils::writeNacexLog("FIN ws_getListadoExpediciones\n----");
+
+        return $expedicionesMap;
+    }
+
     public static function ws_getDatosWSExpedicion($expe_codigo, $errorplain = false) {
 
         nacexutils::writeNacexLog("----\nINI ws_getDatosWSExpedicion :: expe_codigo: " . $expe_codigo);
@@ -1572,8 +1652,6 @@ class nacexWS {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_URL, $URL);
@@ -1582,23 +1660,20 @@ class nacexWS {
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: text/xml; charset=utf-8']);
 
         $postResult = curl_exec($ch);
-
-        // Cojo la info de la llamada de la página para ver si hay un errores
         $info = curl_getinfo($ch);
+        $errno = curl_errno($ch);
+        $error = curl_error($ch);
+        curl_close($ch);
 
-        //if (($postResult == false && $info['http_code'] == 0) || (preg_match('/5\w{2}/', $info['http_code']) == 1))
-        if (($postResult == false && $info['http_code'] == 0)) {
-            return 500; }
+        if ($postResult == false && $info['http_code'] == 0) {
+            nacexutils::writeNacexLog($metodo . ' :: Connection failed (HTTP 0)');
+            return ['ERROR', 'Connection failed'];
+        }
 
-        if (curl_errno($ch)) {
-            $str = $errorplain ? '[Error cURL ' . curl_errno($ch) . ']: ' . curl_error($ch) :
-                '<br>
-			<div style="' . $style . '" class="alert error ncx_network_error">
-				<h1>Error de comunicación con el Web Service</h1>
-				<div class="metodo" align="center">' . $metodo . '</div>
-				<div class="descripcion">[Error cURL ' . curl_errno($ch) . ']: ' . curl_error($ch) . '</div>
-			</div>';
-            nacexutils::writeNacexLog($metodo . ' :: [Error cURL ' . curl_errno($ch) . ' ]: ' . curl_error($ch));
+        if ($errno) {
+            $str = $errorplain ? '[Error cURL ' . $errno . ']: ' . $error :
+                '<div class="alert alert-danger"><strong>' . $metodo . '</strong>: [cURL ' . $errno . '] ' . $error . '</div>';
+            nacexutils::writeNacexLog($metodo . ' :: [Error cURL ' . $errno . ']: ' . $error);
             return ['ERROR', $str];
         }
         return $postResult;
