@@ -1085,9 +1085,9 @@ function getFormularioConfiguracion($obj)
                                                             <p class="tip">' . $obj->l('Indicates the carrier amount calculation method.') . '</p>
 									  				</td>
 									  			</tr>
-									  			<tr>
+									  			<tr id="row_nacexint_importe_fijo_val">
 														<td class="columna1">' . $obj->l('Shipping flat amount') . ': </td>
-														<td class="columna2" id="nacexint_importe_fijo_val">
+														<td class="columna2">
 									  					<input type="text" onfocus="javascript:$(\'#info_nacexint_importe_fijo\').fadeIn(400);" onblur="javascript:$(\'#info_nacexint_importe_fijo\').fadeOut(400);" size="50" name="nacexint_importe_fijo_val" value="' . Tools::getValue('nacexint_importe_fijo_val', Configuration::get('NACEXINT_IMP_FIJO_VAL')) . '" onkeypress="javascript:return soloNumeros(event);" onblur="javascript:ValidarNum(this.value, this,7,2);"/>
                                                         <p class="tip">' . $obj->l('Shipping flat amount to apply to a carrier.') . '</p>
                                                         <p class="tip"><em>' . $obj->l('It will be used also on Web Service communication error to assign a default price to the carrier.') . '</em></p>
