@@ -769,28 +769,19 @@ function getFormularioConfiguracion($obj)
                 </script>
 								
 								<form action="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') . '" method="post" id="configForm">
-									<div id="tabList">
-									  <div class="tabItem" style="width: 80%;">
-									  	<div id="ayuda" style="width:100%;">
-									  		<table style="width:100%">
-                                                <tr>
-                                                    <td class="logo-nacex-by-logista">
-                                                        <img src="' . $nacexDTO->getPath() . 'images/logos/nacex_logista.png" />
-                                                    </td>
-                                                    <td class="version">
-                                                        <h2>Ver: ' . nacexutils::nacexVersion . '</h2>
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        <a href="' . $config_pdf . '" target="_blank" id="download-ncx-user-guide" style="color: #ff5100;">
-                                                            <b>' . $obj->l('Need help?') . '</b>
-                                                            <br>' . $obj->l('Download the module settings user manual!') . '
-                                                            
-                                                            <img src="' . $nacexDTO->getPath() . 'images/icon_pdf.png" class="user-guide-pdf" />
-                                                        </a>
-                                                    </td>
-                                                </tr>
-											</table>									  
+								<div class="panel">
+									<div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">
+										<div style="display:flex;align-items:center;gap:1em;">
+											<a target="_blank" href="https://www.nacex.es">
+												<img style="width:130px;height:auto;" src="' . $nacexDTO->getPath() . 'images/logos/nacex_logista.png" />
+											</a>
+											<span style="font-size:1.1em;">' . $obj->l('Module configuration') . ' <small style="color:#999;">v' . nacexutils::nacexVersion . '</small></span>
 										</div>
+										<a href="' . $config_pdf . '" target="_blank" class="btn btn-default btn-sm">
+											<i class="material-icons" style="font-size:14px;vertical-align:middle;">picture_as_pdf</i> ' . $obj->l('User manual') . '
+										</a>
+									</div>
+									<div class="panel-body">
 									  	<fieldset>
 									 			<legend> ' . $obj->l('Connection settings') . '</legend>
 									  			<table style="border: 0px;">
@@ -1682,12 +1673,14 @@ function getFormularioConfiguracion($obj)
 								      	</table>
 								    </fieldset>
 
-								    <div id="divboton" style="width:200px;margin: 10px auto;text-align:center;">
-											<input class="ncx_button" onclick="procesando()" name="submitSave" type="submit" value="' . $obj->l('Save config') . '">
+								    <div style="text-align:center;margin-top:1em;">
+											<button class="btn btn-primary" type="submit" name="submitSave" onclick="procesando()">
+												<i class="material-icons" style="font-size:14px;vertical-align:middle;">save</i> ' . $obj->l('Save config') . '
+											</button>
 										</div>
 
-										</div>
 									</div>
+								</div>
 								</form>';
 
     return $html;
