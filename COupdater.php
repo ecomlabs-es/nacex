@@ -36,17 +36,14 @@ switch ($action) {
 
         $release = json_decode($response, true);
         $latestTag = isset($release['tag_name']) ? $release['tag_name'] : '';
-        $installedTag = Configuration::get('NACEX_INSTALLED_TAG');
-        if (!$installedTag) {
-            $installedTag = nacexutils::nacexVersion;
-        }
+        $currentVersion = nacexutils::nacexVersion;
         $zipUrl = '';
 
         if (!empty($release['assets'][0]['browser_download_url'])) {
             $zipUrl = $release['assets'][0]['browser_download_url'];
         }
 
-        $hasUpdate = ($latestTag !== '' && $latestTag !== $installedTag);
+        $hasUpdate = ($latestTag !== '' && $latestTag !== $currentVersion);
 
         echo json_encode([
             'current' => $currentVersion,
@@ -125,9 +122,6 @@ switch ($action) {
         self_rmdir($tmpDir);
 
         if ($result) {
-            // Guardar tag instalado
-            Configuration::updateValue('NACEX_INSTALLED_TAG', $latestTag);
-
             // Limpiar cache de Smarty y opcache
             if (function_exists('opcache_reset')) {
                 opcache_reset();
