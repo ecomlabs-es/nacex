@@ -172,24 +172,14 @@ class nacextab extends AdminController
                         </a>
                     </div>
                     <div class='table-responsive'>
-                    <table id='ncx_tabla_listado' class='table table-bordered table-hover table-striped'>
-                        <thead class='thead-default'>
+                    <table id='ncx_tabla_listado' class='table table-hover'>
+                        <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>" . $this->nacex->l('Barcode') . '</th>
-                                <th>
-                                    <p>' . $this->nacex->l('Delivery Note') . '</p>
-                                    <p>' . $this->nacex->l('Recipient\'s name') . '</p>
-                                    <p>' . $this->nacex->l('Delivery Region postcode') . '</p>	  						  				
-                                </th>
-                                <th>
-                                    <p>' . $this->nacex->l('Reference') . '</p>
-                                    <p>' . $this->nacex->l('Shipping address') . '</p>
-                                </th>
-                                <th>
-                                    <p>' . $this->nacex->l('Service') . '</p>
-                                    <p>' . $this->nacex->l('Refund amount') . '</p>		  				
-                                </th>
+                                <th>' . $this->nacex->l('Delivery Note') . '</th>
+                                <th>' . $this->nacex->l('Reference') . '</th>
+                                <th>' . $this->nacex->l('Service') . '</th>
                                 <th>' . $this->nacex->l('Packages') . '</th>
                                 <th>' . $this->nacex->l('Kilos') . '</th>
                             </tr>
@@ -263,29 +253,29 @@ class nacextab extends AdminController
 
                     $this->_html .= "
                         <tr>
-                            <td style='text-align:center;vertical-align:middle;'>
+                            <th scope='row'>
                                 <a href='" . $linkOrders . '&id_order=' . $exp['id_envio_order'] . "&vieworder'>" . $exp['id_envio_order'] . "</a>
-                            </td>
-                            <td style='padding:5px;vertical-align:middle;'>
+                            </th>
+                            <td>
                                 <div class='noprint' id='" . $imgbarcodePrint . "' style='max-width:165px;max-height:56px;'></div>
                                 <div class='noscreen' id='" . $imgbarcodePrint . "_2' style='max-width:380px;max-height:170px;'></div>
                             </td>
-                            <td style='vertical-align:middle;'>
+                            <td>
                                 <strong>" . $agcod_numexp . "</strong><br>
                                 " . htmlspecialchars($nom_ent, ENT_QUOTES, 'UTF-8') . "<br>
-                                <small>" . htmlspecialchars($cpPoblacion, ENT_QUOTES, 'UTF-8') . "</small>
+                                <small class='text-muted'>" . htmlspecialchars($cpPoblacion, ENT_QUOTES, 'UTF-8') . "</small>
                                 " . $attShop . "
                             </td>
-                            <td style='vertical-align:middle;'>
+                            <td>
                                 " . $exp['ref'] . "<br>
-                                <small>" . htmlspecialchars($direccion, ENT_QUOTES, 'UTF-8') . "</small>
+                                <small class='text-muted'>" . htmlspecialchars($direccion, ENT_QUOTES, 'UTF-8') . "</small>
                             </td>
-                            <td style='vertical-align:middle;'>
+                            <td>
                                 " . $exp['serv'] . "<br>
-                                <small>" . nacexutils::normalizarDecimales($ree, 2, ',', ' ', true, true) . "</small>
+                                <small class='text-muted'>" . nacexutils::normalizarDecimales($ree, 2, ',', ' ', true, true) . "</small>
                             </td>
-                            <td style='text-align:center;vertical-align:middle;'>" . nacexutils::getDefValue($exp, 'bultos', '1') . "</td>
-                            <td style='text-align:center;vertical-align:middle;'>" . nacexutils::normalizarDecimales($peso, 2, ',', ' ', true, true) . "</td>
+                            <td>" . nacexutils::getDefValue($exp, 'bultos', '1') . "</td>
+                            <td>" . nacexutils::normalizarDecimales($peso, 2, ',', ' ', true, true) . "</td>
                         </tr>";
 
                     $cont += 1;
