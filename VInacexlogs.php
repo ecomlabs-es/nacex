@@ -26,10 +26,10 @@ class VInacexlogs
                     </div>
                     <div>
                         <button type='button' class='btn btn-default btn-sm' id='btnrefrescarvolver' onclick=\"nacexlogs.get('init',Base_uri);\">
-                            <i class='icon-refresh'></i> " . $nacex->l('Refresh/Back') . "
+                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>refresh</i> " . $nacex->l('Refresh/Back') . "
                         </button>
                         <button type='button' class='btn btn-danger btn-sm' id='btnborrartodo' onclick=\"nacexlogs.get('delete_all',Base_uri,'" . $mensaje . "');\">
-                            <i class='icon-trash'></i> " . $nacex->l('Delete logs') . "
+                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>delete</i> " . $nacex->l('Delete logs') . "
                         </button>
                     </div>
                 </div>
@@ -46,11 +46,11 @@ class VInacexlogs
                     <td>" . self::formatSizeUnits(filesize($path . DIRECTORY_SEPARATOR . $_file)) . "</td>
                     <td>
                         <a href='#' title='" . $nacex->l('Open file') . "' onclick='nacexlogs.get(\"read\",Base_uri,\"\",\"" . $_file . "\");return false;'>
-                            <i class='icon-eye-open'></i>
+                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>visibility</i>
                         </a>
                         &nbsp;
                         <a href='#' title='" . $nacex->l('Delete file') . "' onclick='nacexlogs.get(\"delete\",Base_uri,\"" . $mensaje . "\",\"" . $_file . "\");return false;' style='color:#dc3545;'>
-                            <i class='icon-trash'></i>
+                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>delete</i>
                         </a>
                     </td>
                 </tr>";

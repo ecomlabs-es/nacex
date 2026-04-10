@@ -168,7 +168,7 @@ class nacextab extends AdminController
                     <div class='panel-heading' style='display:flex;align-items:center;justify-content:space-between;'>
                         <span>" . $this->nacex->l('Delivery notes list from') . ' ' . date('d/m/Y', strtotime($desde)) . ' ' . $this->nacex->l('to') . ' ' . date('d/m/Y', strtotime($hasta)) . "</span>
                         <a href='#' id='printIcon' class='btn btn-default btn-sm noprint' title='" . $this->nacex->l('Print list') . "'>
-                            <i class='icon-print'></i> " . $this->nacex->l('Print') . "
+                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>print</i> " . $this->nacex->l('Print') . "
                         </a>
                     </div>
                     <div class='table-responsive'>
