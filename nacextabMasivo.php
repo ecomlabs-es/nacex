@@ -115,40 +115,60 @@ class nacextabMasivo extends ModuleAdminController
                 <span style='font-size:1.1em;'>" . $this->nacex->l('Mass generation of shipments') . "</span>
             </div>
             <div class='panel-body'>
-                <div class='form-group' style='display:flex;align-items:center;justify-content:center;gap:1em;flex-wrap:wrap;'>
-                    <label for='ncx_desde' style='margin:0;'>" . $this->nacex->l('From') . "</label>
-                    <input id='ncx_desde' type='date' class='form-control' style='width:auto;' value='" . $fecha_desde . "' name='date_from'>
-                    <label for='ncx_hasta' style='margin:0;'>" . $this->nacex->l('To') . "</label>
-                    <input id='ncx_hasta' type='date' class='form-control' style='width:auto;' value='" . $fecha_hasta . "' name='date_to'>
-                </div>
-                <div style='text-align:center;margin-bottom:1em;'>
-                    <div class='btn-group' role='group'>
-                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $hoy . "','" . $hoy . "')\">" . $this->nacex->l('Today') . "</button>
-                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $ayer . "','" . $ayer . "')\">" . $this->nacex->l('Yesterday') . "</button>
-                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $estasemana_desde . "','" . $estasemana_hasta . "')\">" . $this->nacex->l('This week') . "</button>
-                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $semanapasada_desde . "','" . $semanapasada_hasta . "')\">" . $this->nacex->l('Last week') . "</button>
-                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $estemes_desde . "','" . $estemes_hasta . "')\">" . $this->nacex->l('This month') . "</button>
+                <div class='row'>
+                    <div class='col-lg-6'>
+                        <div class='form-group'>
+                            <label for='ncx_desde'>" . $this->nacex->l('From') . "</label>
+                            <input id='ncx_desde' type='date' class='form-control' value='" . $fecha_desde . "' name='date_from'>
+                        </div>
+                    </div>
+                    <div class='col-lg-6'>
+                        <div class='form-group'>
+                            <label for='ncx_hasta'>" . $this->nacex->l('To') . "</label>
+                            <input id='ncx_hasta' type='date' class='form-control' value='" . $fecha_hasta . "' name='date_to'>
+                        </div>
                     </div>
                 </div>
-                <div style='display:flex;align-items:center;justify-content:center;gap:1em;flex-wrap:wrap;margin-bottom:1em;'>
-                    <select id='ncx_estado' name='ncx_estado' class='form-control' style='width:auto;'>
-                        <option value='-1'>" . $this->nacex->l('Filter by order status') . '</option>';
+                <div class='form-group'>
+                    <div class='btn-group btn-group-sm' role='group'>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $hoy . "','" . $hoy . "')\">" . $this->nacex->l('Today') . "</button>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $ayer . "','" . $ayer . "')\">" . $this->nacex->l('Yesterday') . "</button>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $estasemana_desde . "','" . $estasemana_hasta . "')\">" . $this->nacex->l('This week') . "</button>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $semanapasada_desde . "','" . $semanapasada_hasta . "')\">" . $this->nacex->l('Last week') . "</button>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $estemes_desde . "','" . $estemes_hasta . "')\">" . $this->nacex->l('This month') . "</button>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-lg-4'>
+                        <div class='form-group'>
+                            <label for='ncx_estado'>" . $this->nacex->l('Order status') . "</label>
+                            <select id='ncx_estado' name='ncx_estado' class='form-control'>
+                                <option value='-1'>" . $this->nacex->l('All') . '</option>';
         foreach ($statuses as $status) {
             $selected = ($status['id_order_state'] == $estado_pedido) ? ' selected' : '';
             $this->_html .= "<option value='" . $status['id_order_state'] . "'" . $selected . ">" . $status['name'] . '</option>';
         }
         $this->_html .= "</select>
-                    <select id='ncx_carrier_sel' name='ncx_carrier_sel[]' class='form-control' style='width:auto;' multiple='multiple'>";
+                        </div>
+                    </div>
+                    <div class='col-lg-4'>
+                        <div class='form-group'>
+                            <label for='ncx_carrier_sel'>" . $this->nacex->l('Carriers') . "</label>
+                            <select id='ncx_carrier_sel' name='ncx_carrier_sel[]' class='form-control' multiple='multiple' size='4'>";
         foreach ($carriers as $carrier) {
             $selected = in_array($carrier['id_carrier'], $carriers_seleccionados) ? ' selected' : '';
             $this->_html .= "<option value='" . $carrier['id_carrier'] . "'" . $selected . ">" . $carrier['name'] . '</option>';
         }
         $this->_html .= "</select>
-                    <button type='button' id='select_all_carriers' class='btn btn-default btn-sm'>" . $this->nacex->l('Select all') . "</button>
-                </div>
-                <input type='hidden' id='accion' name='accion' value='' />
-                <div style='text-align:center;'>
-                    <button type='button' id='searchIcon' class='btn btn-primary'>" . $this->nacex->l('Search orders') . "</button>
+                            <button type='button' id='select_all_carriers' class='btn btn-default btn-xs' style='margin-top:5px;'>" . $this->nacex->l('Select all') . "</button>
+                        </div>
+                    </div>
+                    <div class='col-lg-4' style='display:flex;align-items:flex-end;'>
+                        <div class='form-group' style='width:100%;'>
+                            <input type='hidden' id='accion' name='accion' value='' />
+                            <button type='button' id='searchIcon' class='btn btn-primary btn-block'><i class='icon-search'></i> " . $this->nacex->l('Search orders') . "</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>";
