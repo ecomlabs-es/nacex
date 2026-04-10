@@ -12,7 +12,7 @@ class VInacexlogs
     public static function header()
     {
         $nacex = self::getNacex();
-        $mensaje = $nacex->l('Are you sure you want to delete all log files?');
+        $mensaje = $nacex->l('Are you sure you want to delete all log files?', 'nacex');
         $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
         return "
@@ -21,14 +21,14 @@ class VInacexlogs
                         <a target='_blank' href='https://www.nacex.es'>
                             <img style='width:130px;height:auto;' src='" . $webimg . "' />
                         </a>
-                        <span style='font-size:1.1em;'>" . $nacex->l('Log files') . "</span>
+                        <span style='font-size:1.1em;'>" . $nacex->l('Log files', 'nacex') . "</span>
                     </div>
                     <div>
                         <button type='button' class='btn btn-default btn-sm' id='btnrefrescarvolver' onclick=\"nacexlogs.get('init',Base_uri);\">
-                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>refresh</i> " . $nacex->l('Refresh/Back') . "
+                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>refresh</i> " . $nacex->l('Refresh/Back', 'nacex') . "
                         </button>
                         <button type='button' class='btn btn-danger btn-sm' id='btnborrartodo' onclick=\"nacexlogs.get('delete_all',Base_uri,'" . $mensaje . "');\">
-                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>delete</i> " . $nacex->l('Delete logs') . "
+                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>delete</i> " . $nacex->l('Delete logs', 'nacex') . "
                         </button>
                     </div>
                 </div>";
@@ -37,17 +37,17 @@ class VInacexlogs
     public static function content_directory($_file, $path, $index)
     {
         $nacex = self::getNacex();
-        $mensaje = $nacex->l('Are you sure you want to delete file') . ' ' . $_file . '?';
+        $mensaje = $nacex->l('Are you sure you want to delete file', 'nacex') . ' ' . $_file . '?';
 
         return "<tr>
                     <td><strong>" . $_file . "</strong></td>
                     <td>" . self::formatSizeUnits(filesize($path . DIRECTORY_SEPARATOR . $_file)) . "</td>
                     <td>
-                        <a href='#' title='" . $nacex->l('Open file') . "' onclick='nacexlogs.get(\"read\",Base_uri,\"\",\"" . $_file . "\");return false;'>
+                        <a href='#' title='" . $nacex->l('Open file', 'nacex') . "' onclick='nacexlogs.get(\"read\",Base_uri,\"\",\"" . $_file . "\");return false;'>
                             <i class='material-icons' style='font-size:14px;vertical-align:middle;'>visibility</i>
                         </a>
                         &nbsp;
-                        <a href='#' title='" . $nacex->l('Delete file') . "' onclick='nacexlogs.get(\"delete\",Base_uri,\"" . $mensaje . "\",\"" . $_file . "\");return false;' style='color:#dc3545;'>
+                        <a href='#' title='" . $nacex->l('Delete file', 'nacex') . "' onclick='nacexlogs.get(\"delete\",Base_uri,\"" . $mensaje . "\",\"" . $_file . "\");return false;' style='color:#dc3545;'>
                             <i class='material-icons' style='font-size:14px;vertical-align:middle;'>delete</i>
                         </a>
                     </td>
@@ -76,7 +76,7 @@ class VInacexlogs
     public static function content_directory_no_files()
     {
         $nacex = self::getNacex();
-        return "<div class='alert alert-info' style='text-align:center;'>" . $nacex->l('Do not exist log files') . '</div>';
+        return "<div class='alert alert-info' style='text-align:center;'>" . $nacex->l('Do not exist log files', 'nacex') . '</div>';
     }
 
     public static function response_delete($_message)
@@ -92,7 +92,7 @@ class VInacexlogs
     public static function content_file_title($_file)
     {
         $nacex = self::getNacex();
-        return "<div class='panel-heading'><strong>" . $nacex->l('Content of') . " '" . $_file . "'</strong></div>";
+        return "<div class='panel-heading'><strong>" . $nacex->l('Content of', 'nacex') . " '" . $_file . "'</strong></div>";
     }
 
     public static function content_file($_line)
