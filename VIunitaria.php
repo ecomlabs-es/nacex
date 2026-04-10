@@ -62,7 +62,7 @@ class VIunitaria
                     }
                     //NOTHIG TO SHOW
                 } else {
-                    $result_html .= "<h1 class='subheader'><center>" . $this->nacex->l('No documented expeditions for this order') . '</center></h1>';
+                    $result_html .= "<div class='alert alert-info' style='text-align:center;margin:1em;'>" . $this->nacex->l('No documented expeditions for this order') . '</div>';
                 }
                 //IS NACEX SHOP
             } elseif ($_nacexdto->isNacexShopCarrier($_query[0]['id_carrier'])) {
@@ -75,7 +75,7 @@ class VIunitaria
                     }
                     //NOTHIG TO SHOW
                 } else {
-                    $result_html .= "<h1 class='subheader'><center>" . $this->nacex->l('No documented expeditions for this order') . '</center></h1>';
+                    $result_html .= "<div class='alert alert-info' style='text-align:center;margin:1em;'>" . $this->nacex->l('No documented expeditions for this order') . '</div>';
                 }
                 //IS NACEX INTERN
             } elseif ($_nacexdto->isNacexIntCarrier($_query[0]['id_carrier'])) {
@@ -88,7 +88,7 @@ class VIunitaria
                     }
                     //NOTHIG TO SHOW
                 } else {
-                    $result_html .= "<h1 class='subheader'><center>" . $this->nacex->l('No documented expeditions for this order') . '</center></h1>';
+                    $result_html .= "<div class='alert alert-info' style='text-align:center;margin:1em;'>" . $this->nacex->l('No documented expeditions for this order') . '</div>';
                 }
                 //ISNOTNACEX
             } elseif (Configuration::get('NACEX_FORCE_GENFORM') == 'SI') {
@@ -101,11 +101,11 @@ class VIunitaria
                     }
                     //NOTHIG TO SHOW
                 } else {
-                    $result_html .= "<h1 class='subheader'><center>" . $this->nacex->l('No documented expeditions for this order') . '</center></h1>';
+                    $result_html .= "<div class='alert alert-info' style='text-align:center;margin:1em;'>" . $this->nacex->l('No documented expeditions for this order') . '</div>';
                 }
             } else {
                 array_push($_return, ['cod_response' => '200',
-                    'result' => "<h1 class='subheader'><center>" . $this->nacex->l('You must enable 3rd party carriers') . '</center></h1>'
+                    'result' => "<div class='alert alert-info' style='text-align:center;margin:1em;'>" . $this->nacex->l('You must enable 3rd party carriers') . '</div>'
                 ]);
                 return $_return;
             }
@@ -119,7 +119,7 @@ class VIunitaria
             return $_return;
         }
         array_push($_return, ['cod_response' => '200',
-            'result' => "<h1 class='subheader'><center>" . $this->nacex->l('Order not exist') . '</center></h1>'
+            'result' => "<div class='alert alert-info' style='text-align:center;margin:1em;'>" . $this->nacex->l('Order not exist') . '</div>'
         ]);
         return $_return;
     }
@@ -136,7 +136,7 @@ class VIunitaria
             }
             //NOTHIG TO SHOW
         } else {
-            $result_html .= "<h1 class='subheader'><center>" . $this->nacex->l('No documented expeditions for this order') . '</center></h1>';
+            $result_html .= "<div class='alert alert-info' style='text-align:center;margin:1em;'>" . $this->nacex->l('No documented expeditions for this order') . '</div>';
         }
         $result_html .= $this->table_footer($url, $id_pedido);
 
@@ -147,9 +147,10 @@ class VIunitaria
     {
         $_html = '';
         $_html .= '
-                  <table class="table table-bordered">
-                    <thead class="thead-default">
-                      <tr class="column-headers">
+                  <div class="table-responsive" style="margin-top:1em;">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
                         <th>' . $this->nacex->l('Order') . '</th>
                         <th>' . $this->nacex->l('Date') . '</th>
                         <th>' . $this->nacex->l('Service') . '</th>
@@ -236,9 +237,9 @@ class VIunitaria
         if (is_array($_datosexpediciones) && !empty($_datosexpediciones)) { $_datosexpedicion = $_datosexpediciones[sizeof($_datosexpediciones) - 1]; }
 
         $_result_html = '   
-         </tbody>      
+         </tbody>
          </table>
-         <br>';
+         </div>';
 
         if (nacexWS::ws_checkConnection()[0] != '500ERROR') {
             $_result_html .= $this->showExpedicionForm($id_pedido, $_datospedido, $_datosexpedicion, Tools::isSubmit('submitcambioexpedicion'), $url); } else { $_result_html .= "<p class='alert alert-info'>
