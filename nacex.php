@@ -181,7 +181,7 @@ class nacex extends CarrierModule
             $parentTab->class_name = 'AdminNacex';
             $parentTab->name = [];
             foreach ($languages as $language) {
-                $parentTab->name[$language['id_lang']] = $this->l('Nacex  V.' . nacexutils::nacexVersion);
+                $parentTab->name[$language['id_lang']] = $this->l('Nacex  V.' . nacexutils::nacexBaseVersion);
             }
             $parentTab->id_parent = (int)Tab::getIdFromClassName('SELL');
             $parentTab->icon = 'local_shipping';
@@ -231,7 +231,7 @@ class nacex extends CarrierModule
     {
         $this->name = 'nacex';
         $this->tab = 'shipping_logistics';
-        $this->version = nacexutils::nacexVersion;
+        $this->version = nacexutils::nacexBaseVersion;
         $this->author = 'Nacex';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
@@ -1585,7 +1585,7 @@ class nacex extends CarrierModule
         $tabId = (int)Tab::getIdFromClassName('AdminNacex');
         if ($tabId) {
             $tab = new Tab($tabId);
-            $expectedName = 'Nacex  V.' . nacexutils::nacexVersion;
+            $expectedName = 'Nacex  V.' . nacexutils::nacexBaseVersion;
             if (isset($tab->name[$this->context->language->id]) && $tab->name[$this->context->language->id] !== $expectedName) {
                 foreach (Language::getLanguages(false) as $lang) {
                     $tab->name[$lang['id_lang']] = $expectedName;
