@@ -972,7 +972,7 @@ class nacexVIEW
             $agencia_albaran = $datosexpedicion['ag_cod_num_exp'];
             $array = explode('/', $agencia_albaran);
             $agencia = $array[0];
-            $albaran = $array[1];
+            $albaran = isset($array[1]) ? $array[1] : '';
 
             $shLink = $respuestaGetEstadoExpedicion['estado'] != 'ANULADA' ? '<a id="historico_' . $datosexpedicion['exp_cod'] . '" class="ncx_fieldset_icon zoomable" style="cursor:pointer" onclick="$(ncx_seg_his_' . $datosexpedicion['exp_cod'] . ').slideToggle();">' . $nacex->l('Expedition history') . '</a>' : '';
             $iframe = $respuestaGetEstadoExpedicion['estado'] != 'ANULADA' ? '<iframe style="border-radius:5px;display:none" id="ncx_seg_his_' . $datosexpedicion['exp_cod'] . '" width="100%" height="800" frameborder="0" src="' . $URLSHOWEXPEDICION . '&agencia_origen=' . $agencia . '&numero_albaran=' . $albaran . '"></iframe>' : '';
