@@ -848,56 +848,56 @@ function getFormularioConfiguracion($obj)
 									</div>
 								</div>
 									
-											<fieldset>
-									 			<legend> ' . $obj->l('Subscriber settings') . '</legend>
-									 				<table style="border: 0px;">
-														<tr>
-															<td class="columna1">' . $obj->l(nacexutils::toUtf8('Agencies/Customers')) . ': </td>
-															<td class="columna2" id="nacex_agcli">
-																' . showError($errores, 'nacex_agcli') . '
-																<input type="text" size="50" name="nacex_agcli" value="' . Tools::getValue('nacex_agcli', Configuration::get('NACEX_AGCLI')) . '" />
-																<p class="tip">' . $obj->l('Comma separated agency/customer codes') . '.<br>' . $obj->l('Ex:') . $obj->l(' 1234/01234,4321/04321') . '</p>
-															</td>
-													  </tr>
-													  <tr>
-															<td class="columna1">' . $obj->l('Customer departaments') . ' : </td>
-															<td class="columna2" id="nacex_departamentos">
-																' . showError($errores, 'nacex_departamentos') . '
-																<input type="text" size="50" name="nacex_departamentos" value="' . Tools::getValue('nacex_departamentos', Configuration::get('NACEX_DEPARTAMENTOS')) . '" />
-																<p class="tip">' . $obj->l('Comma separated customer departaments. The first one will be used as default') . '.<br>' . $obj->l('Ex:') . $obj->l(' DEPT1, 2DEPARTAMENTO') . '</p>
-															</td>
-													  </tr>
-													  <tr>
-															<td class="columna1">' . $obj->l('Shipment pickup postcode') . ': </td>
-															<td class="columna2" id="nacex_cprec">
-																' . showError($errores, 'nacex_cprec') . '
-																<input type="text" size="50" name="nacex_cprec" value="' . Tools::getValue('nacex_cprec', Configuration::get('NACEX_CP_REC')) . '" />
-																<p class="tip">' . $obj->l('Pickup postcode or shipment order origin necessary to calculate shipping cost or service estimation for applying to shipping cost') . '.</p>
-															</td>
-													  </tr>
-													  <tr>
-															<td class="columna1">' . $obj->l('Do you want to install our zones?') . '</td>
-															<td class="columna2" id="nacex_zones">
-																<p class="alert alert-warning">' . $obj->l('This will create shipping zones, assign countries/states to them, and configure Nacex carriers.') . '<br>' . $obj->l('If you already have zones configured, review your carrier zone assignments after this operation.') . '</p>
-																<input style="cursor: pointer;padding: 7px;width: 250px;" class="ncx_button" onclick="javascript:inizializarZonas();" type="button" name="initZonas" id="initZonas" value="' . $obj->l('Install and initialize zones') . '"/>
-																<div id="initZonasResult"></div>
-																<p class="tip">' . $obj->l('Creates NCX zones and assigns Nacex carriers to them. Does not affect other carriers or zone assignments.') . '</p>
-															</td>
-													  </tr>
-													  <tr>' . nacexutils::getRadioHTML('Allow specific service selection to customer', 'nacex_serv_back_or_front', 'B', $serv_back_or_front_B, 'F', $serv_back_or_front_F, 'Allow frontend specific Nacex or Nacex Shop service selection to customer from frontend')
+								<div class="panel">
+									<div class="panel-heading">' . $obj->l('Subscriber settings') . '</div>
+									<div class="panel-body">
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Agencies/Customers') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacex_agcli') . '
+												<input type="text" class="form-control" name="nacex_agcli" value="' . Tools::getValue('nacex_agcli', Configuration::get('NACEX_AGCLI')) . '" style="max-width:335px;" />
+												<small class="form-text text-muted">' . $obj->l('Comma separated agency/customer codes') . '. ' . $obj->l('Ex:') . ' 1234/01234,4321/04321</small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Customer departaments') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacex_departamentos') . '
+												<input type="text" class="form-control" name="nacex_departamentos" value="' . Tools::getValue('nacex_departamentos', Configuration::get('NACEX_DEPARTAMENTOS')) . '" style="max-width:335px;" />
+												<small class="form-text text-muted">' . $obj->l('Comma separated customer departaments. The first one will be used as default') . '. ' . $obj->l('Ex:') . ' DEPT1, 2DEPARTAMENTO</small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Shipment pickup postcode') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacex_cprec') . '
+												<input type="text" class="form-control" name="nacex_cprec" value="' . Tools::getValue('nacex_cprec', Configuration::get('NACEX_CP_REC')) . '" style="max-width:335px;" />
+												<small class="form-text text-muted">' . $obj->l('Pickup postcode or shipment order origin necessary to calculate shipping cost or service estimation for applying to shipping cost') . '</small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Do you want to install our zones?') . '</label>
+											<div class="col-lg-9">
+												<div class="alert alert-warning" style="margin-bottom:0.5em;">' . $obj->l('This will create shipping zones, assign countries/states to them, and configure Nacex carriers.') . '<br>' . $obj->l('If you already have zones configured, review your carrier zone assignments after this operation.') . '</div>
+												<button type="button" class="btn btn-default" onclick="inizializarZonas();">' . $obj->l('Install and initialize zones') . '</button>
+												<div id="initZonasResult" style="margin-top:0.5em;"></div>
+												<small class="form-text text-muted">' . $obj->l('Creates NCX zones and assigns Nacex carriers to them. Does not affect other carriers or zone assignments.') . '</small>
+											</div>
+										</div>
+										<table style="border:0;width:100%;">
+											<tr>' . nacexutils::getRadioHTML('Allow specific service selection to customer', 'nacex_serv_back_or_front', 'B', $serv_back_or_front_B, 'F', $serv_back_or_front_F, 'Allow frontend specific Nacex or Nacex Shop service selection to customer from frontend')
         . '</tr>
-													  <tr>' . nacexutils::getRadioHTML('Show expedition status in frontend', 'nacex_show_f_expe_state', 'NO', $show_f_expe_state_no, 'SI', $show_f_expe_state_si, 'Show expedition status in frontend when customer see his/her order details')
+											<tr>' . nacexutils::getRadioHTML('Show expedition status in frontend', 'nacex_show_f_expe_state', 'NO', $show_f_expe_state_no, 'SI', $show_f_expe_state_si, 'Show expedition status in frontend when customer see his/her order details')
         . '</tr>
-													  <tr>' . nacexutils::getRadioHTML('Update order tracking automatically', 'nacex_act_tracking', 'NO', $act_tracking_no, 'SI', $act_tracking_si, 'If it updates automatically, admin user will be able to know the order status')
+											<tr>' . nacexutils::getRadioHTML('Update order tracking automatically', 'nacex_act_tracking', 'NO', $act_tracking_no, 'SI', $act_tracking_si, 'If it updates automatically, admin user will be able to know the order status')
         . '</tr>
-													  <tr>' . nacexutils::getRadioHTML('Enable return labels service (Service 44)?', 'nacex_servicio44', 'NO', $nacex_servicio44_no, 'SI', $nacex_servicio44_si, 'Customers won\'t be able to print the return label from frontend account. The generated return labels will be removed after 7 days.')
+											<tr>' . nacexutils::getRadioHTML('Enable return labels service (Service 44)?', 'nacex_servicio44', 'NO', $nacex_servicio44_no, 'SI', $nacex_servicio44_si, 'Customers won\'t be able to print the return label from frontend account. The generated return labels will be removed after 7 days.')
         . '</tr>
-													  <tr>' . nacexutils::getRadioHTML('Enable Show Empresa', 'nacex_show_empresa', 'NO', $nacex_show_empresa_no, 'SI', $nacex_show_empresa_si, 'If enabled, the order that generates the shipment will use the 2 observation fields to add the company name of the order shipping address.')
+											<tr>' . nacexutils::getRadioHTML('Enable Show Empresa', 'nacex_show_empresa', 'NO', $nacex_show_empresa_no, 'SI', $nacex_show_empresa_si, 'If enabled, the order that generates the shipment will use the 2 observation fields to add the company name of the order shipping address.')
         . '</tr>
-													</table>
-											</fieldset>
-									
-											<br/>
+										</table>
+									</div>
+								</div>
 									
 											<fieldset>
 									 			<legend><img src="' . $nacexDTO->getPath() . 'images/logos/NACEX_logo.svg" alt="" style="width:75px;height: 18px;"/> ' . $obj->l('Nacex Standard services') . '</legend>
