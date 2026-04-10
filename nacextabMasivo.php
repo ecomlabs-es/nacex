@@ -115,7 +115,7 @@ class nacextabMasivo extends ModuleAdminController
                 <span style='font-size:1.1em;'>" . $this->nacex->l('Mass generation of shipments') . "</span>
             </div>
             <div class='panel-body'>
-                <div class='row' style='gap:10px;'>
+                <div class='row'>
                     <div class='col-lg-2'>
                         <div class='form-group'>
                             <label for='ncx_desde'>" . $this->nacex->l('From') . "</label>
@@ -138,7 +138,7 @@ class nacextabMasivo extends ModuleAdminController
                         <button type='button' class='btn btn-default' onclick=\"setRango('" . $estemes_desde . "','" . $estemes_hasta . "')\">" . $this->nacex->l('This month') . "</button>
                     </div>
                 </div>
-                <div class='row' style='gap:10px;'>
+                <div class='row'>
                     <div class='col-lg-2'>
                         <div class='form-group'>
                             <label for='ncx_estado'>" . $this->nacex->l('Order status') . "</label>
