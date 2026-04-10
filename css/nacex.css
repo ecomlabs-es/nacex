@@ -378,6 +378,21 @@
 	#tabla-nacexlogs { font-size: .850rem; }
 	#tabla-nacexlogs .material-icons { color: #555; }
 
+	/* --- Config form table layout (getRadioHTML) --- */
+	#configForm td.columna1 {
+		padding: 0.75em 1em 0.75em 0;
+		vertical-align: middle;
+		width: 25%;
+		text-align: right;
+		color: #363a41;
+		font-weight: 600;
+		font-size: .875rem;
+	}
+	#configForm td.columna2 {
+		padding: 0.75em 0;
+		vertical-align: middle;
+	}
+
 	/* --- ps-switch (config form) --- */
 	#configForm .ps-switch {
 		position: relative; display: inline-block;
