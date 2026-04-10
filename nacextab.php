@@ -47,77 +47,34 @@ class nacextab extends AdminController
 
     public function initContent()
     {
-        global $cookie;
-
-        $webtext = $this->nacex->l('Go to Nacex web');
-        $webdir = 'https://www.nacex.es';
         $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
-        $png_barcode_url = 'https://www.nacex.es/impCodBarras.do?x=150&y=60&fontsizeB=10&codebar=';
+        $hoy = date('Y-m-d');
+        $ayer = date('Y-m-d', strtotime('-1 day'));
+        $estasemana_desde = date('Y-m-d', strtotime('monday this week'));
+        $estasemana_hasta = date('Y-m-d', strtotime('sunday this week'));
+        $semanapasada_desde = date('Y-m-d', strtotime('monday last week'));
+        $semanapasada_hasta = date('Y-m-d', strtotime('sunday last week'));
+        $estemes_desde = date('Y-m-01');
+        $estemes_hasta = date('Y-m-t');
 
-        $hoy_desde = date('Y-m-d');
-        $hoy_hasta = date('Y-m-d');
-
-        $ayer_desde = date('Y-m-d', strtotime('-1 day'));
-        $ayer_hasta = date('Y-m-d', strtotime('-1 day'));
-
-        $estasemana_desde = date('Y-m-d', time() + (1 - date('w')) * 24 * 3600);
-        $estasemana_hasta = date('Y-m-d', time() + (7 - date('w')) * 24 * 3600);
-
-        $timestamp_ultimodomingo = strtotime('last Sunday');
-        $semanapasada_desde = date('Y-m-d', $timestamp_ultimodomingo - 6 * 24 * 3600);
-        $semanapasada_hasta = date('Y-m-d', $timestamp_ultimodomingo);
-
-        $estemes_desde = date('Y-m-d', mktime(0, 0, 0, date('m'), 1, date('Y')));
-        $estemes_hasta = date('Y-m-d', mktime(0, 0, 0, date('m') + 1, 0, date('Y')));
-
-        $desde = Tools::getValue('date_from', date('Y-m-d'));
-        $hasta = Tools::getValue('date_to', date('Y-m-d'));
+        $desde = Tools::getValue('date_from', $hoy);
+        $hasta = Tools::getValue('date_to', $hoy);
 
         $nuevaConsulta = Tools::getValue('date_from', '') != '' && Tools::getValue('date_to', '') != '' ? 1 : 0;
 
-        /* jquery
-         * noConflict strategy
-
-        $this->_html .= '
-                <script type="text/javascript">
-                    var tmp = $;     // jQuery noConflict strategy, temporary variable.
-                    $ = $j331;
-                 </script>';
-         */
         $this->_html .= "
             <script>
-                $(document).ready(function() {
-                    $('#ncx_desde').datepicker({dateFormat: 'yy-mm-dd'});
-                    $('#ncx_hasta').datepicker({dateFormat: 'yy-mm-dd'});
-                });
-
-                function setHoy(){
-                    $('#ncx_desde').val('" . $hoy_desde . "');
-                    $('#ncx_hasta').val('" . $hoy_hasta . "');
-                }
-                function setAyer(){
-                    $('#ncx_desde').val('" . $ayer_desde . "');
-                    $('#ncx_hasta').val('" . $ayer_hasta . "');
-                }
-                function setEstaSemana(){
-                    $('#ncx_desde').val('" . $estasemana_desde . "');
-                    $('#ncx_hasta').val('" . $estasemana_hasta . "');
-                }
-                function setSemanaPasada(){
-                    $('#ncx_desde').val('" . $semanapasada_desde . "');
-                    $('#ncx_hasta').val('" . $semanapasada_hasta . "');
-                }
-                function setEsteMes(){
-                    $('#ncx_desde').val('" . $estemes_desde . "');
-                    $('#ncx_hasta').val('" . $estemes_hasta . "');
+                function setRango(desde, hasta){
+                    $('#ncx_desde').val(desde);
+                    $('#ncx_hasta').val(hasta);
                 }
                 function printSelection(node){
                     var content = node.innerHTML;
-                    var titulo = '<h3 style=\"text-align:center\">[prestashop] " . $this->nacex->l('Nacex list') . "</h3>';
-                    var pwin=window.open('','print_content','width=500,height=300');
+                    var titulo = '<h3 style=\"text-align:center\">" . $this->nacex->l('Nacex list') . "</h3>';
+                    var pwin=window.open('','print_content','width=800,height=600');
                     pwin.document.open();
-                    pwin.document.write('<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"" . _MODULE_DIR_ . "nacex/css/print.css\" /></head><body onload=\"window.print()\"><style>#nacex_listado_titulo{display:none;}</style>'+titulo+content+'</body></html>');
+                    pwin.document.write('<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"" . _MODULE_DIR_ . "nacex/css/print.css\" /></head><body onload=\"window.print()\">'+titulo+content+'</body></html>');
                     pwin.document.close();
                     setTimeout(function(){pwin.close();},1000);
                 }
@@ -129,27 +86,31 @@ class nacextab extends AdminController
 
         <div class='panel'>
             <div class='panel-heading' style='display:flex;align-items:center;gap:1em;'>
-                <a target='_blank' title='" . $webtext . "' href='" . $webdir . "'>
+                <a target='_blank' href='https://www.nacex.es'>
                     <img style='width:130px;height:auto;' src='" . $webimg . "' />
                 </a>
                 <span style='font-size:1.1em;'>" . $this->nacex->l('Documented orders to Nacex') . "</span>
             </div>
             <div class='panel-body'>
-                <form method='post' style='text-align:center;'>
-                    <div style='margin-bottom:1em;'>
-                        <b>" . $this->nacex->l('From') . ": </b>
-                        <input id='ncx_desde' type='text' style='width:135px;margin-right:10px' value='" . $desde . "' name='date_from' maxlength='19' size='4'>
-                        <b>" . $this->nacex->l('To') . ": </b>
-                        <input id='ncx_hasta' type='text' style='width:135px' value='" . $hasta . "' name='date_to' maxlength='19' size='4'>
+                <form method='post'>
+                    <div class='form-group' style='display:flex;align-items:center;justify-content:center;gap:1em;flex-wrap:wrap;'>
+                        <label for='ncx_desde' style='margin:0;'>" . $this->nacex->l('From') . "</label>
+                        <input id='ncx_desde' type='date' class='form-control' style='width:auto;' value='" . $desde . "' name='date_from'>
+                        <label for='ncx_hasta' style='margin:0;'>" . $this->nacex->l('To') . "</label>
+                        <input id='ncx_hasta' type='date' class='form-control' style='width:auto;' value='" . $hasta . "' name='date_to'>
                     </div>
-                    <div style='margin-bottom:1em;'>
-                        <span class='ncx_minibutton' onclick='setHoy()'>" . $this->nacex->l('Today') . "</span>
-                        <span class='ncx_minibutton' onclick='setAyer()'>" . $this->nacex->l('Yesterday') . "</span>
-                        <span class='ncx_minibutton' onclick='setEstaSemana()'>" . $this->nacex->l('This week') . "</span>
-                        <span class='ncx_minibutton' onclick='setSemanaPasada()'>" . $this->nacex->l('Last week') . "</span>
-                        <span class='ncx_minibutton' onclick='setEsteMes()'>" . $this->nacex->l('This month') . "</span>
+                    <div style='text-align:center;margin-bottom:1em;'>
+                        <div class='btn-group' role='group'>
+                            <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $hoy . "','" . $hoy . "')\">" . $this->nacex->l('Today') . "</button>
+                            <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $ayer . "','" . $ayer . "')\">" . $this->nacex->l('Yesterday') . "</button>
+                            <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $estasemana_desde . "','" . $estasemana_hasta . "')\">" . $this->nacex->l('This week') . "</button>
+                            <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $semanapasada_desde . "','" . $semanapasada_hasta . "')\">" . $this->nacex->l('Last week') . "</button>
+                            <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $estemes_desde . "','" . $estemes_hasta . "')\">" . $this->nacex->l('This month') . "</button>
+                        </div>
                     </div>
-                    <input class='btn btn-primary' onclick='procesando();' type='submit' name='submitListado' value='" . $this->nacex->l('Generate list') . "'>
+                    <div style='text-align:center;'>
+                        <button type='submit' class='btn btn-primary' name='submitListado'>" . $this->nacex->l('Generate list') . "</button>
+                    </div>
                 </form>
             </div>
         </div>";
@@ -202,11 +163,18 @@ class nacextab extends AdminController
             $array_modsree = explode('|', Configuration::get('NACEX_MODULOS_REEMBOLSO'));
 
             if ($expediciones) {
-                $this->_html .= "<div id='ncx_div_listado'>" . "<h2 align='center'>" . $this->nacex->l('Delivery notes list from') . ' (' . $desde . ') ' . $this->nacex->l('to') . ' (' . $hasta . ") 
-                    <img id='printIcon' style='float:right;cursor:pointer;margin-right:10%' alt='" . $this->nacex->l('Print list') . "' title='" . $this->nacex->l('Print list') . "' class='noprint' src='../modules/nacex/images/print_icon.png' /></h2>
-                    <table id='ncx_tabla_listado' class=\"table table-bordered\">
-                        <thead class=\"thead-default\">
-                            <tr class=\"column-headers\">
+                $this->_html .= "
+                <div class='panel' id='ncx_div_listado'>
+                    <div class='panel-heading' style='display:flex;align-items:center;justify-content:space-between;'>
+                        <span>" . $this->nacex->l('Delivery notes list from') . ' ' . $desde . ' ' . $this->nacex->l('to') . ' ' . $hasta . "</span>
+                        <a href='#' id='printIcon' class='btn btn-default btn-sm noprint' title='" . $this->nacex->l('Print list') . "'>
+                            <i class='icon-print'></i> " . $this->nacex->l('Print') . "
+                        </a>
+                    </div>
+                    <div class='table-responsive'>
+                    <table id='ncx_tabla_listado' class='table table-bordered table-hover'>
+                        <thead>
+                            <tr>
                                 <th>Id</th>
                                 <th>" . $this->nacex->l('Barcode') . '</th>
                                 <th>
@@ -229,7 +197,7 @@ class nacextab extends AdminController
                         <tbody>
 		  		';
 
-                $token = Tools::getAdminToken('AdminOrders' . (int) Tab::getIdFromClassName('AdminOrders') . (int) $cookie->id_employee);
+                $linkOrders = Context::getContext()->link->getAdminLink('AdminOrders');
 
                 $sum_bul = 0;
                 $sum_kil = 0;
@@ -297,7 +265,7 @@ class nacextab extends AdminController
                     $this->_html .= '
 		  				<tr' . $odd . ">
 		  					<td style='text-align:center'>
-								<a class='ballLink' target='_blank' href='" . $_SERVER['PHP_SELF'] . '?tab=AdminOrders&id_order=' . $exp['id_envio_order'] . '&vieworder&token=' . $token . "'>" . $exp['id_envio_order'] . "</a>
+								<a href='" . $linkOrders . '&id_order=' . $exp['id_envio_order'] . "&vieworder'>" . $exp['id_envio_order'] . "</a>
 							</td>
 		  					<td style='padding: 5px 5px 0 5px;' id= 'td_cb'>
 		  						<div class='noprint screen' id='" . $imgbarcodePrint . "' style='max-width:165px !important;max-height:56px !important;width: auto;height: auto;'></div>
@@ -346,32 +314,24 @@ class nacextab extends AdminController
                 }
                 $this->_html .= '</div>';
 
-                $this->_html .= "<tfoot><tr style='border-top-width: 2px'>
-                            <td colspan='3' style='text-align:right;margin-right:10px'><strong>" . $this->nacex->l('Total') . ":</strong></td>
-                            <td  style='text-align:right;margin-right:10px'>" . ($cont - 1) . ' ' . $this->nacex->l('Exp.') . "</td>
+                $this->_html .= "<tfoot><tr>
+                            <td colspan='3' style='text-align:right;'><strong>" . $this->nacex->l('Total') . ":</strong></td>
+                            <td style='text-align:right;'>" . ($cont - 1) . ' ' . $this->nacex->l('Exp.') . "</td>
                             <td style='text-align:center;'>" . number_format($sum_ree, 2, ',', ' ') . " &euro;</td>
                             <td style='text-align:center;'>" . $sum_bul . ' ' . $this->nacex->l('Packages') . "</td>
-                            <td style='text-align:center;'>" . number_format($sum_kil, 2, ',', ' ') . ' Kg</td>		  				  		
-                         </tr>
-		  			</tfoot>
-                </table>
-              </div>';
+                            <td style='text-align:center;'>" . number_format($sum_kil, 2, ',', ' ') . " Kg</td>
+                         </tr></tfoot>
+                    </table>
+                    </div>
+                </div>";
             } else {
-                $this->_html .= "<fieldset>
-							<div align='center' style='color:grey'><i>(" . $this->nacex->l('No results') . ')</i></div>
-						</fieldset>';
+                $this->_html .= "
+                <div class='panel'>
+                    <div class='alert alert-info' style='margin:0;text-align:center;'>" . $this->nacex->l('No results') . "</div>
+                </div>";
             }
-            $this->_html .= '<fieldset>';
         }
 
-        /* jquery
-         * noConflict strategy END
-
-        $this->_html .= '
-                <script type="text/javascript">
-                   $ = tmp;   // jQuery noConflict strategy, restore main jquery control
-                </script>';
-       */
         $this->context->smarty->assign('content', $this->_html);
     }
 }
