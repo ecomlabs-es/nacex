@@ -1,3 +1,17 @@
+----------------2.5.0 rev7 ^-----------------
+Nuevo método getListadoExpediciones: consulta masiva de estados en 1 sola llamada WS (antes N+1)
+Nuevo método editExpedicion: editar expediciones sin cancelar y recrear
+Fix requestWS: curl_close(), eliminado FORBID_REUSE para reutilización de conexiones TCP
+Auto-actualización desde GitHub: badge en configuración + descarga e instalación con un click
+Configuración completamente migrada a Bootstrap (panels, form-group, ps-switch, accesibilidad)
+Búsqueda unitaria y logs: rediseño con panel Bootstrap, spinner nativo (sin CDN externa)
+Tabla masiva: filtros en una fila, checkboxes md-checkbox nativos PS8
+Fix traducciones AJAX: forzar idioma del empleado en controllers CO*
+Fix estado NOTIFICADO: reconocido como estado cancelable
+Controllers wrapper para PS9 (nacextab, nacextabMasivo, nacexunitario)
+Fix formulario config PS9: usar REQUEST_URI en vez de params legacy
+Limpieza CSS: de 1378 a 380 líneas, eliminadas fuentes custom, estilos muertos
+Labels accesibles con for/id en toda la configuración
 ----------------2.5.0 rev1.0 ^-----------------
 Cancelar expedición solo en estado PENDIENTE, ocultar mensaje en ANULADA/BAJA
 Fix hash anti-duplicado en PS8 (hook se ejecuta 2 veces por request)

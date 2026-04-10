@@ -95,17 +95,28 @@
 - Soporte multitienda en inicializacion de zonas (zone_shop segun contexto)
 - Popup NacexShop cross-origin: fallback con postMessage
 - Historico de expediciones desde tabla principal (eliminada tabla _his)
+- Editar expediciones sin cancelar y recrear (editExpedicion)
+- Consulta masiva de estados en 1 llamada WS (getListadoExpediciones, elimina N+1)
+- Auto-actualizacion desde GitHub releases con un click
 </details>
 
 <details>
 <summary><strong>Interfaz</strong></summary>
 
-- Tabla masiva: badges de estado de expedicion, toolbar con filtro por transportista
-- Tabla masiva: extender ModuleAdminController para PS8, fix maquetacion
-- Configuracion: multi-select reemplazados por checkboxes
-- Configuracion: toggles con estilo nativo PrestaShop 8
-- Configuracion: tab Nacex se abre directamente sin redireccion
-- Proteccion de endpoints AJAX con verificacion de admin
+- Configuracion completamente migrada a Bootstrap (panels, form-group, ps-switch)
+- Labels accesibles con for/id en toda la configuracion
+- Tabla masiva: filtros en una fila, checkboxes md-checkbox nativos PS8
+- Busqueda unitaria y logs: rediseño con panel Bootstrap, spinner nativo
+- Controllers wrapper para compatibilidad PS9
+</details>
+
+<details>
+<summary><strong>Rendimiento y WS</strong></summary>
+
+- requestWS: curl_close(), eliminado FORBID_REUSE para reutilizacion de conexiones
+- Limpieza CSS: de 1378 a 380 lineas
+- Eliminacion de dependencia CDN loadingoverlay
+- Fix traducciones AJAX: forzar idioma del empleado en controllers
 </details>
 
 <details>
