@@ -992,7 +992,7 @@ class nacexVIEW
         }
 
         $html_fieldset_exp_rel = '';
-        $array_exp_rel = nacexDAO::getExpRelacionadas($id_pedido);
+        $array_exp_rel = nacexDAO::getExpRelacionadas($id_pedido, $datosexpedicion['exp_cod'] ?? null);
         if (!empty($array_exp_rel)) {
 
             $html_fieldset_exp_rel .= '<fieldset><legend>' . $nacex->l('Expedition history') . "</legend>

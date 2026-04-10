@@ -718,11 +718,14 @@ class nacexDAO
         nacexutils::writeNacexLog('actDatosNacexExpediciones :: actualizados campos [' . $serv_cod . ',' . $estado . ',' . $referencias[0] . ',' . $newDate . '] en [nacex_expediciones] del pedido:' . $id_pedido);
     }
 
-    public static function getExpRelacionadas($id_pedido)
+    public static function getExpRelacionadas($id_pedido, $exp_cod_actual = null)
     {
-        $arraydatos = [];
-        $arraydatos = Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'nacex_expediciones_his WHERE id_envio_order = ' . (int) $id_pedido . ' ORDER BY ag_cod_num_exp DESC');
-        return $arraydatos;
+        $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'nacex_expediciones WHERE id_envio_order = ' . (int) $id_pedido;
+        if ($exp_cod_actual) {
+            $sql .= " AND exp_cod != '" . pSQL($exp_cod_actual) . "'";
+        }
+        $sql .= ' ORDER BY fecha_alta DESC';
+        return Db::getInstance()->executeS($sql);
     }
 
     public function tieneExpedicion($id_pedido)
@@ -1072,46 +1075,8 @@ class nacexDAO
             return false;
         }
 
-        // Creamos la tabla para el historico de expediciones
-        $query = 'CREATE TABLE IF NOT EXISTS ' . _DB_PREFIX_ . 'nacex_expediciones_his (
-			id_envio_order int(11) NOT NULL,
-			agcli varchar(10),
-			fecha_alta datetime NOT NULL,
-			fecha_baja datetime,
-			ref varchar(20),
-			exp_cod varchar(255),
-			ag_cod_num_exp varchar(255),
-			color varchar(255),
-			ent_ruta varchar(255),
-			ent_cod varchar(255),
-			ent_nom varchar(255),
-			ent_tlf varchar(255),
-			serv_cod varchar(2),
-			serv varchar(255),
-			hora_entrega varchar(255),
-			barcode varchar(255),
-			fecha_objetivo varchar(255),
-			cambios varchar(255),
-			bultos varchar(3),			 
-			shop_codigo 	varchar(6),
-			shop_alias 	varchar(20),
-			shop_nombre 	varchar(60),
-			shop_direccion 	varchar(60),			
-			shop_cp 	varchar(7),
-			shop_poblacion varchar(60),
-			shop_provincia 	varchar(60),
-			shop_telefono 	varchar(60),
-			ret 	varchar(2),
-			estado varchar(20),
-			fecha_estado datetime,
-			imp_ree decimal(8,3),
-		PRIMARY KEY (`id_envio_order`,`ag_cod_num_exp`)
-		) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8';
-
-        if (! Db::getInstance()->Execute($query)) {
-            nacexutils::writeNacexLog('createTablesIfNotExists :: Error al crear tabla nacex_expediciones_his');
-            return false;
-        }
+        // Eliminar tabla histórica legacy si existe (ya no se usa, los datos se consultan de nacex_expediciones)
+        Db::getInstance()->execute('DROP TABLE IF EXISTS ' . _DB_PREFIX_ . 'nacex_expediciones_his');
 
         Db::getInstance()->Execute('SHOW COLUMNS FROM ' . _DB_PREFIX_ . "cart LIKE 'ncx'");
         if (Db::getInstance()->Affected_Rows() == 0) {
@@ -1290,16 +1255,6 @@ class nacexDAO
             } catch (Exception $e) {}
         }
 
-        // Creamos campo imp_ree en tabla nacex_expediciones_his
-        Db::getInstance()->Execute('SHOW COLUMNS FROM ' . _DB_PREFIX_ . "nacex_expediciones_his LIKE 'imp_ree'");
-        if (Db::getInstance()->Affected_Rows() == 0) {
-            $query = 'ALTER TABLE ' . _DB_PREFIX_ . 'nacex_expediciones_his ADD COLUMN imp_ree decimal(8,3)';
-            try {
-                Db::getInstance()->Execute($query);
-                nacexutils::writeNacexLog('createTablesIfNotExists :: Alter table [imp_ree][decimal(5,3)]en ' . _DB_PREFIX_ . 'nacex_expediciones_his');
-            } catch (Exception $e) {}
-        }
-
         // update V2.2.0.10
         $existe_constrain = Db::getInstance()->executeS("select CONSTRAINT_NAME
                                    from information_schema.KEY_COLUMN_USAGE
@@ -1327,7 +1282,6 @@ class nacexDAO
         try {
             Db::getInstance()->execute('CREATE INDEX IF NOT EXISTS idx_nacex_exp_order ON ' . _DB_PREFIX_ . 'nacex_expediciones (id_envio_order)');
             Db::getInstance()->execute('CREATE INDEX IF NOT EXISTS idx_nacex_exp_fecha ON ' . _DB_PREFIX_ . 'nacex_expediciones (fecha_alta, fecha_baja)');
-            Db::getInstance()->execute('CREATE INDEX IF NOT EXISTS idx_nacex_his_order ON ' . _DB_PREFIX_ . 'nacex_expediciones_his (id_envio_order)');
         } catch (\Exception $e) {
             // Indices ya existen o no se pueden crear - no es critico
         }
@@ -1367,12 +1321,6 @@ class nacexDAO
 
         if (! Db::getInstance()->Execute($query)) {
             nacexutils::writeNacexLog('DropTables :: Error al borrar tabla nacex_expediciones');
-            return false;
-        }
-        $query = 'DROP TABLE ' . _DB_PREFIX_ . 'nacex_expediciones_his';
-
-        if (! Db::getInstance()->Execute($query)) {
-            nacexutils::writeNacexLog('DropTables :: Error al borrar tabla nacex_expediciones_his');
             return false;
         }
         nacexutils::writeNacexLog('FIN DropTables');
