@@ -1,10 +1,8 @@
-{*<script src="{$module_root}/js/feedback.js" type="text/javascript"></script>*}
 <script type="text/javascript">
     jQuery(document).ready(function () {
         jQuery('.accordion').click(function (el) {
             var id = el['delegateTarget']['id'].substr(el['delegateTarget']['id'].length - 1);
             jQuery('#tabContent'+id).slideToggle();
-            //jQuery('#tabTitle' + id + ' i').toggleClass('keyboard_arrow_up');
             jQuery('#tabTitle' + id + ' i').text() === 'keyboard_arrow_down' ?
                 jQuery('#tabTitle' + id + ' i').text('keyboard_arrow_up') : jQuery('#tabTitle' + id + ' i').text('keyboard_arrow_down');
         });
@@ -14,7 +12,6 @@
             jQuery("#tipoId").val(jQuery('option:selected', this).attr('id'));
         });
 
-        // Enviamos el formulario con AJAX
         jQuery('.atencion-cliente').on('submit', function(e) {
             e.preventDefault();
 
@@ -26,7 +23,6 @@
                 data: form.serialize(),
                 datatype: 'json',
                 beforeSend: function () {
-                    // Show image container
                     jQuery('.ac-submit').css('float', 'left');
                     jQuery('#ac-loader').show();
                 },
@@ -39,14 +35,12 @@
                         jQuery('#nacex-ac-error').show().delay(2500).fadeOut();
                 },
                 error: function (error) {
-                    //Muestra mensaje de error
                     jQuery('#nacex-ac-error p').text('{l s='There has been an error while sending the message' mod="nacex"}');
                     jQuery('#nacex-ac-error').removeClass('nacex-success');
                     jQuery('#nacex-ac-error').addClass('notice-error');
                     jQuery('#nacex-ac-error').show().delay(2500).fadeOut();
                 },
                 complete: function (data) {
-                    // Hide image container
                     jQuery('.ac-submit').css('float', 'none');
                     jQuery('#ac-loader').hide();
                 }
@@ -63,7 +57,6 @@
                     type: 'post',
                     data: 'action=enviar_mail_feedback&filename=' + filename,
                     beforeSend: function () {
-                        // Show image container
                         jQuery('[id="ac-loader-' + filename + '"]').show();
                         jQuery('[id="' + filename + '"]').hide();
                     },
@@ -72,7 +65,6 @@
                         location.reload();
                     },
                     complete: function (data) {
-                        // Hide image container
                         jQuery('[id="ac-loader-' + filename + '"]').hide();
                         jQuery('[id="' + filename + '"]').show();
                     }
@@ -82,35 +74,39 @@
         });
     });
 </script>
-<div class="ncx_feedback_container">
-    <div class="ncx_feedback_logo" align="center">
+
+<div class="panel">
+    <div class="panel-heading" style="display:flex;align-items:center;gap:1em;">
         <a target="_blank" title="{l s='Go to Nacex web' mod="nacex"}" href="https://www.nacex.es">
-            <img src="{$ncx_logo200url}" alt="Logotipo Nacex" style="width: 200px;height: auto;"/>
+            <img src="{$ncx_logo200url}" alt="Logotipo Nacex" style="width:130px;height:auto;"/>
         </a>
+        <span style="font-size:1.1em;">{l s='Tell us what can we do for you' mod="nacex"}</span>
     </div>
-    <div id="ncx_feedback_table_container">
+    <div class="panel-body">
+
         {if $fb->filesExist()}
-            <div id="accordion2">
-                <h2 id="tabTitle2" class="accordion"><i
-                            class="material-icons keyboard_arrow_down">keyboard_arrow_down</i>{l s='No sent emails' mod="nacex"}
-                </h2>
-                <div id="tabContent2" style="display: none;">
-                    <table class="table table-bordered feedback">
+            <div class="panel" style="margin-bottom:1em;">
+                <h3 id="tabTitle2" class="accordion" style="cursor:pointer;color:#ff5100;margin:0;">
+                    <i class="material-icons" style="vertical-align:middle;">keyboard_arrow_down</i>
+                    {l s='No sent emails' mod="nacex"}
+                </h3>
+                <div id="tabContent2" style="display:none;margin-top:1em;">
+                    <table class="table table-bordered">
                         <tbody class="log-body">
                         {foreach $fb->filesExist() as $row}
                             <tr>
                                 {$filename = substr(strrchr($row, '/'), 1)}
-                                <td><span><a href="mailto:{$fb->getInfoFile($row)}">{$filename}</a></span></td>
-                                <td><span class="action-children"><a href="{$fb->getFileUrl()|cat:$filename}"
-                                                                     title="{l s='Download file' mod="nacex"}"><i
-                                                    class="material-icons get_app">get_app</i></a></span></td>
-                                <td>
-                            <span class="action-children">
-                                <a href="javascript:;" id="{$filename}" title="{l s='Delete file' mod="nacex"}"
-                                   class="delete"><i class="material-icons">delete</i></a>
-                                <img src='{$loader_img}' id='ac-loader-{$filename}' alt='ac-loader-{$filename}'
-                                     style='display: none;width: 20px;'/>
-                            </span>
+                                <td><a href="mailto:{$fb->getInfoFile($row)}">{$filename}</a></td>
+                                <td style="width:40px;text-align:center;">
+                                    <a href="{$fb->getFileUrl()|cat:$filename}" title="{l s='Download file' mod="nacex"}">
+                                        <i class="material-icons">get_app</i>
+                                    </a>
+                                </td>
+                                <td style="width:40px;text-align:center;">
+                                    <a href="javascript:;" id="{$filename}" title="{l s='Delete file' mod="nacex"}" class="delete">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                    <img src='{$loader_img}' id='ac-loader-{$filename}' alt='loader' style='display:none;width:20px;'/>
                                 </td>
                             </tr>
                         {/foreach}
@@ -120,57 +116,66 @@
             </div>
         {/if}
 
-        <h2>{l s='Tell us what can we do for you' mod="nacex"}</h2>
+        <form action="{$module_root}/NacexFeedbackAjaxController.php" method="post" class="form atencion-cliente" style="width:100%;max-width:700px;">
 
-        <form action="{$module_root}/NacexFeedbackAjaxController.php" method="post" class="form atencion-cliente">
+            <div class="form-group">
+                <label for="tipo">{l s='Choose your consultation type' mod="nacex"}</label>
+                <select id="tipo" name="tipo" class="form-control" style="max-width:400px;">
+                    {foreach $ndto->dropDownFormOptions() as $id => $name}
+                        <option id="{$id}">{$name}</option>
+                    {/foreach}
+                </select>
+                <input type="hidden" id="tipoId" name="tipoId" value=""/>
+            </div>
 
-            <label for="tipo">{l s='Choose your consultation type' mod="nacex"}</label>
-            <select id="tipo" name="tipo">
-                {foreach $ndto->dropDownFormOptions() as $id => $name}
-                    <option id="{$id}">{$name}</option>
-                {/foreach}
-            </select>
-            <input type="hidden" id="tipoId" name="tipoId" value=""/>
-
-            <fieldset>
-                <legend>{l s='Fill in the following fields' mod="nacex"}</legend>
-                <input id="nombre" name="nombre" type="text" placeholder="*{l s='Full name' mod="nacex"}" required/>
-                <input id="company" name="company" type="text" placeholder="*{l s='Company' mod="nacex"}" required/>
-                <input id="email" name="email" type="email" placeholder="*{l s='Email' mod="nacex"}" required/>
-                <input id="telf" name="telf" type="tel" placeholder="{l s='Company' mod="nacex"}"/>
-                <label for="consulta" class="consulta">{l s='Message' mod="nacex"}:</label>
-                <textarea id="consulta" name="consulta" cols="75" rows="8"></textarea>
+            <fieldset style="border:1px solid #ff5100;padding:1em;margin:1em 0;">
+                <legend style="color:#ff5100;font-size:14px;border:none;width:auto;padding:0 0.5em;">{l s='Fill in the following fields' mod="nacex"}</legend>
+                <div class="form-group">
+                    <input id="nombre" name="nombre" type="text" class="form-control" placeholder="*{l s='Full name' mod="nacex"}" required/>
+                </div>
+                <div class="form-group">
+                    <input id="company" name="company" type="text" class="form-control" placeholder="*{l s='Company' mod="nacex"}" required/>
+                </div>
+                <div class="form-group">
+                    <input id="email" name="email" type="email" class="form-control" placeholder="*{l s='Email' mod="nacex"}" required/>
+                </div>
+                <div class="form-group">
+                    <input id="telf" name="telf" type="tel" class="form-control" placeholder="{l s='Phone' mod="nacex"}"/>
+                </div>
+                <div class="form-group">
+                    <label for="consulta">{l s='Message' mod="nacex"}:</label>
+                    <textarea id="consulta" name="consulta" class="form-control" rows="6"></textarea>
+                </div>
             </fieldset>
-            <div class="copia">
-                <input type="checkbox" name="copia"
-                       id="chk-copia"/><strong>{l s='I want to receive a copy in my e-mail' mod="nacex"}</strong>
-                <span class="mini">{l s='It is possible that the e-mail has some additional personal data of you in order to ease a more detailed and individualized consultation.' mod="nacex"}</span>
+
+            <div class="checkbox" style="margin-bottom:0.5em;">
+                <label>
+                    <input type="checkbox" name="copia" id="chk-copia"/>
+                    <strong>{l s='I want to receive a copy in my e-mail' mod="nacex"}</strong>
+                    <br><small class="text-muted">{l s='It is possible that the e-mail has some additional personal data of you in order to ease a more detailed and individualized consultation.' mod="nacex"}</small>
+                </label>
             </div>
-            <div class="copia">
-                <input type="checkbox" name="privacidad" id="privacidad" required/>
-                {l
-                s='I agree with [1]privacy policy[/1]'
-                tags=["<a href=\"https://www.nacex.es/irPolitica.do\" target=\"_blank\">"]
-                mod="nacex"
-                }
+            <div class="checkbox" style="margin-bottom:1em;">
+                <label>
+                    <input type="checkbox" name="privacidad" id="privacidad" required/>
+                    {l s='I agree with [1]privacy policy[/1]' tags=["<a href=\"https://www.nacex.es/irPolitica.do\" target=\"_blank\">"] mod="nacex"}
+                </label>
             </div>
+
             <input type="hidden" name="action" value="enviar_mail_feedback">
-            <input type="submit" class="ac-submit" value="{l s='Send message' mod="nacex"}"/>
-            <div id='ac-loader' style='display: none;'>
-                <img src='{$loader_img}'/>
-            </div>
+            <button type="submit" class="btn btn-primary ac-submit">
+                {l s='Send message' mod="nacex"}
+            </button>
+            <span id='ac-loader' style='display:none;margin-left:1em;'>
+                <img src='{$loader_img}' style="width:20px;"/>
+            </span>
         </form>
 
         <div class="bootstrap" id='nacex-ac-success' style="display:none;margin-top:10px">
-            <div class="alert alert-success conf" style="width:auto">
-                <p>{l s='Message sent successfully' mod="nacex"}</p>
-            </div>
+            <div class="alert alert-success">{l s='Message sent successfully' mod="nacex"}</div>
         </div>
-
         <div class="bootstrap" id='nacex-ac-error' style="display:none;margin-top:10px">
-            <div class="alert alert-danger error" style="width:auto">
-                <p>{l s='Couldn\'t sent message. Please, see Not sent email in this same page' mod="nacex"}</p>
-            </div>
+            <div class="alert alert-danger">{l s='Couldn\'t sent message. Please, see Not sent email in this same page' mod="nacex"}</div>
         </div>
 
     </div>
