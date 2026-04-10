@@ -55,24 +55,24 @@ class nacextab extends AdminController
 
         $png_barcode_url = 'https://www.nacex.es/impCodBarras.do?x=150&y=60&fontsizeB=10&codebar=';
 
-        $hoy_desde = date('Y-m-d') . ' 00:00:00';
-        $hoy_hasta = date('Y-m-d') . ' 23:59:59';
+        $hoy_desde = date('Y-m-d');
+        $hoy_hasta = date('Y-m-d');
 
-        $ayer_desde = date('Y-m-d', strtotime('-1 day')) . ' 00:00:00';
-        $ayer_hasta = date('Y-m-d', strtotime('-1 day')) . ' 23:59:59';
+        $ayer_desde = date('Y-m-d', strtotime('-1 day'));
+        $ayer_hasta = date('Y-m-d', strtotime('-1 day'));
 
-        $estasemana_desde = date('Y-m-d', time() + (1 - date('w')) * 24 * 3600) . ' 00:00:00';
-        $estasemana_hasta = date('Y-m-d', time() + (7 - date('w')) * 24 * 3600) . ' 23:59:59';
+        $estasemana_desde = date('Y-m-d', time() + (1 - date('w')) * 24 * 3600);
+        $estasemana_hasta = date('Y-m-d', time() + (7 - date('w')) * 24 * 3600);
 
         $timestamp_ultimodomingo = strtotime('last Sunday');
-        $semanapasada_desde = date('Y-m-d', $timestamp_ultimodomingo - 6 * 24 * 3600) . ' 00:00:00';
-        $semanapasada_hasta = date('Y-m-d', $timestamp_ultimodomingo) . ' 23:59:59';
+        $semanapasada_desde = date('Y-m-d', $timestamp_ultimodomingo - 6 * 24 * 3600);
+        $semanapasada_hasta = date('Y-m-d', $timestamp_ultimodomingo);
 
-        $estemes_desde = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - date('d') + 1, date('Y'))) . ' 00:00:00';
-        $estemes_hasta = date('Y-m-d', mktime(0, 0, 0, date('m') + 1, date('d') - date('d'), date('Y'))) . ' 23:59:59';
+        $estemes_desde = date('Y-m-d', mktime(0, 0, 0, date('m'), 1, date('Y')));
+        $estemes_hasta = date('Y-m-d', mktime(0, 0, 0, date('m') + 1, 0, date('Y')));
 
-        $desde = Tools::getValue('date_from', date('Y-m-d H:i:s'));
-        $hasta = Tools::getValue('date_to', date('Y-m-d H:i:s'));
+        $desde = Tools::getValue('date_from', date('Y-m-d'));
+        $hasta = Tools::getValue('date_to', date('Y-m-d'));
 
         $nuevaConsulta = Tools::getValue('date_from', '') != '' && Tools::getValue('date_to', '') != '' ? 1 : 0;
 
@@ -171,8 +171,8 @@ class nacextab extends AdminController
                 LEFT JOIN ' . _DB_PREFIX_ . 'address a ON a.id_address = o.id_address_delivery
                 LEFT JOIN ' . _DB_PREFIX_ . 'country z ON z.id_country = a.id_country
                 LEFT JOIN ' . _DB_PREFIX_ . 'address ai ON ai.id_address = o.id_address_invoice
-                WHERE e.fecha_alta >= \'' . pSQL($desde) . '\'
-                AND e.fecha_alta <= \'' . pSQL($hasta) . '\'
+                WHERE e.fecha_alta >= \'' . pSQL($desde) . ' 00:00:00\'
+                AND e.fecha_alta <= \'' . pSQL($hasta) . ' 23:59:59\'
                 AND e.fecha_baja IS NULL
                 ORDER BY e.fecha_alta DESC'
             );
