@@ -128,17 +128,6 @@ class nacextabMasivo extends ModuleAdminController
                             <input id='ncx_hasta' type='date' class='form-control' value='" . $fecha_hasta . "' name='date_to'>
                         </div>
                     </div>
-                </div>
-                <div class='form-group'>
-                    <div class='btn-group btn-group-sm' role='group'>
-                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $hoy . "','" . $hoy . "')\">" . $this->nacex->l('Today') . "</button>
-                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $ayer . "','" . $ayer . "')\">" . $this->nacex->l('Yesterday') . "</button>
-                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $estasemana_desde . "','" . $estasemana_hasta . "')\">" . $this->nacex->l('This week') . "</button>
-                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $semanapasada_desde . "','" . $semanapasada_hasta . "')\">" . $this->nacex->l('Last week') . "</button>
-                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $estemes_desde . "','" . $estemes_hasta . "')\">" . $this->nacex->l('This month') . "</button>
-                    </div>
-                </div>
-                <div class='row'>
                     <div class='col-lg-2'>
                         <div class='form-group'>
                             <label for='ncx_estado'>" . $this->nacex->l('Order status') . "</label>
@@ -151,6 +140,17 @@ class nacextabMasivo extends ModuleAdminController
         $this->_html .= "</select>
                         </div>
                     </div>
+                </div>
+                <div class='form-group'>
+                    <div class='btn-group btn-group-sm' role='group'>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $hoy . "','" . $hoy . "')\">" . $this->nacex->l('Today') . "</button>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $ayer . "','" . $ayer . "')\">" . $this->nacex->l('Yesterday') . "</button>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $estasemana_desde . "','" . $estasemana_hasta . "')\">" . $this->nacex->l('This week') . "</button>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $semanapasada_desde . "','" . $semanapasada_hasta . "')\">" . $this->nacex->l('Last week') . "</button>
+                        <button type='button' class='btn btn-default' onclick=\"setRango('" . $estemes_desde . "','" . $estemes_hasta . "')\">" . $this->nacex->l('This month') . "</button>
+                    </div>
+                </div>
+                <div class='row'>
                     <div class='col-lg-8'>
                         <div class='form-group'>
                             <label>" . $this->nacex->l('Carriers') . '</label><br>';
