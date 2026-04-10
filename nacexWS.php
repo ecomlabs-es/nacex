@@ -1116,8 +1116,8 @@ class nacexWS {
             $xml_seg .
             $xml_NacexImpDeclarado .
             $xml_NacexContenido .
-            $xml_NacexFrecuencia . ' 
-                    <arrayOfString_3>' . nacexWS::getSystemInfo() . '</arrayOfString_3>                                             
+            $xml_NacexFrecuencia . '
+                    <arrayOfString_3>' . nacexWS::getSystemInfo() . '</arrayOfString_3>
                 </typ:putExpedicion>
 			</soapenv:Body>
 		</soapenv:Envelope>';
