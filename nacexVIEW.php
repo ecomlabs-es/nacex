@@ -1142,8 +1142,8 @@ class nacexVIEW
                        alt="' . $nacex->l('Cancel expedition') . '"
                        title="' . $nacex->l('Cancel expedition') . '"
                        src="' . nacexDTO::getPath() . 'images/Ic_cancel_48px.svg" /></button>';
-            $html .= '<button type="button" class="zoomable" style="background:none;border:2px solid #ff5100;border-radius:50%;cursor:pointer;vertical-align:top;padding:6px;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;" onclick="nacexEditExpedicion(\'' . $expId . '\');" title="' . $nacex->l('Edit expedition') . '">
-                       <i class="material-icons" style="font-size:20px;color:#ff5100;">edit</i></button>';
+            $html .= '<button type="button" class="zoomable" style="background:none;border:2px solid #333;border-radius:50%;cursor:pointer;vertical-align:top;padding:6px;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;" onclick="nacexEditExpedicion(\'' . $expId . '\');" title="' . $nacex->l('Edit expedition') . '">
+                       <i class="material-icons" style="font-size:20px;color:#333;">edit</i></button>';
             $html .= '<script>
                 function nacexEditExpedicion(expCod) {
                     // Añadir campo oculto para indicar que es edición
