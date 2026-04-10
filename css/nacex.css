@@ -269,39 +269,34 @@
 		text-transform: none !important;
 	}
 
-	/* --- Configuración módulo --- */
+	/* --- Configuración módulo (campos legacy en tablas) --- */
 	.bootstrap #configForm legend { border-bottom: 1px solid #ff5100 !important; }
 	.bootstrap #configForm hr { border-top: 1px solid #ff5100 !important; }
-	.bootstrap #configForm input:not([type='button']):not([type='submit']), .bootstrap #configForm select {
-		background-color: transparent;
-	}
-	.bootstrap #configForm input[type='text']:read-only, .bootstrap #configForm input[type='text']:disabled {
-		background-color: #eee;
-	}
-	.bootstrap #configForm select, .bootstrap #configForm input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
+	.bootstrap #configForm td.columna2 select,
+	.bootstrap #configForm td.columna2 input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
 	#ncx_boxinfo select, #ncx_boxinfo input:not([type='button']):not([type='submit']):not([type='radio']), #ncx_boxinfo textarea {
 		border: 0; border-top: 1px solid lightgray; outline: none; background: 0;
-		margin-right: 0.8em; margin-bottom: 1.5em; color: #444;
-		font-size: 12pt; min-width: 160px; box-shadow: none;
+		margin-right: 0.8em; color: #444; font-size: 12pt; min-width: 160px; box-shadow: none;
 	}
-	.bootstrap #configForm select, .bootstrap #configForm input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
-	#ncx_boxinfo select, #ncx_boxinfo input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
-	#ncx_boxinfo_masivo select, #ncx_boxinfo_masivo input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']) {
-		margin-bottom: 0;
-	}
-	.bootstrap #configForm select:focus, .bootstrap #configForm input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']):focus,
-	#ncx_boxinfo select:focus, #ncx_boxinfo input:not([type='button']):not([type='submit']):not([type='radio']):focus, #ncx_boxinfo textarea:focus,
-	#ncx_boxinfo_masivo select:focus, #ncx_boxinfo_masivo input:not([type='button']):not([type='submit']):not([type='radio']):focus, #ncx_boxinfo_masivo textarea:focus {
+	.bootstrap #configForm td.columna2 select:focus,
+	.bootstrap #configForm td.columna2 input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']):focus,
+	#ncx_boxinfo select:focus, #ncx_boxinfo input:not([type='button']):not([type='submit']):not([type='radio']):focus,
+	#ncx_boxinfo_masivo select:focus, #ncx_boxinfo_masivo input:not([type='button']):not([type='submit']):not([type='radio']):focus {
 		border-top: 2px solid #ff5100;
 	}
-	.bootstrap #configForm select, .bootstrap #configForm input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
+	.bootstrap #configForm td.columna2 select,
+	.bootstrap #configForm td.columna2 input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
 	#ncx_boxinfo select, #ncx_boxinfo input:not([type='radio']),
 	#ncx_boxinfo_masivo select, #ncx_boxinfo_masivo input:not([type='radio']) {
 		display: block; width: 50%; font-weight: 300;
 	}
-	.bootstrap #configForm input[type='text'], .bootstrap #configForm input[type='password'],
+	.bootstrap #configForm td.columna2 input[type='text'],
+	.bootstrap #configForm td.columna2 input[type='password'],
 	#ncx_boxinfo input[type='text'], #ncx_boxinfo input[type='number'] {
 		border-bottom: none; border-left: none; border-right: none; box-shadow: none;
+	}
+	.bootstrap #configForm input[type='text']:read-only, .bootstrap #configForm input[type='text']:disabled {
+		background-color: #eee;
 	}
 	#configForm .resaltado { color: #555; }
 	#configForm .bold { font-weight: bold; }
@@ -318,9 +313,6 @@
 		background-color: #fff; border-left: 3px solid #ff5100;
 		padding-left: 0.5em; max-width: 50%; position: absolute;
 	}
-
-	#ayuda .version h2 { padding-left: 2em; }
-	#ayuda .logo-nacex-by-logista { padding: 1em; text-align: center; }
 	#modulosResult { margin-top: 1em; }
 
 	/* --- NacexShop tabla --- */
@@ -330,15 +322,8 @@
 	#nacexshopChosen td input { font-weight: bold; border: none; background-color: transparent; }
 	.gm-ui-hover-effect[aria-label='Cerrar'] { display: none !important; }
 
-	/* --- PDF guía usuario --- */
-	.user-guide-pdf { float: right; margin-top: -1em; }
-	#download-ncx-user-guide b { margin-right: 2rem; }
-
 	/* --- Editar direccion NacexShop admin --- */
 	form #cpPointsChoices { width: 95%; margin: 10px 0; }
-
-	/* --- Tabbed config --- */
-	.tabItem { display: block; background: #fff; }
 
 	/* --- Menú lateral Nacex --- */
 	.main-menu #subtab-AdminNacex.link-levelone.-active > .link {
