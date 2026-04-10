@@ -284,12 +284,6 @@
 	#ncx_boxinfo_masivo select:focus, #ncx_boxinfo_masivo input:not([type='button']):not([type='submit']):not([type='radio']):focus {
 		border-top: 2px solid #ff5100;
 	}
-	.bootstrap #configForm td.columna2 select,
-	.bootstrap #configForm td.columna2 input:not([type='button']):not([type='submit']):not([type='radio']):not([type='checkbox']),
-	#ncx_boxinfo select, #ncx_boxinfo input:not([type='radio']),
-	#ncx_boxinfo_masivo select, #ncx_boxinfo_masivo input:not([type='radio']) {
-		display: block; width: 50%; font-weight: 300;
-	}
 	.bootstrap #configForm td.columna2 input[type='text'],
 	.bootstrap #configForm td.columna2 input[type='password'],
 	#ncx_boxinfo input[type='text'], #ncx_boxinfo input[type='number'] {
