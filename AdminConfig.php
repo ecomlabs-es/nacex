@@ -2045,6 +2045,13 @@ function guardarConfiguracion()
     if (!Configuration::updateValue('NACEX_SAVE_LOG', Tools::getValue('nacex_save_log'))) {
         return false;
     }
+    // Mostrar/ocultar tab de logs según configuración
+    $tabLogsId = (int) Tab::getIdFromClassName('AdminNacexLogs');
+    if ($tabLogsId) {
+        $tabLogs = new Tab($tabLogsId);
+        $tabLogs->active = (Tools::getValue('nacex_save_log') == 'SI') ? 1 : 0;
+        $tabLogs->save();
+    }
     if (!Configuration::updateValue('NACEX_SHOW_DEV_OPS', Tools::getValue('nacex_show_dev_ops'))) {
         return false;
     }
