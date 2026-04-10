@@ -172,8 +172,8 @@ class nacextab extends AdminController
                         </a>
                     </div>
                     <div class='table-responsive'>
-                    <table id='ncx_tabla_listado' class='table table-bordered table-hover'>
-                        <thead style='background-color:#f5f5f5;border-bottom:2px solid #ddd;'>
+                    <table id='ncx_tabla_listado' class='table table-bordered table-hover table-striped'>
+                        <thead class='thead-default'>
                             <tr>
                                 <th>Id</th>
                                 <th>" . $this->nacex->l('Barcode') . '</th>
