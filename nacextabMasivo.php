@@ -161,10 +161,12 @@ class nacextabMasivo extends ModuleAdminController
         $this->_html .= "
                         </div>
                     </div>
-                </div>
-                <input type='hidden' id='accion' name='accion' value='' />
-                <div class='form-group' style='margin-top:0.5em;'>
-                    <button type='button' id='searchIcon' class='btn btn-primary'><i class='icon-search'></i> " . $this->nacex->l('Search orders') . "</button>
+                    <div class='col-lg-2' style='display:flex;align-items:flex-end;'>
+                        <div class='form-group' style='width:100%;'>
+                            <input type='hidden' id='accion' name='accion' value='' />
+                            <button type='button' id='searchIcon' class='btn btn-primary btn-block'><i class='icon-search'></i> " . $this->nacex->l('Search orders') . "</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>";
