@@ -142,10 +142,10 @@ class nacextabMasivo extends ModuleAdminController
                     </div>
                     <div class='col-lg-4'>
                         <div class='form-group'>
-                            <label>" . $this->nacex->l('Carriers') . "</label><br>";
+                            <label>" . $this->nacex->l('Carriers') . "</label>";
         foreach ($carriers as $carrier) {
             $checked = in_array($carrier['id_carrier'], $carriers_seleccionados) || empty($carriers_seleccionados) ? ' checked' : '';
-            $this->_html .= "<label class='checkbox-inline' style='margin-right:0.5em;'><input type='checkbox' name='ncx_carrier_sel[]' value='" . $carrier['id_carrier'] . "'" . $checked . '> ' . $carrier['name'] . '</label>';
+            $this->_html .= "<div class='checkbox' style='margin:0;'><label><input type='checkbox' name='ncx_carrier_sel[]' value='" . $carrier['id_carrier'] . "'" . $checked . '> ' . $carrier['name'] . '</label></div>';
         }
         $this->_html .= "
                         </div>
