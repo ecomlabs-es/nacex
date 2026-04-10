@@ -746,7 +746,7 @@ function getFormularioConfiguracion($obj)
 											<a target="_blank" href="https://www.nacex.es">
 												<img style="width:130px;height:auto;" src="' . $nacexDTO->getPath() . 'images/logos/nacex_logista.png" />
 											</a>
-											<span style="font-size:1.1em;">' . $obj->l('Module configuration') . ' <small style="color:#999;">v' . nacexutils::nacexVersion . '</small></span>
+											<span style="font-size:1.1em;">' . $obj->l('Module configuration') . ' <small style="color:#999;">v' . (Configuration::get('NACEX_INSTALLED_TAG') ?: nacexutils::nacexVersion) . '</small></span>
 											<span id="ncx-update-badge" style="display:none;">
 												<a href="#" id="ncx-update-link" class="badge badge-warning" style="font-size:12px;cursor:pointer;padding:5px 10px;">
 													<i class="material-icons" style="font-size:14px;vertical-align:middle;">system_update</i>
