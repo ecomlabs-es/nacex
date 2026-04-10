@@ -782,103 +782,71 @@ function getFormularioConfiguracion($obj)
 										</a>
 									</div>
 									<div class="panel-body">
-									  	<fieldset>
-									 			<legend> ' . $obj->l('Connection settings') . '</legend>
-									  			<table style="border: 0px;">
-									  			    <!-- <tr>
-                                                        <td class="columna1">Versión del módulo:</td>
-                                                        <td class="columna2">' . '$chkversion->check_new_version()' . '</td>
-                                                    </tr> -->
-                                                    <input type="hidden" size="50" name="nacex_ws_url" value="' . nacexDTO::$url_ws . '"/>
-									   				<!-- <tr>
-															<td class="columna1">' . $obj->l(nacexutils::toUtf8('WS URL')) . ' :</td>
-															<td class="columna2" id="nacex_ws_url">
-																' . showError($errores, 'nacex_ws_url') . '	
-																<input type="text" size="50" name="nacex_ws_url" value="' . nacexDTO::$url_ws . '" readonly/>
-															</td>
-									  				</tr> -->
-													<tr>
-                                                        <td class="columna1">' . $obj->l('Iona URL') . ' :</td>
-                                                        <td class="columna2" id="nacex_print_iona">
-                                                            ' . showError($errores, 'nacex_print_iona') . '	
-                                                            <input type="text" size="50" name="nacex_print_iona" value="' . nacexDTO::$url_iona . '" readonly/>
-                                                            <a href="https://www.nacex.es/files/iona/iona.zip" style="color: #ff5100;">' . $obj->l('Download IONA') . '</a>
-                                                            &
-                                                            <a href="https://www.nacex.es/files/iona/Manual_ioNA.pdf" style="color: #ff5100;">' . $obj->l('IONA user guide') . '</a>
-													    </td>
-													</tr>
-													<tr>	
-                                                        <td class="columna1">' . $obj->l('Labeller model') . ' : </td>
-                                                        <td class="columna2">
-                                                            <select style="width: 335px;" name="nacex_print_model" id="nacex_print_model">
-                                                                <option disabled="disabled" selected></option>
-                                                                <optgroup label="' . $obj->l('Labeller model') . '">';
+									<input type="hidden" name="nacex_ws_url" value="' . nacexDTO::$url_ws . '"/>
+								<div class="panel">
+									<div class="panel-heading">' . $obj->l('Connection settings') . '</div>
+									<div class="panel-body">
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Iona URL') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacex_print_iona') . '
+												<input type="text" class="form-control" name="nacex_print_iona" value="' . nacexDTO::$url_iona . '" readonly/>
+												<small class="form-text text-muted">
+													<a href="https://www.nacex.es/files/iona/iona.zip" style="color:#ff5100;">' . $obj->l('Download IONA') . '</a>
+													&nbsp;|&nbsp;
+													<a href="https://www.nacex.es/files/iona/Manual_ioNA.pdf" style="color:#ff5100;">' . $obj->l('IONA user guide') . '</a>
+												</small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Labeller model') . '</label>
+											<div class="col-lg-9">
+												<select class="form-control" name="nacex_print_model" id="nacex_print_model" style="max-width:335px;">
+													<option disabled="disabled" selected></option>
+													<optgroup label="' . $obj->l('Labeller model') . '">';
 
     $mod = Configuration::get('NACEX_PRINT_MODEL');
     foreach ($nacexDTO->getModelosEtiquetadoras() as $m) {
-
-        $html .= '<option value="' . $m['value'] . '"';
-
-        if ($mod !== false && $m['value'] == $mod) {
-            $html .= 'selected';
-        }
-        $html .= '>';
-
-        $html .= $m['label'];
-
-        $html .= '</option>';
+        $selected = ($mod !== false && $m['value'] == $mod) ? ' selected' : '';
+        $html .= '<option value="' . $m['value'] . '"' . $selected . '>' . $m['label'] . '</option>';
     }
     $html .= '</optgroup>
-                                                            </select>
-                                                            <p class="tip">' . $obj->l(nacexutils::toUtf8('Labeller model')) . '. ' . '<br>' . $obj->l(nacexutils::toUtf8('Ex:')) . $obj->l(nacexutils::toUtf8(' TECSV4, TEC472, ZEBRA, LASER')) . '</p>
-									  				</tr>
-									  				<tr>
-															<td class="columna1">' . $obj->l('Printer') . ' : </td>
-															<td class="columna2" id="nacex_print_et">
-																' . showError($errores, 'nacex_print_et') . '
-																<input type="text" size="50" name="nacex_print_et" value="' . Tools::getValue('nacex_print_et', Configuration::get('NACEX_PRINT_ET')) . '" />
-																<p class="tip">' . $obj->l('Physical printer name') . '.<br>' . $obj->l(nacexutils::toUtf8('Ex:')) . $obj->l(nacexutils::toUtf8(' Kyocera FS-1350DN KX')) . '</p>
-															</td>
-                                                    </tr>		
-                                                    <!-- <tr>
-                                                        <td class="columna1">' . $obj->l('Google Maps API') . ' : </td>
-                                                        <td class="columna2" id="nacex_google_api">
-                                                            ' . showError($errores, 'nacex_google_api') . '
-                                                            <input type="text" size="50" name="nacex_google_api" value="' . Tools::getValue('nacex_google_api', Configuration::get('NACEX_GOOGLE_API')) . '" />
-                                                            <p class="tip">' . $obj->l('Google Maps API') . '</p>
-                                                        </td>
-                                                    </tr> -->					
-                                                    <tr>
-                                                        <td class="columna1">' . $obj->l('Web Service user') . ' : </td>
-                                                        <td class="columna2" id="nacex_wsusername">
-                                                            ' . showError($errores, 'nacex_wsusername') . '
-                                                            <input type="text" size="50" name="nacex_wsusername" value="' . Tools::getValue('nacex_wsusername', Configuration::get('NACEX_WSUSERNAME')) . '" />
-                                                            <p class="tip">' . $obj->l('Web Service user') . '</p>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="columna1">' . $obj->l('Web Service password') . ' : </td>
-                                                        <td class="columna2" id="nacex_wspassword">
-                                                            ' . showError($errores, 'nacex_wspassword') . '
-                                                            <input type="password" size="50" name="nacex_wspassword" value="' . Tools::getValue('nacex_wspassword', Configuration::get('NACEX_WSPASSWORD_ORIGINAL')) . '" />
-                                                            <p class="tip">' . $obj->l('NACEX account password') . '</p>
-                                                        </td>
-									  				</tr>
-									  				<tr>
-									  				    <td class="columna1"></td>
-                                                        <td colspan="2" style="height:30px;">
-                                                            <input style="cursor: pointer;padding: 7px;width: 250px;" class="ncx_button inverse" onclick="javascript:probarConnexionWebservice();" type="button" name="probarWsConn" id="probarWsConn" value="' . $obj->l('Test Web Service connection') . '"/>
-                                                            <div id="connectionResult"></div>
-                                                            <input style="cursor: pointer;padding: 7px;width: 250px;margin-top: 1em;" class="ncx_button inverse" onclick="modulosPHP();" type="button" name="modulos" id="modulos" value="' . $obj->l('PHP modules') . '"/>
-															<div id="modulosResult" style="display: none;"></div>
-                                                        </td>															
-									  				</tr>
-									 				</table>
-                                                                                                        
-
-											</fieldset>
-									
-											<br/>
+												</select>
+												<small class="form-text text-muted">' . $obj->l('Ex:') . ' TECSV4, TEC472, ZEBRA, LASER</small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Printer') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacex_print_et') . '
+												<input type="text" class="form-control" name="nacex_print_et" value="' . Tools::getValue('nacex_print_et', Configuration::get('NACEX_PRINT_ET')) . '" style="max-width:335px;" />
+												<small class="form-text text-muted">' . $obj->l('Physical printer name') . '. ' . $obj->l('Ex:') . ' Kyocera FS-1350DN KX</small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Web Service user') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacex_wsusername') . '
+												<input type="text" class="form-control" name="nacex_wsusername" value="' . Tools::getValue('nacex_wsusername', Configuration::get('NACEX_WSUSERNAME')) . '" style="max-width:335px;" />
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Web Service password') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacex_wspassword') . '
+												<input type="password" class="form-control" name="nacex_wspassword" value="' . Tools::getValue('nacex_wspassword', Configuration::get('NACEX_WSPASSWORD_ORIGINAL')) . '" style="max-width:335px;" />
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col-lg-9 col-lg-offset-3">
+												<button type="button" class="btn btn-default" onclick="probarConnexionWebservice();">' . $obj->l('Test Web Service connection') . '</button>
+												<div id="connectionResult" style="margin-top:0.5em;"></div>
+												<button type="button" class="btn btn-default" onclick="modulosPHP();" style="margin-top:0.5em;">' . $obj->l('PHP modules') . '</button>
+												<div id="modulosResult" style="display:none;margin-top:0.5em;"></div>
+											</div>
+										</div>
+									</div>
+								</div>
 									
 											<fieldset>
 									 			<legend> ' . $obj->l('Subscriber settings') . '</legend>
