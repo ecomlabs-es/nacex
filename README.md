@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  Este modulo es totalmente gratuito. Si quieres colaborar con el desarrollo, puedes hacerlo aqui:<br>
+  Este modulo es totalmente gratuito.<br>Si quieres colaborar con el desarrollo, puedes hacerlo aqui:<br><br>
   <a href="https://buy.stripe.com/28E28rdbX96l7r95Nd1ck00"><img src="https://img.shields.io/badge/Stripe-Colaborar-blue?logo=stripe" alt="Colaborar"></a>
 </p>
 
