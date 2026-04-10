@@ -489,7 +489,7 @@ class nacexutils
             rsort($_files);
 
             foreach ($_files as $index => $_file) {
-                if ($_file != '.' && $_file != '..') {
+                if ($_file != '.' && $_file != '..' && $_file != '.gitkeep' && pathinfo($_file, PATHINFO_EXTENSION) === 'log') {
                     $_html .= VInacexlogs::content_directory($_file, $this->path_directory_log(), $index);
                 }
             }
