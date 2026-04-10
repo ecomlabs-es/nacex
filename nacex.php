@@ -1557,13 +1557,17 @@ class nacex extends CarrierModule
 
                 if (!empty($exp_cod)) {
                     $result = nacexWS::editExpedicion($exp_cod, $editData);
-                    if (is_array($result) && isset($result['exp_cod']) && $result['exp_cod'] != '') {
-                        $this->_html .= '<div class="alert alert-success">' . $this->l('Expedition updated successfully') . '</div>';
-                        Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'nacex_expediciones SET
-                            ag_cod_num_exp = "' . pSQL($result['ag_cod_num_exp']) . '",
-                            serv_cod = "' . pSQL(Tools::getValue('nacex_tip_ser', '')) . '",
-                            barcode = "' . pSQL($result['barcode']) . '"
-                            WHERE exp_cod = "' . pSQL($exp_cod) . '" AND id_envio_order = ' . (int) $id_order);
+                    // editExpedicion devuelve mensaje de éxito como exp_cod, no datos de expedición
+                    $isError = (is_array($result) && isset($result[0]) && $result[0] == 'ERROR');
+                    if (!$isError && is_array($result) && !empty($result['exp_cod'])) {
+                        $this->_html .= '<div class="alert alert-success">' . $result['exp_cod'] . '</div>';
+                        // Actualizar serv_cod en BD si cambió
+                        $newServ = Tools::getValue('nacex_tip_ser', '');
+                        if ($newServ) {
+                            Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'nacex_expediciones SET
+                                serv_cod = "' . pSQL($newServ) . '"
+                                WHERE exp_cod = "' . pSQL($exp_cod) . '" AND id_envio_order = ' . (int) $id_order);
+                        }
                     } else {
                         $errorMsg = is_array($result) && isset($result[1]) ? $result[1] : $this->l('Error editing expedition');
                         $this->_html .= '<div class="alert alert-danger">' . $errorMsg . '</div>';
