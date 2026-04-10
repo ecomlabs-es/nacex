@@ -5,7 +5,7 @@
 <h1 align="center">Módulo Nacex actualizado para PrestaShop 8 y 9</h1>
 
 <p align="center">
-  Genera expediciones e imprime etiquetas de <a href="https://www.nacex.es">Nacex</a> con un solo clic desde tu tienda PrestaShop.
+  Genera expediciones e imprime etiquetas de Nacex con un solo clic desde tu tienda PrestaShop.
 </p>
 
 <p align="center">
