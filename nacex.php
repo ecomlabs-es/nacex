@@ -1510,39 +1510,41 @@ class nacex extends CarrierModule
 
             // Editar Expedición ** 4
             if (Tools::isSubmit('submiteditexpedicion')) {
-                $exp_cod = Tools::getValue('exp_cod');
+                $exp_cod = Tools::getValue('nacex_edit_exp_cod');
                 nacexutils::writeNacexLog('hookAdminOrder :: Detectado submiteditexpedicion para exp_cod: ' . $exp_cod);
 
-                // Recoger los campos editables del formulario
+                // Recoger los campos del formulario de expedición (mismos que putExpedicion)
+                $agcli = Tools::getValue('nacex_agcli', '');
+                $arr_agcli = explode('/', $agcli);
                 $editData = [
-                    'del_cli' => Tools::getValue('nacex_edit_del_cli', ''),
-                    'num_cli' => Tools::getValue('nacex_edit_num_cli', ''),
-                    'tip_ser' => Tools::getValue('nacex_edit_tip_ser', ''),
-                    'tip_cob' => Tools::getValue('nacex_edit_tip_cob', ''),
-                    'tip_env' => Tools::getValue('nacex_edit_tip_env', ''),
-                    'bul' => Tools::getValue('nacex_edit_bul', ''),
-                    'kil' => Tools::getValue('nacex_edit_kil', ''),
-                    'nom_ent' => Tools::getValue('nacex_edit_nom_ent', ''),
-                    'dir_ent' => Tools::getValue('nacex_edit_dir_ent', ''),
-                    'cp_ent' => Tools::getValue('nacex_edit_cp_ent', ''),
-                    'pob_ent' => Tools::getValue('nacex_edit_pob_ent', ''),
-                    'pais_ent' => Tools::getValue('nacex_edit_pais_ent', ''),
-                    'tel_ent' => Tools::getValue('nacex_edit_tel_ent', ''),
-                    'obs1' => Tools::getValue('nacex_edit_obs1', ''),
-                    'ref_cli' => Tools::getValue('nacex_edit_ref_cli', ''),
+                    'del_cli' => isset($arr_agcli[0]) ? trim($arr_agcli[0]) : '',
+                    'num_cli' => isset($arr_agcli[1]) ? trim($arr_agcli[1]) : '',
+                    'tip_ser' => Tools::getValue('nacex_tip_ser', ''),
+                    'tip_cob' => Tools::getValue('nacex_tip_cob', ''),
+                    'tip_env' => Tools::getValue('nacex_tip_env', ''),
+                    'bul' => Tools::getValue('nacex_bul', ''),
+                    'kil' => Tools::getValue('nacex_kil', ''),
+                    'nom_ent' => Tools::getValue('nacex_nom_ent', ''),
+                    'dir_ent' => Tools::getValue('nacex_dir_ent', ''),
+                    'cp_ent' => Tools::getValue('nacex_cp_ent', ''),
+                    'pob_ent' => Tools::getValue('nacex_pob_ent', ''),
+                    'pais_ent' => Tools::getValue('nacex_pais_ent', ''),
+                    'tel_ent' => Tools::getValue('nacex_tel_ent', ''),
+                    'obs1' => Tools::getValue('nacex_obs1', ''),
+                    'ref_cli' => Tools::getValue('nacex_ref_cli', ''),
+                    'ret' => Tools::getValue('nacex_ret', ''),
                 ];
 
                 // Filtrar vacíos
                 $editData = array_filter($editData, function ($v) { return $v !== ''; });
 
-                if (!empty($editData)) {
+                if (!empty($editData) && !empty($exp_cod)) {
                     $result = nacexWS::editExpedicion($exp_cod, $editData);
                     if (is_array($result) && isset($result['exp_cod']) && $result['exp_cod'] != '') {
                         $this->_html .= '<div class="alert alert-success">' . $this->l('Expedition updated successfully') . '</div>';
-                        // Actualizar datos en BD
                         Db::getInstance()->execute('UPDATE ' . _DB_PREFIX_ . 'nacex_expediciones SET
                             ag_cod_num_exp = "' . pSQL($result['ag_cod_num_exp']) . '",
-                            serv_cod = "' . pSQL(isset($editData['tip_ser']) ? $editData['tip_ser'] : '') . '",
+                            serv_cod = "' . pSQL(Tools::getValue('nacex_tip_ser', '')) . '",
                             barcode = "' . pSQL($result['barcode']) . '"
                             WHERE exp_cod = "' . pSQL($exp_cod) . '" AND id_envio_order = ' . (int) $id_order);
                     } else {

@@ -1142,8 +1142,41 @@ class nacexVIEW
                        alt="' . $nacex->l('Cancel expedition') . '"
                        title="' . $nacex->l('Cancel expedition') . '"
                        src="' . nacexDTO::getPath() . 'images/Ic_cancel_48px.svg" /></button>';
-            $html .= '&nbsp;&nbsp;<button type="submit" name="submiteditexpedicion" value="1" class="btn btn-default btn-sm" style="vertical-align:top;">
+            $html .= '&nbsp;&nbsp;<button type="button" class="btn btn-default btn-sm" style="vertical-align:top;" onclick="nacexEditExpedicion(\'' . $expId . '\');">
                        <i class="material-icons" style="font-size:14px;vertical-align:middle;">edit</i> ' . $nacex->l('Edit expedition') . '</button>';
+            $html .= '<script>
+                function nacexEditExpedicion(expCod) {
+                    // Añadir campo oculto para indicar que es edición
+                    var form = document.querySelector("form[name=\'generarExpedicion\']");
+                    if (!form) { alert("' . $nacex->l('Expedition form not found') . '"); return; }
+
+                    // Eliminar input previo si existe
+                    var prev = form.querySelector("input[name=\'nacex_edit_exp_cod\']");
+                    if (prev) prev.remove();
+
+                    // Añadir campo oculto con el exp_cod
+                    var input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "nacex_edit_exp_cod";
+                    input.value = expCod;
+                    form.appendChild(input);
+
+                    // Cambiar el botón de submit
+                    var submitBtn = form.querySelector("input[name=\'submitputexpedicion\']");
+                    if (submitBtn) {
+                        submitBtn.name = "submiteditexpedicion";
+                        submitBtn.value = "' . addslashes($nacex->l('Save changes')) . '";
+                        submitBtn.style.backgroundColor = "#ff9800";
+                    }
+
+                    // Scroll al formulario
+                    form.scrollIntoView({behavior: "smooth", block: "start"});
+
+                    // Indicar visualmente que es modo edición
+                    var legend = form.querySelector("legend");
+                    if (legend) legend.innerHTML = "' . addslashes($nacex->l('Edit expedition')) . ' <small>(" + expCod + ")</small>";
+                }
+            </script>';
         }
 
         // cambio
