@@ -356,7 +356,7 @@ http://www.generateit.net/css-optimize/index.php
 	}
 
 	/* Cambiar vista de botones de masivo */
-	.nacextabmasivo #createIcon:hover, .nacextabmasivo #printIcon:hover, .nacextabmasivo #searchIcon:hover {
+	.nacextabmasivo #createIcon:hover, .nacextabmasivo #printIcon:hover {
 		/*background-color: #ff5100;*/
 		border-radius: 45%;
 		background-color: #00aeff;
@@ -386,6 +386,7 @@ http://www.generateit.net/css-optimize/index.php
 	#list_table th {
 		vertical-align: middle;
 	}
+
 
 	#list_table td img[src*="logos/"] {
 		width: 60px;
