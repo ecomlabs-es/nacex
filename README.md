@@ -47,25 +47,6 @@
 2. En el backoffice de PrestaShop: **Modulos > Subir un modulo** y selecciona el zip
 3. Configura las credenciales de Nacex desde la configuracion del modulo
 
-## Desarrollo
-
-```bash
-composer install          # Instalar dependencias
-composer test             # Tests unitarios
-composer stan             # Analisis estatico (PHPStan)
-composer lint:php         # Lint de sintaxis PHP
-composer lint:cs          # Code style (check)
-composer fix:cs           # Code style (fix)
-composer qa               # QA completo (lint + phpstan + tests)
-```
-
-## CI/CD
-
-| Workflow | Trigger | Descripcion |
-|---|---|---|
-| **CI** | Push / PR a `main` | Lint, PHPStan, tests y CS Fixer en PHP 7.4 a 8.4 |
-| **Release** | Nuevo tag | Genera release en GitHub con el modulo empaquetado en zip |
-
 ## Cambios respecto al modulo original
 
 <details>
@@ -136,6 +117,25 @@ composer qa               # QA completo (lint + phpstan + tests)
 - Analisis estatico con PHPStan, estilo con PHP CS Fixer
 - Workflows de GitHub Actions: CI (PHP 7.4-8.4) + release automatico con zip
 </details>
+
+## Desarrollo
+
+```bash
+composer install          # Instalar dependencias
+composer test             # Tests unitarios
+composer stan             # Analisis estatico (PHPStan)
+composer lint:php         # Lint de sintaxis PHP
+composer lint:cs          # Code style (check)
+composer fix:cs           # Code style (fix)
+composer qa               # QA completo (lint + phpstan + tests)
+```
+
+## CI/CD
+
+| Workflow | Trigger | Descripcion |
+|---|---|---|
+| **CI** | Push / PR a `main` | Lint, PHPStan, tests y CS Fixer en PHP 7.4 a 8.4 |
+| **Release** | Nuevo tag | Genera release en GitHub con el modulo empaquetado en zip |
 
 ## Donaciones
 
