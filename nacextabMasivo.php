@@ -75,229 +75,141 @@ class nacextabMasivo extends ModuleAdminController
     }
 
     public function getFiltrosMasivos() {
-
-        global $cookie;
-        $host = '';
-
-        $webtext = $this->nacex->l('Go to Nacex web');
-        $webdir = 'https://www.nacex.es';
         $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
-        $desde = date('Y-m-d H:i:s');
-        $hasta = $desde;
-        $hoy_desde = date('Y-m-d') . ' 00:00:00';
-        $hoy_hasta = date('Y-m-d') . ' 23:59:59';
-        $ayer_desde = date('Y-m-d', strtotime('-1 day')) . ' 00:00:00';
-        $ayer_hasta = date('Y-m-d', strtotime('-1 day')) . ' 23:59:59';
-        $estasemana_desde = date('Y-m-d', time() + (1 - date('w')) * 24 * 3600) . ' 00:00:00';
-        $estasemana_hasta = date('Y-m-d', time() + (7 - date('w')) * 24 * 3600) . ' 23:59:59';
-        $timestamp_ultimodomingo = strtotime('last Sunday');
-        $semanapasada_desde = date('Y-m-d', $timestamp_ultimodomingo - 6 * 24 * 3600) . ' 00:00:00';
-        $semanapasada_hasta = date('Y-m-d', $timestamp_ultimodomingo) . ' 23:59:59';
-        $estemes_desde = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - date('d') + 1, date('Y'))) . ' 00:00:00';
-        $estemes_hasta = date('Y-m-d', mktime(0, 0, 0, date('m') + 1, date('d') - date('d'), date('Y'))) . ' 23:59:59';
+        $hoy = date('Y-m-d');
+        $ayer = date('Y-m-d', strtotime('-1 day'));
+        $estasemana_desde = date('Y-m-d', strtotime('monday this week'));
+        $estasemana_hasta = date('Y-m-d', strtotime('sunday this week'));
+        $semanapasada_desde = date('Y-m-d', strtotime('monday last week'));
+        $semanapasada_hasta = date('Y-m-d', strtotime('sunday last week'));
+        $estemes_desde = date('Y-m-01');
+        $estemes_hasta = date('Y-m-t');
 
-        $usr = Configuration::get('NACEX_WSUSERNAME');
-        $pass = Configuration::get('NACEX_WSPASSWORD');
-        $model = Configuration::get('NACEX_PRINT_MODEL');
-        $eti = Configuration::get('NACEX_PRINT_ET');
+        $fecha_desde = Tools::getValue('date_from', $hoy);
+        $fecha_hasta = Tools::getValue('date_to', $hoy);
+        $estado_pedido = Tools::getValue('ncx_estado', -1);
 
-        //Recogemos las variables del formulario para inicializar los filtros
-        $fecha_desde = Tools::getValue('date_from') == '' ? $hoy_desde : Tools::getValue('date_from');
-        $fecha_hasta = Tools::getValue('date_to') == '' ? $hoy_hasta : Tools::getValue('date_to');
-        $estado_pedido = Tools::getValue('ncx_estado') == '' ? -1 : Tools::getValue('ncx_estado');
-
-        if (!Tools::getValue('ncx_carrier_sel')) {
+        $carriers_seleccionados = Tools::getValue('ncx_carrier_sel', []);
+        if (!is_array($carriers_seleccionados)) {
             $carriers_seleccionados = [];
-        } else {
-            $carriers_seleccionados = count(Tools::getValue('ncx_carrier_sel')) > 0 ? Tools::getValue('ncx_carrier_sel') : [];
         }
-        $statuses = OrderState::getOrderStates((int)($cookie->id_lang));
 
-        // En vez de aprovechar la función por defecto de Prestashop, tendremos que crear una que coja los carriers de los pedidos hechos
-        //$carriers = Carrier::getCarriers((int) ($cookie->id_lang), true, false, false, null, Carrier::ALL_CARRIERS);
+        $statuses = OrderState::getOrderStates((int) $this->context->language->id);
         $carriers = $this->getOrdersCarriers();
 
-        //Si no permitimos generar expediciones de transportistas externos, no mostramos carriers externos
         if (Configuration::get('NACEX_FORCE_GENFORM') == 'NO') {
             foreach ($carriers as $key => $carrier) {
-                if (strpos($carrier['ncx'], 'nacex') === false) { unset($carriers[$key]); } }
+                if (strpos($carrier['ncx'], 'nacex') === false) {
+                    unset($carriers[$key]);
+                }
+            }
         }
 
-        $this->_html .= "<div class='subheader'>
-            <fieldset class='header-masivo'>
- 			<div>
-                <a target='_blank' title='" . $webtext . "' href='" . $webdir . "'><img style='width:100px;height: auto;' src='" . $webimg . "' /></a>				
-    			<div class='pageTitle'>
-                    <h3>" . $this->nacex->l('Mass generation of shipments') . "</h3>
+        $this->_html .= "
+        <div class='panel'>
+            <div class='panel-heading' style='display:flex;align-items:center;gap:1em;'>
+                <a target='_blank' href='https://www.nacex.es'>
+                    <img style='width:130px;height:auto;' src='" . $webimg . "' />
+                </a>
+                <span style='font-size:1.1em;'>" . $this->nacex->l('Mass generation of shipments') . "</span>
+            </div>
+            <div class='panel-body'>
+                <div class='form-group' style='display:flex;align-items:center;justify-content:center;gap:1em;flex-wrap:wrap;'>
+                    <label for='ncx_desde' style='margin:0;'>" . $this->nacex->l('From') . "</label>
+                    <input id='ncx_desde' type='date' class='form-control' style='width:auto;' value='" . $fecha_desde . "' name='date_from'>
+                    <label for='ncx_hasta' style='margin:0;'>" . $this->nacex->l('To') . "</label>
+                    <input id='ncx_hasta' type='date' class='form-control' style='width:auto;' value='" . $fecha_hasta . "' name='date_to'>
                 </div>
-			</div>
-			<div align='left' style='width:100%;margin: 0 auto'>
-			<span class='ncx_minibutton' onclick='setHoy()'>" . $this->nacex->l('Today') . "</span>
-			<span class='ncx_minibutton' onclick='setAyer()'>" . $this->nacex->l('Yesterday') . "</span>
-			<span class='ncx_minibutton' onclick='setEstaSemana()'>" . $this->nacex->l('This week') . "</span>
-			<span class='ncx_minibutton' onclick='setSemanaPasada()'>" . $this->nacex->l('Last week') . "</span>
-			<span class='ncx_minibutton' onclick='setEsteMes()'>" . $this->nacex->l('This month') . "</span>
-            <span class='ncx_date_input'><b>" . $this->nacex->l('From') . ": </b><input id='ncx_desde' type='text' style='width:130px;margin-right:10px' value='" . $fecha_desde . "' name='date_from' maxlength='19' size='4'></span>
-			<span class='ncx_date_input'><b>" . $this->nacex->l('To') . ": </b><input id='ncx_hasta' type='text' style='width:130px' value='" . $fecha_hasta . "' name='date_to' maxlength='19' size='4'></span>
-            <span style='margin-right: 35px; margin-left: 20px;' title='" . $this->nacex->l('Search orders') . "'>
-                <img class='zoomable' id='searchIcon' src='" . nacexDTO::getPath() . "images/Buscar_expediciones.svg' 
-                    title='" . $this->nacex->l('Search orders') . "' alt='" . $this->nacex->l('Search orders') . "' width='38px'>
-            </span>
-            <input type='hidden' id='accion' name='accion' value='' />
-            
-            <table style='width:100%;border:0px solid #000'>
-			<tr>
-			<td>			
-			
-			</td>
-			<td rowspan='2'><br>
-			<select id='ncx_estado' name='ncx_estado' style='width:210px'>
+                <div style='text-align:center;margin-bottom:1em;'>
+                    <div class='btn-group' role='group'>
+                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $hoy . "','" . $hoy . "')\">" . $this->nacex->l('Today') . "</button>
+                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $ayer . "','" . $ayer . "')\">" . $this->nacex->l('Yesterday') . "</button>
+                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $estasemana_desde . "','" . $estasemana_hasta . "')\">" . $this->nacex->l('This week') . "</button>
+                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $semanapasada_desde . "','" . $semanapasada_hasta . "')\">" . $this->nacex->l('Last week') . "</button>
+                        <button type='button' class='btn btn-default btn-sm' onclick=\"setRango('" . $estemes_desde . "','" . $estemes_hasta . "')\">" . $this->nacex->l('This month') . "</button>
+                    </div>
+                </div>
+                <div style='display:flex;align-items:center;justify-content:center;gap:1em;flex-wrap:wrap;margin-bottom:1em;'>
+                    <select id='ncx_estado' name='ncx_estado' class='form-control' style='width:auto;'>
                         <option value='-1'>" . $this->nacex->l('Filter by order status') . '</option>';
         foreach ($statuses as $status) {
-            $this->_html .= $status['id_order_state'] == $estado_pedido ?
-                "<option value='" . $status['id_order_state'] . "' selected>" . $status['name'] . '</option>' :
-                "<option value='" . $status['id_order_state'] . "'>" . $status['name'] . '</option>';
+            $selected = ($status['id_order_state'] == $estado_pedido) ? ' selected' : '';
+            $this->_html .= "<option value='" . $status['id_order_state'] . "'" . $selected . ">" . $status['name'] . '</option>';
         }
-        /** Quitar tabla de alternar-transportistas y cambiar estilos del <div> **/
         $this->_html .= "</select>
-			</td>
-			<td rowspan='2' style='vertical-align:top;'>
-			<div style='width:auto;float: left;margin-right: 2rem;margin-top: 2rem;'><b><a href='#' id='alternar-transportistas'>" . $this->nacex->l('Carriers') . ": </a></b>
-            </div>
-			<div style='margin: auto; margin-top: -10%; width: 40%;'><div id='transportistas' style='display:none'>";
-        /** /Quitar tabla de Transportistas y cambiar estilos del <div> **/
-
-        // Mostramos los carriers en un multiselect
-        $this->_html .= "<select id='ncx_carrier_sel' name='ncx_carrier_sel[]' multiple='multiple'>";
-
-        if (count($carriers_seleccionados) > 0 && $carriers_seleccionados !== false) {
-            //Si vienen carriers en la variable $carriers_seleccionados marcamos los que haya en el array $carriers_seleccionados
-            foreach ($carriers as $carrier) {
-                $this->_html .= in_array($carrier['id_carrier'], $carriers_seleccionados) ?
-                    "<option value='" . $carrier['id_carrier'] . "' selected>" . $carrier['name'] . '</option>' :
-                    "<option value='" . $carrier['id_carrier'] . "'>" . $carrier['name'] . '</option>';
-            }
-        } else {
-            //Si no vienen carriers en la variable $carriers_seleccionados los marcamos todos por defecto
-            foreach ($carriers as $carrier) {
-                $this->_html .= "<option value='" . $carrier['id_carrier'] . "'>" . $carrier['name'] . '</option>'; }
+                    <select id='ncx_carrier_sel' name='ncx_carrier_sel[]' class='form-control' style='width:auto;' multiple='multiple'>";
+        foreach ($carriers as $carrier) {
+            $selected = in_array($carrier['id_carrier'], $carriers_seleccionados) ? ' selected' : '';
+            $this->_html .= "<option value='" . $carrier['id_carrier'] . "'" . $selected . ">" . $carrier['name'] . '</option>';
         }
-
-        $this->_html .= '</select>';
-        $this->_html .= "<br /><input type='button' id='select_all_carriers' name='select_all_carriers' class='ncx_button' value='" . $this->nacex->l('Select all') . "'>";
-
-        $this->_html .= "</div></div>
-			</td>
-			</tr>
-			<tr>
-			<td colspan='4' >
-             
-			</td>
-			</tr>
-			</table>
-			</div>
-			</fieldset>
-			</div> <!-- subheader -->";
+        $this->_html .= "</select>
+                    <button type='button' id='select_all_carriers' class='btn btn-default btn-sm'>" . $this->nacex->l('Select all') . "</button>
+                </div>
+                <input type='hidden' id='accion' name='accion' value='' />
+                <div style='text-align:center;'>
+                    <button type='button' id='searchIcon' class='btn btn-primary'>" . $this->nacex->l('Search orders') . "</button>
+                </div>
+            </div>
+        </div>";
 
         $this->_html .= "
             <script type='text/javascript'>
-                //$(document).ready(function() { 
-                $(window).load(function() { 
-                    /** Añadir datepicker **/
-                    //$('#ncx_desde').datepicker({dateFormat: 'yy-mm-dd'});
-                    //$('#ncx_hasta').datepicker({dateFormat: 'yy-mm-dd'});
-
-                    $('#alternar-transportistas').on('click', function(){ 
-                        $('#transportistas').toggle();
-                    }); 
-
-                    $('#searchIcon').on('click',function(){ 
-                            console.log('click accionBuscarExpediciones');
-                           accionBuscarExpediciones();
+                $(document).ready(function() {
+                    $('#searchIcon').on('click', function() {
+                        accionBuscarExpediciones();
                     });
 
-                    /** Cambiar visualización formulario expedición **/
-                    //$('#createIcon, #btnOcultar').on('click',function(){ 
-                    $('#createIcon').on('click',function(){ 
-                           if ( $('input[name=\"idPedidoBox[]\"]:checked').length > 0) {   
-                                  $('.accordion.panel').show();
-                                  $(document).scrollTop( $('.accordion.panel').offset().top - 150 );
-                           }else{ 
-                                alert('Debe seleccionar pedidos');
-                           } 
-                    });
-                    
-                    $('input[name=\"idPedidoBox[]\"]').on('click',function() {
-                        // Oculto el formulario al deseleccionar todas las opciones
-                        if ( $('input[name=\"idPedidoBox[]\"]:checked').length === 0) $('.accordion.panel').hide();
-                    });
-
-                    $('#printIcon').on('click',function(){
-                        if ( $('input[name=\"idPedidoBoxPrint[]\"]:checked').length > 0) {   
-                             imprimirEtiquetasMasivo();
+                    $('#createIcon').on('click', function() {
+                        if ($('input[name=\"idPedidoBox[]\"]:checked').length > 0) {
+                            $('.accordion.panel').show();
+                            $(document).scrollTop($('.accordion.panel').offset().top - 150);
                         } else {
-                            alert('Debe seleccionar expediciones (Agencia/Num)');
-                        } 
+                            alert('" . $this->nacex->l('You must select orders') . "');
+                        }
                     });
-                    
-                    // Seleccionar todos los carriers del multiselect
+
+                    $('input[name=\"idPedidoBox[]\"]').on('click', function() {
+                        if ($('input[name=\"idPedidoBox[]\"]:checked').length === 0) $('.accordion.panel').hide();
+                    });
+
+                    $('#printIcon').on('click', function() {
+                        if ($('input[name=\"idPedidoBoxPrint[]\"]:checked').length > 0) {
+                            imprimirEtiquetasMasivo();
+                        } else {
+                            alert('" . $this->nacex->l('You must select expeditions (Agency/Num)') . "');
+                        }
+                    });
+
                     $('#select_all_carriers').click(function() {
                         $('#ncx_carrier_sel option').prop('selected', true);
                     });
-                    
-                    // Toggle options del multiselect
-                    $('select[multiple] option').mousedown(function(){
-                       var self = $(this);
-                    
-                       if (self.prop('selected'))
-                              self.prop('selected', false);
-                       else
-                           self.prop('selected', true);
-                    
-                       return false;
+
+                    $('select[multiple] option').mousedown(function() {
+                        var self = $(this);
+                        self.prop('selected', !self.prop('selected'));
+                        return false;
                     });
-
                 });
-                
-			function setHoy(){
-    			$('#ncx_desde').val('" . $hoy_desde . "');
-    			$('#ncx_hasta').val('" . $hoy_hasta . "');
-			}
 
-			function setAyer(){
-    			$('#ncx_desde').val('" . $ayer_desde . "');
-    			$('#ncx_hasta').val('" . $ayer_hasta . "');
-			}
+                function setRango(desde, hasta) {
+                    $('#ncx_desde').val(desde);
+                    $('#ncx_hasta').val(hasta);
+                }
 
-			function setEstaSemana(){
-    			$('#ncx_desde').val('" . $estasemana_desde . "');
-    			$('#ncx_hasta').val('" . $estasemana_hasta . "');
-			}
+                function accionBuscarExpediciones() {
+                    procesando();
+                    $('#accion').val('buscar');
+                    document.nacex_filtro_masivo.submit();
+                }
 
-			function setSemanaPasada(){
-    			$('#ncx_desde').val('" . $semanapasada_desde . "');
-    			$('#ncx_hasta').val('" . $semanapasada_hasta . "');
-			}									
+                function generarExpediciones() {
+                    procesando();
+                    $('#accion').val('generar');
+                    document.nacex_filtro_masivo.submit();
+                }
 
-			function setEsteMes(){
-    			$('#ncx_desde').val('" . $estemes_desde . "');
-    			$('#ncx_hasta').val('" . $estemes_hasta . "');
-			}
-
-			function accionBuscarExpediciones(){
-    			procesando();
-    			$('#accion').val('buscar');
-    			document.nacex_filtro_masivo.submit();										 
-			}
-
-			function generarExpediciones(){
-			     procesando();
-			     $('#accion').val('generar');
-			     document.nacex_filtro_masivo.submit();		
-			}
-
-			function imprimirEtiquetasMasivo(){
+                function imprimirEtiquetasMasivo() {
 			    $('#accion').val('imprimir');
 			    var array_exp = [];
     			var info = '';
