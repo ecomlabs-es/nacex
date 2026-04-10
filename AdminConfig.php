@@ -1328,52 +1328,45 @@ function getFormularioConfiguracion($obj)
 								<div class="panel">
 									<div class="panel-heading">' . $obj->l('Frontend form') . '</div>
 									<div class="panel-body">
-								      	<table style="border: 0px;">
-					      					<tr>				
-                                                <td class="columna1">' . $obj->l('Frontend services logo\'s width') . ': </td>
-                                                <td class="columna2">
-                                                    <input type="text" size="1" maxlength="3" placeholder="px" name="nacex_logoservs_width" value="' . Tools::getValue('nacex_logoservs_width', Configuration::get('NACEX_LOGOSERVS_WIDTH')) . '" />
-                                                    <p class="tip">' . $obj->l('Leave blank for original size') . '</p>				
-                                                </td>			
-                                            </tr>
-                                            ' . nacexutils::getRadioHTML('Show 0€ cost rates', 'nacex_mostrar_coste0', 'NO', $nacex_mostrar_coste0_no, 'SI', $nacex_mostrar_coste0_si, 'It let show or hide carriers which cost is 0€')
-        . '
-								      		' . nacexutils::getRadioHTML('Show Generate Expedition form to 3rd party carriers', 'nacex_force_genform', 'NO', $force_genform_no, 'SI', $force_genform_si, 'Show Generate Expedition form to 3rd party carriers')
-        . '
-								      		<tr>
-                                                <td class="columna1">' . $obj->l('Los portes se añaden') . ': </td>
-                                                <td class="columna2" id="nacex_cobro_portes">
-                                                    <select id="nacex_cobro_portes" name="nacex_cobro_portes">
-                                                        <option ' . nacexutils::markSelectedOption('nacex_cobro_portes', 'NACEX_COBRO_PORTES', 'D') . ' value="D">' . $obj->l('Después de aplicar IVA al pedido') . '</option>
-                                                        <option ' . nacexutils::markSelectedOption('nacex_cobro_portes', 'NACEX_COBRO_PORTES', 'A') . ' value="A">' . $obj->l('Antes de aplicar IVA') . '</option>
-                                                    </select>
-                                                    <p class="tip">' . $obj->l('Añadir el precio del envío al pedido') . '</p>
-                                                </td>
-                                            </tr>
-								      		' . nacexutils::getRadioHTML('Is there any third-party OPC (One Page Checkout)?', 'nacex_opc_external', 'NO', $nacex_opc_external_no, 'SI', $nacex_opc_external_si, null, "javascript:disableValor('nacex_opc_id_divgeneral');disableValor('nacex_opc_id_boton');", "javascript:enableValor('nacex_opc_id_divgeneral');enableValor('nacex_opc_id_boton');")
-        . '
-								      		<tr>
-                                                <td class="columna1">' . $obj->l('ID of the general div of the checkout') . ': </td>
-                                                <td class="columna2" id="nacex_opc_id_divgeneral">
-                                                    <input type="text" ' . $nacex_opc_id_divgeneral_DIS . ' name="nacex_opc_id_divgeneral" value="' . Tools::getValue('nacex_opc_id_divgeneral', Configuration::get('NACEX_OPC_ID_DIVGENERAL')) . '" />
-                                                    <p class="tip">' . $obj->l('The id containing the container div of all checkout process') . '. <em>' . $obj->l('Ex:') . ' onepagecheckoutps</em></p>	
-                                            </tr>
-								      		<tr>
-                                                <td class="columna1">' . $obj->l('Submit checkout button ID') . ': </td>
-                                                <td class="columna2" id="nacex_opc_id_boton">
-                                                    <input type="text" ' . $nacex_opc_id_boton_DIS . ' name="nacex_opc_id_boton" value="' . Tools::getValue('nacex_opc_id_boton', Configuration::get('NACEX_OPC_ID_BOTON')) . '" />
-                                                    <p class="tip">' . $obj->l('The id containing the submit checkout button') . '. <em>' . $obj->l('Ex:') . ' btn_place_order</em></p>				
-                                                </td>
-                                            </tr>
-                                            
-								      		<tr>
-                                                <td class="columna1">' . $obj->l('Selecciona los servicios Nacexshop creados a mano') . ': </td>
-                                                <td class="columna2" id="nacexshop_external_modules">
-									  					' . showError($errores, 'nacexshop_external_modules') . '
-															' . $divservices . '
-                                                </td>	
-                                            </tr>
-								      	</table>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Frontend services logo\'s width') . '</label>
+											<div class="col-lg-9">
+												<input type="text" class="form-control" maxlength="3" placeholder="px" name="nacex_logoservs_width" value="' . Tools::getValue('nacex_logoservs_width', Configuration::get('NACEX_LOGOSERVS_WIDTH')) . '" style="max-width:100px;" />
+												<small class="form-text text-muted">' . $obj->l('Leave blank for original size') . '</small>
+											</div>
+										</div>
+										' . nacexutils::getRadioHTML('Show 0€ cost rates', 'nacex_mostrar_coste0', 'NO', $nacex_mostrar_coste0_no, 'SI', $nacex_mostrar_coste0_si, 'It let show or hide carriers which cost is 0€')
+        . nacexutils::getRadioHTML('Show Generate Expedition form to 3rd party carriers', 'nacex_force_genform', 'NO', $force_genform_no, 'SI', $force_genform_si, 'Show Generate Expedition form to 3rd party carriers') . '
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Los portes se añaden') . '</label>
+											<div class="col-lg-9">
+												<select class="form-control" name="nacex_cobro_portes" style="max-width:335px;">
+													<option ' . nacexutils::markSelectedOption('nacex_cobro_portes', 'NACEX_COBRO_PORTES', 'D') . ' value="D">' . $obj->l('Después de aplicar IVA al pedido') . '</option>
+													<option ' . nacexutils::markSelectedOption('nacex_cobro_portes', 'NACEX_COBRO_PORTES', 'A') . ' value="A">' . $obj->l('Antes de aplicar IVA') . '</option>
+												</select>
+											</div>
+										</div>
+										' . nacexutils::getRadioHTML('Is there any third-party OPC (One Page Checkout)?', 'nacex_opc_external', 'NO', $nacex_opc_external_no, 'SI', $nacex_opc_external_si, null, "javascript:disableValor('nacex_opc_id_divgeneral');disableValor('nacex_opc_id_boton');", "javascript:enableValor('nacex_opc_id_divgeneral');enableValor('nacex_opc_id_boton');") . '
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('ID of the general div of the checkout') . '</label>
+											<div class="col-lg-9">
+												<input type="text" class="form-control" ' . $nacex_opc_id_divgeneral_DIS . ' name="nacex_opc_id_divgeneral" value="' . Tools::getValue('nacex_opc_id_divgeneral', Configuration::get('NACEX_OPC_ID_DIVGENERAL')) . '" style="max-width:335px;" />
+												<small class="form-text text-muted">' . $obj->l('The id containing the container div of all checkout process') . '. <em>' . $obj->l('Ex:') . ' onepagecheckoutps</em></small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Submit checkout button ID') . '</label>
+											<div class="col-lg-9">
+												<input type="text" class="form-control" ' . $nacex_opc_id_boton_DIS . ' name="nacex_opc_id_boton" value="' . Tools::getValue('nacex_opc_id_boton', Configuration::get('NACEX_OPC_ID_BOTON')) . '" style="max-width:335px;" />
+												<small class="form-text text-muted">' . $obj->l('The id containing the submit checkout button') . '. <em>' . $obj->l('Ex:') . ' btn_place_order</em></small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Selecciona los servicios Nacexshop creados a mano') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacexshop_external_modules') . $divservices . '
+											</div>
+										</div>
 									</div>
 								</div>
 
