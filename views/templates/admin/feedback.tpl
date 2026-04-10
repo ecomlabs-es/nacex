@@ -116,7 +116,7 @@
             </div>
         {/if}
 
-        <form action="{$module_root}/NacexFeedbackAjaxController.php" method="post" class="form atencion-cliente" style="width:100%;max-width:700px;">
+        <form action="{$module_root}/NacexFeedbackAjaxController.php" method="post" class="form atencion-cliente">
 
             <div class="form-group">
                 <label for="tipo">{l s='Choose your consultation type' mod="nacex"}</label>
