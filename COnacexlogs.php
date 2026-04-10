@@ -3,6 +3,13 @@
 //SET ENVIRONMENT
 include dirname(__FILE__) . '/../../config/config.inc.php';
 include dirname(__FILE__) . '/../../init.php';
+
+// Forzar idioma del empleado para traducciones
+$cookie = new Cookie('psAdmin');
+if ($cookie->id_lang) {
+    Context::getContext()->language = new Language((int) $cookie->id_lang);
+}
+
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ROnacexlogs.php';
 $_router = new ROnacexlogs();
 
