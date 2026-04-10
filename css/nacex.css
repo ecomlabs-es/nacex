@@ -335,34 +335,20 @@ http://www.generateit.net/css-optimize/index.php
 		width:100%;
 	}
 
-	table#ncx_tabla_listado td {
-		padding: 0 2px;
-		border-bottom: none;
-	}
-
+	table#ncx_tabla_listado td,
 	table#ncx_tabla_listado th {
-		font-size: 11px;
+		padding: 0.75em 0.5em;
+		vertical-align: middle;
+	}
+
+	table#ncx_tabla_listado thead th {
+		font-size: 12px;
 		text-align: center;
-		padding: 0 2px;
 	}
 
-	/*table#ncx_tabla_listado a {
-		color:blue;
-		text-decoration:underline;
-	}*/
-	table#ncx_tabla_listado a.ballLink {
-		background-color: #FF5100;
-		color: #fff;
-		border-radius: 50%;
-		border: 1.5px solid #ff5100;
-		padding: 0.25em;
-		text-decoration: none;
-	}
-
-	table#ncx_tabla_listado a.ballLink:hover {
-		background-color: #fff;
-		color: #ff5510;
-		border: 1.5px solid #ff5100;
+	table#ncx_tabla_listado td:nth-child(2) {
+		width: 180px;
+		min-width: 180px;
 	}
 
 	#ncx_info_exp input#cancelIcon:hover {
