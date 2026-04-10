@@ -16,7 +16,6 @@ class VInacexlogs
         $webimg = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
         return "
-            <div class='panel'>
                 <div class='panel-heading' style='display:flex;align-items:center;justify-content:space-between;'>
                     <div style='display:flex;align-items:center;gap:1em;'>
                         <a target='_blank' href='https://www.nacex.es'>
@@ -32,8 +31,7 @@ class VInacexlogs
                             <i class='material-icons' style='font-size:14px;vertical-align:middle;'>delete</i> " . $nacex->l('Delete logs') . "
                         </button>
                     </div>
-                </div>
-            </div>";
+                </div>";
     }
 
     public static function content_directory($_file, $path, $index)

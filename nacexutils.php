@@ -474,7 +474,7 @@ class nacexutils
         $_files = scandir($_path);
         if (sizeof($_files) > 2) {
             /** Creamos la tabla para que se visualicen bien **/
-            $_html .= '<div class="panel"><div class="table-responsive">
+            $_html .= '<div class="table-responsive">
                         <table id="tabla-nacexlogs" class="table table-hover">
                             <thead>
                                 <tr>
@@ -494,7 +494,7 @@ class nacexutils
                 }
             }
             /** Cerramos tabla creada **/
-            $_html .= '</tbody></table></div></div>';
+            $_html .= '</tbody></table></div>';
 
         } else {
             $_html = VInacexlogs::content_directory_no_files();

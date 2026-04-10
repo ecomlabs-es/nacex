@@ -27,8 +27,10 @@ class AdminNacexLogsController extends ModuleAdminController
                     nacexlogs.get('init', Base_uri);
                 });
             </script>
-            <div id='cabecera'></div>
-            <div id='resultado'></div>";
+            <div class='panel'>
+                <div id='cabecera'></div>
+                <div id='resultado'></div>
+            </div>";
 
         $this->context->smarty->assign('content', $html);
     }
