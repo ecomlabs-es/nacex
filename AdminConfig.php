@@ -90,55 +90,26 @@ function getFormularioConfiguracion($obj)
                 var impMinGratInt = "' . Tools::getValue('nacexint_importe_min_grat_val', Configuration::get('NACEXINT_IMP_MIN_GRAT_VAL')) . '";
                                                         
                 // Habilitamos o deshabilitamos campos según la opción que tengamos marcada al principio
-                if($("select[name=\'nacex_calculo_importe_std\']").val() == "flat_rate") {
-                    enableValor(\'nacex_importe_fijo_val\', false);
-                    //disableImpMinGrat(\'nacex_importe_min_grat\',\'nacex_importe_min_grat_val\');                                                
-                } else {
-                    disableValor(\'nacex_importe_fijo_val\');
-                    //enableImpMinGrat(\'nacex_importe_min_grat\',\'nacex_importe_min_grat_val\', impMinGrat);
-                }
-                if($("select[name=\'nacex_calculo_importe_shp\']").val() == "flat_rate") {
-                    enableValor(\'nacexshop_importe_fijo_val\', false);
-                    //disableImpMinGrat(\'nacexshop_importe_min_grat\',\'nacexshop_importe_min_grat_val\');                                                
-                } else {
-                    disableValor(\'nacexshop_importe_fijo_val\');
-                    //enableImpMinGrat(\'nacexshop_importe_min_grat\',\'nacexshop_importe_min_grat_val\', impMinGratShp);
-                }
-                if($("select[name=\'nacex_calculo_importe_int\']").val() == "flat_rate") {
-                    enableValor(\'nacexint_importe_fijo_val\', false);
-                    //disableImpMinGrat(\'nacexint_importe_min_grat\',\'nacexint_importe_min_grat_val\');                                                
-                } else {
-                    disableValor(\'nacexint_importe_fijo_val\');
-                    //enableImpMinGrat(\'nacexint_importe_min_grat\',\'nacexint_importe_min_grat_val\', impMinGratInt);
-                }
-                
-                // Habilitamos o deshabilitamos campos al seleccionar una opción
-                $("select[name=\'nacex_calculo_importe_std\']").on("change", function() {
-                    if(this.value == "flat_rate") {
-                        enableValor(\'nacex_importe_fijo_val\');
-                        //disableImpMinGrat(\'nacex_importe_min_grat\',\'nacex_importe_min_grat_val\');                                                
+                // Mostrar/ocultar importe fijo según método de cálculo
+                function toggleFlatRate(selectName, divId) {
+                    if($("select[name=\'" + selectName + "\']").val() == "flat_rate") {
+                        $("#" + divId).show();
                     } else {
-                        disableValor(\'nacex_importe_fijo_val\');
-                        //enableImpMinGrat(\'nacex_importe_min_grat\',\'nacex_importe_min_grat_val\', impMinGrat);
+                        $("#" + divId).hide();
                     }
+                }
+                toggleFlatRate("nacex_calculo_importe_std", "row_nacex_importe_fijo_val");
+                toggleFlatRate("nacex_calculo_importe_shp", "row_nacexshop_importe_fijo_val");
+                toggleFlatRate("nacex_calculo_importe_int", "row_nacexint_importe_fijo_val");
+
+                $("select[name=\'nacex_calculo_importe_std\']").on("change", function() {
+                    toggleFlatRate("nacex_calculo_importe_std", "row_nacex_importe_fijo_val");
                 });
                 $("select[name=\'nacex_calculo_importe_shp\']").on("change", function() {
-                    if(this.value == "flat_rate") {
-                        enableValor(\'nacexshop_importe_fijo_val\');
-                        //disableImpMinGrat(\'nacexshop_importe_min_grat\',\'nacexshop_importe_min_grat_val\');                                                
-                    } else {
-                        disableValor(\'nacexshop_importe_fijo_val\');
-                        //enableImpMinGrat(\'nacexshop_importe_min_grat\',\'nacexshop_importe_min_grat_val\', impMinGratShp);
-                    }
+                    toggleFlatRate("nacex_calculo_importe_shp", "row_nacexshop_importe_fijo_val");
                 });
                 $("select[name=\'nacex_calculo_importe_int\']").on("change", function() {
-                    if(this.value == "flat_rate") {
-                        enableValor(\'nacexint_importe_fijo_val\');
-                        //disableImpMinGrat(\'nacexint_importe_min_grat\',\'nacexint_importe_min_grat_val\');                                                
-                    } else {
-                        disableValor(\'nacexint_importe_fijo_val\');
-                        //enableImpMinGrat(\'nacexint_importe_min_grat\',\'nacexint_importe_min_grat_val\', impMinGratInt);
-                    }
+                    toggleFlatRate("nacex_calculo_importe_int", "row_nacexint_importe_fijo_val");
                 });
                 
                 // Inicializamos valor para *show developer options*
@@ -956,7 +927,7 @@ function getFormularioConfiguracion($obj)
 												<small class="form-text text-muted">' . $obj->l('Indicates the carrier amount calculation method.') . '</small>
 											</div>
 										</div>
-										<div class="form-group row">
+										<div class="form-group row" id="row_nacex_importe_fijo_val">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Shipping flat amount') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_importe_fijo_val') . '
@@ -1036,7 +1007,7 @@ function getFormularioConfiguracion($obj)
 												<small class="form-text text-muted">' . $obj->l('Indicates the carrier amount calculation method.') . '</small>
 											</div>
 										</div>
-										<div class="form-group row">
+										<div class="form-group row" id="row_nacexshop_importe_fijo_val">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Shipping flat amount') . '</label>
 											<div class="col-lg-9">
 												<input type="text" class="form-control" name="nacexshop_importe_fijo_val" value="' . Tools::getValue('nacexshop_importe_fijo_val', Configuration::get('NACEXSHOP_IMP_FIJO_VAL')) . '" onkeypress="return soloNumeros(event);" onblur="ValidarNum(this.value,this,7,2);" style="max-width:200px;" />
