@@ -747,6 +747,12 @@ function getFormularioConfiguracion($obj)
 												<img style="width:130px;height:auto;" src="' . $nacexDTO->getPath() . 'images/logos/nacex_logista.png" />
 											</a>
 											<span style="font-size:1.1em;">' . $obj->l('Module configuration') . ' <small style="color:#999;">v' . nacexutils::nacexVersion . '</small></span>
+											<span id="ncx-update-badge" style="display:none;">
+												<a href="#" id="ncx-update-link" class="badge badge-warning" style="font-size:12px;cursor:pointer;padding:5px 10px;">
+													<i class="material-icons" style="font-size:14px;vertical-align:middle;">system_update</i>
+													<span id="ncx-update-text">' . $obj->l('Update available') . '</span>
+												</a>
+											</span>
 										</div>
 										<a href="' . $config_pdf . '" target="_blank" class="btn btn-default btn-sm">
 											<i class="material-icons" style="font-size:14px;vertical-align:middle;">picture_as_pdf</i> ' . $obj->l('User manual') . '
@@ -1426,7 +1432,38 @@ ttttttttt' . $saveBtn . '
 
 								</div>
 								</div>
-								</form>';
+								</form>
+								<script>
+								$(document).ready(function() {
+									var updaterUrl = "' . _MODULE_DIR_ . 'nacex/COupdater.php";
+									$.getJSON(updaterUrl, {action: "check"}, function(data) {
+										if (data.has_update) {
+											$("#ncx-update-text").text("' . $obj->l('Update available') . ': " + data.latest);
+											$("#ncx-update-badge").show();
+											$("#ncx-update-link").on("click", function(e) {
+												e.preventDefault();
+												if (!confirm("' . $obj->l('Do you want to update the module to version') . ' " + data.latest + "?")) return;
+												var btn = $(this);
+												btn.find("#ncx-update-text").text("' . $obj->l('Updating...') . '");
+												btn.css("pointer-events", "none");
+												$.getJSON(updaterUrl, {action: "update", zip_url: data.zip_url, tag: data.latest}, function(result) {
+													if (result.success) {
+														btn.removeClass("badge-warning").addClass("badge-success");
+														btn.find("#ncx-update-text").text("' . $obj->l('Updated to') . ' " + result.version + ". ' . $obj->l('Reloading...') . '");
+														setTimeout(function() { location.reload(); }, 2000);
+													} else {
+														btn.find("#ncx-update-text").text("Error: " + (result.error || "Unknown error"));
+														btn.css("pointer-events", "auto");
+													}
+												}).fail(function() {
+													btn.find("#ncx-update-text").text("' . $obj->l('Update failed') . '");
+													btn.css("pointer-events", "auto");
+												});
+											});
+										}
+									});
+								});
+								</script>';
 
     return $html;
 }
