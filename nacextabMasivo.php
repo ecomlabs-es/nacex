@@ -140,6 +140,22 @@ class nacextabMasivo extends ModuleAdminController
         $this->_html .= "</select>
                         </div>
                     </div>
+                    <div class='col-lg-4'>
+                        <div class='form-group'>
+                            <label>" . $this->nacex->l('Carriers') . "</label><br>";
+        foreach ($carriers as $carrier) {
+            $checked = in_array($carrier['id_carrier'], $carriers_seleccionados) || empty($carriers_seleccionados) ? ' checked' : '';
+            $this->_html .= "<label class='checkbox-inline' style='margin-right:0.5em;'><input type='checkbox' name='ncx_carrier_sel[]' value='" . $carrier['id_carrier'] . "'" . $checked . '> ' . $carrier['name'] . '</label>';
+        }
+        $this->_html .= "
+                        </div>
+                    </div>
+                    <div class='col-lg-2' style='display:flex;align-items:flex-end;'>
+                        <div class='form-group' style='width:100%;'>
+                            <input type='hidden' id='accion' name='accion' value='' />
+                            <button type='button' id='searchIcon' class='btn btn-primary btn-block'><i class='material-icons' style='font-size:14px;vertical-align:middle;'>search</i> " . $this->nacex->l('Search orders') . "</button>
+                        </div>
+                    </div>
                 </div>
                 <div class='form-group'>
                     <div class='btn-group btn-group-sm' role='group'>
@@ -150,26 +166,8 @@ class nacextabMasivo extends ModuleAdminController
                         <button type='button' class='btn btn-default' onclick=\"setRango('" . $estemes_desde . "','" . $estemes_hasta . "')\">" . $this->nacex->l('This month') . "</button>
                     </div>
                 </div>
-                <div class='row'>
-                    <div class='col-lg-8'>
-                        <div class='form-group'>
-                            <label>" . $this->nacex->l('Carriers') . '</label><br>';
-        foreach ($carriers as $carrier) {
-            $checked = in_array($carrier['id_carrier'], $carriers_seleccionados) || empty($carriers_seleccionados) ? ' checked' : '';
-            $this->_html .= "<label class='checkbox-inline' style='margin-right:1em;'><input type='checkbox' name='ncx_carrier_sel[]' value='" . $carrier['id_carrier'] . "'" . $checked . '> ' . $carrier['name'] . '</label>';
-        }
-        $this->_html .= "
-                        </div>
-                    </div>
-                    <div class='col-lg-2' style='display:flex;align-items:flex-end;'>
-                        <div class='form-group' style='width:100%;'>
-                            <input type='hidden' id='accion' name='accion' value='' />
-                            <button type='button' id='searchIcon' class='btn btn-primary btn-block'><i class='material-icons' style='font-size:14px;vertical-align:middle;'>search</i> " . $this->nacex->l('Search orders') . '</button>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>';
+        </div>";
 
         $this->_html .= "
             <script type='text/javascript'>
