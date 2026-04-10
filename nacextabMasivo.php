@@ -116,13 +116,13 @@ class nacextabMasivo extends ModuleAdminController
             </div>
             <div class='panel-body'>
                 <div class='row'>
-                    <div class='col-lg-6'>
+                    <div class='col-lg-2'>
                         <div class='form-group'>
                             <label for='ncx_desde'>" . $this->nacex->l('From') . "</label>
                             <input id='ncx_desde' type='date' class='form-control' value='" . $fecha_desde . "' name='date_from'>
                         </div>
                     </div>
-                    <div class='col-lg-6'>
+                    <div class='col-lg-2'>
                         <div class='form-group'>
                             <label for='ncx_hasta'>" . $this->nacex->l('To') . "</label>
                             <input id='ncx_hasta' type='date' class='form-control' value='" . $fecha_hasta . "' name='date_to'>
@@ -139,7 +139,7 @@ class nacextabMasivo extends ModuleAdminController
                     </div>
                 </div>
                 <div class='row'>
-                    <div class='col-lg-4'>
+                    <div class='col-lg-2'>
                         <div class='form-group'>
                             <label for='ncx_estado'>" . $this->nacex->l('Order status') . "</label>
                             <select id='ncx_estado' name='ncx_estado' class='form-control'>
