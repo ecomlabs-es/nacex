@@ -762,7 +762,7 @@ function getFormularioConfiguracion($obj)
 									<div class="panel-heading">' . $obj->l('Connection settings') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Iona URL') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_print_iona">' . $obj->l('Iona URL') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_print_iona') . '
 												<input type="text" class="form-control" name="nacex_print_iona" value="' . nacexDTO::$url_iona . '" readonly/>
@@ -774,7 +774,7 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Labeller model') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_print_model">' . $obj->l('Labeller model') . '</label>
 											<div class="col-lg-9">
 												<select class="form-control" name="nacex_print_model" id="nacex_print_model" style="max-width:335px;">
 													<option disabled="disabled" selected></option>
@@ -791,7 +791,7 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Printer') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_print_et">' . $obj->l('Printer') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_print_et') . '
 												<input type="text" class="form-control" name="nacex_print_et" value="' . Tools::getValue('nacex_print_et', Configuration::get('NACEX_PRINT_ET')) . '" style="max-width:335px;" />
@@ -799,14 +799,14 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Web Service user') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_wsusername">' . $obj->l('Web Service user') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_wsusername') . '
 												<input type="text" class="form-control" name="nacex_wsusername" value="' . Tools::getValue('nacex_wsusername', Configuration::get('NACEX_WSUSERNAME')) . '" style="max-width:335px;" />
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Web Service password') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_wspassword">' . $obj->l('Web Service password') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_wspassword') . '
 												<input type="password" class="form-control" name="nacex_wspassword" value="' . Tools::getValue('nacex_wspassword', Configuration::get('NACEX_WSPASSWORD_ORIGINAL')) . '" style="max-width:335px;" />
@@ -828,7 +828,7 @@ function getFormularioConfiguracion($obj)
 									<div class="panel-heading">' . $obj->l('Subscriber settings') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Agencies/Customers') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_agcli">' . $obj->l('Agencies/Customers') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_agcli') . '
 												<input type="text" class="form-control" name="nacex_agcli" value="' . Tools::getValue('nacex_agcli', Configuration::get('NACEX_AGCLI')) . '" style="max-width:335px;" />
@@ -836,7 +836,7 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Customer departaments') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_departamentos">' . $obj->l('Customer departaments') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_departamentos') . '
 												<input type="text" class="form-control" name="nacex_departamentos" value="' . Tools::getValue('nacex_departamentos', Configuration::get('NACEX_DEPARTAMENTOS')) . '" style="max-width:335px;" />
@@ -844,7 +844,7 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Shipment pickup postcode') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_cprec">' . $obj->l('Shipment pickup postcode') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_cprec') . '
 												<input type="text" class="form-control" name="nacex_cprec" value="' . Tools::getValue('nacex_cprec', Configuration::get('NACEX_CP_REC')) . '" style="max-width:335px;" />
@@ -878,10 +878,10 @@ function getFormularioConfiguracion($obj)
 									<div class="panel-heading">' . $obj->l('Nacex Standard services') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Text for generic service') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_gen_serv_name">' . $obj->l('Text for generic service') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_gen_serv_name') . '
-												<input type="text" class="form-control" name="nacex_gen_serv_name" value="' . Tools::getValue('nacex_gen_serv_name', Configuration::get('NACEX_GEN_SERV_NAME')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" name="nacex_gen_serv_name" id="nacex_gen_serv_name" value="' . Tools::getValue('nacex_gen_serv_name', Configuration::get('NACEX_GEN_SERV_NAME')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('Text to describe Nacex Generic service') . '</small>
 											</div>
 										</div>
@@ -906,10 +906,10 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Default service type') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_default_tip_ser">' . $obj->l('Default service type') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_default_tip_ser') . '
-												<select class="form-control" name="nacex_default_tip_ser" style="max-width:335px;">
+												<select class="form-control" name="nacex_default_tip_ser" id="nacex_default_tip_ser" style="max-width:335px;">
 													<optgroup label="' . $obj->l('Default service type') . '">';
     foreach ($nacexDTO->getServiciosNacex() as $serv => $value) {
         $servname = $value['nombre'];
@@ -920,10 +920,10 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Amount calculation method') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_calculo_importe_std">' . $obj->l('Amount calculation method') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_calculo_importe_std') . '
-												<select class="form-control" name="nacex_calculo_importe_std" style="max-width:335px;">';
+												<select class="form-control" name="nacex_calculo_importe_std" id="nacex_calculo_importe_std" style="max-width:335px;">';
     foreach ($nacexDTO->getMetodosCalculo() as $serv => $value) {
         $typevalue = $value['value'];
         $typelabel = $value['label'];
@@ -934,20 +934,20 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row" id="row_nacex_importe_fijo_val">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Shipping flat amount') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_importe_fijo_val">' . $obj->l('Shipping flat amount') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_importe_fijo_val') . '
-												<input type="text" class="form-control" name="nacex_importe_fijo_val" value="' . Tools::getValue('nacex_importe_fijo_val', Configuration::get('NACEX_IMP_FIJO_VAL')) . '" onkeypress="return soloNumeros(event);" onblur="ValidarNum(this.value,this,7,2);" style="max-width:200px;" />
+												<input type="text" class="form-control" name="nacex_importe_fijo_val" id="nacex_importe_fijo_val" value="' . Tools::getValue('nacex_importe_fijo_val', Configuration::get('NACEX_IMP_FIJO_VAL')) . '" onkeypress="return soloNumeros(event);" onblur="ValidarNum(this.value,this,7,2);" style="max-width:200px;" />
 												<small class="form-text text-muted">' . $obj->l('Shipping flat amount to apply to a carrier.') . '<br><em>' . $obj->l('It will be used also on Web Service communication error to assign a default price to the carrier.') . '</em></small>
 											</div>
 										</div>
 																					' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacex_importe_min_grat', 'NO', $nacex_importe_min_grat_no, 'SI', $nacex_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacex_importe_min_grat_val')", "javascript:enableValor('nacex_importe_min_grat_val')")
         . '
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Free minimum amount') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_importe_min_grat_val">' . $obj->l('Free minimum amount') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_importe_min_grat_val') . '
-												<input type="number" step="0.01" min="0" lang="en" class="form-control" ' . $nacex_importe_min_grat_DIS . ' name="nacex_importe_min_grat_val" value="' . Tools::getValue('nacex_importe_min_grat_val', Configuration::get('NACEX_IMP_MIN_GRAT_VAL')) . '" style="max-width:200px;" />
+												<input type="number" step="0.01" min="0" lang="en" class="form-control" ' . $nacex_importe_min_grat_DIS . ' name="nacex_importe_min_grat_val" id="nacex_importe_min_grat_val" value="' . Tools::getValue('nacex_importe_min_grat_val', Configuration::get('NACEX_IMP_MIN_GRAT_VAL')) . '" style="max-width:200px;" />
 												' . $divInfoImpMinGrat . '
 												<small class="form-text text-muted">' . $obj->l('Order amount from which shipping costs will be free') . '</small>
 											</div>
@@ -960,10 +960,10 @@ function getFormularioConfiguracion($obj)
 									<div class="panel-heading">' . $obj->l('NacexShop services') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Text for generic service') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacexshop_gen_serv_name">' . $obj->l('Text for generic service') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacexshop_gen_serv_name') . '
-												<input type="text" class="form-control" name="nacexshop_gen_serv_name" value="' . Tools::getValue('nacexshop_gen_serv_name', Configuration::get('NACEXSHOP_GEN_SERV_NAME')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" name="nacexshop_gen_serv_name" id="nacexshop_gen_serv_name" value="' . Tools::getValue('nacexshop_gen_serv_name', Configuration::get('NACEXSHOP_GEN_SERV_NAME')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('Text to describe Nacex Generic service') . '</small>
 											</div>
 										</div>
@@ -987,10 +987,10 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Default service type') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_default_tip_nxshop_ser">' . $obj->l('Default service type') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_default_tip_nxshop_ser') . '
-												<select class="form-control" name="nacex_default_tip_nxshop_ser" style="max-width:335px;">
+												<select class="form-control" name="nacex_default_tip_nxshop_ser" id="nacex_default_tip_nxshop_ser" style="max-width:335px;">
 													<optgroup label="' . $obj->l('Default service type') . '">';
     foreach ($nacexDTO->getServiciosNacexShop() as $serv => $value) {
         $servname = $value['nombre'];
@@ -1001,10 +1001,10 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Amount calculation method') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_calculo_importe_shp">' . $obj->l('Amount calculation method') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_calculo_importe_shp') . '
-												<select class="form-control" name="nacex_calculo_importe_shp" style="max-width:335px;">';
+												<select class="form-control" name="nacex_calculo_importe_shp" id="nacex_calculo_importe_shp" style="max-width:335px;">';
     foreach ($nacexDTO->getMetodosCalculo() as $serv => $value) {
         $typevalue = $value['value'];
         $typelabel = $value['label'];
@@ -1015,18 +1015,18 @@ function getFormularioConfiguracion($obj)
 											</div>
 										</div>
 										<div class="form-group row" id="row_nacexshop_importe_fijo_val">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Shipping flat amount') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacexshop_importe_fijo_val">' . $obj->l('Shipping flat amount') . '</label>
 											<div class="col-lg-9">
-												<input type="text" class="form-control" name="nacexshop_importe_fijo_val" value="' . Tools::getValue('nacexshop_importe_fijo_val', Configuration::get('NACEXSHOP_IMP_FIJO_VAL')) . '" onkeypress="return soloNumeros(event);" onblur="ValidarNum(this.value,this,7,2);" style="max-width:200px;" />
+												<input type="text" class="form-control" name="nacexshop_importe_fijo_val" id="nacexshop_importe_fijo_val" value="' . Tools::getValue('nacexshop_importe_fijo_val', Configuration::get('NACEXSHOP_IMP_FIJO_VAL')) . '" onkeypress="return soloNumeros(event);" onblur="ValidarNum(this.value,this,7,2);" style="max-width:200px;" />
 												<small class="form-text text-muted">' . $obj->l('Shipping flat amount to apply to a carrier.') . '<br><em>' . $obj->l('It will be used also on Web Service communication error to assign a default price to the carrier.') . '</em></small>
 											</div>
 										</div>
 																					' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacexshop_importe_min_grat', 'NO', $nacexshop_importe_min_grat_no, 'SI', $nacexshop_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacexshop_importe_min_grat_val')", "javascript:enableValor('nacexshop_importe_min_grat_val')")
         . '
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Free minimum amount') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacexshop_importe_min_grat_val">' . $obj->l('Free minimum amount') . '</label>
 											<div class="col-lg-9">
-												<input type="number" step="0.01" min="0" lang="en" class="form-control" ' . $nacexshop_importe_min_grat_DIS . ' name="nacexshop_importe_min_grat_val" value="' . Tools::getValue('nacexshop_importe_min_grat_val', Configuration::get('NACEXSHOP_IMP_MIN_GRAT_VAL')) . '" style="max-width:200px;" />
+												<input type="number" step="0.01" min="0" lang="en" class="form-control" ' . $nacexshop_importe_min_grat_DIS . ' name="nacexshop_importe_min_grat_val" id="nacexshop_importe_min_grat_val" value="' . Tools::getValue('nacexshop_importe_min_grat_val', Configuration::get('NACEXSHOP_IMP_MIN_GRAT_VAL')) . '" style="max-width:200px;" />
 												' . $divInfoImpMinGratShop . '
 												<small class="form-text text-muted">' . $obj->l('Order amount from which shipping costs will be free') . '</small>
 											</div>
@@ -1040,10 +1040,10 @@ ttttttttt' . $saveBtn . '
 									<div class="panel-body">
 										<div class="alert alert-info">' . $obj->l('To use international services you must create a carrier for every service and define weight scaled rates for each country you want to ship') . '</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Text for generic service') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacexint_gen_serv_name">' . $obj->l('Text for generic service') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacexint_gen_serv_name') . '
-												<input type="text" class="form-control" name="nacexint_gen_serv_name" value="' . Tools::getValue('nacexint_gen_serv_name', Configuration::get('NACEXINT_GEN_SERV_NAME')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" name="nacexint_gen_serv_name" id="nacexint_gen_serv_name" value="' . Tools::getValue('nacexint_gen_serv_name', Configuration::get('NACEXINT_GEN_SERV_NAME')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('Text to describe Nacex Generic service') . '</small>
 											</div>
 										</div>
@@ -1061,10 +1061,10 @@ ttttttttt' . $saveBtn . '
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Default service type') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_default_tip_ser_int">' . $obj->l('Default service type') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_default_tip_ser_int') . '
-												<select class="form-control" name="nacex_default_tip_ser_int" style="max-width:335px;">
+												<select class="form-control" name="nacex_default_tip_ser_int" id="nacex_default_tip_ser_int" style="max-width:335px;">
 													<optgroup label="' . $obj->l('Default service type') . '">';
     foreach ($nacexDTO->getServiciosNacexInt() as $serv => $value) {
         $servname = $value['nombre'];
@@ -1075,10 +1075,10 @@ ttttttttt' . $saveBtn . '
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Amount calculation method') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_calculo_importe_int">' . $obj->l('Amount calculation method') . '</label>
 											<div class="col-lg-9">
 												' . showError($errores, 'nacex_calculo_importe_int') . '
-												<select class="form-control" name="nacex_calculo_importe_int" style="max-width:335px;">';
+												<select class="form-control" name="nacex_calculo_importe_int" id="nacex_calculo_importe_int" style="max-width:335px;">';
     foreach ($nacexDTO->getMetodosCalculo() as $serv => $value) {
         $typevalue = $value['value'];
         $typelabel = $value['label'];
@@ -1089,24 +1089,24 @@ ttttttttt' . $saveBtn . '
 											</div>
 										</div>
 										<div class="form-group row" id="row_nacexint_importe_fijo_val">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Shipping flat amount') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacexint_importe_fijo_val">' . $obj->l('Shipping flat amount') . '</label>
 											<div class="col-lg-9">
-												<input type="text" class="form-control" name="nacexint_importe_fijo_val" value="' . Tools::getValue('nacexint_importe_fijo_val', Configuration::get('NACEXINT_IMP_FIJO_VAL')) . '" onkeypress="return soloNumeros(event);" onblur="ValidarNum(this.value,this,7,2);" style="max-width:200px;" />
+												<input type="text" class="form-control" name="nacexint_importe_fijo_val" id="nacexint_importe_fijo_val" value="' . Tools::getValue('nacexint_importe_fijo_val', Configuration::get('NACEXINT_IMP_FIJO_VAL')) . '" onkeypress="return soloNumeros(event);" onblur="ValidarNum(this.value,this,7,2);" style="max-width:200px;" />
 												<small class="form-text text-muted">' . $obj->l('Shipping flat amount to apply to a carrier.') . '<br><em>' . $obj->l('It will be used also on Web Service communication error to assign a default price to the carrier.') . '</em></small>
 											</div>
 										</div>
 										' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacexint_importe_min_grat', 'NO', $nacexint_importe_min_grat_no, 'SI', $nacexint_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacexint_importe_min_grat_val')", "javascript:enableValor('nacexint_importe_min_grat_val')")
         . '
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Free minimum amount') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacexint_importe_min_grat_val">' . $obj->l('Free minimum amount') . '</label>
 											<div class="col-lg-9">
-												<input type="number" step="0.01" min="0" lang="en" class="form-control" ' . $nacexint_importe_min_grat_DIS . ' name="nacexint_importe_min_grat_val" value="' . Tools::getValue('nacexint_importe_min_grat_val', Configuration::get('NACEXINT_IMP_MIN_GRAT_VAL')) . '" style="max-width:200px;" />
+												<input type="number" step="0.01" min="0" lang="en" class="form-control" ' . $nacexint_importe_min_grat_DIS . ' name="nacexint_importe_min_grat_val" id="nacexint_importe_min_grat_val" value="' . Tools::getValue('nacexint_importe_min_grat_val', Configuration::get('NACEXINT_IMP_MIN_GRAT_VAL')) . '" style="max-width:200px;" />
 												' . $divInfoImpMinGratInt . '
 												<small class="form-text text-muted">' . $obj->l('Order amount from which shipping costs will be free') . '</small>
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Default shipping content') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_default_contenido">' . $obj->l('Default shipping content') . '</label>
 											<div class="col-lg-9">
 												<select class="form-control" id="nacex_default_contenido" name="nacex_default_contenido" style="max-width:375px;">';
     foreach ($nacexDTO->getContenidos() as $value) {
@@ -1117,9 +1117,9 @@ ttttttttt' . $saveBtn . '
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Default Nacex International shipment type') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_tip_env_int">' . $obj->l('Default Nacex International shipment type') . '</label>
 											<div class="col-lg-9">
-												<label class="radio-inline"><input type="radio" name="nacex_tip_env_int" value="M" ' . $tip_env_mu . '/> M - ' . $obj->l('MUESTRAS') . '</label>
+												<label class="radio-inline"><input type="radio" name="nacex_tip_env_int" id="nacex_tip_env_int" value="M" ' . $tip_env_mu . '/> M - ' . $obj->l('MUESTRAS') . '</label>
 												<label class="radio-inline"><input type="radio" name="nacex_tip_env_int" value="D" ' . $tip_env_do . '/> D - ' . $obj->l('DOCUMENTOS') . '</label>
 											</div>
 										</div>
@@ -1148,9 +1148,9 @@ ttttttttt' . $saveBtn . '
     foreach ($statusSelects as $ss) {
         $sel = Configuration::get($ss['config']);
         $html .= '<div class="form-group row">
-            <label class="col-lg-3 col-form-label">' . $obj->l($ss['label']) . '</label>
+            <label class="col-lg-3 col-form-label" for="' . $ss['name'] . '">' . $obj->l($ss['label']) . '</label>
             <div class="col-lg-9">
-                <select class="form-control" name="' . $ss['name'] . '" style="max-width:335px;">
+                <select class="form-control" name="' . $ss['name'] . '" id="' . $ss['name'] . '" style="max-width:335px;">
                     <option value="">' . $obj->l('None') . '</option>';
         foreach ($estados as $estado) {
             if (isset($estado['id_order_state'])) {
@@ -1174,9 +1174,9 @@ ttttttttt' . $saveBtn . '
     <hr>
 
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Default Charge Type') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_tip_cob">' . $obj->l('Default Charge Type') . '</label>
         <div class="col-lg-9">
-            <label class="radio-inline"><input type="radio" name="nacex_tip_cob" value="O" ' . $tip_cob_01 . '/> O - ' . $obj->l('Origin') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_tip_cob" id="nacex_tip_cob" value="O" ' . $tip_cob_01 . '/> O - ' . $obj->l('Origin') . '</label>
             <label class="radio-inline"><input type="radio" name="nacex_tip_cob" value="D" ' . $tip_cob_02 . '/> D - ' . $obj->l('Destiny') . '</label>
             <label class="radio-inline"><input type="radio" name="nacex_tip_cob" value="T" ' . $tip_cob_03 . '/> T - ' . $obj->l('Third') . '</label>
             <small class="form-text text-muted"><strong>' . $obj->l('In International shipping ONLY available in ORIGIN') . '</strong></small>
@@ -1191,18 +1191,18 @@ ttttttttt' . $saveBtn . '
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Default refund type') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_tip_ree">' . $obj->l('Default refund type') . '</label>
         <div class="col-lg-9">
-            <label class="radio-inline"><input type="radio" name="nacex_tip_ree" value="O" ' . $tip_ree_01 . '/> O - ' . $obj->l('Origen') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_tip_ree" id="nacex_tip_ree" value="O" ' . $tip_ree_01 . '/> O - ' . $obj->l('Origen') . '</label>
             <label class="radio-inline"><input type="radio" name="nacex_tip_ree" value="D" ' . $tip_ree_02 . '/> D - ' . $obj->l('Destino') . '</label>
             <label class="radio-inline"><input type="radio" name="nacex_tip_ree" value="T" ' . $tip_ree_03 . '/> T - ' . $obj->l('Tercera') . '</label>
             <small class="form-text text-muted"><strong>' . $obj->l('In Internacional shipping REFUND is NOT available') . '</strong></small>
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Default shipment type') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_tip_env">' . $obj->l('Default shipment type') . '</label>
         <div class="col-lg-9">
-            <label class="radio-inline"><input type="radio" name="nacex_tip_env" value="0" ' . $tip_env_docs . '/> 0 - DOCS</label>
+            <label class="radio-inline"><input type="radio" name="nacex_tip_env" id="nacex_tip_env" value="0" ' . $tip_env_docs . '/> 0 - DOCS</label>
             <label class="radio-inline"><input type="radio" name="nacex_tip_env" value="1" ' . $tip_env_bag . '/> 1 - BAG</label>
             <label class="radio-inline"><input type="radio" name="nacex_tip_env" value="2" ' . $tip_env_paq . '/> 2 - PAQ</label>
             <small class="form-text text-muted">' . $obj->l('Shipment type for Spain, Portugal and Andorra') . '</small>
@@ -1213,16 +1213,16 @@ ttttttttt' . $saveBtn . '
         . nacexutils::getRadioHTML('Add Additional Instructions to label', 'nacex_ins_pers', 'NO', $ins_adi_pers_no, 'SI', $ins_adi_pers_si, 'It allows adding comments to shipment by additional instructions.', "javascript:disableValor('nacex_custom_inst_pers');disableValor('nacex_custom_obs');", "javascript:enableValor('nacex_custom_inst_pers');enableValor('nacex_custom_obs');") . '
 
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Additional Instructions text') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_custom_inst_pers">' . $obj->l('Additional Instructions text') . '</label>
         <div class="col-lg-9">
-            <input type="text" class="form-control" ' . $ins_adi_pers_DIS . ' maxlength="600" name="nacex_custom_inst_pers" value="' . Tools::getValue('nacex_inst_adi', Configuration::get('NACEX_CUSTOM_INST_ADI')) . '" style="max-width:335px;" />
+            <input type="text" class="form-control" ' . $ins_adi_pers_DIS . ' maxlength="600" name="nacex_custom_inst_pers" id="nacex_custom_inst_pers" value="' . Tools::getValue('nacex_inst_adi', Configuration::get('NACEX_CUSTOM_INST_ADI')) . '" style="max-width:335px;" />
             <small class="form-text text-muted">' . $obj->l('Additional Instructions content that will be added on generating all shipments by default') . ' (' . $obj->l('Max. size: 600 chars.') . ')</small>
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Observations text') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_custom_obs">' . $obj->l('Observations text') . '</label>
         <div class="col-lg-9">
-            <input type="text" class="form-control" ' . $obs_DIS . ' maxlength="76" name="nacex_custom_obs" value="' . Tools::getValue('nacex_custom_obs', Configuration::get('NACEX_CUSTOM_OBS')) . '" style="max-width:335px;" />
+            <input type="text" class="form-control" ' . $obs_DIS . ' maxlength="76" name="nacex_custom_obs" id="nacex_custom_obs" value="' . Tools::getValue('nacex_custom_obs', Configuration::get('NACEX_CUSTOM_OBS')) . '" style="max-width:335px;" />
             <small class="form-text text-muted">' . $obj->l('Observations content that will be added on generating all shipments by default') . ' (' . $obj->l('Max. size: 76 chars.') . ')</small>
         </div>
     </div>
@@ -1232,17 +1232,17 @@ ttttttttt' . $saveBtn . '
         . nacexutils::getRadioHTML('Custom reference', 'nacex_ref_pers', 'NO', $nacex_ref_pers_no, 'SI', $nacex_ref_pers_si, 'The reference is composed by a custom prefix and an ID (order id). Reference must have 20 digit max.', "javascript:disableValor('nacex_ref_pers_prefijo')", "javascript:enableValor('nacex_ref_pers_prefijo')") . '
 
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Custom reference prefix') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_ref_pers_prefijo">' . $obj->l('Custom reference prefix') . '</label>
         <div class="col-lg-9">
             ' . showError($errores, 'nacex_ref_pers_prefijo') . '
-            <input type="text" class="form-control" placeholder="' . $obj->l('Reference') . '" ' . $nacex_ref_pers_DIS . ' name="nacex_ref_pers_prefijo" value="' . Tools::getValue('nacex_ref_pers_prefijo', Configuration::get('NACEX_REF_PERS_PREFIJO')) . '" style="max-width:335px;" />
+            <input type="text" class="form-control" placeholder="' . $obj->l('Reference') . '" ' . $nacex_ref_pers_DIS . ' name="nacex_ref_pers_prefijo" id="nacex_ref_pers_prefijo" value="' . Tools::getValue('nacex_ref_pers_prefijo', Configuration::get('NACEX_REF_PERS_PREFIJO')) . '" style="max-width:335px;" />
             <small class="form-text text-muted">' . $obj->l('Shipment reference prefix. It doesn\'t have to contain blank spaces nor special chars.') . ' ' . $obj->l('Ex:') . ' NACEX_</small>
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Default insurance type') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_default_tip_seg">' . $obj->l('Default insurance type') . '</label>
         <div class="col-lg-9">
-            <select class="form-control" name="nacex_default_tip_seg" style="max-width:335px;">';
+            <select class="form-control" name="nacex_default_tip_seg" id="nacex_default_tip_seg" style="max-width:335px;">';
     foreach ($nacexDTO->getSeguros() as $seg => $value) {
         $html .= '<option ' . nacexutils::markSelectedOption('nacex_default_tip_seg', 'NACEX_DEFAULT_TIP_SEG', $seg) . ' value="' . $seg . '">' . $value['nombre'] . '</option>';
     }
@@ -1250,7 +1250,7 @@ ttttttttt' . $saveBtn . '
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Default insured amount') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_default_imp_seg">' . $obj->l('Default insured amount') . '</label>
         <div class="col-lg-9">
             ' . showError($errores, 'nacex_default_imp_seg') . '
             <input type="text" class="form-control" placeholder="€" ' . $nacex_default_imp_seg_DIS . ' id="nacex_default_imp_seg" name="nacex_default_imp_seg" value="' . Tools::getValue('nacex_default_imp_seg', Configuration::get('NACEX_DEFAULT_IMP_SEG')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
@@ -1266,18 +1266,18 @@ ttttttttt' . $saveBtn . '
     </script>
 
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Default prealert type') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_tip_preal">' . $obj->l('Default prealert type') . '</label>
         <div class="col-lg-9">
-            <label class="radio-inline"><input type="radio" onchange="disablePrealerta();" name="nacex_tip_preal" value="N" ' . $nacex_tip_preal_n . '/> ' . $obj->l('No prealerta') . '</label>
+            <label class="radio-inline"><input type="radio" onchange="disablePrealerta();" name="nacex_tip_preal" id="nacex_tip_preal" value="N" ' . $nacex_tip_preal_n . '/> ' . $obj->l('No prealerta') . '</label>
             <label class="radio-inline"><input type="radio" onchange="enablePrealerta();" name="nacex_tip_preal" value="S" ' . $nacex_tip_preal_s . '/> SMS</label>
             <label class="radio-inline"><input type="radio" onchange="enablePrealerta();" name="nacex_tip_preal" value="E" ' . $nacex_tip_preal_e . '/> E-mail</label>
             <small class="form-text text-muted">' . $obj->l('All orders will be generated with selected prealert') . '</small>
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Default prealert mode') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_mod_preal">' . $obj->l('Default prealert mode') . '</label>
         <div class="col-lg-9">
-            <label class="radio-inline"><input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="disableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="S" ' . $nacex_mod_preal_s . '/> Standard</label>
+            <label class="radio-inline"><input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="disableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" id="nacex_mod_preal" value="S" ' . $nacex_mod_preal_s . '/> Standard</label>
             <label class="radio-inline"><input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="enableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="P" ' . $nacex_mod_preal_p . '/> Plus</label>
             <label class="radio-inline"><input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="disableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="R" ' . $nacex_mod_preal_r . '/> Reparto</label>
             <label class="radio-inline"><input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="enableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="E" ' . $nacex_mod_preal_e . '/> Reparto Plus</label>
@@ -1285,48 +1285,48 @@ ttttttttt' . $saveBtn . '
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Prealert Plus message') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_preal_plus_txt">' . $obj->l('Prealert Plus message') . '</label>
         <div class="col-lg-9">
             ' . showError($errores, 'nacex_preal_plus_txt') . '
-            <input type="text" class="form-control" placeholder="' . $obj->l('Message') . '" ' . $nacex_tip_preal_DIS . ' name="nacex_preal_plus_txt" value="' . Tools::getValue('nacex_preal_plus_txt', Configuration::get('NACEX_PREAL_PLUS_TXT')) . '" style="max-width:335px;" />
+            <input type="text" class="form-control" placeholder="' . $obj->l('Message') . '" ' . $nacex_tip_preal_DIS . ' name="nacex_preal_plus_txt" id="nacex_preal_plus_txt" value="' . Tools::getValue('nacex_preal_plus_txt', Configuration::get('NACEX_PREAL_PLUS_TXT')) . '" style="max-width:335px;" />
             <small class="form-text text-muted">' . $obj->l('Additional prealert text. Max. 720 chars.') . '</small>
         </div>
     </div>
     <hr>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Shipping packages') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_bultos">' . $obj->l('Shipping packages') . '</label>
         <div class="col-lg-9">
-            <label class="radio-inline"><input type="radio" name="nacex_bultos" onchange="disableValor(\'nacex_bultos_numero\')" value="C" ' . $nacex_bultos_cesta . '/> ' . $obj->l('Cart items') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_bultos" id="nacex_bultos" onchange="disableValor(\'nacex_bultos_numero\')" value="C" ' . $nacex_bultos_cesta . '/> ' . $obj->l('Cart items') . '</label>
             <label class="radio-inline"><input type="radio" name="nacex_bultos" onchange="enableValor(\'nacex_bultos_numero\')" value="F" ' . $nacex_bultos_fijo . '/> ' . $obj->l('Fixed packages') . '</label>
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Fixed shipping packages') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_bultos_numero">' . $obj->l('Fixed shipping packages') . '</label>
         <div class="col-lg-9">
-            <input type="text" class="form-control" placeholder="' . $obj->l('Packages') . '" ' . $nacex_bultos_DIS . ' name="nacex_bultos_numero" value="' . Tools::getValue('nacex_bultos_numero', Configuration::get('NACEX_BULTOS_NUMERO')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
+            <input type="text" class="form-control" placeholder="' . $obj->l('Packages') . '" ' . $nacex_bultos_DIS . ' name="nacex_bultos_numero" id="nacex_bultos_numero" value="' . Tools::getValue('nacex_bultos_numero', Configuration::get('NACEX_BULTOS_NUMERO')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Shipping weight') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_peso">' . $obj->l('Shipping weight') . '</label>
         <div class="col-lg-9">
-            <label class="radio-inline"><input type="radio" name="nacex_peso" onchange="disableValor(\'nacex_peso_numero\')" value="C" ' . $nacex_peso_cesta . '/> ' . $obj->l('Cart items') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_peso" id="nacex_peso" onchange="disableValor(\'nacex_peso_numero\')" value="C" ' . $nacex_peso_cesta . '/> ' . $obj->l('Cart items') . '</label>
             <label class="radio-inline"><input type="radio" name="nacex_peso" onchange="enableValor(\'nacex_peso_numero\')" value="F" ' . $nacex_peso_fijo . '/> ' . $obj->l('Fixed weight') . '</label>
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Fixed kilos number') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_peso_numero">' . $obj->l('Fixed kilos number') . '</label>
         <div class="col-lg-9">
-            <input type="text" class="form-control" placeholder="' . $obj->l('Kilos') . '" ' . $nacex_peso_cesta_DIS . ' name="nacex_peso_numero" value="' . Tools::getValue('nacex_peso_numero', Configuration::get('NACEX_PESO_NUMERO')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
+            <input type="text" class="form-control" placeholder="' . $obj->l('Kilos') . '" ' . $nacex_peso_cesta_DIS . ' name="nacex_peso_numero" id="nacex_peso_numero" value="' . Tools::getValue('nacex_peso_numero', Configuration::get('NACEX_PESO_NUMERO')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
         </div>
     </div>
 
     ' . nacexutils::getRadioHTML('Apply handling fee', 'nacex_gastos_manipulacion', 'NO', $nacex_gastos_manipulacion_no, 'SI', $nacex_gastos_manipulacion_si, 'It allows to add extra charges to shipping costs.', "javascript:disableValor('nacex_gastos_manipulacion_val')", "javascript:enableValor('nacex_gastos_manipulacion_val')") . '
 
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label">' . $obj->l('Handling fee') . '</label>
+        <label class="col-lg-3 col-form-label" for="nacex_gastos_manipulacion_val">' . $obj->l('Handling fee') . '</label>
         <div class="col-lg-9">
             ' . showError($errores, 'nacex_gastos_manipulacion_val') . '
-            <input type="text" class="form-control" ' . $nacex_gastos_manipulacion_DIS . ' name="nacex_gastos_manipulacion_val" value="' . Tools::getValue('nacex_gastos_manipulacion_val', Configuration::get('NACEX_GASTOS_MANIPULACION_VAL')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
+            <input type="text" class="form-control" ' . $nacex_gastos_manipulacion_DIS . ' name="nacex_gastos_manipulacion_val" id="nacex_gastos_manipulacion_val" value="' . Tools::getValue('nacex_gastos_manipulacion_val', Configuration::get('NACEX_GASTOS_MANIPULACION_VAL')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
             ' . $divInfoGastosMani . '
             <small class="form-text text-muted">' . $obj->l('Amount added in shipping costs for handling expenses') . '</small>
         </div>
@@ -1339,18 +1339,18 @@ ttttttttt' . $saveBtn . '
 									<div class="panel-heading">' . $obj->l('Frontend form') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Frontend services logo\'s width') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_logoservs_width">' . $obj->l('Frontend services logo\'s width') . '</label>
 											<div class="col-lg-9">
-												<input type="text" class="form-control" maxlength="3" placeholder="px" name="nacex_logoservs_width" value="' . Tools::getValue('nacex_logoservs_width', Configuration::get('NACEX_LOGOSERVS_WIDTH')) . '" style="max-width:100px;" />
+												<input type="text" class="form-control" maxlength="3" placeholder="px" name="nacex_logoservs_width" id="nacex_logoservs_width" value="' . Tools::getValue('nacex_logoservs_width', Configuration::get('NACEX_LOGOSERVS_WIDTH')) . '" style="max-width:100px;" />
 												<small class="form-text text-muted">' . $obj->l('Leave blank for original size') . '</small>
 											</div>
 										</div>
 										' . nacexutils::getRadioHTML('Show 0€ cost rates', 'nacex_mostrar_coste0', 'NO', $nacex_mostrar_coste0_no, 'SI', $nacex_mostrar_coste0_si, 'It let show or hide carriers which cost is 0€')
         . nacexutils::getRadioHTML('Show Generate Expedition form to 3rd party carriers', 'nacex_force_genform', 'NO', $force_genform_no, 'SI', $force_genform_si, 'Show Generate Expedition form to 3rd party carriers') . '
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Los portes se añaden') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_cobro_portes">' . $obj->l('Los portes se añaden') . '</label>
 											<div class="col-lg-9">
-												<select class="form-control" name="nacex_cobro_portes" style="max-width:335px;">
+												<select class="form-control" name="nacex_cobro_portes" id="nacex_cobro_portes" style="max-width:335px;">
 													<option ' . nacexutils::markSelectedOption('nacex_cobro_portes', 'NACEX_COBRO_PORTES', 'D') . ' value="D">' . $obj->l('Después de aplicar IVA al pedido') . '</option>
 													<option ' . nacexutils::markSelectedOption('nacex_cobro_portes', 'NACEX_COBRO_PORTES', 'A') . ' value="A">' . $obj->l('Antes de aplicar IVA') . '</option>
 												</select>
@@ -1358,16 +1358,16 @@ ttttttttt' . $saveBtn . '
 										</div>
 										' . nacexutils::getRadioHTML('Is there any third-party OPC (One Page Checkout)?', 'nacex_opc_external', 'NO', $nacex_opc_external_no, 'SI', $nacex_opc_external_si, null, "javascript:disableValor('nacex_opc_id_divgeneral');disableValor('nacex_opc_id_boton');", "javascript:enableValor('nacex_opc_id_divgeneral');enableValor('nacex_opc_id_boton');") . '
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('ID of the general div of the checkout') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_opc_id_divgeneral">' . $obj->l('ID of the general div of the checkout') . '</label>
 											<div class="col-lg-9">
-												<input type="text" class="form-control" ' . $nacex_opc_id_divgeneral_DIS . ' name="nacex_opc_id_divgeneral" value="' . Tools::getValue('nacex_opc_id_divgeneral', Configuration::get('NACEX_OPC_ID_DIVGENERAL')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" ' . $nacex_opc_id_divgeneral_DIS . ' name="nacex_opc_id_divgeneral" id="nacex_opc_id_divgeneral" value="' . Tools::getValue('nacex_opc_id_divgeneral', Configuration::get('NACEX_OPC_ID_DIVGENERAL')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('The id containing the container div of all checkout process') . '. <em>' . $obj->l('Ex:') . ' onepagecheckoutps</em></small>
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Submit checkout button ID') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_opc_id_boton">' . $obj->l('Submit checkout button ID') . '</label>
 											<div class="col-lg-9">
-												<input type="text" class="form-control" ' . $nacex_opc_id_boton_DIS . ' name="nacex_opc_id_boton" value="' . Tools::getValue('nacex_opc_id_boton', Configuration::get('NACEX_OPC_ID_BOTON')) . '" style="max-width:335px;" />
+												<input type="text" class="form-control" ' . $nacex_opc_id_boton_DIS . ' name="nacex_opc_id_boton" id="nacex_opc_id_boton" value="' . Tools::getValue('nacex_opc_id_boton', Configuration::get('NACEX_OPC_ID_BOTON')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('The id containing the submit checkout button') . '. <em>' . $obj->l('Ex:') . ' btn_place_order</em></small>
 											</div>
 										</div>
@@ -1413,7 +1413,7 @@ ttttttttt' . $saveBtn . '
 									<div class="panel-heading">' . $obj->l('News and Updates') . '</div>
 									<div class="panel-body">
 										<div class="form-group row">
-											<label class="col-lg-3 col-form-label">' . $obj->l('Feedback form sender email') . '</label>
+											<label class="col-lg-3 col-form-label" for="nacex_feedback_sender">' . $obj->l('Feedback form sender email') . '</label>
 											<div class="col-lg-9">
 												<input type="email" class="form-control" name="nacex_feedback_sender" id="nacex_feedback_sender" value="' . Tools::getValue('nacex_feedback_sender', Configuration::get('NACEX_FEEDBACK_SENDER')) . '" style="max-width:335px;" />
 												<small class="form-text text-muted">' . $obj->l('Email sender for feedback form') . '</small>
