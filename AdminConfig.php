@@ -768,7 +768,7 @@ function getFormularioConfiguracion($obj)
                     }
                 </script>
 								
-								<form action="index.php?tab=' . Tools::getValue('tab') . '&configure=' . Tools::getValue('configure') . '&token=' . Tools::getValue('token') . '&tab_module=' . Tools::getValue('tab_module') . '&module_name=' . Tools::getValue('module_name') . '&id_tab=1&section=general" method="post" id="configForm">
+								<form action="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') . '" method="post" id="configForm">
 									<div id="tabList">
 									  <div class="tabItem" style="width: 80%;">
 									  	<div id="ayuda" style="width:100%;">
