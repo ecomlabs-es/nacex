@@ -1134,8 +1134,8 @@ class nacexVIEW
         $html .= '<form action="' . htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8') . '" method="post">';
         $html .= '<input type="hidden" name="exp_cod" value="' . $expId . '" />';
 
-        // cancel + edit — solo disponible cuando la expedición está notificada (PENDIENTE)
-        if (isset($estado_exp) && $estado_exp == 'PENDIENTE') {
+        // cancel + edit — solo disponible cuando la expedición está notificada (PENDIENTE o PENDIENTE DE INTEGRA)
+        if (isset($estado_exp) && (strpos($estado_exp, 'PENDIENTE') === 0)) {
             $html .= '<button type="submit" name="submitcancelexpedicion" value="1" class="zoomable" style="background:none;border:none;cursor:pointer;vertical-align:top;padding:0;" onclick="return confirmar(\'' . addslashes($nacex->l('Do you want to cancel this expedition?')) . '\')">
                        <img width="38px"
                        alt="' . $nacex->l('Cancel expedition') . '"
