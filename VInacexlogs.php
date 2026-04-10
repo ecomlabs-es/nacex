@@ -28,10 +28,10 @@ class VInacexlogs
                             <i class='material-icons' style='font-size:14px;vertical-align:middle;'>refresh</i> " . $nacex->l('Refresh/Back', 'nacex') . "
                         </button>
                         <button type='button' class='btn btn-danger btn-sm' id='btnborrartodo' onclick=\"nacexlogs.get('delete_all',Base_uri,'" . $mensaje . "');\">
-                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>delete</i> " . $nacex->l('Delete logs', 'nacex') . "
+                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>delete</i> " . $nacex->l('Delete logs', 'nacex') . '
                         </button>
                     </div>
-                </div>";
+                </div>';
     }
 
     public static function content_directory($_file, $path, $index)
@@ -39,15 +39,15 @@ class VInacexlogs
         $nacex = self::getNacex();
         $mensaje = $nacex->l('Are you sure you want to delete file', 'nacex') . ' ' . $_file . '?';
 
-        return "<tr>
-                    <td>" . $_file . "</td>
+        return '<tr>
+                    <td>' . $_file . "</td>
                     <td><span class='badge badge-default'>" . self::formatSizeUnits(filesize($path . DIRECTORY_SEPARATOR . $_file)) . "</span></td>
                     <td>
                         <div class='btn-group btn-group-sm'>
                             <button type='button' class='btn btn-default' title='" . $nacex->l('Open file', 'nacex') . "' onclick='nacexlogs.get(\"read\",Base_uri,\"\",\"" . $_file . "\");'>
                                 <i class='material-icons' style='font-size:16px;vertical-align:middle;'>visibility</i>
                             </button>
-                            <button type='button' class='btn btn-default' title='" . $nacex->l('Delete file', 'nacex') . "' onclick='nacexlogs.get(\"delete\",Base_uri,\"" . $mensaje . "\",\"" . $_file . "\");'>
+                            <button type='button' class='btn btn-default' title='" . $nacex->l('Delete file', 'nacex') . "' onclick='nacexlogs.get(\"delete\",Base_uri,\"" . $mensaje . '","' . $_file . "\");'>
                                 <i class='material-icons' style='font-size:16px;vertical-align:middle;color:#dc3545;'>delete</i>
                             </button>
                         </div>

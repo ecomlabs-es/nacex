@@ -109,11 +109,11 @@ class nacextab extends AdminController
                         </div>
                     </div>
                     <div style='text-align:center;'>
-                        <button type='submit' class='btn btn-primary' name='submitListado'>" . $this->nacex->l('Generate list') . "</button>
+                        <button type='submit' class='btn btn-primary' name='submitListado'>" . $this->nacex->l('Generate list') . '</button>
                     </div>
                 </form>
             </div>
-        </div>";
+        </div>';
 
         if ($nuevaConsulta) {
 
@@ -261,22 +261,22 @@ class nacextab extends AdminController
                                 <div class='noscreen' id='" . $imgbarcodePrint . "_2' style='max-width:380px;max-height:170px;'></div>
                             </td>
                             <td>
-                                <strong>" . $agcod_numexp . "</strong><br>
-                                " . htmlspecialchars($nom_ent, ENT_QUOTES, 'UTF-8') . "<br>
-                                <small class='text-muted'>" . htmlspecialchars($cpPoblacion, ENT_QUOTES, 'UTF-8') . "</small>
-                                " . $attShop . "
+                                <strong>" . $agcod_numexp . '</strong><br>
+                                ' . htmlspecialchars($nom_ent, ENT_QUOTES, 'UTF-8') . "<br>
+                                <small class='text-muted'>" . htmlspecialchars($cpPoblacion, ENT_QUOTES, 'UTF-8') . '</small>
+                                ' . $attShop . '
                             </td>
                             <td>
-                                " . $exp['ref'] . "<br>
-                                <small class='text-muted'>" . htmlspecialchars($direccion, ENT_QUOTES, 'UTF-8') . "</small>
+                                ' . $exp['ref'] . "<br>
+                                <small class='text-muted'>" . htmlspecialchars($direccion, ENT_QUOTES, 'UTF-8') . '</small>
                             </td>
                             <td>
-                                " . $exp['serv'] . "<br>
-                                <small class='text-muted'>" . nacexutils::normalizarDecimales($ree, 2, ',', ' ', true, true) . "</small>
+                                ' . $exp['serv'] . "<br>
+                                <small class='text-muted'>" . nacexutils::normalizarDecimales($ree, 2, ',', ' ', true, true) . '</small>
                             </td>
-                            <td>" . nacexutils::getDefValue($exp, 'bultos', '1') . "</td>
-                            <td>" . nacexutils::normalizarDecimales($peso, 2, ',', ' ', true, true) . "</td>
-                        </tr>";
+                            <td>' . nacexutils::getDefValue($exp, 'bultos', '1') . '</td>
+                            <td>' . nacexutils::normalizarDecimales($peso, 2, ',', ' ', true, true) . '</td>
+                        </tr>';
 
                     $cont += 1;
                 }
@@ -298,21 +298,21 @@ class nacextab extends AdminController
                         $this->_html .= ' | ' . $this->nacex->l('Customer') . ' ' . $ag;
                     }
                 }
-                $this->_html .= "</div>
+                $this->_html .= '</div>
                 </div>
                 <script>
-                    $(document).ready(function() {";
+                    $(document).ready(function() {';
                 foreach ($barcodeData as $bc) {
                     $this->_html .= "$('#" . $bc . "').barcode({code: '" . $bc . "', crc:false}, 'int25',{barWidth:1, barHeight:40, fontSize:10});";
                     $this->_html .= "$('#" . $bc . "_2').barcode({code: '" . $bc . "', crc:false}, 'int25',{barWidth:2, barHeight:100, fontSize:24});";
                 }
-                $this->_html .= "});
-                </script>";
+                $this->_html .= '});
+                </script>';
             } else {
                 $this->_html .= "
                 <div class='panel'>
-                    <div class='alert alert-info' style='margin:0;text-align:center;'>" . $this->nacex->l('No results') . "</div>
-                </div>";
+                    <div class='alert alert-info' style='margin:0;text-align:center;'>" . $this->nacex->l('No results') . '</div>
+                </div>';
             }
         }
 

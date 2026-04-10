@@ -146,17 +146,17 @@ class nacextabMasivo extends ModuleAdminController
                                 <option value='-1'>" . $this->nacex->l('All') . '</option>';
         foreach ($statuses as $status) {
             $selected = ($status['id_order_state'] == $estado_pedido) ? ' selected' : '';
-            $this->_html .= "<option value='" . $status['id_order_state'] . "'" . $selected . ">" . $status['name'] . '</option>';
+            $this->_html .= "<option value='" . $status['id_order_state'] . "'" . $selected . '>' . $status['name'] . '</option>';
         }
         $this->_html .= "</select>
                         </div>
                     </div>
                     <div class='col-lg-8'>
                         <div class='form-group'>
-                            <label>" . $this->nacex->l('Carriers') . "</label><br>";
+                            <label>" . $this->nacex->l('Carriers') . '</label><br>';
         foreach ($carriers as $carrier) {
             $checked = in_array($carrier['id_carrier'], $carriers_seleccionados) || empty($carriers_seleccionados) ? ' checked' : '';
-            $this->_html .= "<label class='checkbox-inline' style='margin-right:1em;'><input type='checkbox' name='ncx_carrier_sel[]' value='" . $carrier['id_carrier'] . "'" . $checked . "> " . $carrier['name'] . '</label>';
+            $this->_html .= "<label class='checkbox-inline' style='margin-right:1em;'><input type='checkbox' name='ncx_carrier_sel[]' value='" . $carrier['id_carrier'] . "'" . $checked . '> ' . $carrier['name'] . '</label>';
         }
         $this->_html .= "
                         </div>
@@ -164,12 +164,12 @@ class nacextabMasivo extends ModuleAdminController
                     <div class='col-lg-2' style='display:flex;align-items:flex-end;'>
                         <div class='form-group' style='width:100%;'>
                             <input type='hidden' id='accion' name='accion' value='' />
-                            <button type='button' id='searchIcon' class='btn btn-primary btn-block'><i class='material-icons' style='font-size:14px;vertical-align:middle;'>search</i> " . $this->nacex->l('Search orders') . "</button>
+                            <button type='button' id='searchIcon' class='btn btn-primary btn-block'><i class='material-icons' style='font-size:14px;vertical-align:middle;'>search</i> " . $this->nacex->l('Search orders') . '</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>";
+        </div>';
 
         $this->_html .= "
             <script type='text/javascript'>
