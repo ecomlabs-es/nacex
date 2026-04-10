@@ -884,21 +884,19 @@ function getFormularioConfiguracion($obj)
 												<small class="form-text text-muted">' . $obj->l('Creates NCX zones and assigns Nacex carriers to them. Does not affect other carriers or zone assignments.') . '</small>
 											</div>
 										</div>
-										<table style="border:0;width:100%;">
-											<tr>' . nacexutils::getRadioHTML('Allow specific service selection to customer', 'nacex_serv_back_or_front', 'B', $serv_back_or_front_B, 'F', $serv_back_or_front_F, 'Allow frontend specific Nacex or Nacex Shop service selection to customer from frontend')
-        . '</tr>
-											<tr>' . nacexutils::getRadioHTML('Show expedition status in frontend', 'nacex_show_f_expe_state', 'NO', $show_f_expe_state_no, 'SI', $show_f_expe_state_si, 'Show expedition status in frontend when customer see his/her order details')
-        . '</tr>
-											<tr>' . nacexutils::getRadioHTML('Update order tracking automatically', 'nacex_act_tracking', 'NO', $act_tracking_no, 'SI', $act_tracking_si, 'If it updates automatically, admin user will be able to know the order status')
-        . '</tr>
-											<tr>' . nacexutils::getRadioHTML('Enable return labels service (Service 44)?', 'nacex_servicio44', 'NO', $nacex_servicio44_no, 'SI', $nacex_servicio44_si, 'Customers won\'t be able to print the return label from frontend account. The generated return labels will be removed after 7 days.')
-        . '</tr>
-											<tr>' . nacexutils::getRadioHTML('Enable Show Empresa', 'nacex_show_empresa', 'NO', $nacex_show_empresa_no, 'SI', $nacex_show_empresa_si, 'If enabled, the order that generates the shipment will use the 2 observation fields to add the company name of the order shipping address.')
-        . '</tr>
-										</table>
+																					' . nacexutils::getRadioHTML('Allow specific service selection to customer', 'nacex_serv_back_or_front', 'B', $serv_back_or_front_B, 'F', $serv_back_or_front_F, 'Allow frontend specific Nacex or Nacex Shop service selection to customer from frontend')
+        . '
+											' . nacexutils::getRadioHTML('Show expedition status in frontend', 'nacex_show_f_expe_state', 'NO', $show_f_expe_state_no, 'SI', $show_f_expe_state_si, 'Show expedition status in frontend when customer see his/her order details')
+        . '
+											' . nacexutils::getRadioHTML('Update order tracking automatically', 'nacex_act_tracking', 'NO', $act_tracking_no, 'SI', $act_tracking_si, 'If it updates automatically, admin user will be able to know the order status')
+        . '
+											' . nacexutils::getRadioHTML('Enable return labels service (Service 44)?', 'nacex_servicio44', 'NO', $nacex_servicio44_no, 'SI', $nacex_servicio44_si, 'Customers won\'t be able to print the return label from frontend account. The generated return labels will be removed after 7 days.')
+        . '
+											' . nacexutils::getRadioHTML('Enable Show Empresa', 'nacex_show_empresa', 'NO', $nacex_show_empresa_no, 'SI', $nacex_show_empresa_si, 'If enabled, the order that generates the shipment will use the 2 observation fields to add the company name of the order shipping address.')
+        . '
 									</div>
 								</div>
-									
+
 								<div class="panel">
 									<div class="panel-heading">' . $obj->l('Nacex Standard services') . '</div>
 									<div class="panel-body">
@@ -966,10 +964,8 @@ function getFormularioConfiguracion($obj)
 												<small class="form-text text-muted">' . $obj->l('Shipping flat amount to apply to a carrier.') . '<br><em>' . $obj->l('It will be used also on Web Service communication error to assign a default price to the carrier.') . '</em></small>
 											</div>
 										</div>
-										<table style="border:0;width:100%;">
-											<tr>' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacex_importe_min_grat', 'NO', $nacex_importe_min_grat_no, 'SI', $nacex_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacex_importe_min_grat_val')", "javascript:enableValor('nacex_importe_min_grat_val')")
-        . '</tr>
-										</table>
+																					' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacex_importe_min_grat', 'NO', $nacex_importe_min_grat_no, 'SI', $nacex_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacex_importe_min_grat_val')", "javascript:enableValor('nacex_importe_min_grat_val')")
+        . '
 										<div class="form-group row">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Free minimum amount') . '</label>
 											<div class="col-lg-9">
@@ -1047,10 +1043,8 @@ function getFormularioConfiguracion($obj)
 												<small class="form-text text-muted">' . $obj->l('Shipping flat amount to apply to a carrier.') . '<br><em>' . $obj->l('It will be used also on Web Service communication error to assign a default price to the carrier.') . '</em></small>
 											</div>
 										</div>
-										<table style="border:0;width:100%;">
-											<tr>' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacexshop_importe_min_grat', 'NO', $nacexshop_importe_min_grat_no, 'SI', $nacexshop_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacexshop_importe_min_grat_val')", "javascript:enableValor('nacexshop_importe_min_grat_val')")
-        . '</tr>
-										</table>
+																					' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacexshop_importe_min_grat', 'NO', $nacexshop_importe_min_grat_no, 'SI', $nacexshop_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacexshop_importe_min_grat_val')", "javascript:enableValor('nacexshop_importe_min_grat_val')")
+        . '
 										<div class="form-group row">
 											<label class="col-lg-3 col-form-label">' . $obj->l('Free minimum amount') . '</label>
 											<div class="col-lg-9">
@@ -1128,8 +1122,8 @@ function getFormularioConfiguracion($obj)
                                                         <p class="tip"><em>' . $obj->l('It will be used also on Web Service communication error to assign a default price to the carrier.') . '</em></p>
 									  				</td>
 									  			</tr>
-									  			<tr>' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacexint_importe_min_grat', 'NO', $nacexint_importe_min_grat_no, 'SI', $nacexint_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacexint_importe_min_grat_val')", "javascript:enableValor('nacexint_importe_min_grat_val')")
-        . '</tr>
+									  			' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacexint_importe_min_grat', 'NO', $nacexint_importe_min_grat_no, 'SI', $nacexint_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacexint_importe_min_grat_val')", "javascript:enableValor('nacexint_importe_min_grat_val')")
+        . '
 									  			<tr>
 									  				<td class="columna1">' . $obj->l('Free minimum amount') . ': </td>
 									  				<td class="columna2" id="nacexint_importe_min_grat_val">
@@ -1375,10 +1369,10 @@ function getFormularioConfiguracion($obj)
 															<p class="tip">' . $obj->l('Shipment type for Spain, Portugal and Andorra') . '</p>
 														</td>
 													</tr>
-													<tr>' . nacexutils::getRadioHTML('Report quantity and reference in Additional Instructions', 'nacex_ins_adi_q_r', 'NO', $ins_adi_q_r_no, 'SI', $ins_adi_q_r_si, 'Report product quantity in the order and its references. They will be added in Additional Instructions field')
-        . '</tr>
-													<tr>' . nacexutils::getRadioHTML('Add Additional Instructions to label', 'nacex_ins_pers', 'NO', $ins_adi_pers_no, 'SI', $ins_adi_pers_si, 'It allows adding comments to shipment by additional instructions.', "javascript:disableValor('nacex_custom_inst_pers');disableValor('nacex_custom_obs');", "javascript:enableValor('nacex_custom_inst_pers');enableValor('nacex_custom_obs');")
-        . '</tr>
+													' . nacexutils::getRadioHTML('Report quantity and reference in Additional Instructions', 'nacex_ins_adi_q_r', 'NO', $ins_adi_q_r_no, 'SI', $ins_adi_q_r_si, 'Report product quantity in the order and its references. They will be added in Additional Instructions field')
+        . '
+													' . nacexutils::getRadioHTML('Add Additional Instructions to label', 'nacex_ins_pers', 'NO', $ins_adi_pers_no, 'SI', $ins_adi_pers_si, 'It allows adding comments to shipment by additional instructions.', "javascript:disableValor('nacex_custom_inst_pers');disableValor('nacex_custom_obs');", "javascript:enableValor('nacex_custom_inst_pers');enableValor('nacex_custom_obs');")
+        . '
 													<tr>
 														<td class="columna1">' . $obj->l('Additional Instructions text') . ': </td>
 														<td class="columna2" id="nacex_custom_inst_pers">
@@ -1394,20 +1388,20 @@ function getFormularioConfiguracion($obj)
 														</td>
 													</tr>
 													
-													<tr>' . nacexutils::getRadioHTML('Customer feedback capture', 'nacex_comentarios_cli_sino', 'NO', $nacex_comentarios_cli_no, 'SI', $nacex_comentarios_cli_si)
+													' . nacexutils::getRadioHTML('Customer feedback capture', 'nacex_comentarios_cli_sino', 'NO', $nacex_comentarios_cli_no, 'SI', $nacex_comentarios_cli_si)
         . '
 															<p class="tip"><span class="resaltado bold">' . $obj->l('If this field is enabled without enabling Add Additional Instructions to label option, feedback is added within additional instructions. This way we avoid the 76 char limitation from Observations field.') . '<br>
                                                             ' . $obj->l('If is enabled Add Additional Instructions to label option and the field Observations text is empty, feedback is added to observations and all the text that exceeds 76 characters is filled in additional instructions. If observation text field is filled, feedback goes into additional instructions.') . '</span></p>
 														</td>
 													</tr>
 													
-													<tr>' . nacexutils::getRadioHTML('Default Return shipment', 'nacex_ret', 'NO', $ret_no, 'SI', $ret_si)
+													' . nacexutils::getRadioHTML('Default Return shipment', 'nacex_ret', 'NO', $ret_no, 'SI', $ret_si)
         . '
 															<p class="tip">' . $obj->l('Default Return shipment') . '. <span class="resaltado bold">' . $obj->l('In International shipments is NOT available management RETURN shipments') . '</span></p>
 														</td>
 													</tr>
-													<tr>' . nacexutils::getRadioHTML('Custom reference', 'nacex_ref_pers', 'NO', $nacex_ref_pers_no, 'SI', $nacex_ref_pers_si, 'The reference is composed by a custom prefix and an ID (order id). Reference must have 20 digit max.', "javascript:disableValor('nacex_ref_pers_prefijo')", "javascript:enableValor('nacex_ref_pers_prefijo')")
-        . '</tr>
+													' . nacexutils::getRadioHTML('Custom reference', 'nacex_ref_pers', 'NO', $nacex_ref_pers_no, 'SI', $nacex_ref_pers_si, 'The reference is composed by a custom prefix and an ID (order id). Reference must have 20 digit max.', "javascript:disableValor('nacex_ref_pers_prefijo')", "javascript:enableValor('nacex_ref_pers_prefijo')")
+        . '
                                                     <tr>
                                                         <td class="columna1">' . $obj->l('Custom reference prefix') . ': </td>
                                                         <td class="columna2" id="nacex_ref_pers_prefijo">
@@ -1515,8 +1509,8 @@ function getFormularioConfiguracion($obj)
 									  					<p class="tip">' . $obj->l('Put weight for all shipments') . '</p>
 									  				</td>
 									  			</tr>
-									  			<tr>' . nacexutils::getRadioHTML('Apply handling fee', 'nacex_gastos_manipulacion', 'NO', $nacex_gastos_manipulacion_no, 'SI', $nacex_gastos_manipulacion_si, 'It allows to add extra charges to shipping costs.', "javascript:disableValor('nacex_gastos_manipulacion_val')", "javascript:enableValor('nacex_gastos_manipulacion_val')")
-        . '</tr>
+									  			' . nacexutils::getRadioHTML('Apply handling fee', 'nacex_gastos_manipulacion', 'NO', $nacex_gastos_manipulacion_no, 'SI', $nacex_gastos_manipulacion_si, 'It allows to add extra charges to shipping costs.', "javascript:disableValor('nacex_gastos_manipulacion_val')", "javascript:enableValor('nacex_gastos_manipulacion_val')")
+        . '
 									  			<tr>
 									  				<td class="columna1">' . $obj->l('Handling fee') . ': </td>
 									  				<td class="columna2" id="nacex_gastos_manipulacion_val">
@@ -1542,10 +1536,10 @@ function getFormularioConfiguracion($obj)
                                                     <p class="tip">' . $obj->l('Leave blank for original size') . '</p>				
                                                 </td>			
                                             </tr>
-                                            <tr>' . nacexutils::getRadioHTML('Show 0€ cost rates', 'nacex_mostrar_coste0', 'NO', $nacex_mostrar_coste0_no, 'SI', $nacex_mostrar_coste0_si, 'It let show or hide carriers which cost is 0€')
-        . '</tr>
-								      		<tr>' . nacexutils::getRadioHTML('Show Generate Expedition form to 3rd party carriers', 'nacex_force_genform', 'NO', $force_genform_no, 'SI', $force_genform_si, 'Show Generate Expedition form to 3rd party carriers')
-        . '</tr>
+                                            ' . nacexutils::getRadioHTML('Show 0€ cost rates', 'nacex_mostrar_coste0', 'NO', $nacex_mostrar_coste0_no, 'SI', $nacex_mostrar_coste0_si, 'It let show or hide carriers which cost is 0€')
+        . '
+								      		' . nacexutils::getRadioHTML('Show Generate Expedition form to 3rd party carriers', 'nacex_force_genform', 'NO', $force_genform_no, 'SI', $force_genform_si, 'Show Generate Expedition form to 3rd party carriers')
+        . '
 								      		<tr>
                                                 <td class="columna1">' . $obj->l('Los portes se añaden') . ': </td>
                                                 <td class="columna2" id="nacex_cobro_portes">
@@ -1556,8 +1550,8 @@ function getFormularioConfiguracion($obj)
                                                     <p class="tip">' . $obj->l('Añadir el precio del envío al pedido') . '</p>
                                                 </td>
                                             </tr>
-								      		<tr>' . nacexutils::getRadioHTML('Is there any third-party OPC (One Page Checkout)?', 'nacex_opc_external', 'NO', $nacex_opc_external_no, 'SI', $nacex_opc_external_si, null, "javascript:disableValor('nacex_opc_id_divgeneral');disableValor('nacex_opc_id_boton');", "javascript:enableValor('nacex_opc_id_divgeneral');enableValor('nacex_opc_id_boton');")
-        . '</tr>
+								      		' . nacexutils::getRadioHTML('Is there any third-party OPC (One Page Checkout)?', 'nacex_opc_external', 'NO', $nacex_opc_external_no, 'SI', $nacex_opc_external_si, null, "javascript:disableValor('nacex_opc_id_divgeneral');disableValor('nacex_opc_id_boton');", "javascript:enableValor('nacex_opc_id_divgeneral');enableValor('nacex_opc_id_boton');")
+        . '
 								      		<tr>
                                                 <td class="columna1">' . $obj->l('ID of the general div of the checkout') . ': </td>
                                                 <td class="columna2" id="nacex_opc_id_divgeneral">
@@ -1588,16 +1582,16 @@ function getFormularioConfiguracion($obj)
 										<fieldset>
 											<legend> ' . $obj->l('Debug') . '</legend>
 								      	<table style="border: 0px;">
-													<tr>' . nacexutils::getRadioHTML('Enable Nacex logs', 'nacex_save_log', 'NO', $nacex_save_log_no, 'SI', $nacex_save_log_si, 'Save a diary log trace in folder nacex/log/aaaa-mm-dd-nacex.log. They can see from "Nacex > See Logs" menu option')
-        . '</tr>
-													<tr>' . nacexutils::getRadioHTML('Cleaning Data Base when disabling module', 'nacex_borrar_configuracion', 'NO', $show_borrar_configuracion_no, 'SI', $show_borrar_configuracion_si, 'When disabling Nacex module, remove all data generated on data base.')
-        . '</tr>
+													' . nacexutils::getRadioHTML('Enable Nacex logs', 'nacex_save_log', 'NO', $nacex_save_log_no, 'SI', $nacex_save_log_si, 'Save a diary log trace in folder nacex/log/aaaa-mm-dd-nacex.log. They can see from "Nacex > See Logs" menu option')
+        . '
+													' . nacexutils::getRadioHTML('Cleaning Data Base when disabling module', 'nacex_borrar_configuracion', 'NO', $show_borrar_configuracion_no, 'SI', $show_borrar_configuracion_si, 'When disabling Nacex module, remove all data generated on data base.')
+        . '
 													<!-- Opciones de desarrollador ocultas para el cliente -->
-													<tr>' . nacexutils::getRadioHTML('Enable developer options', 'nacex_show_dev_ops', 'NO', $show_dev_ops_no, 'SI', $show_dev_ops_si, 'ONLY FOR DEVELOPERS!')
-        . '</tr>';
+													' . nacexutils::getRadioHTML('Enable developer options', 'nacex_show_dev_ops', 'NO', $show_dev_ops_no, 'SI', $show_dev_ops_si, 'ONLY FOR DEVELOPERS!')
+        . '';
     //if(Configuration::get("NACEX_SHOW_DEV_OPS") === 'SI'):
     $html .= '<tr data-depends="nacex_show_dev_ops">' . nacexutils::getRadioHTML('Show runtime errors', 'nacex_show_errors', 'NO', $show_errors_no, 'SI', $show_errors_si, 'For debugging purposes only when necessary.')
-        . '</tr>
+        . '
                                                     <tr data-depends="nacex_show_dev_ops">
                                                         <td class="columna1">' . $obj->l('Review carriers table') . '</td>
                                                         <td class="columna2" id="nacex_tableCarriers">
@@ -1631,8 +1625,8 @@ function getFormularioConfiguracion($obj)
                                                             <p class="tip">' . $obj->l('Email sender for feedback form') . '</p>
 														</td>
 													</tr>
-													<tr>' . nacexutils::getRadioHTML('SMTP is used to send emails?', 'nacex_feedback_smtp', 'NO', $nacex_feedback_smtp_no, 'SI', $nacex_feedback_smtp_si)
-        . '</tr>
+													' . nacexutils::getRadioHTML('SMTP is used to send emails?', 'nacex_feedback_smtp', 'NO', $nacex_feedback_smtp_no, 'SI', $nacex_feedback_smtp_si)
+        . '
 								      	</table>
 								    </fieldset>
 

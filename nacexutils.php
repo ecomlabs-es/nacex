@@ -556,9 +556,9 @@ class nacexutils
         $ocN = !is_null($onchangeN) ? 'onchange="' . $onchangeN . '"' : '';
         $ocY = !is_null($onchangeY) ? 'onchange="' . $onchangeY . '"' : '';
 
-        // Creamos la estructura de tabla con ps-switch nativo de PS8
-        $radioHTML = '<td class="columna1">' . $nacex->l($label) . ': </td>
-                      <td class="columna2" id="' . $radioName . '">
+        $radioHTML = '<div class="form-group row">
+                        <label class="col-lg-3 col-form-label">' . $nacex->l($label) . '</label>
+                        <div class="col-lg-9" id="' . $radioName . '">
                             <span class="ps-switch">
                                 <input id="' . $radioName . '_n" type="radio" name="' . $radioName . '" ' . $ocN . ' value="' . $valueN . '" ' . $selectedN . '/>
                                 <label for="' . $radioName . '_n">' . $nacex->l($labelN) . '</label>
@@ -567,9 +567,9 @@ class nacexutils
                                 <span class="slide-button"></span>
                             </span>';
         if (!is_null($small)) {
-            $radioHTML .= '<small class="form-text">' . $nacex->l($small) . '</small>';
-            $radioHTML .= '</td>';
+            $radioHTML .= '<small class="form-text text-muted">' . $nacex->l($small) . '</small>';
         }
+        $radioHTML .= '</div></div>';
 
         return $radioHTML;
     }
