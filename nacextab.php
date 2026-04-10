@@ -86,100 +86,73 @@ class nacextab extends AdminController
                  </script>';
          */
         $this->_html .= "
-        <div class='subheader'>	
-            <div class='toolbarBox toolbarHead'>
-                <div class='pageTitle'>
-                    <h3>" . $this->nacex->l('Documented orders to Nacex') . "</h3>
-                </div>
-            </div>
             <script>
-            
-                $(document).ready(function() {    
-                    /** Añadir datepicker **/
+                $(document).ready(function() {
                     $('#ncx_desde').datepicker({dateFormat: 'yy-mm-dd'});
                     $('#ncx_hasta').datepicker({dateFormat: 'yy-mm-dd'});
                 });
-            
-                    function setHoy(){
-            			$('#ncx_desde').val('" . $hoy_desde . "');
-            			$('#ncx_hasta').val('" . $hoy_hasta . "');
-            		}
-            		function setAyer(){
-            			$('#ncx_desde').val('" . $ayer_desde . "');
-            			$('#ncx_hasta').val('" . $ayer_hasta . "');
-            		}
-            		function setEstaSemana(){
-            			$('#ncx_desde').val('" . $estasemana_desde . "');
-            			$('#ncx_hasta').val('" . $estasemana_hasta . "');
-            		}
-            		function setSemanaPasada(){
-            			$('#ncx_desde').val('" . $semanapasada_desde . "');
-            			$('#ncx_hasta').val('" . $semanapasada_hasta . "');
-            		}									
-            		function setEsteMes(){
-            			$('#ncx_desde').val('" . $estemes_desde . "');
-            			$('#ncx_hasta').val('" . $estemes_hasta . "');
-            		}								
-            		/*function printlistado(){							
-                                $('#ncx_div_listado').printElement({
-            		          pageTitle: '[prestashop] listado Nacex',
-            			            leaveOpen: false,
-            			            printMode: 'popup',
-            			            overrideElementCSS: ['../modules/nacex/css/print.css'],
-            			            printBodyOptions:{
-                        				styleToAdd:'padding:0px;margin:0px; !important;'            
-                        			}
-            			        });									
-            				}*/
-            		function printSelection(node){
 
-                        var content = node.innerHTML;
-                        var titulo = '<h3 style=\"text-align:center\">[prestashop] " . $this->nacex->l('Nacex list') . "</h3>';
-                        
-                        var pwin=window.open('','print_content','width=500,height=300');
-                        
-                        pwin.document.open();
-                        
-                        pwin.document.write('<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"" . _MODULE_DIR_ . "nacex/css/print.css\" /></head><body onload=\"window.print()\"><style>#nacex_listado_titulo{display:none;}</style>'+titulo+content+'</body></html>');
-                        
-                        pwin.document.close();
-                        
-                        setTimeout(function(){pwin.close();},1000);
-        
-                    }
-                    
-                    //Llamo a las funciones en onclick
-                    $(document).on('click','#printIcon', function() {
-                        printSelection(document.getElementById('ncx_div_listado'));
-                        return false;
-                    });
-            		
-                    </script>
-                <fieldset>
-		<div class='ncx_listado'>
-		<form method='post'>	
-			<div align='center' style='margin-top:-25px;padding:20px;'>
-				<a target='_blank' title='" . $webtext . "' href='" . $webdir . "'><img style='margin-bottom:5px; width: 200px;height: auto;' src='" . $webimg . "' /></a>
-			</div>
-			<div align='center'>				
-				<b>" . $this->nacex->l('From') . ": </b>
-				<input id='ncx_desde' type='text' style='width:135px;margin-right:10px' value='" . $desde . "' name='date_from' maxlength='19' size='4'>
-				<b>" . $this->nacex->l('To') . ": </b>
-				<input id='ncx_hasta' type='text' style='width:135px' value='" . $hasta . "' name='date_to' maxlength='19' size='4'>
-				<div align='center' style='margin-top:10px;margin-bottom:10px;'>
-					<span class='ncx_minibutton' onclick='setHoy()'>" . $this->nacex->l('Today') . "</span>
-					<span class='ncx_minibutton' onclick='setAyer()'>" . $this->nacex->l('Yesterday') . "</span>
-					<span class='ncx_minibutton' onclick='setEstaSemana()'>" . $this->nacex->l('This week') . "</span>
-					<span class='ncx_minibutton' onclick='setSemanaPasada()'>" . $this->nacex->l('Last week') . "</span>
-					<span class='ncx_minibutton' onclick='setEsteMes()'>" . $this->nacex->l('This month') . "</span>
-				</div>
-			</div>
-			<div align='center'>
-				<input class='ncx_button' onclick='procesando();' type='submit' name='submitListado' value='" . $this->nacex->l('Generate list') . "'>		
-			</div>		
-		</form>
-		</div>
-    </div> <!-- subheader -->";
+                function setHoy(){
+                    $('#ncx_desde').val('" . $hoy_desde . "');
+                    $('#ncx_hasta').val('" . $hoy_hasta . "');
+                }
+                function setAyer(){
+                    $('#ncx_desde').val('" . $ayer_desde . "');
+                    $('#ncx_hasta').val('" . $ayer_hasta . "');
+                }
+                function setEstaSemana(){
+                    $('#ncx_desde').val('" . $estasemana_desde . "');
+                    $('#ncx_hasta').val('" . $estasemana_hasta . "');
+                }
+                function setSemanaPasada(){
+                    $('#ncx_desde').val('" . $semanapasada_desde . "');
+                    $('#ncx_hasta').val('" . $semanapasada_hasta . "');
+                }
+                function setEsteMes(){
+                    $('#ncx_desde').val('" . $estemes_desde . "');
+                    $('#ncx_hasta').val('" . $estemes_hasta . "');
+                }
+                function printSelection(node){
+                    var content = node.innerHTML;
+                    var titulo = '<h3 style=\"text-align:center\">[prestashop] " . $this->nacex->l('Nacex list') . "</h3>';
+                    var pwin=window.open('','print_content','width=500,height=300');
+                    pwin.document.open();
+                    pwin.document.write('<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"" . _MODULE_DIR_ . "nacex/css/print.css\" /></head><body onload=\"window.print()\"><style>#nacex_listado_titulo{display:none;}</style>'+titulo+content+'</body></html>');
+                    pwin.document.close();
+                    setTimeout(function(){pwin.close();},1000);
+                }
+                $(document).on('click','#printIcon', function() {
+                    printSelection(document.getElementById('ncx_div_listado'));
+                    return false;
+                });
+            </script>
+
+        <div class='panel'>
+            <div class='panel-heading' style='display:flex;align-items:center;gap:1em;'>
+                <a target='_blank' title='" . $webtext . "' href='" . $webdir . "'>
+                    <img style='width:130px;height:auto;' src='" . $webimg . "' />
+                </a>
+                <span style='font-size:1.1em;'>" . $this->nacex->l('Documented orders to Nacex') . "</span>
+            </div>
+            <div class='panel-body'>
+                <form method='post' style='text-align:center;'>
+                    <div style='margin-bottom:1em;'>
+                        <b>" . $this->nacex->l('From') . ": </b>
+                        <input id='ncx_desde' type='text' style='width:135px;margin-right:10px' value='" . $desde . "' name='date_from' maxlength='19' size='4'>
+                        <b>" . $this->nacex->l('To') . ": </b>
+                        <input id='ncx_hasta' type='text' style='width:135px' value='" . $hasta . "' name='date_to' maxlength='19' size='4'>
+                    </div>
+                    <div style='margin-bottom:1em;'>
+                        <span class='ncx_minibutton' onclick='setHoy()'>" . $this->nacex->l('Today') . "</span>
+                        <span class='ncx_minibutton' onclick='setAyer()'>" . $this->nacex->l('Yesterday') . "</span>
+                        <span class='ncx_minibutton' onclick='setEstaSemana()'>" . $this->nacex->l('This week') . "</span>
+                        <span class='ncx_minibutton' onclick='setSemanaPasada()'>" . $this->nacex->l('Last week') . "</span>
+                        <span class='ncx_minibutton' onclick='setEsteMes()'>" . $this->nacex->l('This month') . "</span>
+                    </div>
+                    <input class='btn btn-primary' onclick='procesando();' type='submit' name='submitListado' value='" . $this->nacex->l('Generate list') . "'>
+                </form>
+            </div>
+        </div>";
 
         if ($nuevaConsulta) {
 
