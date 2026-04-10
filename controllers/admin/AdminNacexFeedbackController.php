@@ -14,6 +14,7 @@ class AdminNacexFeedbackController extends ModuleAdminController
     public function __construct()
     {
         parent::__construct();
+        $this->bootstrap = true;
 
         $this->ncx_logo200url = _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png';
 
@@ -40,6 +41,8 @@ class AdminNacexFeedbackController extends ModuleAdminController
 
     public function initContent()
     {
+        parent::initContent();
+
         $this->context->smarty->assign([
             'module_root' => _MODULE_DIR_ . 'nacex',
             'ncx_logo200url' => $this->ncx_logo200url,
@@ -50,9 +53,7 @@ class AdminNacexFeedbackController extends ModuleAdminController
             'loader_img' => _MODULE_DIR_ . 'nacex/images/loading.gif'
         ]);
 
-        $this->setTemplate('feedback.tpl');
-
-        parent::initContent();
-
+        $tplPath = _PS_MODULE_DIR_ . 'nacex/views/templates/admin/feedback.tpl';
+        $this->context->smarty->assign('content', $this->context->smarty->fetch($tplPath));
     }
 }
