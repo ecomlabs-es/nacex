@@ -91,7 +91,7 @@ class VInewServices
                 </div>
                 <div id="editForm' . $tipo . 'Service" style="display:none;">
                     <div class="form-group">
-                        <label>' . $this->nacex->l('Code') . '*: <strong id="editedCode' . $tipo . '"></strong></label>
+                        <span>' . $this->nacex->l('Code') . '*: <strong id="editedCode' . $tipo . '"></strong></span>
                     </div>
                     <div class="form-group">
                         <label for="editName' . $tipo . '">' . $this->nacex->l('Name') . '*</label>
