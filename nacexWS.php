@@ -400,6 +400,91 @@ class nacexWS {
         }
     }
 
+    /**
+     * Modifica una expedición existente en el sistema de Nacex.
+     * Acepta los mismos parámetros que putExpedicion + identificador de la expedición.
+     *
+     * @param string $exp_cod Código de la expedición a editar
+     * @param array $data Campos a modificar (clave => valor)
+     * @return array|string Resultado del WS
+     */
+    public static function editExpedicion($exp_cod, $data)
+    {
+        $nacexWS = new nacexWS();
+        nacexutils::writeNacexLog("----\nINI editExpedicion :: exp_cod: " . $exp_cod);
+
+        $urlNacex = Configuration::get('NACEX_WS_URL');
+        $URL = $urlNacex . '/soap';
+
+        $nacexWSusername = Configuration::get('NACEX_WSUSERNAME');
+        $nacexWSpassword = Configuration::get('NACEX_WSPASSWORD');
+
+        $metodo = 'editExpedicion';
+
+        // Construir los arrayOfString_3 con los datos
+        $xmlData = '<arrayOfString_3>expe_codigo=' . $exp_cod . '</arrayOfString_3>';
+        foreach ($data as $key => $value) {
+            if ($value !== '' && $value !== null) {
+                // Campos de texto con posibles caracteres especiales
+                $textFields = ['nom_ent', 'dir_ent', 'pob_ent', 'obs1', 'obs2', 'obs3', 'obs4', 'ref_cli', 'nom_rec', 'dir_rec', 'pob_rec'];
+                if (in_array($key, $textFields)) {
+                    $xmlData .= '<arrayOfString_3><![CDATA[' . $key . '=' . $value . ']]></arrayOfString_3>';
+                } else {
+                    $xmlData .= '<arrayOfString_3>' . $key . '=' . htmlspecialchars($value, ENT_XML1) . '</arrayOfString_3>';
+                }
+            }
+        }
+
+        $XML = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="urn:soap/types">
+            <soapenv:Header/>
+            <soapenv:Body>
+                <typ:editExpedicion>
+                    <String_1>' . $nacexWSusername . '</String_1>
+                    <String_2>' . $nacexWSpassword . '</String_2>
+                    ' . $xmlData . '
+                    <arrayOfString_3>' . nacexWS::getSystemInfo() . '</arrayOfString_3>
+                </typ:editExpedicion>
+            </soapenv:Body>
+        </soapenv:Envelope>';
+
+        nacexutils::writeNacexLog('editExpedicion :: request for exp_cod: ' . $exp_cod);
+
+        $postResult = $nacexWS->requestWS($URL, $XML, $metodo, 'width:auto;');
+        if (is_array($postResult) && $postResult[0] == 'ERROR') {
+            nacexutils::writeNacexLog("editExpedicion :: ERROR\n----");
+            return $postResult;
+        }
+
+        $resultado = $nacexWS->treatmentXML($postResult, $metodo);
+
+        if (is_array($resultado) && $resultado[0] == 'ERROR') {
+            nacexutils::writeNacexLog('editExpedicion :: ERROR => ' . (isset($resultado[1]) ? $resultado[1] : 'Unknown'));
+            nacexutils::writeNacexLog("FIN editExpedicion\n----");
+            return $resultado;
+        }
+
+        // Respuesta exitosa: mismos campos que putExpedicion
+        $response = [
+            'exp_cod' => isset($resultado[0]) ? $resultado[0] : '',
+            'ag_cod_num_exp' => isset($resultado[1]) ? $resultado[1] : '',
+            'color' => isset($resultado[2]) ? $resultado[2] : '',
+            'ent_ruta' => isset($resultado[3]) ? $resultado[3] : '',
+            'ent_cod' => isset($resultado[4]) ? $resultado[4] : '',
+            'ent_nom' => isset($resultado[5]) ? $resultado[5] : '',
+            'ent_tlf' => isset($resultado[6]) ? $resultado[6] : '',
+            'serv' => isset($resultado[7]) ? $resultado[7] : '',
+            'hora_entrega' => isset($resultado[8]) ? $resultado[8] : '',
+            'barcode' => isset($resultado[9]) ? $resultado[9] : '',
+            'fecha_objetivo' => isset($resultado[10]) ? $resultado[10] : '',
+            'cambios' => isset($resultado[11]) ? $resultado[11] : '',
+        ];
+
+        nacexutils::writeNacexLog('editExpedicion :: OK exp_cod: ' . $response['exp_cod'] . ' ag: ' . $response['ag_cod_num_exp']);
+        nacexutils::writeNacexLog("FIN editExpedicion\n----");
+
+        return $response;
+    }
+
     public static function putExpedicionDev($id_pedido, $datospedido, $datosexp, $isnacexcambio, $_unitaria = false)
     {
         nacexutils::writeNacexLog("----\nINI putExpedicionDev :: id_order: " . $datospedido[0]['id_order'] . '| module: ' . $datospedido[0]['module'] . '| total_paid_real: ' . $datospedido[0]['total_paid_real'] . '| email: ' . $datospedido[0]['email'] . '| firstname: ' . $datospedido[0]['firstname'] . '| lastname: ' . $datospedido[0]['lastname'] . '| address1: ' . $datospedido[0]['address1'] . '| postcode: ' . $datospedido[0]['postcode'] . '| city: ' . $datospedido[0]['city'] . '| phone: ' . $datospedido[0]['phone'] . '| phone_mobile: ' . $datospedido[0]['phone_mobile'] . '| iso_code: ' . $datospedido[0]['iso_code'] . '| ncx: ' . $datospedido[0]['ncx'] . '| id_carrier: ' . $datospedido[0]['id_carrier']);
