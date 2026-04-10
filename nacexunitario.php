@@ -244,8 +244,10 @@ class nacexunitario extends AdminController {
                     }
                         $(document).ready(ready);
                     </script>     
-                    <div id='cabecera'></div>
-                    <div id='resultado'></div>
+                    <div class='panel'>
+                        <div id='cabecera'></div>
+                        <div id='resultado'></div>
+                    </div>
         ";
         $this->context->smarty->assign('content', $this->_html);
     }

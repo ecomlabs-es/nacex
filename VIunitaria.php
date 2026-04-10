@@ -22,17 +22,19 @@ class VIunitaria
             $_GET['id_pedido'] = '';
         }
 
-        return $_header = '
-                <div class="subheader">
-                    <center>
-                    <a target="_blank" title="' . $nacex->l('Go to Nacex web') . '" href="https://www.nacex.es" class="nacex-logo" style="width: fit-content;">
-                        <img src="' . _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png" style="width: 200px;">
-                    </a>    
-                    <br>
-                    <span class="idpedido-input"><label for="idpedido">' . $nacex->l('Id order') . ': </label><input type="number" id="idpedido" autofocus="autofocus" value="' . $_GET['id_pedido'] . '"></span>
-                    <br>
-                    <span class="ncx_button" id="btnbuscar" onclick="unitaria.search(idpedido.valueAsNumber,\'' . $mess . '\');">' . $nacex->l('Search') . '</span>
-                    </center>
+        return '
+                <div class="panel-heading" style="display:flex;align-items:center;gap:1em;">
+                    <a target="_blank" href="https://www.nacex.es">
+                        <img style="width:130px;height:auto;" src="' . _MODULE_DIR_ . 'nacex/images/logos/nacex_logista.png" />
+                    </a>
+                    <span style="font-size:1.1em;">' . $nacex->l('Unitary search') . '</span>
+                </div>
+                <div class="panel-body" style="display:flex;align-items:center;gap:1em;">
+                    <label for="idpedido" style="margin:0;font-weight:600;">' . $nacex->l('Id order') . '</label>
+                    <input type="number" id="idpedido" class="form-control" autofocus="autofocus" value="' . htmlspecialchars($_GET['id_pedido'], ENT_QUOTES) . '" style="width:200px;" />
+                    <button type="button" class="btn btn-primary" id="btnbuscar" onclick="unitaria.search(idpedido.valueAsNumber,\'' . $mess . '\');">
+                        <i class="material-icons" style="font-size:14px;vertical-align:middle;">search</i> ' . $nacex->l('Search') . '
+                    </button>
                 </div>';
         //}
     }
