@@ -153,14 +153,12 @@ class nacextabMasivo extends ModuleAdminController
                     </div>
                     <div class='col-lg-4'>
                         <div class='form-group'>
-                            <label for='ncx_carrier_sel'>" . $this->nacex->l('Carriers') . "</label>
-                            <select id='ncx_carrier_sel' name='ncx_carrier_sel[]' class='form-control' multiple='multiple' size='4'>";
+                            <label>" . $this->nacex->l('Carriers') . "</label><br>";
         foreach ($carriers as $carrier) {
-            $selected = in_array($carrier['id_carrier'], $carriers_seleccionados) ? ' selected' : '';
-            $this->_html .= "<option value='" . $carrier['id_carrier'] . "'" . $selected . ">" . $carrier['name'] . '</option>';
+            $checked = in_array($carrier['id_carrier'], $carriers_seleccionados) || empty($carriers_seleccionados) ? ' checked' : '';
+            $this->_html .= "<label class='checkbox-inline' style='margin-right:1em;'><input type='checkbox' name='ncx_carrier_sel[]' value='" . $carrier['id_carrier'] . "'" . $checked . "> " . $carrier['name'] . '</label>';
         }
-        $this->_html .= "</select>
-                            <button type='button' id='select_all_carriers' class='btn btn-default btn-xs' style='margin-top:5px;'>" . $this->nacex->l('Select all') . "</button>
+        $this->_html .= "
                         </div>
                     </div>
                     <div class='col-lg-4' style='display:flex;align-items:flex-end;'>
@@ -201,15 +199,6 @@ class nacextabMasivo extends ModuleAdminController
                         }
                     });
 
-                    $('#select_all_carriers').click(function() {
-                        $('#ncx_carrier_sel option').prop('selected', true);
-                    });
-
-                    $('select[multiple] option').mousedown(function() {
-                        var self = $(this);
-                        self.prop('selected', !self.prop('selected'));
-                        return false;
-                    });
                 });
 
                 function setRango(desde, hasta) {
