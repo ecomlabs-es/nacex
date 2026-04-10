@@ -982,87 +982,85 @@ function getFormularioConfiguracion($obj)
 									</div>
 								</div>
 								
-										<fieldset>
-								    	<legend><img src="' . $nacexDTO->getPath() . 'images/logos/NACEXshop_sostenible_' . $iso_code . '.svg" alt="" style="width:100px;height: 35px;"/> ' . $obj->l('NacexShop services') . '</legend>
-								    		<table style="border: 0px;"> 		   
-									  			<tr>
-									  				<td class="columna1">' . $obj->l('Text for generic service') . ': </td>
-														<td class="columna2" id="nacexshop_gen_serv_name">
-															' . showError($errores, 'nacexshop_gen_serv_name') . '
-															<input type="text" size="50" name="nacexshop_gen_serv_name" value="' . Tools::getValue('nacexshop_gen_serv_name', Configuration::get('NACEXSHOP_GEN_SERV_NAME')) . '" />
-															<p class="tip">' . $obj->l('Text to describe Nacex Generic service') . '</p>
-														</td>
-									  			</tr> 
-									  			<tr>
-									  				<td class="columna1">' . $obj->l('NacexShop service types') . ':</td>
-									  				<td class="columna2" id="nacex_available_tip_nxshop_ser">
+								<div class="panel">
+									<div class="panel-heading">' . $obj->l('NacexShop services') . '</div>
+									<div class="panel-body">
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Text for generic service') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacexshop_gen_serv_name') . '
+												<input type="text" class="form-control" name="nacexshop_gen_serv_name" value="' . Tools::getValue('nacexshop_gen_serv_name', Configuration::get('NACEXSHOP_GEN_SERV_NAME')) . '" style="max-width:335px;" />
+												<small class="form-text text-muted">' . $obj->l('Text to describe Nacex Generic service') . '</small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('NacexShop service types') . '</label>
+											<div class="col-lg-6">
 ';
     $shopOptions = [];
     foreach ($nacexDTO->getServiciosNacexShop() as $serv => $value) {
         $shopOptions[$serv] = $serv . $nacexDTO->getServSeparador() . $value['nombre'];
     }
     $html .= nacexutils::renderCheckboxGroup('nacex_available_tip_nxshop_ser', 'NACEX_AVAILABLE_TIP_NXSHOP_SER', '|', $shopOptions) . '
-															<p class="tip">' . $obj->l('Available service types') . '</p>
-									  				</td>
-                                                    <td>';
+												<small class="form-text text-muted">' . $obj->l('Available service types') . '</small>
+											</div>
+											<div class="col-lg-3">';
     $html .= $newServices->printNewServiceButtons('Shp');
     $html .= $newServices->printAddNewService('Shp');
     $html .= $newServices->printRemoveNewService('Shp', $nacexDTO);
     $html .= $newServices->printEditNewService('Shp', $nacexDTO);
     $html .= '
-                                                    </td>
-									  			</tr>
-									  			<tr>
-									  				<td class="columna1">' . $obj->l('Default service type') . ':</td>
-									  				<td class="columna2" id="nacex_default_tip_nxshop_ser">
-									  					' . showError($errores, 'nacex_default_tip_nxshop_ser') . '
-									  					<select name="nacex_default_tip_nxshop_ser"  style="width:335px">
-									  						<optgroup label="' . $obj->l('Default service type') . '">';
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Default service type') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacex_default_tip_nxshop_ser') . '
+												<select class="form-control" name="nacex_default_tip_nxshop_ser" style="max-width:335px;">
+													<optgroup label="' . $obj->l('Default service type') . '">';
     foreach ($nacexDTO->getServiciosNacexShop() as $serv => $value) {
         $servname = $value['nombre'];
         $html .= '<option ' . nacexutils::markSelectedOption('nacex_default_tip_nxshop_ser', 'NACEX_DEFAULT_TIP_NXSHOP_SER', $serv) . ' value="' . $serv . '">' . $serv . $nacexDTO->getServSeparador() . $servname . '</option>';
     }
     $html .= '</optgroup>
-									  					</select>
-									  					<p class="tip">' . $obj->l('Default service type') . '</p>
-									  				</td>
-									  			</tr>
-									  			<tr>
-															<td class="columna1">' . $obj->l('Amount calculation method') . ': </td>
-															<td class="columna2" id="nacex_calculo_importe_shp">
-															' . showError($errores, 'nacex_calculo_importe_shp') . '
-                                                            <select name="nacex_calculo_importe_shp" style="width:335px">';
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Amount calculation method') . '</label>
+											<div class="col-lg-9">
+												' . showError($errores, 'nacex_calculo_importe_shp') . '
+												<select class="form-control" name="nacex_calculo_importe_shp" style="max-width:335px;">';
     foreach ($nacexDTO->getMetodosCalculo() as $serv => $value) {
         $typevalue = $value['value'];
         $typelabel = $value['label'];
         $html .= '<option ' . nacexutils::markSelectedOption('nacex_calculo_importe_shp', 'NACEX_CALCULO_IMPORTE_SHP', $typevalue) . ' value="' . $typevalue . '">' . $typelabel . '</option>';
     }
     $html .= '</select>
-                                                            <p class="tip">' . $obj->l('Indicates the carrier amount calculation method.') . '</p>
-									  				</td>
-									  			</tr>
-									  			<tr>
-														<td class="columna1">' . $obj->l('Shipping flat amount') . ': </td>
-														<td class="columna2" id="nacexshop_importe_fijo_val">
-									  					<input type="text" onfocus="javascript:$(\'#info_nacexshop_importe_fijo\').fadeIn(400);" onblur="javascript:$(\'#info_nacexshop_importe_fijo\').fadeOut(400);" size="50" name="nacexshop_importe_fijo_val" value="' . Tools::getValue('nacexshop_importe_fijo_val', Configuration::get('NACEXSHOP_IMP_FIJO_VAL')) . '" onkeypress="javascript:return soloNumeros(event);" onblur="javascript:ValidarNum(this.value, this,7,2);"/>
-                                                        <p class="tip">' . $obj->l('Shipping flat amount to apply to a carrier.') . '</p>
-                                                        <p class="tip"><em>' . $obj->l('It will be used also on Web Service communication error to assign a default price to the carrier.') . '</em></p>
-									  				</td>
-									  			</tr>
-									  			<tr>' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacexshop_importe_min_grat', 'NO', $nacexshop_importe_min_grat_no, 'SI', $nacexshop_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacexshop_importe_min_grat_val')", "javascript:enableValor('nacexshop_importe_min_grat_val')")
+												<small class="form-text text-muted">' . $obj->l('Indicates the carrier amount calculation method.') . '</small>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Shipping flat amount') . '</label>
+											<div class="col-lg-9">
+												<input type="text" class="form-control" name="nacexshop_importe_fijo_val" value="' . Tools::getValue('nacexshop_importe_fijo_val', Configuration::get('NACEXSHOP_IMP_FIJO_VAL')) . '" onkeypress="return soloNumeros(event);" onblur="ValidarNum(this.value,this,7,2);" style="max-width:200px;" />
+												<small class="form-text text-muted">' . $obj->l('Shipping flat amount to apply to a carrier.') . '<br><em>' . $obj->l('It will be used also on Web Service communication error to assign a default price to the carrier.') . '</em></small>
+											</div>
+										</div>
+										<table style="border:0;width:100%;">
+											<tr>' . nacexutils::getRadioHTML('Enable free minimum amount', 'nacexshop_importe_min_grat', 'NO', $nacexshop_importe_min_grat_no, 'SI', $nacexshop_importe_min_grat_si, 'It enables the free minimum amount setting', "javascript:disableValor('nacexshop_importe_min_grat_val')", "javascript:enableValor('nacexshop_importe_min_grat_val')")
         . '</tr>
-									  			<tr>
-									  				<td class="columna1">' . $obj->l('Free minimum amount') . ': </td>
-									  				<td class="columna2" id="nacexshop_importe_min_grat_val">
-									  					<input type="number" step="0.01" min="0" lang="en" ' . $nacexshop_importe_min_grat_DIS . ' onfocus="javascript:$(\'#info_nacexshop_importe_min_grat\').fadeIn(400);" onblur="javascript:$(\'#info_nacexshop_importe_min_grat\').fadeOut(400);" size="50" name="nacexshop_importe_min_grat_val" value="' . Tools::getValue('nacexshop_importe_min_grat_val', Configuration::get('NACEXSHOP_IMP_MIN_GRAT_VAL')) . '"/>
-									  					' . $divInfoImpMinGratShop . '
-									  					<p class="tip">' . $obj->l('Order amount from which shipping costs will be free') . '</p>
-									  				</td>
-									  			</tr>
-									  		</table>
-									  </fieldset>
-									  							
-									  <br/>
+										</table>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Free minimum amount') . '</label>
+											<div class="col-lg-9">
+												<input type="number" step="0.01" min="0" lang="en" class="form-control" ' . $nacexshop_importe_min_grat_DIS . ' name="nacexshop_importe_min_grat_val" value="' . Tools::getValue('nacexshop_importe_min_grat_val', Configuration::get('NACEXSHOP_IMP_MIN_GRAT_VAL')) . '" style="max-width:200px;" />
+												' . $divInfoImpMinGratShop . '
+												<small class="form-text text-muted">' . $obj->l('Order amount from which shipping costs will be free') . '</small>
+											</div>
+										</div>
+									</div>
+								</div>
 									  
 									  <fieldset>
 											<legend><img src="' . $nacexDTO->getPath() . 'images/logos/NACEX_logo.svg" alt="" style="width:75px;height: 18px;"/> ' . $obj->l('Nacex International') . '</legend>
