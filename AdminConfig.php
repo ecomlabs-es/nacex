@@ -820,6 +820,7 @@ function getFormularioConfiguracion($obj)
 												<div id="modulosResult" style="display:none;margin-top:0.5em;"></div>
 											</div>
 										</div>
+									' . $saveBtn . '
 									</div>
 								</div>
 									
