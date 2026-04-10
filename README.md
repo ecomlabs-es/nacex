@@ -103,14 +103,20 @@ composer qa               # QA completo (lint + phpstan + tests)
 - Descarga automatica del CSV si no existe al confirmar pedido
 - Resolucion de datos del punto NacexShop desde CSV actualizado (no datos estaticos)
 - Persistir estado de expedicion en BD al visualizar pedido (sincroniza con WS de Nacex)
-- Cancelar expedicion: actualiza BD cuando ya fue cancelada externamente (error 5611)
+- Cancelar expedicion: solo disponible en estado PENDIENTE (notificado), actualiza BD cuando ya fue cancelada externamente (error 5611)
+- Actualizacion automatica de estado del pedido para transito, reparto e incidencia
 - Inicializacion de zonas segura: no sobreescribe configuracion global de paises
 - Soporte multitienda en inicializacion de zonas (zone_shop segun contexto)
+- Popup NacexShop cross-origin: fallback con postMessage
+- Historico de expediciones desde tabla principal (eliminada tabla _his)
 </details>
 
 <details>
 <summary><strong>Interfaz</strong></summary>
 
+- Logo Nacex Logista en todas las vistas
+- Tabla masiva: badges de estado de expedicion, toolbar con filtro por transportista
+- Tabla masiva: extender ModuleAdminController para PS8, fix maquetacion
 - Configuracion: multi-select reemplazados por checkboxes
 - Configuracion: toggles con estilo nativo PrestaShop 8
 - Configuracion: tab Nacex se abre directamente sin redireccion
@@ -121,7 +127,7 @@ composer qa               # QA completo (lint + phpstan + tests)
 <summary><strong>Calidad de codigo</strong></summary>
 
 - Eliminacion de codigo muerto y dependencias no utilizadas
-- Tests unitarios con PHPUnit (97 tests, 143 assertions)
+- Tests unitarios con PHPUnit (96 tests, 141 assertions)
 - Analisis estatico con PHPStan, estilo con PHP CS Fixer
 - Workflows de GitHub Actions: CI (PHP 7.4-8.4) + release automatico con zip
 </details>
