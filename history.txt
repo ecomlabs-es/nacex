@@ -6,11 +6,7 @@ Fix error fatal en checkout cuando no hay transportistas disponibles
 Fix detección de carrier en hookactionValidateOrder: priorizar carrier del pedido sobre cookie
 Fix popup NacexShop cross-origin: fallback con postMessage
 Actualización de estado del pedido según estado de expedición: tránsito, reparto e incidencia
-Tabla masiva: badges de estado de expedición con estilo pill redondeado
-Tabla masiva: toolbar (iconos + filtro por transportista) fuera de la tabla
-Tabla masiva: fix maquetación (div desbalanceados, contenido fuera de #content)
-Tabla masiva: filtros fecha por defecto hoy 00:00-23:59
-Tabla masiva: extender ModuleAdminController para PS8
+Tabla masiva: mejoras de maquetación, badges de estado y filtro por transportista
 Logo Nacex Logista en todas las vistas
 Eliminar tabla nacex_expediciones_his: histórico de expediciones desde tabla principal
 Traducciones español: badges de estado, filtros de transportista y estado de pedido
