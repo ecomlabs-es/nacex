@@ -1436,7 +1436,9 @@ ttttttttt' . $saveBtn . '
 								<script>
 								$(document).ready(function() {
 									var updaterUrl = "' . _MODULE_DIR_ . 'nacex/COupdater.php";
-									$.getJSON(updaterUrl, {action: "check"}, function(data) {
+									console.log("Nacex updater check:", updaterUrl);
+									$.getJSON(updaterUrl, {action: "check"}).done(function(data) {
+										console.log("Nacex update response:", data);
 										if (data.has_update) {
 											$("#ncx-update-text").text("' . $obj->l('Update available') . ': " + data.latest);
 											$("#ncx-update-badge").show();
@@ -1461,7 +1463,7 @@ ttttttttt' . $saveBtn . '
 												});
 											});
 										}
-									});
+									}).fail(function(jqXHR, s, e) { console.error("Nacex updater error:", s, e, jqXHR.responseText); });
 								});
 								</script>';
 
