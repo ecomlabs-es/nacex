@@ -40,16 +40,17 @@ class VInacexlogs
         $mensaje = $nacex->l('Are you sure you want to delete file', 'nacex') . ' ' . $_file . '?';
 
         return "<tr>
-                    <td><strong>" . $_file . "</strong></td>
-                    <td>" . self::formatSizeUnits(filesize($path . DIRECTORY_SEPARATOR . $_file)) . "</td>
+                    <td>" . $_file . "</td>
+                    <td><span class='badge badge-default'>" . self::formatSizeUnits(filesize($path . DIRECTORY_SEPARATOR . $_file)) . "</span></td>
                     <td>
-                        <a href='#' title='" . $nacex->l('Open file', 'nacex') . "' onclick='nacexlogs.get(\"read\",Base_uri,\"\",\"" . $_file . "\");return false;'>
-                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>visibility</i>
-                        </a>
-                        &nbsp;
-                        <a href='#' title='" . $nacex->l('Delete file', 'nacex') . "' onclick='nacexlogs.get(\"delete\",Base_uri,\"" . $mensaje . "\",\"" . $_file . "\");return false;' style='color:#dc3545;'>
-                            <i class='material-icons' style='font-size:14px;vertical-align:middle;'>delete</i>
-                        </a>
+                        <div class='btn-group btn-group-sm'>
+                            <button type='button' class='btn btn-default' title='" . $nacex->l('Open file', 'nacex') . "' onclick='nacexlogs.get(\"read\",Base_uri,\"\",\"" . $_file . "\");'>
+                                <i class='material-icons' style='font-size:16px;vertical-align:middle;'>visibility</i>
+                            </button>
+                            <button type='button' class='btn btn-default' title='" . $nacex->l('Delete file', 'nacex') . "' onclick='nacexlogs.get(\"delete\",Base_uri,\"" . $mensaje . "\",\"" . $_file . "\");'>
+                                <i class='material-icons' style='font-size:16px;vertical-align:middle;color:#dc3545;'>delete</i>
+                            </button>
+                        </div>
                     </td>
                 </tr>";
     }

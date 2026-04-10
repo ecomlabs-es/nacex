@@ -479,8 +479,8 @@ class nacexutils
                             <thead>
                                 <tr>
                                     <th>' . $nacex->l('File') . '</th>
-                                    <th>' . $nacex->l('Size') . '</th>
-                                    <th>' . $nacex->l('Actions') . '</th>
+                                    <th style="width:120px;">' . $nacex->l('Size') . '</th>
+                                    <th style="width:120px;">' . $nacex->l('Actions') . '</th>
                                 </tr>
                             </thead>
                             <tbody>';
