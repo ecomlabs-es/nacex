@@ -113,12 +113,12 @@ function getFormularioConfiguracion($obj)
                 });
                 
                 // Inicializamos valor para *show developer options*
-                if($("input[name=\'nacex_show_dev_ops\']:checked").val() === "SI") $("tr[data-depends=\'nacex_show_dev_ops\']").show();
-                else $("tr[data-depends=\'nacex_show_dev_ops\']").hide();
+                if($("input[name=\'nacex_show_dev_ops\']:checked").val() === "SI") $("[data-depends=\'nacex_show_dev_ops\']").show();
+                else $("[data-depends=\'nacex_show_dev_ops\']").hide();
                     
                 // Mostramos u ocultamos las opciones de desarrollador
                 $("input[name=\'nacex_show_dev_ops\']").on("change", function() {
-                    $("tr[data-depends=\'nacex_show_dev_ops\']").toggle("display");
+                    $("[data-depends=\'nacex_show_dev_ops\']").toggle("display");
                 });
                                     
                         
