@@ -1120,369 +1120,208 @@ function getFormularioConfiguracion($obj)
 									 
 								<div class="panel">
 									<div class="panel-heading">' . $obj->l('Backend form') . '</div>
-									<div class="panel-body">
-								      	<table style="border:0;width:100%;">
-					<tr>
-					    <td class="columna1">' . $obj->l('Update order status on printing label') . ' :</td>
-						    <td id="cambiar_estado_imprimir" class="columna2">';
-    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_IMPRIMIR');
+									<div class="panel-body">';
+
+    // Helper para generar selects de estado
     $estados = $estados->getOrderStates($id_lang);
-    $seleccionado = '';
     array_push($estados, ['name' => 'NONE']);
-    $html .= '<select name="cambiar_estado_imprimir">';
-    $html .= '<option value="">' . $obj->l('None') . '</option>';
-    foreach ($estados as $estado) {
-        if (isset($estado['id_order_state'])) {
-            $id_estado = $estado['id_order_state'];
-            $valor = $estado['name'];
-            if ($sel_cambiar !== false && $id_estado == $sel_cambiar) {
-                $seleccionado = 'selected';
-            } elseif ($sel_cambiar == false && $valor == 'NONE') {
-                $seleccionado = 'selected';
-            }
-            $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
-        }
-        $seleccionado = '';
-    }
-    $html .= '</select>    
-          </td>
-		  </tr>																
-		  <tr>';
-    $html .= '</td>						
-		 </tr>
-		 <tr>
-		    <td class="columna1">' . $obj->l('Update order status on cancel expedition') . ':</td>
-			<td id="cambiar_estado_cancelar" class="columna2">';
-    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_CANCELAR');
-    $html .= '<select name="cambiar_estado_cancelar">';
-    $html .= '<option value="">' . $obj->l('None') . '</option>';
-    foreach ($estados as $estado) {
-        if (isset($estado['id_order_state'])) {
-            $id_estado = $estado['id_order_state'];
-            $valor = $estado['name'];
-            if ($sel_cambiar !== false && $id_estado == $sel_cambiar) {
-                $seleccionado = 'selected';
-            } elseif ($sel_cambiar == false && $valor == 'NONE') {
-                $seleccionado = 'selected';
-            }
-            $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
-        }
-        $seleccionado = '';
-    }
-    $html .= '</select>    
-          </td>
-		  </tr>    
-		  </tr>																
-	      <tr>';
-    $html .= '</td>						
-		 </tr>
-		 <tr>
-		 <td class="columna1">' . $obj->l('Update order status on documenting expedition') . ':</td>
-		 <td id="cambiar_estado_generar" class="columna2">';
-    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_GENERAR');
-    $html .= '<select name="cambiar_estado_generar">';
-    $html .= '<option value="">' . $obj->l('None') . '</option>';
-    foreach ($estados as $estado) {
-        if (isset($estado['id_order_state'])) {
-            $id_estado = $estado['id_order_state'];
-            $valor = $estado['name'];
-            if ($sel_cambiar !== false && $id_estado == $sel_cambiar) {
-                $seleccionado = 'selected';
-            } elseif ($sel_cambiar == false && $valor == 'NONE') {
-                $seleccionado = 'selected';
+
+    $statusSelects = [
+        ['label' => 'Update order status on printing label', 'name' => 'cambiar_estado_imprimir', 'config' => 'NACEX_CAMBIAR_ESTADO_IMPRIMIR'],
+        ['label' => 'Update order status on cancel expedition', 'name' => 'cambiar_estado_cancelar', 'config' => 'NACEX_CAMBIAR_ESTADO_CANCELAR'],
+        ['label' => 'Update order status on documenting expedition', 'name' => 'cambiar_estado_generar', 'config' => 'NACEX_CAMBIAR_ESTADO_GENERAR'],
+        ['label' => 'Update order status when shipment is delivered', 'name' => 'cambiar_estado_ok', 'config' => 'NACEX_CAMBIAR_ESTADO_OK'],
+        ['label' => 'Update order status when shipment is in transit', 'name' => 'cambiar_estado_transito', 'config' => 'NACEX_CAMBIAR_ESTADO_TRANSITO'],
+        ['label' => 'Update order status when shipment is out for delivery', 'name' => 'cambiar_estado_reparto', 'config' => 'NACEX_CAMBIAR_ESTADO_REPARTO'],
+        ['label' => 'Update order status when shipment has an incident', 'name' => 'cambiar_estado_incidencia', 'config' => 'NACEX_CAMBIAR_ESTADO_INCIDENCIA'],
+    ];
+
+    foreach ($statusSelects as $ss) {
+        $sel = Configuration::get($ss['config']);
+        $html .= '<div class="form-group row">
+            <label class="col-lg-3 col-form-label">' . $obj->l($ss['label']) . '</label>
+            <div class="col-lg-9">
+                <select class="form-control" name="' . $ss['name'] . '" style="max-width:335px;">
+                    <option value="">' . $obj->l('None') . '</option>';
+        foreach ($estados as $estado) {
+            if (isset($estado['id_order_state'])) {
+                $selected = ($sel !== false && $estado['id_order_state'] == $sel) ? ' selected' : '';
+                $html .= '<option value="' . $estado['id_order_state'] . '"' . $selected . '>' . $estado['name'] . '</option>';
             }
         }
-        $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
-        $seleccionado = '';
+        $html .= '</select></div></div>';
     }
-    $html .= '</select>    
-                                      </td>
-                                      </tr>
-                                      <tr>
-                                    <td class="columna1">' . $obj->l('Update order status when shipment is delivered') . ':</td>
-                                        <td id="cambiar_estado_ok" class="columna2">';
-    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_OK');
-    $html .= '<select name="cambiar_estado_ok">';
-    $html .= '<option value="">' . $obj->l('None') . '</option>';
-    foreach ($estados as $estado) {
-        if (isset($estado['id_order_state'])) {
-            $id_estado = $estado['id_order_state'];
-            $valor = $estado['name'];
-            if ($sel_cambiar !== false && $id_estado == $sel_cambiar) {
-                $seleccionado = 'selected';
-            } elseif ($sel_cambiar == false && $valor == 'NONE') {
-                $seleccionado = 'selected';
-            }
-            $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
-        }
-        $seleccionado = '';
-    }
-    $html .= '</select>
-            </td>
-          </tr>
-          <tr>
-            <td class="columna1">' . $obj->l('Update order status when shipment is in transit') . ':</td>
-            <td id="cambiar_estado_transito" class="columna2">';
-    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_TRANSITO');
-    $html .= '<select name="cambiar_estado_transito">';
-    $html .= '<option value="">' . $obj->l('None') . '</option>';
-    foreach ($estados as $estado) {
-        if (isset($estado['id_order_state'])) {
-            $id_estado = $estado['id_order_state'];
-            $valor = $estado['name'];
-            $seleccionado = ($sel_cambiar !== false && $id_estado == $sel_cambiar) ? 'selected' : '';
-            $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
-        }
-    }
-    $html .= '</select>
-            </td>
-          </tr>
-          <tr>
-            <td class="columna1">' . $obj->l('Update order status when shipment is out for delivery') . ':</td>
-            <td id="cambiar_estado_reparto" class="columna2">';
-    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_REPARTO');
-    $html .= '<select name="cambiar_estado_reparto">';
-    $html .= '<option value="">' . $obj->l('None') . '</option>';
-    foreach ($estados as $estado) {
-        if (isset($estado['id_order_state'])) {
-            $id_estado = $estado['id_order_state'];
-            $valor = $estado['name'];
-            $seleccionado = ($sel_cambiar !== false && $id_estado == $sel_cambiar) ? 'selected' : '';
-            $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
-        }
-    }
-    $html .= '</select>
-            </td>
-          </tr>
-          <tr>
-            <td class="columna1">' . $obj->l('Update order status when shipment has an incident') . ':</td>
-            <td id="cambiar_estado_incidencia" class="columna2">';
-    $sel_cambiar = Configuration::get('NACEX_CAMBIAR_ESTADO_INCIDENCIA');
-    $html .= '<select name="cambiar_estado_incidencia">';
-    $html .= '<option value="">' . $obj->l('None') . '</option>';
-    foreach ($estados as $estado) {
-        if (isset($estado['id_order_state'])) {
-            $id_estado = $estado['id_order_state'];
-            $valor = $estado['name'];
-            $seleccionado = ($sel_cambiar !== false && $id_estado == $sel_cambiar) ? 'selected' : '';
-            $html .= '<option value="' . $id_estado . '"' . $seleccionado . '> ' . $valor . '</option>';
-        }
-    }
-    $html .= '</select>
-            </td>
-          </tr>
-          <tr>
-            <td class="columna1">' . $obj->l('Do not update order status when your order has any of these statuses') . ':</td>
-                <td id="no_cambiar_estado_ok" class="columna2" >';
+
+    // Checkbox de exclusion de estados
     $estadoOptions = [];
     foreach ($estados as $value => $estado) {
         $idOrderState = !isset($estado['id_order_state']) ? '' : $value;
         $estadoOptions[$idOrderState] = $estado['name'];
     }
-    $html .= nacexutils::renderCheckboxGroup('no_cambiar_estado_ok', 'NACEX_NO_CAMBIAR_ESTADO_A_OK', '|', $estadoOptions) . '
-          </td>
-          </tr>
-          <tr>						
-                <td colspan="2"><hr><br>
-		  </td>						
-          </tr>    
-          </tr>																
-          <tr>';
-    $html .= '								  				<td class="columna1">' . $obj->l('Default Charge Type') . ':</td>
-									  				<td class="columna2" id="nacex_tip_cob">
-									  					<input type="radio" name="nacex_tip_cob" value="O" ' . $tip_cob_01 . '/>O - ' . $obj->l('Origin') . '
-									  					&nbsp;
-									  					<input type="radio" name="nacex_tip_cob" value="D" ' . $tip_cob_02 . '/>D - ' . $obj->l('Destiny') . '
-									  					&nbsp;
-									  					<input type="radio" name="nacex_tip_cob" value="T" ' . $tip_cob_03 . '/>T - ' . $obj->l('Third') . ' 
-									  					<p class="tip"><span class="resaltado bold">' . $obj->l('In International shipping ONLY available in ORIGIN') . '</span></p>
-									  				</td>
-									  			</tr>
-									  			<tr>
-									  				<td class="columna1">' . $obj->l('Cash on delivery modules') . ': </td>
-									  				<td class="columna2" id="nacex_modulos_reembolso">
-									  					' . showError($errores, 'nacex_modulos_reembolso') . '
-															' . $divpayment . '
-									  					<p class="tip">' . $obj->l('Select cash on delivery payment modules enabled. For multiple selection press Ctrl + click') . '<br/>
-                                                            <span class="resaltado"><strong>' . $obj->l('You must assign manually the payment methods to the carriers. The cash on delivery MUST NOT be enabled for carriers PLUS BAG (04) nor INTERNATIONALS (G y H).') . '</strong><br/>
-                                                            ' . $obj->l('You can do it') . ' <a href="' . $pagoUrl . '" target="_blank" style="color:#ff5100;">' . $obj->l('clicking here') . '</a> ' . $obj->l('in CARRIER RESTRICTIONS area') . '.</span>
-									  					</p>									  					
-									  				</td>
-									  			</tr>
-									  			<tr>
-														<td class="columna1">' . $obj->l('Default refund type') . ':</td>
-														<td class="columna2" id="nacex_tip_ree">
-															<input type="radio" name="nacex_tip_ree" value="O" ' . $tip_ree_01 . '/>O - ' . $obj->l('Origen') . '
-															&nbsp;
-															<input type="radio" name="nacex_tip_ree" value="D" ' . $tip_ree_02 . '/>D -  ' . $obj->l('Destino') . '
-															&nbsp;
-															<input type="radio" name="nacex_tip_ree" value="T" ' . $tip_ree_03 . '/>T - ' . $obj->l('Tercera') . '
-															<p class="tip"><span class="resaltado bold">' . $obj->l('In Internacional shipping REFUND is NOT available') . '</span></p>
-														</td>
-													</tr>
-													<tr>
-														<td class="columna1">' . $obj->l('Default shipment type') . ': </td>
-														<td class="columna2" id="nacex_tip_env">
-															<input type="radio" name="nacex_tip_env" value="0" ' . $tip_env_docs . '/>0 - DOCS
-															&nbsp;
-															<input type="radio" name="nacex_tip_env" value="1" ' . $tip_env_bag . '/>1 - BAG
-															&nbsp;
-															<input type="radio" name="nacex_tip_env" value="2" ' . $tip_env_paq . '/>2 - PAQ
-															<p class="tip">' . $obj->l('Shipment type for Spain, Portugal and Andorra') . '</p>
-														</td>
-													</tr>
-													' . nacexutils::getRadioHTML('Report quantity and reference in Additional Instructions', 'nacex_ins_adi_q_r', 'NO', $ins_adi_q_r_no, 'SI', $ins_adi_q_r_si, 'Report product quantity in the order and its references. They will be added in Additional Instructions field')
-        . '
-													' . nacexutils::getRadioHTML('Add Additional Instructions to label', 'nacex_ins_pers', 'NO', $ins_adi_pers_no, 'SI', $ins_adi_pers_si, 'It allows adding comments to shipment by additional instructions.', "javascript:disableValor('nacex_custom_inst_pers');disableValor('nacex_custom_obs');", "javascript:enableValor('nacex_custom_inst_pers');enableValor('nacex_custom_obs');")
-        . '
-													<tr>
-														<td class="columna1">' . $obj->l('Additional Instructions text') . ': </td>
-														<td class="columna2" id="nacex_custom_inst_pers">
-															<input type="text" ' . $ins_adi_pers_DIS . ' size="50" maxlength="600" name="nacex_custom_inst_pers" value="' . Tools::getValue('nacex_inst_adi', Configuration::get('NACEX_CUSTOM_INST_ADI')) . '"/>
-															<p class="tip">' . $obj->l('Additional Instructions content that will be added on generating all shipments by default') . '<br>' . $obj->l('Max. size: 600 chars.') . '</p>
-														</td>
-													</tr>
-													<tr>
-														<td class="columna1">' . $obj->l('Observations text') . ': </td>
-														<td class="columna2" id="nacex_custom_obs">
-															<input type="text" ' . $obs_DIS . ' size="50" maxlength="76" name="nacex_custom_obs" value="' . Tools::getValue('nacex_custom_obs', Configuration::get('NACEX_CUSTOM_OBS')) . '"/>
-															<p class="tip">' . $obj->l('Observations content that will be added on generating all shipments by default') . '<br>' . $obj->l('Max. size: 76 chars.') . '</p>
-														</td>
-													</tr>
-													
-													' . nacexutils::getRadioHTML('Customer feedback capture', 'nacex_comentarios_cli_sino', 'NO', $nacex_comentarios_cli_no, 'SI', $nacex_comentarios_cli_si)
-        . '
-															<p class="tip"><span class="resaltado bold">' . $obj->l('If this field is enabled without enabling Add Additional Instructions to label option, feedback is added within additional instructions. This way we avoid the 76 char limitation from Observations field.') . '<br>
-                                                            ' . $obj->l('If is enabled Add Additional Instructions to label option and the field Observations text is empty, feedback is added to observations and all the text that exceeds 76 characters is filled in additional instructions. If observation text field is filled, feedback goes into additional instructions.') . '</span></p>
-														</td>
-													</tr>
-													
-													' . nacexutils::getRadioHTML('Default Return shipment', 'nacex_ret', 'NO', $ret_no, 'SI', $ret_si)
-        . '
-															<p class="tip">' . $obj->l('Default Return shipment') . '. <span class="resaltado bold">' . $obj->l('In International shipments is NOT available management RETURN shipments') . '</span></p>
-														</td>
-													</tr>
-													' . nacexutils::getRadioHTML('Custom reference', 'nacex_ref_pers', 'NO', $nacex_ref_pers_no, 'SI', $nacex_ref_pers_si, 'The reference is composed by a custom prefix and an ID (order id). Reference must have 20 digit max.', "javascript:disableValor('nacex_ref_pers_prefijo')", "javascript:enableValor('nacex_ref_pers_prefijo')")
-        . '
-                                                    <tr>
-                                                        <td class="columna1">' . $obj->l('Custom reference prefix') . ': </td>
-                                                        <td class="columna2" id="nacex_ref_pers_prefijo">
-                                                            ' . showError($errores, 'nacex_ref_pers_prefijo') . '	
-                                                            <input type="text" placeholder="' . $obj->l('Reference') . '" ' . $nacex_ref_pers_DIS . ' size="50" name="nacex_ref_pers_prefijo" value="' . Tools::getValue('nacex_ref_pers_prefijo', Configuration::get('NACEX_REF_PERS_PREFIJO')) . '" />
-                                                            <p class="tip">' . $obj->l('Shipment reference prefix. It doesn\'t have to contain blank spaces nor special chars.') . '<br>' . $obj->l('Ex:') . $obj->l(' NACEX_') . '</p>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-														<td class="columna1">' . $obj->l('Default insurance type') . ': </td>
-														<td class="columna2">
-																<select name="nacex_default_tip_seg" size="1">';
-    foreach ($nacexDTO->getSeguros() as $seg => $value) {
-        $segname = $value['nombre'];
-        $segdesc = $value['descripcion'];
+    $html .= '<div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Do not update order status when your order has any of these statuses') . '</label>
+        <div class="col-lg-9">' . nacexutils::renderCheckboxGroup('no_cambiar_estado_ok', 'NACEX_NO_CAMBIAR_ESTADO_A_OK', '|', $estadoOptions) . '</div>
+    </div>
+    <hr>
 
-        $html .= '<option ' . nacexutils::markSelectedOption('nacex_default_tip_seg', 'NACEX_DEFAULT_TIP_SEG', $seg) . ' value="' . $seg . '">' . $segname . '</option>';
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Default Charge Type') . '</label>
+        <div class="col-lg-9">
+            <label class="radio-inline"><input type="radio" name="nacex_tip_cob" value="O" ' . $tip_cob_01 . '/> O - ' . $obj->l('Origin') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_tip_cob" value="D" ' . $tip_cob_02 . '/> D - ' . $obj->l('Destiny') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_tip_cob" value="T" ' . $tip_cob_03 . '/> T - ' . $obj->l('Third') . '</label>
+            <small class="form-text text-muted"><strong>' . $obj->l('In International shipping ONLY available in ORIGIN') . '</strong></small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Cash on delivery modules') . '</label>
+        <div class="col-lg-9">
+            ' . showError($errores, 'nacex_modulos_reembolso') . $divpayment . '
+            <small class="form-text text-muted"><strong>' . $obj->l('You must assign manually the payment methods to the carriers. The cash on delivery MUST NOT be enabled for carriers PLUS BAG (04) nor INTERNATIONALS (G y H).') . '</strong><br>
+            ' . $obj->l('You can do it') . ' <a href="' . $pagoUrl . '" target="_blank" style="color:#ff5100;">' . $obj->l('clicking here') . '</a> ' . $obj->l('in CARRIER RESTRICTIONS area') . '</small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Default refund type') . '</label>
+        <div class="col-lg-9">
+            <label class="radio-inline"><input type="radio" name="nacex_tip_ree" value="O" ' . $tip_ree_01 . '/> O - ' . $obj->l('Origen') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_tip_ree" value="D" ' . $tip_ree_02 . '/> D - ' . $obj->l('Destino') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_tip_ree" value="T" ' . $tip_ree_03 . '/> T - ' . $obj->l('Tercera') . '</label>
+            <small class="form-text text-muted"><strong>' . $obj->l('In Internacional shipping REFUND is NOT available') . '</strong></small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Default shipment type') . '</label>
+        <div class="col-lg-9">
+            <label class="radio-inline"><input type="radio" name="nacex_tip_env" value="0" ' . $tip_env_docs . '/> 0 - DOCS</label>
+            <label class="radio-inline"><input type="radio" name="nacex_tip_env" value="1" ' . $tip_env_bag . '/> 1 - BAG</label>
+            <label class="radio-inline"><input type="radio" name="nacex_tip_env" value="2" ' . $tip_env_paq . '/> 2 - PAQ</label>
+            <small class="form-text text-muted">' . $obj->l('Shipment type for Spain, Portugal and Andorra') . '</small>
+        </div>
+    </div>
+
+    ' . nacexutils::getRadioHTML('Report quantity and reference in Additional Instructions', 'nacex_ins_adi_q_r', 'NO', $ins_adi_q_r_no, 'SI', $ins_adi_q_r_si, 'Report product quantity in the order and its references. They will be added in Additional Instructions field')
+        . nacexutils::getRadioHTML('Add Additional Instructions to label', 'nacex_ins_pers', 'NO', $ins_adi_pers_no, 'SI', $ins_adi_pers_si, 'It allows adding comments to shipment by additional instructions.', "javascript:disableValor('nacex_custom_inst_pers');disableValor('nacex_custom_obs');", "javascript:enableValor('nacex_custom_inst_pers');enableValor('nacex_custom_obs');") . '
+
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Additional Instructions text') . '</label>
+        <div class="col-lg-9">
+            <input type="text" class="form-control" ' . $ins_adi_pers_DIS . ' maxlength="600" name="nacex_custom_inst_pers" value="' . Tools::getValue('nacex_inst_adi', Configuration::get('NACEX_CUSTOM_INST_ADI')) . '" style="max-width:335px;" />
+            <small class="form-text text-muted">' . $obj->l('Additional Instructions content that will be added on generating all shipments by default') . ' (' . $obj->l('Max. size: 600 chars.') . ')</small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Observations text') . '</label>
+        <div class="col-lg-9">
+            <input type="text" class="form-control" ' . $obs_DIS . ' maxlength="76" name="nacex_custom_obs" value="' . Tools::getValue('nacex_custom_obs', Configuration::get('NACEX_CUSTOM_OBS')) . '" style="max-width:335px;" />
+            <small class="form-text text-muted">' . $obj->l('Observations content that will be added on generating all shipments by default') . ' (' . $obj->l('Max. size: 76 chars.') . ')</small>
+        </div>
+    </div>
+
+    ' . nacexutils::getRadioHTML('Customer feedback capture', 'nacex_comentarios_cli_sino', 'NO', $nacex_comentarios_cli_no, 'SI', $nacex_comentarios_cli_si)
+        . nacexutils::getRadioHTML('Default Return shipment', 'nacex_ret', 'NO', $ret_no, 'SI', $ret_si, 'In International shipments is NOT available management RETURN shipments')
+        . nacexutils::getRadioHTML('Custom reference', 'nacex_ref_pers', 'NO', $nacex_ref_pers_no, 'SI', $nacex_ref_pers_si, 'The reference is composed by a custom prefix and an ID (order id). Reference must have 20 digit max.', "javascript:disableValor('nacex_ref_pers_prefijo')", "javascript:enableValor('nacex_ref_pers_prefijo')") . '
+
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Custom reference prefix') . '</label>
+        <div class="col-lg-9">
+            ' . showError($errores, 'nacex_ref_pers_prefijo') . '
+            <input type="text" class="form-control" placeholder="' . $obj->l('Reference') . '" ' . $nacex_ref_pers_DIS . ' name="nacex_ref_pers_prefijo" value="' . Tools::getValue('nacex_ref_pers_prefijo', Configuration::get('NACEX_REF_PERS_PREFIJO')) . '" style="max-width:335px;" />
+            <small class="form-text text-muted">' . $obj->l('Shipment reference prefix. It doesn\'t have to contain blank spaces nor special chars.') . ' ' . $obj->l('Ex:') . ' NACEX_</small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Default insurance type') . '</label>
+        <div class="col-lg-9">
+            <select class="form-control" name="nacex_default_tip_seg" style="max-width:335px;">';
+    foreach ($nacexDTO->getSeguros() as $seg => $value) {
+        $html .= '<option ' . nacexutils::markSelectedOption('nacex_default_tip_seg', 'NACEX_DEFAULT_TIP_SEG', $seg) . ' value="' . $seg . '">' . $value['nombre'] . '</option>';
     }
     $html .= '</select>
-															   <p class="tip">' . $obj->l('Default insurance type') . '</p>
-														</td>
-													</tr>
-													<tr>
-														<td class="columna1">' . $obj->l('Default insured amount') . ': </td>
-														<td class="columna2">
-															' . showError($errores, 'nacex_default_imp_seg') . '
-															<input type="text" placeholder="' . $obj->l('€') . '" ' . $nacex_default_imp_seg_DIS . ' id="nacex_default_imp_seg" name="nacex_default_imp_seg" value="' . Tools::getValue('nacex_default_imp_seg', Configuration::get('NACEX_DEFAULT_IMP_SEG')) . '"  onkeypress="javascript:return soloNumeros(event);" onblur="javascript:ValidarNum(this.value, this,7,2);"/>
-														<p class="tip">' . $obj->l('Default insured amount') . ' (€)</p>
-														</td>
-													</tr>
-													<script>
-														$(function() {
-															$("select[name=\"nacex_default_tip_seg\"]").change(function(index) {
-										    					if ($(this).val() != "N"){
-										    						$("#nacex_default_imp_seg").removeAttr("disabled");
-										    						$("#nacex_default_imp_seg").attr("value","' . Tools::getValue('nacex_default_imp_seg', Configuration::get('NACEX_DEFAULT_IMP_SEG')) . '");
-										    						$("#nacex_default_imp_seg").focus();
-										    					}
-										    					else{
-										    						$("#nacex_default_imp_seg").attr("disabled","disabled");
-										    						$("#nacex_default_imp_seg").attr("value","");
-										    					}
-															});
-														});
-													</script>
-									  			<tr>
-														<td class="columna1">' . $obj->l('Default prealert type') . ':</td>
-														<td class="columna2" id="nacex_tip_preal">
-															<input type="radio" onchange="javascript:disablePrealerta();" name="nacex_tip_preal" value="N" ' . $nacex_tip_preal_n . '/>' . $obj->l('No prealerta') . '
-															&nbsp;
-															<input type="radio" onchange="javascript:enablePrealerta();" name="nacex_tip_preal" value="S" ' . $nacex_tip_preal_s . '/>' . $obj->l('SMS') . '
-															&nbsp;
-															<input type="radio" onchange="javascript:enablePrealerta();" name="nacex_tip_preal" value="E" ' . $nacex_tip_preal_e . '/>' . $obj->l('E-mail') . '
-															<p class="tip">' . $obj->l('All orders will be generated with selected prealert') . '</p>
-														</td>
-													</tr>
-													<tr>
-														<td class="columna1">M' . $obj->l('Default prealert mode') . ':</td>
-														<td class="columna2" id="nacex_mod_preal">
-															<input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="javascript:disableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="S" ' . $nacex_mod_preal_s . '/>' . $obj->l('Standard') . '
-															&nbsp;
-															<input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="javascript:enableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="P" ' . $nacex_mod_preal_p . '/>' . $obj->l('Plus') . '
-															&nbsp;
-															<input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="javascript:disableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="R" ' . $nacex_mod_preal_r . '/>' . $obj->l('Reparto') . '
-															&nbsp;
-															<input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="javascript:enableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="E" ' . $nacex_mod_preal_e . '/>' . $obj->l('Reparto Plus') . '
-															<p class="tip">' . $obj->l('Type of message to send:') . '<br>&nbsp;&nbsp;' . $obj->l('- Standard: Basic alert message') . '<br>&nbsp;&nbsp;' . $obj->l('- Plus: "Standard" message type with added text') . '<br>&nbsp;&nbsp;' . $obj->l(nacexutils::toUtf8('- Reparto: "Standard" message type sent when package arrives to destiny agency.')) . '<br>&nbsp;&nbsp;' . $obj->l('- Reparto Plus: "Reparto" message type with added text.') . '</p>
-														</td>
-													</tr>
-													<tr>
-									  				<td class="columna1">' . $obj->l('Prealert Plus message') . ': </td>
-									  				<td class="columna2" id="nacex_preal_plus_txt">
-									  					' . showError($errores, 'nacex_preal_plus_txt') . '	
-									  					<input type="text" placeholder="' . $obj->l('Message') . '" ' . $nacex_tip_preal_DIS . ' size="50" name="nacex_preal_plus_txt" value="' . Tools::getValue('nacex_preal_plus_txt', Configuration::get('NACEX_PREAL_PLUS_TXT')) . '" />
-									  					<p class="tip">' . $obj->l('Additional prealert text. Max. 720 chars.') . '</p>
-									  				</td>
-									  			</tr>
-                                                <tr>
-                                                    <td class="columna1">' . $obj->l('Shipping packages') . ':</td>
-                                                    <td class="columna2" id="nacex_bultos">
-                                                        <input type="radio" name="nacex_bultos" onchange="javascript:disableValor(\'nacex_bultos_numero\')" value="C" ' . $nacex_bultos_cesta . '/>' . $obj->l('Cart items') . '
-                                                        <input type="radio" name="nacex_bultos" onchange="javascript:enableValor(\'nacex_bultos_numero\')"  value="F" ' . $nacex_bultos_fijo . '/>' . $obj->l('Fixed packages') . '
-                                                        <p class="tip">' . $obj->l('Way to calculate shipping packages number.') . '</p>
-                                                    </td>
-                                                </tr>
-									  			<tr>
-									  				<td class="columna1">' . $obj->l('Fixed shipping packages') . ': </td>
-									  				<td class="columna2" id="nacex_bultos_numero">
-									  					<input type="text" placeholder="' . $obj->l('Packages') . '" ' . $nacex_bultos_DIS . ' size="50" name="nacex_bultos_numero" value="' . Tools::getValue('nacex_bultos_numero', Configuration::get('NACEX_BULTOS_NUMERO')) . '" onkeypress="javascript:return soloNumeros(event);" onblur="javascript:ValidarNum(this.value, this,7,0);"/>
-									  					<p class="tip">' . $obj->l('Put shipping packages number for all shipments') . '</p>
-									  				</td>
-									  			</tr>
-									  			<tr>
-                                                    <td class="columna1">' . $obj->l('Shipping weight') . ':</td>
-                                                    <td class="columna2" id="nacex_peso">
-                                                        <input type="radio" name="nacex_peso" onchange="javascript:disableValor(\'nacex_peso_numero\')" value="C" ' . $nacex_peso_cesta . '/>' . $obj->l('Cart items') . '
-                                                        <input type="radio" name="nacex_peso" onchange="javascript:enableValor(\'nacex_peso_numero\')"  value="F" ' . $nacex_peso_fijo . '/>' . $obj->l('Fixed weight') . '
-                                                        <p class="tip">' . $obj->l('Way to calculate shipping weight.') . '</p>
-                                                    </td>
-									  			</tr>
-									  			<tr>
-									  				<td class="columna1">' . $obj->l('Fixed kilos number') . ': </td>
-									  				<td class="columna2" id="nacex_peso_numero">
-									  					<input type="text" placeholder="' . $obj->l('Kilos') . '"  ' . $nacex_peso_cesta_DIS . ' size="50" name="nacex_peso_numero" value="' . Tools::getValue('nacex_peso_numero', Configuration::get('NACEX_PESO_NUMERO')) . '" onkeypress="javascript:return soloNumeros(event);" onblur="javascript:ValidarNum(this.value, this,7,2);"/>
-									  					<p class="tip">' . $obj->l('Put weight for all shipments') . '</p>
-									  				</td>
-									  			</tr>
-									  			' . nacexutils::getRadioHTML('Apply handling fee', 'nacex_gastos_manipulacion', 'NO', $nacex_gastos_manipulacion_no, 'SI', $nacex_gastos_manipulacion_si, 'It allows to add extra charges to shipping costs.', "javascript:disableValor('nacex_gastos_manipulacion_val')", "javascript:enableValor('nacex_gastos_manipulacion_val')")
-        . '
-									  			<tr>
-									  				<td class="columna1">' . $obj->l('Handling fee') . ': </td>
-									  				<td class="columna2" id="nacex_gastos_manipulacion_val">
-									  					' . showError($errores, 'nacex_gastos_manipulacion_val') . '
-									  					<input type="text" ' . $nacex_gastos_manipulacion_DIS . ' onfocus="javascript:$(\'#info_nacex_gastos_manipulacion\').fadeIn(400);" onblur="javascript:$(\'#info_nacex_gastos_manipulacion\').fadeOut(400);"  size="50" name="nacex_gastos_manipulacion_val" value="' . Tools::getValue('nacex_gastos_manipulacion_val', Configuration::get('NACEX_GASTOS_MANIPULACION_VAL')) . '" onkeypress="javascript:return soloNumeros(event);" onblur="javascript:ValidarNum(this.value, this,7,2);"/>
-									  					' . $divInfoGastosMani . '
-									  					<p class="tip">' . $obj->l('Amount added in shipping costs for handling expenses') . '</p>
-									  				</td>
-									  			</tr>							
-									  		</table>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Default insured amount') . '</label>
+        <div class="col-lg-9">
+            ' . showError($errores, 'nacex_default_imp_seg') . '
+            <input type="text" class="form-control" placeholder="€" ' . $nacex_default_imp_seg_DIS . ' id="nacex_default_imp_seg" name="nacex_default_imp_seg" value="' . Tools::getValue('nacex_default_imp_seg', Configuration::get('NACEX_DEFAULT_IMP_SEG')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
+        </div>
+    </div>
+    <script>
+        $(function() {
+            $("select[name=\'nacex_default_tip_seg\']").change(function() {
+                if ($(this).val() != "N") { $("#nacex_default_imp_seg").removeAttr("disabled").focus(); }
+                else { $("#nacex_default_imp_seg").attr("disabled","disabled").val(""); }
+            });
+        });
+    </script>
+
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Default prealert type') . '</label>
+        <div class="col-lg-9">
+            <label class="radio-inline"><input type="radio" onchange="disablePrealerta();" name="nacex_tip_preal" value="N" ' . $nacex_tip_preal_n . '/> ' . $obj->l('No prealerta') . '</label>
+            <label class="radio-inline"><input type="radio" onchange="enablePrealerta();" name="nacex_tip_preal" value="S" ' . $nacex_tip_preal_s . '/> SMS</label>
+            <label class="radio-inline"><input type="radio" onchange="enablePrealerta();" name="nacex_tip_preal" value="E" ' . $nacex_tip_preal_e . '/> E-mail</label>
+            <small class="form-text text-muted">' . $obj->l('All orders will be generated with selected prealert') . '</small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Default prealert mode') . '</label>
+        <div class="col-lg-9">
+            <label class="radio-inline"><input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="disableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="S" ' . $nacex_mod_preal_s . '/> Standard</label>
+            <label class="radio-inline"><input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="enableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="P" ' . $nacex_mod_preal_p . '/> Plus</label>
+            <label class="radio-inline"><input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="disableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="R" ' . $nacex_mod_preal_r . '/> Reparto</label>
+            <label class="radio-inline"><input type="radio" ' . $nacex_tip_preal_DIS . ' onchange="enableValor(\'nacex_preal_plus_txt\')" name="nacex_mod_preal" value="E" ' . $nacex_mod_preal_e . '/> Reparto Plus</label>
+            <small class="form-text text-muted">' . $obj->l('Type of message to send:') . '<br>- Standard: ' . $obj->l('Basic alert message') . '<br>- Plus: ' . $obj->l('"Standard" message type with added text') . '<br>- Reparto: ' . $obj->l('"Standard" message type sent when package arrives to destiny agency.') . '<br>- Reparto Plus: ' . $obj->l('"Reparto" message type with added text.') . '</small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Prealert Plus message') . '</label>
+        <div class="col-lg-9">
+            ' . showError($errores, 'nacex_preal_plus_txt') . '
+            <input type="text" class="form-control" placeholder="' . $obj->l('Message') . '" ' . $nacex_tip_preal_DIS . ' name="nacex_preal_plus_txt" value="' . Tools::getValue('nacex_preal_plus_txt', Configuration::get('NACEX_PREAL_PLUS_TXT')) . '" style="max-width:335px;" />
+            <small class="form-text text-muted">' . $obj->l('Additional prealert text. Max. 720 chars.') . '</small>
+        </div>
+    </div>
+    <hr>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Shipping packages') . '</label>
+        <div class="col-lg-9">
+            <label class="radio-inline"><input type="radio" name="nacex_bultos" onchange="disableValor(\'nacex_bultos_numero\')" value="C" ' . $nacex_bultos_cesta . '/> ' . $obj->l('Cart items') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_bultos" onchange="enableValor(\'nacex_bultos_numero\')" value="F" ' . $nacex_bultos_fijo . '/> ' . $obj->l('Fixed packages') . '</label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Fixed shipping packages') . '</label>
+        <div class="col-lg-9">
+            <input type="text" class="form-control" placeholder="' . $obj->l('Packages') . '" ' . $nacex_bultos_DIS . ' name="nacex_bultos_numero" value="' . Tools::getValue('nacex_bultos_numero', Configuration::get('NACEX_BULTOS_NUMERO')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Shipping weight') . '</label>
+        <div class="col-lg-9">
+            <label class="radio-inline"><input type="radio" name="nacex_peso" onchange="disableValor(\'nacex_peso_numero\')" value="C" ' . $nacex_peso_cesta . '/> ' . $obj->l('Cart items') . '</label>
+            <label class="radio-inline"><input type="radio" name="nacex_peso" onchange="enableValor(\'nacex_peso_numero\')" value="F" ' . $nacex_peso_fijo . '/> ' . $obj->l('Fixed weight') . '</label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Fixed kilos number') . '</label>
+        <div class="col-lg-9">
+            <input type="text" class="form-control" placeholder="' . $obj->l('Kilos') . '" ' . $nacex_peso_cesta_DIS . ' name="nacex_peso_numero" value="' . Tools::getValue('nacex_peso_numero', Configuration::get('NACEX_PESO_NUMERO')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
+        </div>
+    </div>
+
+    ' . nacexutils::getRadioHTML('Apply handling fee', 'nacex_gastos_manipulacion', 'NO', $nacex_gastos_manipulacion_no, 'SI', $nacex_gastos_manipulacion_si, 'It allows to add extra charges to shipping costs.', "javascript:disableValor('nacex_gastos_manipulacion_val')", "javascript:enableValor('nacex_gastos_manipulacion_val')") . '
+
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label">' . $obj->l('Handling fee') . '</label>
+        <div class="col-lg-9">
+            ' . showError($errores, 'nacex_gastos_manipulacion_val') . '
+            <input type="text" class="form-control" ' . $nacex_gastos_manipulacion_DIS . ' name="nacex_gastos_manipulacion_val" value="' . Tools::getValue('nacex_gastos_manipulacion_val', Configuration::get('NACEX_GASTOS_MANIPULACION_VAL')) . '" onkeypress="return soloNumeros(event);" style="max-width:200px;" />
+            ' . $divInfoGastosMani . '
+            <small class="form-text text-muted">' . $obj->l('Amount added in shipping costs for handling expenses') . '</small>
+        </div>
+    </div>
 									</div>
 								</div>
 
