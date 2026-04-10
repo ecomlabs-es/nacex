@@ -1,26 +1,37 @@
 ----------------2.5.0 rev7 ^-----------------
-Nuevo método getListadoExpediciones: consulta masiva de estados en 1 sola llamada WS (antes N+1)
 Nuevo método editExpedicion: editar expediciones sin cancelar y recrear
-Fix requestWS: curl_close(), eliminado FORBID_REUSE para reutilización de conexiones TCP
-Auto-actualización desde GitHub: badge en configuración + descarga e instalación con un click
-Configuración completamente migrada a Bootstrap (panels, form-group, ps-switch, accesibilidad)
-Búsqueda unitaria y logs: rediseño con panel Bootstrap, spinner nativo (sin CDN externa)
+Consulta masiva de estados WS (getListadoExpediciones): de N+1 llamadas a 1
+Fix requestWS: curl_close() y reutilización de conexiones TCP
 Tabla masiva: filtros en una fila, checkboxes md-checkbox nativos PS8
-Fix traducciones AJAX: forzar idioma del empleado en controllers CO*
-Fix estado NOTIFICADO: reconocido como estado cancelable
-Controllers wrapper para PS9 (nacextab, nacextabMasivo, nacexunitario)
-Fix formulario config PS9: usar REQUEST_URI en vez de params legacy
-Limpieza CSS: de 1378 a 380 líneas, eliminadas fuentes custom, estilos muertos
+Fix estado NOTIFICADO reconocido como cancelable
+----------------2.5.0 rev6 ^-----------------
+Fix toggle opciones desarrollador en configuración
+Comparación estricta de versiones para auto-actualización
+----------------2.5.0 rev5 ^-----------------
+Búsqueda unitaria: rediseño con panel Bootstrap, spinner nativo (sin CDN)
+Fix traducciones AJAX: forzar idioma del empleado en controllers
+----------------2.5.0 rev4 ^-----------------
+Auto-actualización desde GitHub releases con un click
+Configuración migrada a Bootstrap (panels, form-group, accesibilidad)
 Labels accesibles con for/id en toda la configuración
-----------------2.5.0 rev1.0 ^-----------------
-Cancelar expedición solo en estado PENDIENTE, ocultar mensaje en ANULADA/BAJA
-Fix hash anti-duplicado en PS8 (hook se ejecuta 2 veces por request)
-Fix error fatal en checkout sin transportistas y detección de carrier con cookie obsoleta
+Botón guardar en cada sección de configuración
+Tab Ver Logs se oculta si los logs están desactivados
+Fix formulario config PS9: REQUEST_URI en vez de params legacy
+Limpieza CSS: de 1378 a 380 líneas
+----------------2.5.0 rev3 ^-----------------
+Controllers wrapper para PS9 (nacextab, nacextabMasivo, nacexunitario)
+Fix formulario config PS9
+----------------2.5.0 rev2 ^-----------------
+Fix error fatal en checkout sin transportistas
+Fix detección de carrier con cookie obsoleta en hookactionValidateOrder
 Fix popup NacexShop cross-origin con postMessage
-Actualización de estado del pedido: añadidos tránsito, reparto e incidencia
-Tabla masiva: maquetación, badges de estado y filtro por transportista
+Eliminada tabla nacex_expediciones_his
+Actualización de estado del pedido: tránsito, reparto e incidencia
+----------------2.5.0 rev1 ^-----------------
+Cancelar expedición solo en estado PENDIENTE
+Fix hash anti-duplicado en PS8
+Tabla masiva: badges de estado y filtro por transportista
 Logo Nacex Logista en todas las vistas
-Histórico de expediciones desde tabla principal (eliminada tabla _his)
 ----------------2.5.0 ^-----------------
 Compatibilidad con PrestaShop 1.7.8, 8.x y 9.x
 Compatibilidad con PHP 7.4, 8.0, 8.1, 8.2, 8.3 y 8.4
