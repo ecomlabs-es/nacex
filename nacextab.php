@@ -203,6 +203,7 @@ class nacextab extends AdminController
                 $sum_kil = 0;
                 $sum_ree = 0;
                 $agclis = [];
+                $barcodeData = [];
 
                 $cont = 1;
                 foreach ($expediciones as $exp) {
@@ -250,8 +251,6 @@ class nacextab extends AdminController
                     $sum_bul += nacexutils::getDefValue($exp, 'bultos', 1);
                     $sum_kil += $peso;
                     $sum_ree += $ree;
-                    $ref = nacexutils::getReferenciaGeneral() . $orderId;
-                    $codbar = preg_replace('/;/', '<br>', $exp['barcode']);
                     $imgbarcodePrint = preg_replace("/\//", '', $exp['ag_cod_num_exp']) . '00';
                     $array_agcod_numexp = explode('/', $exp['ag_cod_num_exp']);
                     $agcod_numexp = $array_agcod_numexp[0] . ' / ' . $array_agcod_numexp[1];
@@ -260,59 +259,38 @@ class nacextab extends AdminController
                     $attShop = !$isNacexShop ? '' : '<p><i><b>Att:</b> ' . htmlspecialchars($exp['invoice_firstname'] . ' ' . $exp['invoice_lastname'], ENT_QUOTES, 'UTF-8') . '</i></p>';
                     $direccion = $isNacexShop && isset($exp['shop_direccion']) ? $exp['shop_direccion'] : $dir_ent;
 
-                    $odd = $cont % 2 != 0 ? ' class="odd"' : '';
+                    $barcodeData[] = $imgbarcodePrint;
 
-                    $this->_html .= '
-		  				<tr' . $odd . ">
-		  					<td style='text-align:center'>
-								<a href='" . $linkOrders . '&id_order=' . $exp['id_envio_order'] . "&vieworder'>" . $exp['id_envio_order'] . "</a>
-							</td>
-		  					<td style='padding: 5px 5px 0 5px;' id= 'td_cb'>
-		  						<div class='noprint screen' id='" . $imgbarcodePrint . "' style='max-width:165px !important;max-height:56px !important;width: auto;height: auto;'></div>
-                                <div class='noscreen print' id='" . $imgbarcodePrint . "_2' style='max-width:380px !important;max-height:170px !important;width: auto;height: auto;'></div>  
-		  								<script>
-                                            $(document).ready(function() {
-                                                $('#" . $imgbarcodePrint . "').barcode({code: '" . $imgbarcodePrint . "', crc:false}, 'int25',{barWidth:1, barHeight:40, fontSize:10});
-                                                $('#" . $imgbarcodePrint . "_2').barcode({code: '" . $imgbarcodePrint . "', crc:false}, 'int25',{barWidth:2, barHeight:100, fontSize:24});
-                                            }); 
-                                        </script>
-		  					</td>			  				
-			  				<td>		  					
-		  						<p>" . $agcod_numexp . '</p>
-		  						<p>' . htmlspecialchars($nom_ent, ENT_QUOTES, 'UTF-8') . '</p>
-		  						<p>' . htmlspecialchars($cpPoblacion, ENT_QUOTES, 'UTF-8') . '</p>
-		  							' . $attShop . "		  							  							  					
-		  					</td>
-			  				<td>
-		  						<p style='margin-top:4px;'>" . $exp['ref'] . "</p>
-		  						<p style='margin-top:25px;'>" . $direccion . "</p>
-		  					</td>
-			  				<td>
-		  						<p style='margin-top:4px;'>" . $exp['serv'] . "</p>
-		  						<p style='margin-top:25px;'>" . nacexutils::normalizarDecimales($ree, 2, ',', ' ', true, true) . "</p>			  					
-		  					</td>		  					
-		  					<td style='text-align:center;vertical-align:middle;'>" . nacexutils::getDefValue($exp, 'bultos', '1') . "
-							</td>
-		  					<td style='text-align:center;vertical-align:middle;'>" . nacexutils::normalizarDecimales($peso, 2, ',', ' ', true, true);
+                    $this->_html .= "
+                        <tr>
+                            <td style='text-align:center;vertical-align:middle;'>
+                                <a href='" . $linkOrders . '&id_order=' . $exp['id_envio_order'] . "&vieworder'>" . $exp['id_envio_order'] . "</a>
+                            </td>
+                            <td style='padding:5px;vertical-align:middle;'>
+                                <div class='noprint' id='" . $imgbarcodePrint . "' style='max-width:165px;max-height:56px;'></div>
+                                <div class='noscreen' id='" . $imgbarcodePrint . "_2' style='max-width:380px;max-height:170px;'></div>
+                            </td>
+                            <td style='vertical-align:middle;'>
+                                <strong>" . $agcod_numexp . "</strong><br>
+                                " . htmlspecialchars($nom_ent, ENT_QUOTES, 'UTF-8') . "<br>
+                                <small>" . htmlspecialchars($cpPoblacion, ENT_QUOTES, 'UTF-8') . "</small>
+                                " . $attShop . "
+                            </td>
+                            <td style='vertical-align:middle;'>
+                                " . $exp['ref'] . "<br>
+                                <small>" . htmlspecialchars($direccion, ENT_QUOTES, 'UTF-8') . "</small>
+                            </td>
+                            <td style='vertical-align:middle;'>
+                                " . $exp['serv'] . "<br>
+                                <small>" . nacexutils::normalizarDecimales($ree, 2, ',', ' ', true, true) . "</small>
+                            </td>
+                            <td style='text-align:center;vertical-align:middle;'>" . nacexutils::getDefValue($exp, 'bultos', '1') . "</td>
+                            <td style='text-align:center;vertical-align:middle;'>" . nacexutils::normalizarDecimales($peso, 2, ',', ' ', true, true) . "</td>
+                        </tr>";
 
-                    //salto de p�gina
-                    if ($cont % 14 == 0) {
-                        $this->_html .= "<div class='pagebreak'> </div>";
-                    }
                     $cont += 1;
-
-                    $this->_html .= ' </td>
-		  			    </tr>';
                 }
                 $this->_html .= '</tbody>';
-
-                $this->_html .=  "<div id='info-usuario'><sub>" . Configuration::get('NACEX_WSUSERNAME') . '</sub><br>';
-                foreach ($agclis as $ag) {
-                    if ($ag != '') {
-                        $this->_html .= '<sub> ' . $this->nacex->l('Customer') . ' ' . $ag . '</sub><br>';
-                    }
-                }
-                $this->_html .= '</div>';
 
                 $this->_html .= "<tfoot><tr>
                             <td colspan='3' style='text-align:right;'><strong>" . $this->nacex->l('Total') . ":</strong></td>
@@ -323,7 +301,23 @@ class nacextab extends AdminController
                          </tr></tfoot>
                     </table>
                     </div>
-                </div>";
+                    <div style='padding:0.5em 1em;color:#999;font-size:0.85em;'>";
+                $this->_html .= Configuration::get('NACEX_WSUSERNAME');
+                foreach ($agclis as $ag) {
+                    if ($ag != '') {
+                        $this->_html .= ' | ' . $this->nacex->l('Customer') . ' ' . $ag;
+                    }
+                }
+                $this->_html .= "</div>
+                </div>
+                <script>
+                    $(document).ready(function() {";
+                foreach ($barcodeData as $bc) {
+                    $this->_html .= "$('#" . $bc . "').barcode({code: '" . $bc . "', crc:false}, 'int25',{barWidth:1, barHeight:40, fontSize:10});";
+                    $this->_html .= "$('#" . $bc . "_2').barcode({code: '" . $bc . "', crc:false}, 'int25',{barWidth:2, barHeight:100, fontSize:24});";
+                }
+                $this->_html .= "});
+                </script>";
             } else {
                 $this->_html .= "
                 <div class='panel'>
