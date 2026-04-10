@@ -100,7 +100,6 @@
 <details>
 <summary><strong>Interfaz</strong></summary>
 
-- Logo Nacex Logista en todas las vistas
 - Tabla masiva: badges de estado de expedicion, toolbar con filtro por transportista
 - Tabla masiva: extender ModuleAdminController para PS8, fix maquetacion
 - Configuracion: multi-select reemplazados por checkboxes
