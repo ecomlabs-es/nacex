@@ -20,7 +20,7 @@ class unitaria {
             url: _url,
             data: 'method=' + _method + '&current_url=' + _current_url + '&oToken=' + oToken + '&pedido=' + _idpedido + '&controller=' + controller,
             dataType: 'json',
-            beforeSend: jQuery.LoadingOverlay("show"),
+            beforeSend: $('#ncx-loading').show(),
         })
             .done(function (_data) {
                 if (_data[0].cod_response === '100') {
@@ -59,7 +59,7 @@ class unitaria {
                 console.error("MODULO NACEX - ERROR - FUNCION GET_UNITARIA - " + textStatus);
             })
             .complete(function () {
-                jQuery.LoadingOverlay("hide");
+                $('#ncx-loading').hide();
             });
     }
 
@@ -118,7 +118,7 @@ class unitaria {
             url: _url,
             data: _data,
             dataType: 'json',
-            beforeSend: jQuery.LoadingOverlay("show"),
+            beforeSend: $('#ncx-loading').show(),
         })
             .done(function (_data) {
                 document.getElementById('resultado').innerHTML = _data[0].result;
@@ -130,12 +130,12 @@ class unitaria {
                 console.error("MODULO NACEX - ERROR - FUNCION POST_ORDER - " + _data);
             })
             .complete(function () {
-                jQuery.LoadingOverlay("hide");
+                $('#ncx-loading').hide();
                 window.scrollTo(0, 0);
 
                 // Mostramos de nuevo la búsqueda de expediciones una vez finalizada la documentación de la expedición
                 setTimeout(function () {
-                    /*jQuery.LoadingOverlay("hide");
+                    /*$('#ncx-loading').hide();
                     window.scrollTo(0, 0);*/
                     unitaria.search(_idpedido);
                 }, 2000);

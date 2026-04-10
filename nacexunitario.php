@@ -59,9 +59,14 @@ class nacexunitario extends AdminController {
         // Servicio 44
         $filePath = _PS_BASE_URL_ . _MODULE_DIR_ . 'nacex/files/';
 
-        $this->_html .= "<script  src='https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js'> </script>
-        <!-- <script src=" . _MODULE_DIR_ . "nacex/js/unitaria.js></script> -->
-                       <script>
+        $this->_html .= "
+            <div id='ncx-loading' style='display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.7);z-index:9999;'>
+                <div style='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);'>
+                    <i class='material-icons' style='font-size:48px;color:#25b9d7;animation:spin 1s linear infinite;'>autorenew</i>
+                </div>
+            </div>
+            <style>@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}</style>
+            <script>
 //LOAD PARAMETERS GLOBAL PARAMETERS        
                             var Base_uri ='" . __PS_BASE_URI__ . "';
                             var adminUrlToken = '" . $url . "';
