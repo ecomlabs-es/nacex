@@ -11,7 +11,6 @@ http://www.generateit.net/css-optimize/index.php
 	}
 
 	#ncx_div_listado {
-		font-family:sans-serif;
 	}
 
 	#ncx_div_listado h1 {
@@ -21,7 +20,6 @@ http://www.generateit.net/css-optimize/index.php
 	table#ncx_tabla_listado {
 		margin-bottom: 10px;
 		font-size: 35px;
-		font-family: sans-serif;
 		border-collapse: collapse;
 		/*border:2px solid grey;
 		background-color:#FFF!important;*/
@@ -681,14 +679,6 @@ http://www.generateit.net/css-optimize/index.php
 	}
 
 	/* Detalles Agencia en Infobox detalle pedido */
-	@font-face {
-		font-family: 'Avenir Book';
-		src: url('fonts/Avenir-Book.woff2') format('woff2'),
-		url('fonts/Avenir-Book.woff') format('woff'),
-		url('fonts/Avenir-Book.ttf') format('truetype');
-		font-weight: normal;
-		font-style: italic;
-	}
 	.Z3 {
 		min-height: 100px;
 		width: 100%;
@@ -701,7 +691,6 @@ http://www.generateit.net/css-optimize/index.php
 		background: white;
 		position: inherit;
 		height: 100%;
-		font-family: 'Avenir Book', Verdana, Arial, Helvetica, sans-serif !important;
 		font-size: 11pt;
 		line-height: 1.5;
 		/*border-top: 10px solid #3c3c3c;
@@ -756,7 +745,6 @@ http://www.generateit.net/css-optimize/index.php
 		line-height: 1.2em !important;
 		padding: 0 0 0 5px !important;
 		text-transform: none !important;
-		font-family: 'Avenir Book', Verdana, Arial, Helvetica, sans-serif !important;
 	}
 
 	/** Estilos de página de Atención al cliente **/
