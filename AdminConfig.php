@@ -1373,52 +1373,41 @@ function getFormularioConfiguracion($obj)
 								<div class="panel">
 									<div class="panel-heading">' . $obj->l('Debug') . '</div>
 									<div class="panel-body">
-													' . nacexutils::getRadioHTML('Enable Nacex logs', 'nacex_save_log', 'NO', $nacex_save_log_no, 'SI', $nacex_save_log_si, 'Save a diary log trace in folder nacex/log/aaaa-mm-dd-nacex.log. They can see from "Nacex > See Logs" menu option')
-        . '
-													' . nacexutils::getRadioHTML('Cleaning Data Base when disabling module', 'nacex_borrar_configuracion', 'NO', $show_borrar_configuracion_no, 'SI', $show_borrar_configuracion_si, 'When disabling Nacex module, remove all data generated on data base.')
-        . '
-													<!-- Opciones de desarrollador ocultas para el cliente -->
-													' . nacexutils::getRadioHTML('Enable developer options', 'nacex_show_dev_ops', 'NO', $show_dev_ops_no, 'SI', $show_dev_ops_si, 'ONLY FOR DEVELOPERS!')
-        . '';
-    //if(Configuration::get("NACEX_SHOW_DEV_OPS") === 'SI'):
-    $html .= '<tr data-depends="nacex_show_dev_ops">' . nacexutils::getRadioHTML('Show runtime errors', 'nacex_show_errors', 'NO', $show_errors_no, 'SI', $show_errors_si, 'For debugging purposes only when necessary.')
-        . '
-                                                    <tr data-depends="nacex_show_dev_ops">
-                                                        <td class="columna1">' . $obj->l('Review carriers table') . '</td>
-                                                        <td class="columna2" id="nacex_tableCarriers">
-                                                            <input style="cursor: pointer;padding: 7px;width: 250px;" class="ncx_button" onclick="javascript:revisarTablaCarriers();" type="button" name="nacex_tableCarriers" id="nacex_tableCarriers" value="' . $obj->l('Review carriers') . '"/>
-                                                            <div id="nacex_tableCarriersResult" class="dataTables_wrapper" style="margin-top: 5px;"></div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr data-depends="nacex_show_dev_ops">
-                                                        <td class="columna1">' . $obj->l('Reinstall hooks') . '</td>
-                                                        <td class="columna2">
-                                                            <input style="cursor: pointer;padding: 7px;width: 250px;" class="ncx_button" onclick="javascript:reinstalarHooks();" type="button" value="' . $obj->l('Reinstall hooks') . '"/>
-                                                            <div id="reinstallHooksResult" style="margin-top: 5px;"></div>
-                                                            <p class="tip">' . $obj->l('Re-registers all hooks for PS 1.7.8+ compatibility. Use if expedition forms or status updates are not working.') . '</p>
-                                                        </td>
-                                                    </tr>';
-    //endif;
-    $html .= '
+										' . nacexutils::getRadioHTML('Enable Nacex logs', 'nacex_save_log', 'NO', $nacex_save_log_no, 'SI', $nacex_save_log_si, 'Save a diary log trace in folder nacex/log/aaaa-mm-dd-nacex.log. They can see from "Nacex > See Logs" menu option')
+        . nacexutils::getRadioHTML('Cleaning Data Base when disabling module', 'nacex_borrar_configuracion', 'NO', $show_borrar_configuracion_no, 'SI', $show_borrar_configuracion_si, 'When disabling Nacex module, remove all data generated on data base.')
+        . nacexutils::getRadioHTML('Enable developer options', 'nacex_show_dev_ops', 'NO', $show_dev_ops_no, 'SI', $show_dev_ops_si, 'ONLY FOR DEVELOPERS!') . '
+										<div data-depends="nacex_show_dev_ops">
+											' . nacexutils::getRadioHTML('Show runtime errors', 'nacex_show_errors', 'NO', $show_errors_no, 'SI', $show_errors_si, 'For debugging purposes only when necessary.') . '
+											<div class="form-group row">
+												<label class="col-lg-3 col-form-label">' . $obj->l('Review carriers table') . '</label>
+												<div class="col-lg-9">
+													<button type="button" class="btn btn-default" onclick="revisarTablaCarriers();">' . $obj->l('Review carriers') . '</button>
+													<div id="nacex_tableCarriersResult" style="margin-top:0.5em;"></div>
+												</div>
+											</div>
+											<div class="form-group row">
+												<label class="col-lg-3 col-form-label">' . $obj->l('Reinstall hooks') . '</label>
+												<div class="col-lg-9">
+													<button type="button" class="btn btn-default" onclick="reinstalarHooks();">' . $obj->l('Reinstall hooks') . '</button>
+													<div id="reinstallHooksResult" style="margin-top:0.5em;"></div>
+													<small class="form-text text-muted">' . $obj->l('Re-registers all hooks for PS 1.7.8+ compatibility. Use if expedition forms or status updates are not working.') . '</small>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 
 								<div class="panel">
 									<div class="panel-heading">' . $obj->l('News and Updates') . '</div>
 									<div class="panel-body">
-								      	<table style="border:0;width:100%;">
-													<tr>
-														<td class="columna1">' . $obj->l('Feedback form sender email') . ':</td>
-														<td class="columna2">
-															<input type="email" name="nacex_feedback_sender" id="nacex_feedback_sender"
-															    style="width: 75%;"
-                                                                value="' . Tools::getValue('nacex_feedback_sender', Configuration::get('NACEX_FEEDBACK_SENDER')) . '"/>
-                                                            <p class="tip">' . $obj->l('Email sender for feedback form') . '</p>
-														</td>
-													</tr>
-													' . nacexutils::getRadioHTML('SMTP is used to send emails?', 'nacex_feedback_smtp', 'NO', $nacex_feedback_smtp_no, 'SI', $nacex_feedback_smtp_si)
-        . '
-								      	</table>
+										<div class="form-group row">
+											<label class="col-lg-3 col-form-label">' . $obj->l('Feedback form sender email') . '</label>
+											<div class="col-lg-9">
+												<input type="email" class="form-control" name="nacex_feedback_sender" id="nacex_feedback_sender" value="' . Tools::getValue('nacex_feedback_sender', Configuration::get('NACEX_FEEDBACK_SENDER')) . '" style="max-width:335px;" />
+												<small class="form-text text-muted">' . $obj->l('Email sender for feedback form') . '</small>
+											</div>
+										</div>
+										' . nacexutils::getRadioHTML('SMTP is used to send emails?', 'nacex_feedback_smtp', 'NO', $nacex_feedback_smtp_no, 'SI', $nacex_feedback_smtp_si) . '
 									</div>
 								</div>
 
