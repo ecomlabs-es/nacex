@@ -7,6 +7,7 @@ class AdminNacexLogsController extends ModuleAdminController
     public function __construct()
     {
         parent::__construct();
+        $this->bootstrap = true;
     }
 
     public function setMedia($isNewTheme = false)
