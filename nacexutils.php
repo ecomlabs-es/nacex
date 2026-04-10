@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/../../config/defines.inc.php';
 
 class nacexutils
 {
-    public const nacexVersion = '2.5.0-rev5';
+    public const nacexVersion = '2.5.0-rev6';
     public const nacexBaseVersion = '2.5.0';
     public const _moduleName = 'nacex';
 
