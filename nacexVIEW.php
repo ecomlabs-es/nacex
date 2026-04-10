@@ -1142,7 +1142,7 @@ class nacexVIEW
                        alt="' . $nacex->l('Cancel expedition') . '"
                        title="' . $nacex->l('Cancel expedition') . '"
                        src="' . nacexDTO::getPath() . 'images/Ic_cancel_48px.svg" /></button>';
-            $html .= '<button type="button" class="zoomable" style="background:none;border:1px solid #333;border-radius:50%;cursor:pointer;vertical-align:top;padding:4px;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;" onclick="nacexEditExpedicion(\'' . $expId . '\');" title="' . $nacex->l('Edit expedition') . '">
+            $html .= '<button type="button" class="zoomable" style="background:none;border:1px solid #333;border-radius:50%;cursor:pointer;vertical-align:top;padding:4px;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;margin-top:3px;margin-left:14px;" onclick="nacexEditExpedicion(\'' . $expId . '\');" title="' . $nacex->l('Edit expedition') . '">
                        <i class="material-icons" style="font-size:18px;color:#333;">edit</i></button>';
             $html .= '<script>
                 function nacexEditExpedicion(expCod) {
