@@ -70,16 +70,6 @@
 		color: #00AE42 !important;
 	}
 	#ncx_info_shop fieldset { border: 1px solid #ff5100; }
-	#ncx_info_exp .info-tooltip, #ncx_info_shop .info-tooltip {
-		cursor: help;
-		background-color: #ff5100;
-		padding: 7px 10px;
-		margin-left: 0.8em;
-		border-radius: 50%;
-		color: #fff;
-		font-size: 14px;
-		font-weight: bolder;
-	}
 	#ncx_cod_exp {
 		float: right;
 		color: #555;

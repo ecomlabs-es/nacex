@@ -692,7 +692,7 @@ class VIunitaria
                     <p style="margin-left:5px;">' . $nacex->l('Refund amount', 'nacex') . ':';
             if (isset($shop_codigo)) { $html .= '<input type="number" id="nacex_imp_ree" name="nacex_imp_ree" pattern="^\d+(?:\.\d{1,2})?$" step="0.01" required min="0" max="600" value="' . $nacex_imp_ree . '" size="20" maxlength="20" style="margin-left:15px;text-align:right;border: 0;display:inline"/> &euro;'; } else { $html .= '<input type="number" id="nacex_imp_ree" name="nacex_imp_ree" pattern="^\d+(?:\.\d{1,2})?$" step="0.01" required min="0" max="2500" value="' . $nacex_imp_ree . '" size="20" maxlength="20" style="margin-left:15px;text-align:right;border: 0;display:inline"/> &euro;'; }
 
-            $html .= '<span class="info-tooltip" title="' . $nacex->l('Total amount to pay for the receiver. Cost 0 do NOT have refund', 'nacex') . '">?</span>
+            $html .= '<span data-toggle="tooltip" data-placement="top" title="' . $nacex->l('Total amount to pay for the receiver. Cost 0 do NOT have refund', 'nacex') . '" style="cursor:help;background-color:#25b9d7;padding:2px 7px;border-radius:50%;color:#fff;font-size:12px;font-weight:bold;margin-left:0.5em;">?</span>
                      </p>';
 
             if (isset($shop_codigo)) {

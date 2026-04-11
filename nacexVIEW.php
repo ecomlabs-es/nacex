@@ -642,7 +642,7 @@ class nacexVIEW
 
             //            $html .= '<a href="#" onclick="return false;"><img style="opacity:1" src="' . nacexDTO::getPath() . 'images/infoicon.png" width="20px" title="Importe TOTAL a abonar por parte del destinatario. Importe 0 NO tiene reembolso." alt="Importe TOTAL a abonar por parte del destinatario. Importe 0 NO tiene reembolso."/></a>
             //                             </p>';
-            $html .= '<span class="info-tooltip" title="' . $nacex->l('Total amount to pay for the receiver. Cost 0 do NOT have refund') . '">?</span>
+            $html .= '<span data-toggle="tooltip" data-placement="top" title="' . $nacex->l('Total amount to pay for the receiver. Cost 0 do NOT have refund') . '" style="cursor:help;background-color:#25b9d7;padding:2px 7px;border-radius:50%;color:#fff;font-size:12px;font-weight:bold;margin-left:0.5em;">?</span>
                      </p>';
 
             if (isset($shop_codigo)) {
