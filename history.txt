@@ -1,3 +1,6 @@
+----------------2.5.0 rev8 ^-----------------
+Tooltips Bootstrap nativos en formularios de expedición
+Limpieza CSS y estilos inline
 ----------------2.5.0 rev7 ^-----------------
 Nuevo método editExpedicion: editar expediciones sin cancelar y recrear
 Consulta masiva de estados WS (getListadoExpediciones): de N+1 llamadas a 1
